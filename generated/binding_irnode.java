@@ -89,6 +89,92 @@ public interface binding_irnode extends Library {
 			return null;
 		}
 	}
+	public static enum symconst_kind {
+		symconst_type_tag(),
+		symconst_type_size(),
+		symconst_type_align(),
+		symconst_addr_name(),
+		symconst_addr_ent(),
+		symconst_ofs_ent(),
+		symconst_enum_const(),
+		symconst_label();
+		public final int val;
+		private static class C { static int next_val; }
+
+		symconst_kind(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		symconst_kind() {
+			this.val = C.next_val++;
+		}
+		
+		public static symconst_kind getEnum(int val) {
+			for(symconst_kind entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum pn_Cmp {
+		pn_Cmp_False(0),
+		pn_Cmp_Eq(1),
+		pn_Cmp_Lt(2),
+		pn_Cmp_Le((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Lt.val)),
+		pn_Cmp_Gt(4),
+		pn_Cmp_Ge((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Gt.val)),
+		pn_Cmp_Lg((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Gt.val)),
+		pn_Cmp_Leg(((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
+		pn_Cmp_Uo(8),
+		pn_Cmp_Ue((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)),
+		pn_Cmp_Ul((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)),
+		pn_Cmp_Ule(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Lt.val)),
+		pn_Cmp_Ug((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Gt.val)),
+		pn_Cmp_Uge(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
+		pn_Cmp_Ne(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)|pn_Cmp.pn_Cmp_Gt.val)),
+		pn_Cmp_True(15);
+		public final int val;
+		private static class C { static int next_val; }
+
+		pn_Cmp(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		pn_Cmp() {
+			this.val = C.next_val++;
+		}
+		
+		public static pn_Cmp getEnum(int val) {
+			for(pn_Cmp entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum ir_where_alloc {
+		stack_alloc(),
+		heap_alloc();
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_where_alloc(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_where_alloc() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_where_alloc getEnum(int val) {
+			for(ir_where_alloc entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
 	public static enum firm_kind {
 		k_BAD(0),
 		k_entity(),
@@ -975,34 +1061,6 @@ public interface binding_irnode extends Library {
 			return null;
 		}
 	}
-	public static enum symconst_kind {
-		symconst_type_tag(),
-		symconst_type_size(),
-		symconst_type_align(),
-		symconst_addr_name(),
-		symconst_addr_ent(),
-		symconst_ofs_ent(),
-		symconst_enum_const(),
-		symconst_label();
-		public final int val;
-		private static class C { static int next_val; }
-
-		symconst_kind(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		symconst_kind() {
-			this.val = C.next_val++;
-		}
-		
-		public static symconst_kind getEnum(int val) {
-			for(symconst_kind entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
 	public static enum pn_Call {
 		pn_Call_M_regular(pn_generic.pn_Generic_M_regular.val),
 		pn_Call_X_regular(pn_generic.pn_Generic_X_regular.val),
@@ -1131,42 +1189,6 @@ public interface binding_irnode extends Library {
 			return null;
 		}
 	}
-	public static enum pn_Cmp {
-		pn_Cmp_False(0),
-		pn_Cmp_Eq(1),
-		pn_Cmp_Lt(2),
-		pn_Cmp_Le((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Gt(4),
-		pn_Cmp_Ge((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Lg((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Leg(((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uo(8),
-		pn_Cmp_Ue((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)),
-		pn_Cmp_Ul((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Ule(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Ug((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uge(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Ne(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_True(15);
-		public final int val;
-		private static class C { static int next_val; }
-
-		pn_Cmp(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		pn_Cmp() {
-			this.val = C.next_val++;
-		}
-		
-		public static pn_Cmp getEnum(int val) {
-			for(pn_Cmp entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
 	public static enum pn_Load {
 		pn_Load_M(pn_generic.pn_Generic_M_regular.val),
 		pn_Load_X_regular(pn_generic.pn_Generic_X_regular.val),
@@ -1235,28 +1257,6 @@ public interface binding_irnode extends Library {
 		
 		public static pn_Alloc getEnum(int val) {
 			for(pn_Alloc entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	public static enum ir_where_alloc {
-		stack_alloc(),
-		heap_alloc();
-		public final int val;
-		private static class C { static int next_val; }
-
-		ir_where_alloc(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		ir_where_alloc() {
-			this.val = C.next_val++;
-		}
-		
-		public static ir_where_alloc getEnum(int val) {
-			for(ir_where_alloc entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}

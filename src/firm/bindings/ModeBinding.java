@@ -1,8 +1,9 @@
 package firm.bindings;
 
+import com.sun.jna.Library;
 import com.sun.jna.Pointer;
 
-public interface ModeBinding {
+public interface ModeBinding extends Library {
 	Pointer new_ir_mode(String name, /* ir_mode_sort */int sort, int bit_size, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
 	Pointer new_ir_vector_mode(String name, /* ir_mode_sort */int sort, int bit_size, int num_of_elem, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
 //	int is_mode(Pointer thing);

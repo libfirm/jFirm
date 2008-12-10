@@ -1,5 +1,6 @@
 package firm;
 
+import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
 import firm.bindings.Bindings;
@@ -7,7 +8,7 @@ import firm.bindings.ModeBinding;
 
 public final class Mode {
 
-	private static final ModeBinding b = Bindings.getModeBinding();
+	private static final ModeBinding b = (ModeBinding) Native.loadLibrary("firm", ModeBinding.class);
 	
 	/**
 	 * Pointer to the ir_mode in lib

@@ -6,8 +6,8 @@ import com.sun.jna.Pointer;
 
 import firm.bindings.binding_irgraph;
 
-public class Graph {
-	private final Pointer ptr;
+public final class Graph {
+	protected final Pointer ptr;
 	private static final binding_irgraph binding = (binding_irgraph) Native.loadLibrary("firm", binding_irgraph.class);
 	
 	protected Graph(Pointer ptr) {
@@ -43,7 +43,7 @@ public class Graph {
 	}
 	
 	public void setFrameType(Type type) {
-		binding.set_irg_frame_type(ptr, type.p);
+		binding.set_irg_frame_type(ptr, type.ptr);
 	}
 	
 	public Node getStartBlock() {

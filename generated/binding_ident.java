@@ -7,7 +7,7 @@ import com.sun.jna.Pointer;
 import com.sun.jna.NativeLong;
 
 
-public interface binding_firm_common extends Library {
+public interface binding_ident extends Library {
 	public static enum ip_view_state {
 		ip_view_no(),
 		ip_view_valid(),
@@ -175,47 +175,19 @@ public interface binding_firm_common extends Library {
 			return null;
 		}
 	}
-	public static enum firm_kind {
-		k_BAD(0),
-		k_entity(),
-		k_type(),
-		k_ir_graph(),
-		k_ir_node(),
-		k_ir_mode(),
-		k_ir_op(),
-		k_tarval(),
-		k_ir_loop(),
-		k_ir_compound_graph_path(),
-		k_ir_extblk(),
-		k_ir_prog(),
-		k_ir_region(),
-		k_ir_max();
-		public final int val;
-		private static class C { static int next_val; }
-
-		firm_kind(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		firm_kind() {
-			this.val = C.next_val++;
-		}
-		
-		public static firm_kind getEnum(int val) {
-			for(firm_kind entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	void ir_init(Pointer params);
-	void ir_finish();
-	int ir_get_version_major();
-	int ir_get_version_minor();
-	String ir_get_version_revision();
-	String ir_get_version_build();
-	/* firm_kind */int get_kind(Pointer firm_thing);
-	String print_firm_kind(Pointer firm_thing);
-	void firm_identify_thing(Pointer X);
+	Pointer new_id_from_str(String str);
+	Pointer new_id_from_chars(String str, int len);
+	String get_id_str(Pointer id);
+	int get_id_strlen(Pointer id);
+	int id_is_prefix(Pointer prefix, Pointer id);
+	int id_is_suffix(Pointer suffix, Pointer id);
+	int id_contains_char(Pointer id, byte c);
+	Pointer id_unique(String tag);
+	void firm_init_mangle();
+	Pointer id_mangle_entity(Pointer ent);
+	Pointer id_mangle_u(Pointer first, Pointer scnd);
+	Pointer id_mangle_dot(Pointer first, Pointer scnd);
+	Pointer id_mangle(Pointer first, Pointer scnd);
+	Pointer id_mangle3(String prefix, Pointer middle, String suffix);
+	Pointer id_decorate_win32_c_fkt(Pointer ent, Pointer id);
 }
