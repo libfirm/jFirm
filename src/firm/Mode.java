@@ -402,5 +402,58 @@ public final class Mode {
 		return 0 != val;
 	}
 	
+	public final boolean isValuesInMode(Mode compareTo) {
+		int val = b.values_in_mode(p, compareTo.p);
+		return 0 != val;
+	}
 	
+	public final Mode findUnsigned() {
+		Pointer modep = b.find_unsigned_mode(p);
+		return new Mode(modep);
+	}
+	
+	public final Mode findSigned() {
+		Pointer modep = b.find_signed_mode(p);
+		return new Mode(modep);
+	}
+	
+	public final Mode findDoubleBitsInt() {
+		Pointer modep = b.find_double_bits_int_mode(p);
+		return new Mode(modep);
+	}
+	
+	public final boolean honorSignedZeros() {
+		return 0 != b.mode_honor_signed_zeros(p);
+	}
+
+	public final boolean overflowOnUnaryMinus() {
+		return 0 != b.mode_overflow_on_unary_Minus(p);
+	}
+
+	public final boolean wrapAround() {
+		return 0 != b.mode_wrap_around(p);
+	}
+
+	public final Mode getReferenceSignedEq() {
+		Pointer modep = b.get_reference_mode_signed_eq(p);
+		return new Mode(modep);
+	}
+
+	public final void setReferenceSignedEq(Mode intMode) {
+		b.set_reference_mode_signed_eq(p, intMode.p);
+	}
+	
+	public final Mode getReferenceUnsignedEq() {
+		Pointer modep = b.get_reference_mode_unsigned_eq(p);
+		return new Mode(modep);
+	}
+
+	public final void setReferenceUnsignedEq(Mode intMode) {
+		b.set_reference_mode_signed_eq(p, intMode.p);
+	}
+
+	public final boolean isReinterpretCast(Mode castTo) {
+		return 0 != b.is_reinterpret_cast(p, castTo.p);
+	}
+
 }

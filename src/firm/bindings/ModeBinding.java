@@ -67,4 +67,16 @@ public interface ModeBinding {
 	int smaller_mode(Pointer sm, Pointer lm);
 	int values_in_mode(Pointer sm, Pointer lm);
 
+	Pointer find_unsigned_mode(Pointer mode);
+	Pointer find_signed_mode(Pointer mode);
+	Pointer find_double_bits_int_mode(Pointer mode);
+	int mode_honor_signed_zeros(Pointer mode);
+	int mode_overflow_on_unary_Minus(Pointer mode);
+	int mode_wrap_around(Pointer mode);
+	Pointer get_reference_mode_signed_eq(Pointer mode);
+	void set_reference_mode_signed_eq(Pointer ref_mode, Pointer int_mode);
+	Pointer get_reference_mode_unsigned_eq(Pointer mode);
+	void set_reference_mode_unsigned_eq(Pointer ref_mode, Pointer int_mode);
+	int is_reinterpret_cast(Pointer src, Pointer dst);
+
 }
