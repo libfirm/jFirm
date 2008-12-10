@@ -1,3 +1,4 @@
+package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Library;
 import com.sun.jna.Native;
@@ -24,6 +25,64 @@ public interface binding_iroptimize extends Library {
 		
 		public static ip_view_state getEnum(int val) {
 			for(ip_view_state entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum op_pin_state {
+		op_pin_state_floats(0),
+		op_pin_state_pinned(1),
+		op_pin_state_exc_pinned(),
+		op_pin_state_mem_pinned();
+		public final int val;
+		private static class C { static int next_val; }
+
+		op_pin_state(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		op_pin_state() {
+			this.val = C.next_val++;
+		}
+		
+		public static op_pin_state getEnum(int val) {
+			for(op_pin_state entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum mtp_additional_property {
+		mtp_no_property(0),
+		mtp_property_const(1),
+		mtp_property_pure(2),
+		mtp_property_noreturn(4),
+		mtp_property_nothrow(8),
+		mtp_property_naked(16),
+		mtp_property_malloc(32),
+		mtp_property_weak(64),
+		mtp_property_returns_twice(128),
+		mtp_property_intrinsic(256),
+		mtp_property_runtime(512),
+		mtp_property_private(1024),
+		mtp_property_has_loop(2048),
+		mtp_property_inherited((1<<31));
+		public final int val;
+		private static class C { static int next_val; }
+
+		mtp_additional_property(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		mtp_additional_property() {
+			this.val = C.next_val++;
+		}
+		
+		public static mtp_additional_property getEnum(int val) {
+			for(mtp_additional_property entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}

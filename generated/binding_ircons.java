@@ -1,3 +1,4 @@
+package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Library;
 import com.sun.jna.Native;
@@ -24,6 +25,64 @@ public interface binding_ircons extends Library {
 		
 		public static ip_view_state getEnum(int val) {
 			for(ip_view_state entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum op_pin_state {
+		op_pin_state_floats(0),
+		op_pin_state_pinned(1),
+		op_pin_state_exc_pinned(),
+		op_pin_state_mem_pinned();
+		public final int val;
+		private static class C { static int next_val; }
+
+		op_pin_state(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		op_pin_state() {
+			this.val = C.next_val++;
+		}
+		
+		public static op_pin_state getEnum(int val) {
+			for(op_pin_state entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum mtp_additional_property {
+		mtp_no_property(0),
+		mtp_property_const(1),
+		mtp_property_pure(2),
+		mtp_property_noreturn(4),
+		mtp_property_nothrow(8),
+		mtp_property_naked(16),
+		mtp_property_malloc(32),
+		mtp_property_weak(64),
+		mtp_property_returns_twice(128),
+		mtp_property_intrinsic(256),
+		mtp_property_runtime(512),
+		mtp_property_private(1024),
+		mtp_property_has_loop(2048),
+		mtp_property_inherited((1<<31));
+		public final int val;
+		private static class C { static int next_val; }
+
+		mtp_additional_property(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		mtp_additional_property() {
+			this.val = C.next_val++;
+		}
+		
+		public static mtp_additional_property getEnum(int val) {
+			for(mtp_additional_property entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -104,40 +163,6 @@ public interface binding_ircons extends Library {
 		
 		public static ir_peculiarity getEnum(int val) {
 			for(ir_peculiarity entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	public static enum mtp_additional_property {
-		mtp_no_property(0),
-		mtp_property_const(1),
-		mtp_property_pure(2),
-		mtp_property_noreturn(4),
-		mtp_property_nothrow(8),
-		mtp_property_naked(16),
-		mtp_property_malloc(32),
-		mtp_property_weak(64),
-		mtp_property_returns_twice(128),
-		mtp_property_intrinsic(256),
-		mtp_property_runtime(512),
-		mtp_property_private(1024),
-		mtp_property_has_loop(2048),
-		mtp_property_inherited((1<<31));
-		public final int val;
-		private static class C { static int next_val; }
-
-		mtp_additional_property(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		mtp_additional_property() {
-			this.val = C.next_val++;
-		}
-		
-		public static mtp_additional_property getEnum(int val) {
-			for(mtp_additional_property entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -703,30 +728,6 @@ public interface binding_ircons extends Library {
 		
 		public static ir_opcode getEnum(int val) {
 			for(ir_opcode entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	public static enum op_pin_state {
-		op_pin_state_floats(0),
-		op_pin_state_pinned(1),
-		op_pin_state_exc_pinned(),
-		op_pin_state_mem_pinned();
-		public final int val;
-		private static class C { static int next_val; }
-
-		op_pin_state(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		op_pin_state() {
-			this.val = C.next_val++;
-		}
-		
-		public static op_pin_state getEnum(int val) {
-			for(op_pin_state entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -1378,58 +1379,6 @@ public interface binding_ircons extends Library {
 		
 		public static cond_jmp_predicate getEnum(int val) {
 			for(cond_jmp_predicate entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	public static enum fp_model_t {
-		fp_explicit_rounding(1),
-		fp_strict_algebraic(2),
-		fp_contradictions(4),
-		fp_strict_eval_order(8),
-		fp_exceptions(16),
-		fp_environment_access(32),
-		fp_model_precise(((fp_model_t.fp_explicit_rounding.val|fp_model_t.fp_strict_algebraic.val)|fp_model_t.fp_contradictions.val)),
-		fp_model_strict(((((fp_model_t.fp_explicit_rounding.val|fp_model_t.fp_strict_algebraic.val)|fp_model_t.fp_strict_eval_order.val)|fp_model_t.fp_exceptions.val)|fp_model_t.fp_environment_access.val)),
-		fp_model_fast(fp_model_t.fp_contradictions.val);
-		public final int val;
-		private static class C { static int next_val; }
-
-		fp_model_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		fp_model_t() {
-			this.val = C.next_val++;
-		}
-		
-		public static fp_model_t getEnum(int val) {
-			for(fp_model_t entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	public static enum irg_extblk_info_state {
-		ir_extblk_info_none(0),
-		ir_extblk_info_valid(1),
-		ir_extblk_info_invalid(2);
-		public final int val;
-		private static class C { static int next_val; }
-
-		irg_extblk_info_state(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		irg_extblk_info_state() {
-			this.val = C.next_val++;
-		}
-		
-		public static irg_extblk_info_state getEnum(int val) {
-			for(irg_extblk_info_state entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -2645,32 +2594,6 @@ public interface binding_ircons extends Library {
 	void set_irn_dbg_info(Pointer n, Pointer db);
 	Pointer get_irn_dbg_info(Pointer n);
 	int firm_default_hash(Pointer node);
-	Pointer computed_value(Pointer n);
-	Pointer optimize_in_place(Pointer n);
-	Pointer create_execfreq(Pointer irg);
-	void set_execfreq(Pointer ef, Pointer block, double freq);
-	Pointer compute_execfreq(Pointer irg, double loop_weight);
-	void free_execfreq(Pointer ef);
-	double get_block_execfreq(Pointer ef, Pointer block);
-	NativeLong get_block_execfreq_ulong(Pointer ef, Pointer block);
-	int is_ir_extbb(Pointer thing);
-	void compute_extbb(Pointer irg);
-	void compute_extbb_execfreqs(Pointer irg, Pointer execfreqs);
-	void free_extbb(Pointer irg);
-	Pointer get_nodes_extbb(Pointer node);
-	NativeLong get_extbb_visited(Pointer blk);
-	void set_extbb_visited(Pointer blk, NativeLong visited);
-	void mark_extbb_visited(Pointer blk);
-	int extbb_visited(Pointer blk);
-	int extbb_not_visited(Pointer blk);
-	Pointer get_extbb_link(Pointer blk);
-	void set_extbb_link(Pointer blk, Pointer link);
-	int get_extbb_n_blocks(Pointer blk);
-	Pointer get_extbb_block(Pointer blk, int pos);
-	Pointer get_extbb_leader(Pointer blk);
-	NativeLong get_extbb_node_nr(Pointer blk);
-	void irg_extblock_walk(Pointer blk, Pointer pre, Pointer post, Pointer env);
-	void irg_extblock_walk_graph(Pointer irg, Pointer pre, Pointer post, Pointer env);
 	Pointer get_current_ir_graph();
 	void set_current_ir_graph(Pointer graph);
 	Pointer new_ir_graph(Pointer ent, int n_loc);
