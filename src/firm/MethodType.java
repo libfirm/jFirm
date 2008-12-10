@@ -8,4 +8,7 @@ public class MethodType extends Type {
 		super(ptr);
 	}
 	
+	public MethodType(Ident name, int nParameters, int nResults) {
+		this(binding.new_type_method(name.ptr, nParameters, nResults));
+	}
 }

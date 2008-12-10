@@ -3,7 +3,6 @@ package firm;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
-import firm.bindings.Bindings;
 import firm.bindings.ModeBinding;
 
 public final class Mode {

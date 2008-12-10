@@ -15,8 +15,8 @@ public class Entity {
 		this.ptr = ptr;
 	}
 	
-	public Entity(Entity owner, Ident name, Type type) {
-		this(binding.new_entity(owner != null ? owner.ptr : Pointer.NULL, name.ptr, type.ptr));
+	public Entity(Type owner, Ident name, Type type) {
+		this(binding.new_entity(owner.ptr, name.ptr, type.ptr));
 	}
 	
 	public void free() {

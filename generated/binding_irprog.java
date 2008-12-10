@@ -7,7 +7,7 @@ import com.sun.jna.Pointer;
 import com.sun.jna.NativeLong;
 
 
-public interface binding_irgraph extends Library {
+public interface binding_irprog extends Library {
 	public static enum ip_view_state {
 		ip_view_no(),
 		ip_view_valid(),
@@ -379,6 +379,32 @@ public interface binding_irgraph extends Library {
 			return null;
 		}
 	}
+	public static enum ir_segment_t {
+		IR_SEGMENT_FIRST(),
+		IR_SEGMENT_GLOBAL(ir_segment_t.IR_SEGMENT_FIRST.val),
+		IR_SEGMENT_THREAD_LOCAL(),
+		IR_SEGMENT_CONSTRUCTORS(),
+		IR_SEGMENT_DESTRUCTORS(),
+		IR_SEGMENT_COUNT();
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_segment_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_segment_t() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_segment_t getEnum(int val) {
+			for(ir_segment_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
 	Pointer get_current_ir_graph();
 	void set_current_ir_graph(Pointer graph);
 	Pointer new_ir_graph(Pointer ent, int n_loc);
@@ -464,4 +490,52 @@ public interface binding_irgraph extends Library {
 	int get_irg_fp_model(Pointer irg);
 	void set_irg_fp_model(Pointer irg, int model);
 	NativeLong register_additional_graph_data(NativeLong size);
+	void irp_reserve_resources(Pointer irp, int resources);
+	void irp_free_resources(Pointer irp, int resources);
+	int irp_resources_reserved(Pointer irp);
+	Pointer get_irp();
+	Pointer new_ir_prog();
+	void free_ir_prog();
+	void set_irp_prog_name(Pointer name);
+	int irp_prog_name_is_set();
+	Pointer get_irp_prog_ident();
+	String get_irp_prog_name();
+	Pointer get_irp_main_irg();
+	void set_irp_main_irg(Pointer main_irg);
+	void add_irp_irg(Pointer irg);
+	void remove_irp_irg_from_list(Pointer irg);
+	void remove_irp_irg(Pointer irg);
+	int get_irp_last_idx();
+	int get_irp_n_irgs();
+	Pointer get_irp_irg(int pos);
+	void set_irp_irg(int pos, Pointer irg);
+	int get_irp_n_allirgs();
+	Pointer get_irp_allirg(int pos);
+	Pointer get_segment_type(/* ir_segment_t */int segment);
+	Pointer get_glob_type();
+	Pointer get_tls_type();
+	void add_irp_type(Pointer typ);
+	void remove_irp_type(Pointer typ);
+	int get_irp_n_types();
+	Pointer get_irp_type(int pos);
+	void set_irp_type(int pos, Pointer typ);
+	int get_irp_n_modes();
+	Pointer get_irp_mode(int pos);
+	void add_irp_opcode(Pointer opcode);
+	void remove_irp_opcode(Pointer opcode);
+	int get_irp_n_opcodes();
+	Pointer get_irp_opcode(int pos);
+	void clear_irp_opcodes_generic_func();
+	Pointer get_const_code_irg();
+	/* irg_phase_state */int get_irp_phase_state();
+	void set_irp_phase_state(/* irg_phase_state */int s);
+	/* irg_outs_state */int get_irp_ip_outs_state();
+	void set_irp_ip_outs_inconsistent();
+	/* irg_callee_info_state */int get_irp_callee_info_state();
+	void set_irp_callee_info_state(/* irg_callee_info_state */int s);
+	NativeLong get_irp_next_region_nr();
+	NativeLong get_irp_next_label_nr();
+	void add_irp_asm(Pointer asm_string);
+	int get_irp_n_asms();
+	Pointer get_irp_asm(int pos);
 }

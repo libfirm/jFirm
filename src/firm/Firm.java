@@ -4,7 +4,6 @@ import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_firm_common;
-import firm.bindings.binding_irgraph;
 
 public final class Firm {
 	private static final binding_firm_common binding = (binding_firm_common) Native.loadLibrary("firm", binding_firm_common.class);	

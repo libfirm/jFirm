@@ -13,4 +13,5 @@ public class Type {
 	protected Type(Pointer ptr) {
 		this.ptr = ptr;
 	}
+	
 }
