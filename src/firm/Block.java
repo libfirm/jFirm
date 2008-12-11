@@ -15,4 +15,8 @@ public final class Block extends Node {
 	public void mature() {
 		binding_cons.mature_immBlock(ptr);
 	}
+	
+	public Block getBlock() {
+		return null;
+	}
 }

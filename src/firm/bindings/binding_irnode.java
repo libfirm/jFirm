@@ -2420,4 +2420,5 @@ public interface binding_irnode extends Library {
 	void set_irn_dbg_info(Pointer n, Pointer db);
 	Pointer get_irn_dbg_info(Pointer n);
 	int firm_default_hash(Pointer node);
+	String gdb_node_helper(Pointer firm_object);
 }

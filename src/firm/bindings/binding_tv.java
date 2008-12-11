@@ -2470,6 +2470,7 @@ public interface binding_tv extends Library {
 	void set_irn_dbg_info(Pointer n, Pointer db);
 	Pointer get_irn_dbg_info(Pointer n);
 	int firm_default_hash(Pointer node);
+	String gdb_node_helper(Pointer firm_object);
 	Pointer new_tarval_from_str(String str, NativeLong len, Pointer mode);
 	Pointer new_tarval_from_long(NativeLong l, Pointer mode);
 	NativeLong get_tarval_long(Pointer tv);

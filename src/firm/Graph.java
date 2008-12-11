@@ -197,6 +197,29 @@ public final class Graph extends JNAWrapper {
 		return binding.get_irg_last_idx(ptr);
 	}
 	
+	private void walkHelper(GraphWalker walker, Node node) {
+		if (node.visited())
+			return;
+		node.markVisited();
+		
+		walker.visiteNode(node);
+		if (node.getBlock() != null) {
+			walkHelper(walker, node.getBlock());			
+		}
+		for (Node pred : node.getPreds()) {
+			walkHelper(walker, pred);
+		}
+	}
+	
+	protected void incrementNodeVisited() {
+		binding.inc_irg_visited(ptr);
+	}
+	
+	public void walk(GraphWalker walker) {
+		incrementNodeVisited();
+		walkHelper(walker, getEnd());
+	}
+	
 //	int get_irg_fp_model(Pointer irg);
 //	void set_irg_fp_model(Pointer irg, int model);
 }

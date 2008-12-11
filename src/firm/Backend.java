@@ -18,4 +18,10 @@ public class Backend {
 		binding.be_main(file, compilationUnitName);
 		binding_c.fclose(file);
 	}
+	
+	public static void option(String option) {
+		if (binding.be_parse_arg(option) != 1) {
+			throw new IllegalArgumentException("Unknown option '" + option + "'");
+		}
+	}
 }

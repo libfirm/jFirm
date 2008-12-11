@@ -26,6 +26,16 @@ public class Main {
 		
 		Dump.dumpBlockGraph(graph, "-XXX");
 		
-		Backend.createAssembler("test.s", "<builtin>");		
+		System.out.println("Nodes:");
+		graph.walk(new GraphWalker() {
+			@Override
+			public void visiteNode(Node node) {
+				System.out.println(node);
+			}
+			
+		});
+		
+		Backend.option("omitfp");
+		Backend.createAssembler("test.s", "<builtin>");
 	}
 }
