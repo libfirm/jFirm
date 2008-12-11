@@ -164,6 +164,10 @@ public final class Mode {
 		return b.get_mode_name(p);
 	}
 	
+	public String toString() {
+		return getName();
+	}
+	
 	public final ir_mode_sort getSort() {
 		int sort = b.get_mode_sort(p);
 		return ir_mode_sort.getEnum(sort);

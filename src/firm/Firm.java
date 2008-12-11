@@ -24,8 +24,8 @@ public final class Firm {
 		return binding.ir_get_version_revision();
 	}
 	
-	static {
-		binding.ir_init(Pointer.NULL);
+	public static void init() {
+		binding.ir_init(Pointer.NULL);		
 	}
 	
 	private Firm() {
