@@ -7,7 +7,7 @@ import com.sun.jna.Pointer;
 import com.sun.jna.NativeLong;
 
 
-public interface binding_firm_common extends Library {
+public interface binding_iroptimize extends Library {
 	public static enum ip_view_state {
 		ip_view_no(),
 		ip_view_valid(),
@@ -205,47 +205,61 @@ public interface binding_firm_common extends Library {
 			return null;
 		}
 	}
-	public static enum firm_kind {
-		k_BAD(0),
-		k_entity(),
-		k_type(),
-		k_ir_graph(),
-		k_ir_node(),
-		k_ir_mode(),
-		k_ir_op(),
-		k_tarval(),
-		k_ir_loop(),
-		k_ir_compound_graph_path(),
-		k_ir_extblk(),
-		k_ir_prog(),
-		k_ir_region(),
-		k_ir_max();
+	public static enum osr_flags {
+		osr_flag_none(0),
+		osr_flag_lftr_with_ov_check(1),
+		osr_flag_ignore_x86_shift(2),
+		osr_flag_keep_reg_pressure(4);
 		public final int val;
 		private static class C { static int next_val; }
 
-		firm_kind(int val) {
+		osr_flags(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		firm_kind() {
+		osr_flags() {
 			this.val = C.next_val++;
 		}
 		
-		public static firm_kind getEnum(int val) {
-			for(firm_kind entry : values()) {
+		public static osr_flags getEnum(int val) {
+			for(osr_flags entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
 			return null;
 		}
 	}
-	void ir_init(Pointer params);
-	void ir_finish();
-	int ir_get_version_major();
-	int ir_get_version_minor();
-	String ir_get_version_revision();
-	String ir_get_version_build();
-	/* firm_kind */int get_kind(Pointer firm_thing);
-	String print_firm_kind(Pointer firm_thing);
-	void firm_identify_thing(Pointer X);
+	void optimize_cf(Pointer irg);
+	void opt_cond_eval(Pointer irg);
+	void opt_bool(Pointer irg);
+	int conv_opt(Pointer irg);
+	void data_flow_scalar_replacement_opt(Pointer irg);
+	void escape_enalysis_irg(Pointer irg, Pointer callback);
+	void escape_analysis(int run_scalar_replace, Pointer callback);
+	void optimize_funccalls(int force_run, Pointer callback);
+	void do_gvn_pre(Pointer irg);
+	void opt_if_conv(Pointer irg, Pointer params);
+	void opt_sync(Pointer irg);
+	Pointer can_replace_load_by_const(Pointer load, Pointer c);
+	int optimize_load_store(Pointer irg);
+	void optimize_loop_unrolling(Pointer irg);
+	void opt_frame_irg(Pointer irg);
+	void opt_osr(Pointer irg, int flags);
+	void remove_phi_cycles(Pointer irg);
+	void proc_cloning(float threshold);
+	int optimize_reassociation(Pointer irg);
+	void normalize_one_return(Pointer irg);
+	void normalize_n_returns(Pointer irg);
+	int scalar_replacement_opt(Pointer irg);
+	void reduce_strength(Pointer irg);
+	int opt_tail_rec_irg(Pointer irg);
+	void opt_tail_recursion();
+	void normalize_irp_class_casts(Pointer gppt_fct);
+	void normalize_irg_class_casts(Pointer irg, Pointer gppt_fct);
+	void optimize_class_casts();
+	void combo(Pointer irg);
+	void inline_small_irgs(Pointer irg, int size);
+	void inline_leave_functions(int maxsize, int leavesize, int size, int ignore_runtime);
+	void inline_functions(int maxsize, int inline_threshold);
+	int shape_blocks(Pointer irg);
 }

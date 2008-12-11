@@ -7,31 +7,7 @@ import com.sun.jna.Pointer;
 import com.sun.jna.NativeLong;
 
 
-public interface binding_irdump extends Library {
-	public static enum __codecvt_result {
-		__codecvt_ok(),
-		__codecvt_partial(),
-		__codecvt_error(),
-		__codecvt_noconv();
-		public final int val;
-		private static class C { static int next_val; }
-
-		__codecvt_result(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		__codecvt_result() {
-			this.val = C.next_val++;
-		}
-		
-		public static __codecvt_result getEnum(int val) {
-			for(__codecvt_result entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
+public interface binding_irmode extends Library {
 	public static enum ip_view_state {
 		ip_view_no(),
 		ip_view_valid(),
@@ -229,187 +205,196 @@ public interface binding_irdump extends Library {
 			return null;
 		}
 	}
-	public static enum ird_color_t {
-		ird_color_prog_background(),
-		ird_color_block_background(),
-		ird_color_dead_block_background(),
-		ird_color_block_inout(),
-		ird_color_default_node(),
-		ird_color_phi(),
-		ird_color_memory(),
-		ird_color_controlflow(),
-		ird_color_const(),
-		ird_color_anchor(),
-		ird_color_proj(),
-		ird_color_uses_memory(),
-		ird_color_error(),
-		ird_color_entity(),
-		ird_color_count();
+	public static enum ir_modecode {
+		irm_BB(),
+		irm_X(),
+		irm_F(),
+		irm_D(),
+		irm_E(),
+		irm_Bs(),
+		irm_Bu(),
+		irm_Hs(),
+		irm_Hu(),
+		irm_Is(),
+		irm_Iu(),
+		irm_Ls(),
+		irm_Lu(),
+		irm_LLs(),
+		irm_LLu(),
+		irm_P(),
+		irm_b(),
+		irm_M(),
+		irm_T(),
+		irm_ANY(),
+		irm_BAD(),
+		irm_max();
 		public final int val;
 		private static class C { static int next_val; }
 
-		ird_color_t(int val) {
+		ir_modecode(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		ird_color_t() {
+		ir_modecode() {
 			this.val = C.next_val++;
 		}
 		
-		public static ird_color_t getEnum(int val) {
-			for(ird_color_t entry : values()) {
+		public static ir_modecode getEnum(int val) {
+			for(ir_modecode entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
 			return null;
 		}
 	}
-	public static enum edge_kind {
-		data_edge(1),
-		block_edge(2),
-		cf_edge(3),
-		exc_cf_edge(4),
-		mem_edge(5),
-		dominator_edge(6),
-		node2type_edge(7),
-		ent_type_edge(17),
-		ent_own_edge(18),
-		ent_overwrites_edge(19),
-		ent_value_edge(20),
-		ent_corr_edge(21),
-		meth_par_edge(33),
-		meth_res_edge(34),
-		type_super_edge(35),
-		union_edge(36),
-		ptr_pts_to_edge(37),
-		arr_elt_type_edge(38),
-		arr_ent_edge(39),
-		type_member_edge(40),
-		intra_edge(0),
-		inter_edge(64),
-		back_edge(128);
+	public static enum ir_mode_sort_helper {
+		irmsh_is_num(16),
+		irmsh_is_data(32),
+		irmsh_is_datab(64),
+		irmsh_is_dataM(128);
 		public final int val;
 		private static class C { static int next_val; }
 
-		edge_kind(int val) {
+		ir_mode_sort_helper(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		edge_kind() {
+		ir_mode_sort_helper() {
 			this.val = C.next_val++;
 		}
 		
-		public static edge_kind getEnum(int val) {
-			for(edge_kind entry : values()) {
+		public static ir_mode_sort_helper getEnum(int val) {
+			for(ir_mode_sort_helper entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
 			return null;
 		}
 	}
-	public static enum dump_verbosity {
-		dump_verbosity_onlynames(1),
-		dump_verbosity_fields(2),
-		dump_verbosity_methods(4),
-		dump_verbosity_nostatic(64),
-		dump_verbosity_typeattrs(8),
-		dump_verbosity_entattrs(16),
-		dump_verbosity_entconsts(32),
-		dump_verbosity_accessStats(256),
-		dump_verbosity_csv(512),
-		dump_verbosity_noClassTypes(4096),
-		dump_verbosity_noStructTypes(8192),
-		dump_verbosity_noUnionTypes(16384),
-		dump_verbosity_noArrayTypes(32768),
-		dump_verbosity_noPointerTypes(65536),
-		dump_verbosity_noMethodTypes(131072),
-		dump_verbosity_noPrimitiveTypes(262144),
-		dump_verbosity_noEnumerationTypes(524288),
-		dump_verbosity_onlyClassTypes(1040384),
-		dump_verbosity_onlyStructTypes(1036288),
-		dump_verbosity_onlyUnionTypes(1028096),
-		dump_verbosity_onlyArrayTypes(1011712),
-		dump_verbosity_onlyPointerTypes(978944),
-		dump_verbosity_onlyMethodTypes(913408),
-		dump_verbosity_onlyPrimitiveTypes(782336),
-		dump_verbosity_onlyEnumerationTypes(520192),
-		dump_verbosity_max(1341132734);
+	public static enum ir_mode_sort {
+		irms_auxiliary(0),
+		irms_control_flow(1),
+		irms_memory((2|ir_mode_sort_helper.irmsh_is_dataM.val)),
+		irms_internal_boolean((3|ir_mode_sort_helper.irmsh_is_datab.val)),
+		irms_reference((((4|ir_mode_sort_helper.irmsh_is_data.val)|ir_mode_sort_helper.irmsh_is_datab.val)|ir_mode_sort_helper.irmsh_is_dataM.val)),
+		irms_int_number(((((5|ir_mode_sort_helper.irmsh_is_data.val)|ir_mode_sort_helper.irmsh_is_datab.val)|ir_mode_sort_helper.irmsh_is_dataM.val)|ir_mode_sort_helper.irmsh_is_num.val)),
+		irms_float_number(((((6|ir_mode_sort_helper.irmsh_is_data.val)|ir_mode_sort_helper.irmsh_is_datab.val)|ir_mode_sort_helper.irmsh_is_dataM.val)|ir_mode_sort_helper.irmsh_is_num.val));
 		public final int val;
 		private static class C { static int next_val; }
 
-		dump_verbosity(int val) {
+		ir_mode_sort(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		dump_verbosity() {
+		ir_mode_sort() {
 			this.val = C.next_val++;
 		}
 		
-		public static dump_verbosity getEnum(int val) {
-			for(dump_verbosity entry : values()) {
+		public static ir_mode_sort getEnum(int val) {
+			for(ir_mode_sort entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
 			return null;
 		}
 	}
-	void set_dump_ir_graph_hook(Pointer hook);
-	void set_dump_node_vcgattr_hook(Pointer hook);
-	void set_dump_edge_vcgattr_hook(Pointer hook);
-	void set_dump_node_edge_hook(Pointer func);
-	Pointer get_dump_node_edge_hook();
-	void set_dump_block_edge_hook(Pointer func);
-	Pointer get_dump_block_edge_hook();
-	void dump_ir_graph(Pointer irg, String suffix);
-	void dump_ir_graph_file(Pointer irg, Pointer out);
-	void dump_ir_block_graph(Pointer irg, String suffix);
-	void dump_ir_block_graph_file(Pointer irg, Pointer out);
-	void dump_ir_extblock_graph(Pointer irg, String suffix);
-	void dump_ir_extblock_graph_file(Pointer irg, Pointer out);
-	void dump_all_cg_block_graph(String suffix);
-	void dump_ir_graph_w_types(Pointer irg, String suffix);
-	void dump_ir_graph_w_types_file(Pointer irg, Pointer out);
-	void dump_ir_block_graph_w_types(Pointer irg, String suffix);
-	void dump_all_ir_graphs(Pointer dump_graph, String suffix);
-	void dump_cfg(Pointer irg, String suffix);
-	void dump_subgraph(Pointer root, int depth, String suffix);
-	void dump_callgraph(String suffix);
-	void dump_type_graph(Pointer irg, String suffix);
-	void dump_all_types(String suffix);
-	void dump_class_hierarchy(int entities, String suffix);
-	void dump_loop_tree(Pointer irg, String suffix);
-	void dump_loop(Pointer l, String suffix);
-	void dump_callgraph_loop_tree(String suffix);
-	int dump_irnode_to_file(Pointer f, Pointer n);
-	void dump_irnode(Pointer n);
-	void dump_graph_to_file(Pointer F, Pointer irg);
-	void dump_graph(Pointer g);
-	void dump_graph_as_text(Pointer irg, String suffix);
-	void dump_entity_to_file(Pointer F, Pointer ent, int verbosity);
-	void dump_entity(Pointer ent);
-	void dump_type_to_file(Pointer f, Pointer tp, /* dump_verbosity */int verbosity);
-	void dump_type(Pointer tp);
-	void dump_types_as_text(int verbosity, String suffix);
-	void dump_globals_as_text(int verbosity, String suffix);
-	void only_dump_method_with_name(Pointer name);
-	Pointer get_dump_file_filter_ident();
-	int is_filtered_dump_name(Pointer name);
-	void turn_off_edge_labels();
-	void dump_consts_local(int flag);
-	void dump_node_idx_label(int flag);
-	void dump_constant_entity_values(int flag);
-	void dump_keepalive_edges(int flag);
-	int get_opt_dump_keepalive_edges();
-	void dump_out_edges(int flag);
-	void dump_dominator_information(int flag);
-	void dump_loop_information(int flag);
-	void dump_backedge_information(int flag);
-	void set_opt_dump_analysed_type_info(int flag);
-	void dump_pointer_values_to_info(int flag);
-	void dump_ld_names(int flag);
-	void dump_all_anchors(int flag);
-	void dump_macroblock_edges(int flag);
-	void dump_block_marker_in_title(int flag);
-	Pointer dump_add_node_info_callback(Pointer cb, Pointer data);
-	void dump_remv_node_info_callback(Pointer handle);
+	public static enum ir_mode_arithmetic {
+		irma_uninitialized(0),
+		irma_none(1),
+		irma_twos_complement(2),
+		irma_ones_complement(),
+		irma_int_BCD(),
+		irma_ieee754(256),
+		irma_float_BCD(),
+		irma_max();
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_mode_arithmetic(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_mode_arithmetic() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_mode_arithmetic getEnum(int val) {
+			for(ir_mode_arithmetic entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	Pointer new_ir_mode(String name, /* ir_mode_sort */int sort, int bit_size, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
+	Pointer new_ir_vector_mode(String name, /* ir_mode_sort */int sort, int bit_size, int num_of_elem, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
+	int is_mode(Pointer thing);
+	/* ir_modecode */int get_mode_modecode(Pointer mode);
+	Pointer get_mode_ident(Pointer mode);
+	String get_mode_name(Pointer mode);
+	/* ir_mode_sort */int get_mode_sort(Pointer mode);
+	int get_mode_size_bits(Pointer mode);
+	int get_mode_size_bytes(Pointer mode);
+	int get_mode_sign(Pointer mode);
+	/* ir_mode_arithmetic */int get_mode_arithmetic(Pointer mode);
+	int get_mode_modulo_shift(Pointer mode);
+	int get_mode_n_vector_elems(Pointer mode);
+	Pointer get_mode_link(Pointer mode);
+	void set_mode_link(Pointer mode, Pointer l);
+	Pointer get_mode_min(Pointer mode);
+	Pointer get_mode_max(Pointer mode);
+	Pointer get_mode_null(Pointer mode);
+	Pointer get_mode_one(Pointer mode);
+	Pointer get_mode_minus_one(Pointer mode);
+	Pointer get_mode_all_one(Pointer mode);
+	Pointer get_mode_infinite(Pointer mode);
+	Pointer get_mode_NAN(Pointer mode);
+	Pointer get_modeF();
+	Pointer get_modeD();
+	Pointer get_modeE();
+	Pointer get_modeBs();
+	Pointer get_modeBu();
+	Pointer get_modeHs();
+	Pointer get_modeHu();
+	Pointer get_modeIs();
+	Pointer get_modeIu();
+	Pointer get_modeLs();
+	Pointer get_modeLu();
+	Pointer get_modeLLs();
+	Pointer get_modeLLu();
+	Pointer get_modeP();
+	Pointer get_modeb();
+	Pointer get_modeX();
+	Pointer get_modeBB();
+	Pointer get_modeM();
+	Pointer get_modeT();
+	Pointer get_modeANY();
+	Pointer get_modeBAD();
+	Pointer get_modeP_code();
+	Pointer get_modeP_data();
+	void set_modeP_code(Pointer p);
+	void set_modeP_data(Pointer p);
+	int mode_is_signed(Pointer mode);
+	int mode_is_float(Pointer mode);
+	int mode_is_int(Pointer mode);
+	int mode_is_reference(Pointer mode);
+	int mode_is_num(Pointer mode);
+	int mode_is_data(Pointer mode);
+	int mode_is_datab(Pointer mode);
+	int mode_is_dataM(Pointer mode);
+	int mode_is_float_vector(Pointer mode);
+	int mode_is_int_vector(Pointer mode);
+	int smaller_mode(Pointer sm, Pointer lm);
+	int values_in_mode(Pointer sm, Pointer lm);
+	Pointer find_unsigned_mode(Pointer mode);
+	Pointer find_signed_mode(Pointer mode);
+	Pointer find_double_bits_int_mode(Pointer mode);
+	int mode_honor_signed_zeros(Pointer mode);
+	int mode_overflow_on_unary_Minus(Pointer mode);
+	int mode_wrap_around(Pointer mode);
+	Pointer get_reference_mode_signed_eq(Pointer mode);
+	void set_reference_mode_signed_eq(Pointer ref_mode, Pointer int_mode);
+	Pointer get_reference_mode_unsigned_eq(Pointer mode);
+	void set_reference_mode_unsigned_eq(Pointer ref_mode, Pointer int_mode);
+	int is_reinterpret_cast(Pointer src, Pointer dst);
 }

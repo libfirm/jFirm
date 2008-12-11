@@ -7,7 +7,7 @@ import com.sun.jna.Pointer;
 import com.sun.jna.NativeLong;
 
 
-public interface binding_irdump extends Library {
+public interface binding_be extends Library {
 	public static enum __codecvt_result {
 		__codecvt_ok(),
 		__codecvt_partial(),
@@ -229,187 +229,201 @@ public interface binding_irdump extends Library {
 			return null;
 		}
 	}
-	public static enum ird_color_t {
-		ird_color_prog_background(),
-		ird_color_block_background(),
-		ird_color_dead_block_background(),
-		ird_color_block_inout(),
-		ird_color_default_node(),
-		ird_color_phi(),
-		ird_color_memory(),
-		ird_color_controlflow(),
-		ird_color_const(),
-		ird_color_anchor(),
-		ird_color_proj(),
-		ird_color_uses_memory(),
-		ird_color_error(),
-		ird_color_entity(),
-		ird_color_count();
+	public static enum insn_kind {
+		LEA(),
+		SHIFT(),
+		SUB(),
+		ADD(),
+		ZERO(),
+		MUL(),
+		ROOT();
 		public final int val;
 		private static class C { static int next_val; }
 
-		ird_color_t(int val) {
+		insn_kind(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		ird_color_t() {
+		insn_kind() {
 			this.val = C.next_val++;
 		}
 		
-		public static ird_color_t getEnum(int val) {
-			for(ird_color_t entry : values()) {
+		public static insn_kind getEnum(int val) {
+			for(insn_kind entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
 			return null;
 		}
 	}
-	public static enum edge_kind {
-		data_edge(1),
-		block_edge(2),
-		cf_edge(3),
-		exc_cf_edge(4),
-		mem_edge(5),
-		dominator_edge(6),
-		node2type_edge(7),
-		ent_type_edge(17),
-		ent_own_edge(18),
-		ent_overwrites_edge(19),
-		ent_value_edge(20),
-		ent_corr_edge(21),
-		meth_par_edge(33),
-		meth_res_edge(34),
-		type_super_edge(35),
-		union_edge(36),
-		ptr_pts_to_edge(37),
-		arr_elt_type_edge(38),
-		arr_ent_edge(39),
-		type_member_edge(40),
-		intra_edge(0),
-		inter_edge(64),
-		back_edge(128);
+	public static enum arch_dep_opts_t {
+		arch_dep_none(0),
+		arch_dep_mul_to_shift(1),
+		arch_dep_div_by_const(2),
+		arch_dep_mod_by_const(4);
 		public final int val;
 		private static class C { static int next_val; }
 
-		edge_kind(int val) {
+		arch_dep_opts_t(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		edge_kind() {
+		arch_dep_opts_t() {
 			this.val = C.next_val++;
 		}
 		
-		public static edge_kind getEnum(int val) {
-			for(edge_kind entry : values()) {
+		public static arch_dep_opts_t getEnum(int val) {
+			for(arch_dep_opts_t entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
 			return null;
 		}
 	}
-	public static enum dump_verbosity {
-		dump_verbosity_onlynames(1),
-		dump_verbosity_fields(2),
-		dump_verbosity_methods(4),
-		dump_verbosity_nostatic(64),
-		dump_verbosity_typeattrs(8),
-		dump_verbosity_entattrs(16),
-		dump_verbosity_entconsts(32),
-		dump_verbosity_accessStats(256),
-		dump_verbosity_csv(512),
-		dump_verbosity_noClassTypes(4096),
-		dump_verbosity_noStructTypes(8192),
-		dump_verbosity_noUnionTypes(16384),
-		dump_verbosity_noArrayTypes(32768),
-		dump_verbosity_noPointerTypes(65536),
-		dump_verbosity_noMethodTypes(131072),
-		dump_verbosity_noPrimitiveTypes(262144),
-		dump_verbosity_noEnumerationTypes(524288),
-		dump_verbosity_onlyClassTypes(1040384),
-		dump_verbosity_onlyStructTypes(1036288),
-		dump_verbosity_onlyUnionTypes(1028096),
-		dump_verbosity_onlyArrayTypes(1011712),
-		dump_verbosity_onlyPointerTypes(978944),
-		dump_verbosity_onlyMethodTypes(913408),
-		dump_verbosity_onlyPrimitiveTypes(782336),
-		dump_verbosity_onlyEnumerationTypes(520192),
-		dump_verbosity_max(1341132734);
+	public static enum add_hidden {
+		ADD_HIDDEN_ALWAYS_IN_FRONT(0),
+		ADD_HIDDEN_ALWAYS_LAST(1),
+		ADD_HIDDEN_SMART(2);
 		public final int val;
 		private static class C { static int next_val; }
 
-		dump_verbosity(int val) {
+		add_hidden(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		dump_verbosity() {
+		add_hidden() {
 			this.val = C.next_val++;
 		}
 		
-		public static dump_verbosity getEnum(int val) {
-			for(dump_verbosity entry : values()) {
+		public static add_hidden getEnum(int val) {
+			for(add_hidden entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
 			return null;
 		}
 	}
-	void set_dump_ir_graph_hook(Pointer hook);
-	void set_dump_node_vcgattr_hook(Pointer hook);
-	void set_dump_edge_vcgattr_hook(Pointer hook);
-	void set_dump_node_edge_hook(Pointer func);
-	Pointer get_dump_node_edge_hook();
-	void set_dump_block_edge_hook(Pointer func);
-	Pointer get_dump_block_edge_hook();
-	void dump_ir_graph(Pointer irg, String suffix);
-	void dump_ir_graph_file(Pointer irg, Pointer out);
-	void dump_ir_block_graph(Pointer irg, String suffix);
-	void dump_ir_block_graph_file(Pointer irg, Pointer out);
-	void dump_ir_extblock_graph(Pointer irg, String suffix);
-	void dump_ir_extblock_graph_file(Pointer irg, Pointer out);
-	void dump_all_cg_block_graph(String suffix);
-	void dump_ir_graph_w_types(Pointer irg, String suffix);
-	void dump_ir_graph_w_types_file(Pointer irg, Pointer out);
-	void dump_ir_block_graph_w_types(Pointer irg, String suffix);
-	void dump_all_ir_graphs(Pointer dump_graph, String suffix);
-	void dump_cfg(Pointer irg, String suffix);
-	void dump_subgraph(Pointer root, int depth, String suffix);
-	void dump_callgraph(String suffix);
-	void dump_type_graph(Pointer irg, String suffix);
-	void dump_all_types(String suffix);
-	void dump_class_hierarchy(int entities, String suffix);
-	void dump_loop_tree(Pointer irg, String suffix);
-	void dump_loop(Pointer l, String suffix);
-	void dump_callgraph_loop_tree(String suffix);
-	int dump_irnode_to_file(Pointer f, Pointer n);
-	void dump_irnode(Pointer n);
-	void dump_graph_to_file(Pointer F, Pointer irg);
-	void dump_graph(Pointer g);
-	void dump_graph_as_text(Pointer irg, String suffix);
-	void dump_entity_to_file(Pointer F, Pointer ent, int verbosity);
-	void dump_entity(Pointer ent);
-	void dump_type_to_file(Pointer f, Pointer tp, /* dump_verbosity */int verbosity);
-	void dump_type(Pointer tp);
-	void dump_types_as_text(int verbosity, String suffix);
-	void dump_globals_as_text(int verbosity, String suffix);
-	void only_dump_method_with_name(Pointer name);
-	Pointer get_dump_file_filter_ident();
-	int is_filtered_dump_name(Pointer name);
-	void turn_off_edge_labels();
-	void dump_consts_local(int flag);
-	void dump_node_idx_label(int flag);
-	void dump_constant_entity_values(int flag);
-	void dump_keepalive_edges(int flag);
-	int get_opt_dump_keepalive_edges();
-	void dump_out_edges(int flag);
-	void dump_dominator_information(int flag);
-	void dump_loop_information(int flag);
-	void dump_backedge_information(int flag);
-	void set_opt_dump_analysed_type_info(int flag);
-	void dump_pointer_values_to_info(int flag);
-	void dump_ld_names(int flag);
-	void dump_all_anchors(int flag);
-	void dump_macroblock_edges(int flag);
-	void dump_block_marker_in_title(int flag);
-	Pointer dump_add_node_info_callback(Pointer cb, Pointer data);
-	void dump_remv_node_info_callback(Pointer handle);
+	public static enum lowering_flags {
+		LF_NONE(0),
+		LF_COMPOUND_PARAM(1),
+		LF_COMPOUND_RETURN(2),
+		LF_RETURN_HIDDEN(4),
+		LF_SMALL_CMP_IN_REGS(8);
+		public final int val;
+		private static class C { static int next_val; }
+
+		lowering_flags(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		lowering_flags() {
+			this.val = C.next_val++;
+		}
+		
+		public static lowering_flags getEnum(int val) {
+			for(lowering_flags entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum ikind {
+		INTRINSIC_CALL(0),
+		INTRINSIC_INSTR();
+		public final int val;
+		private static class C { static int next_val; }
+
+		ikind(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ikind() {
+			this.val = C.next_val++;
+		}
+		
+		public static ikind getEnum(int val) {
+			for(ikind entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum asm_constraint_flags_t {
+		ASM_CONSTRAINT_FLAG_SUPPORTS_REGISTER(1),
+		ASM_CONSTRAINT_FLAG_SUPPORTS_MEMOP(2),
+		ASM_CONSTRAINT_FLAG_SUPPORTS_IMMEDIATE(4),
+		ASM_CONSTRAINT_FLAG_NO_SUPPORT(8),
+		ASM_CONSTRAINT_FLAG_MODIFIER_WRITE(16),
+		ASM_CONSTRAINT_FLAG_MODIFIER_NO_WRITE(32),
+		ASM_CONSTRAINT_FLAG_MODIFIER_READ(64),
+		ASM_CONSTRAINT_FLAG_MODIFIER_NO_READ(128),
+		ASM_CONSTRAINT_FLAG_MODIFIER_EARLYCLOBBER(256),
+		ASM_CONSTRAINT_FLAG_MODIFIER_COMMUTATIVE(512),
+		ASM_CONSTRAINT_FLAG_INVALID(32768);
+		public final int val;
+		private static class C { static int next_val; }
+
+		asm_constraint_flags_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		asm_constraint_flags_t() {
+			this.val = C.next_val++;
+		}
+		
+		public static asm_constraint_flags_t getEnum(int val) {
+			for(asm_constraint_flags_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	Pointer arch_dep_default_factory();
+	void arch_dep_init(Pointer factory);
+	void arch_dep_set_opts(/* arch_dep_opts_t */int opts);
+	Pointer arch_dep_replace_mul_with_shifts(Pointer irn);
+	Pointer arch_dep_replace_div_by_const(Pointer irn);
+	Pointer arch_dep_replace_mod_by_const(Pointer irn);
+	void arch_dep_replace_divmod_by_const(Pointer[] div, Pointer[] mod, Pointer irn);
+	void lower_calls_with_compounds(Pointer params);
+	void lower_CopyB(Pointer irg, int max_size, int native_mode_bytes);
+	void lower_switch(Pointer irg, int spare_size);
+	void lower_dw_ops(Pointer param);
+	Pointer def_create_intrinsic_fkt(Pointer method, Pointer op, Pointer imode, Pointer omode, Pointer context);
+	void lower_highlevel_graph(Pointer irg, int lower_bitfields);
+	void lower_highlevel(int lower_bitfields);
+	void lower_const_code();
+	void ir_lower_mode_b(Pointer irg, Pointer config);
+	int lower_intrinsics(Pointer list, int length, int part_block_used);
+	int i_mapper_abs(Pointer call, Pointer ctx);
+	int i_mapper_sqrt(Pointer call, Pointer ctx);
+	int i_mapper_cbrt(Pointer call, Pointer ctx);
+	int i_mapper_pow(Pointer call, Pointer ctx);
+	int i_mapper_exp(Pointer call, Pointer ctx);
+	int i_mapper_log(Pointer call, Pointer ctx);
+	int i_mapper_sin(Pointer call, Pointer ctx);
+	int i_mapper_cos(Pointer call, Pointer ctx);
+	int i_mapper_tan(Pointer call, Pointer ctx);
+	int i_mapper_asin(Pointer call, Pointer ctx);
+	int i_mapper_acos(Pointer call, Pointer ctx);
+	int i_mapper_atan(Pointer call, Pointer ctx);
+	int i_mapper_sinh(Pointer call, Pointer ctx);
+	int i_mapper_cosh(Pointer call, Pointer ctx);
+	int i_mapper_tanh(Pointer call, Pointer ctx);
+	int i_mapper_strcmp(Pointer call, Pointer ctx);
+	int i_mapper_strncmp(Pointer call, Pointer ctx);
+	int i_mapper_strlen(Pointer call, Pointer ctx);
+	int i_mapper_memcpy(Pointer call, Pointer ctx);
+	int i_mapper_memset(Pointer call, Pointer ctx);
+	int i_mapper_alloca(Pointer call, Pointer ctx);
+	int i_mapper_RuntimeCall(Pointer node, Pointer rt);
+	void be_opt_register();
+	int be_parse_arg(String arg);
+	Pointer be_get_backend_param();
+	void be_main(Pointer output, String compilation_unit_name);
+	/* asm_constraint_flags_t */int be_parse_asm_constraints(String constraints);
+	int be_is_valid_clobber(String clobber);
 }

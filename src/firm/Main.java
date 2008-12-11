@@ -17,6 +17,15 @@ public class Main {
 		Type global = Program.getGlobalType();
 		Entity mainEnt = new Entity(global, ident, type);
 		Graph graph = new Graph(mainEnt, 0);
+		
+		Return nreturn = new Return(graph.getCurrentBlock(), graph.getInitialMem(), new Node[] {});
+		graph.getEndBlock().addPred(nreturn);
+		graph.getCurrentBlock().mature();
+		graph.getEndBlock().mature();
+		graph.getStartBlock().mature();
+		
 		Dump.dumpBlockGraph(graph, "-XXX");
+		
+		Backend.createAssembler("test.s", "<builtin>");		
 	}
 }

@@ -45,16 +45,16 @@ public final class Graph extends JNAWrapper {
 		binding.set_irg_frame_type(ptr, type.ptr);
 	}
 	
-	public Node getStartBlock() {
-		return new Node(binding.get_irg_start_block(ptr));
+	public Block getStartBlock() {
+		return new Block(binding.get_irg_start_block(ptr));
 	}
 	
 	public Node getStart() {
 		return new Node(binding.get_irg_start(ptr));
 	}
 	
-	public Node getEndBlock() {
-		return new Node(binding.get_irg_end_block(ptr));
+	public Block getEndBlock() {
+		return new Block(binding.get_irg_end_block(ptr));
 	}
 	
 	public Node getEnd() {
@@ -97,16 +97,16 @@ public final class Graph extends JNAWrapper {
 		return new Node(binding.get_irg_no_mem(ptr));
 	}
 	
-	public void setStartBlock(Node node) {
-		binding.set_irg_start_block(ptr, node.ptr);
+	public void setStartBlock(Block block) {
+		binding.set_irg_start_block(ptr, block.ptr);
 	}
 	
 	public void setStart(Node node) {
 		binding.set_irg_start(ptr, node.ptr);
 	}
 	
-	public void setEndBlock(Node node) {
-		binding.set_irg_end_block(ptr, node.ptr);
+	public void setEndBlock(Block block) {
+		binding.set_irg_end_block(ptr, block.ptr);
 	}
 	
 	public void setEnd(Node node) {
@@ -149,7 +149,7 @@ public final class Graph extends JNAWrapper {
 		binding.set_irg_no_mem(ptr, node.ptr);
 	}
 	
-	public Node getCurrentBlock() {
+	public Block getCurrentBlock() {
 		return new Block(binding.get_irg_current_block(ptr));
 	}
 	

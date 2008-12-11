@@ -89,6 +89,122 @@ public interface binding_irgraph extends Library {
 			return null;
 		}
 	}
+	public static enum symconst_kind {
+		symconst_type_tag(),
+		symconst_type_size(),
+		symconst_type_align(),
+		symconst_addr_name(),
+		symconst_addr_ent(),
+		symconst_ofs_ent(),
+		symconst_enum_const(),
+		symconst_label();
+		public final int val;
+		private static class C { static int next_val; }
+
+		symconst_kind(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		symconst_kind() {
+			this.val = C.next_val++;
+		}
+		
+		public static symconst_kind getEnum(int val) {
+			for(symconst_kind entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum pn_Cmp {
+		pn_Cmp_False(0),
+		pn_Cmp_Eq(1),
+		pn_Cmp_Lt(2),
+		pn_Cmp_Le((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Lt.val)),
+		pn_Cmp_Gt(4),
+		pn_Cmp_Ge((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Gt.val)),
+		pn_Cmp_Lg((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Gt.val)),
+		pn_Cmp_Leg(((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
+		pn_Cmp_Uo(8),
+		pn_Cmp_Ue((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)),
+		pn_Cmp_Ul((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)),
+		pn_Cmp_Ule(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Lt.val)),
+		pn_Cmp_Ug((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Gt.val)),
+		pn_Cmp_Uge(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
+		pn_Cmp_Ne(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)|pn_Cmp.pn_Cmp_Gt.val)),
+		pn_Cmp_True(15);
+		public final int val;
+		private static class C { static int next_val; }
+
+		pn_Cmp(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		pn_Cmp() {
+			this.val = C.next_val++;
+		}
+		
+		public static pn_Cmp getEnum(int val) {
+			for(pn_Cmp entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum ir_where_alloc {
+		stack_alloc(),
+		heap_alloc();
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_where_alloc(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_where_alloc() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_where_alloc getEnum(int val) {
+			for(ir_where_alloc entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum ir_resources_enum_t {
+		IR_RESOURCE_BLOCK_VISITED((1<<0)),
+		IR_RESOURCE_BLOCK_MARK((1<<1)),
+		IR_RESOURCE_IRN_VISITED((1<<2)),
+		IR_RESOURCE_IRN_LINK((1<<3)),
+		IR_RESOURCE_LOOP_LINK((1<<4)),
+		IR_RESOURCE_PHI_LIST((1<<5)),
+		IR_RESOURCE_IRG_LINK((1<<6)),
+		IR_RESOURCE_ENTITY_LINK((1<<8)),
+		IR_RESOURCE_LOCAL_MASK(255),
+		IR_RESOURCE_GLOBAL_MASK(65280);
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_resources_enum_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_resources_enum_t() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_resources_enum_t getEnum(int val) {
+			for(ir_resources_enum_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
 	public static enum irg_phase_state {
 		phase_building(),
 		phase_high(),
@@ -257,36 +373,6 @@ public interface binding_irgraph extends Library {
 		
 		public static irg_inline_property getEnum(int val) {
 			for(irg_inline_property entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	public static enum ir_resources_enum_t {
-		IR_RESOURCE_BLOCK_VISITED((1<<0)),
-		IR_RESOURCE_BLOCK_MARK((1<<1)),
-		IR_RESOURCE_IRN_VISITED((1<<2)),
-		IR_RESOURCE_IRN_LINK((1<<3)),
-		IR_RESOURCE_LOOP_LINK((1<<4)),
-		IR_RESOURCE_PHI_LIST((1<<5)),
-		IR_RESOURCE_IRG_LINK((1<<6)),
-		IR_RESOURCE_ENTITY_LINK((1<<8)),
-		IR_RESOURCE_LOCAL_MASK(255),
-		IR_RESOURCE_GLOBAL_MASK(65280);
-		public final int val;
-		private static class C { static int next_val; }
-
-		ir_resources_enum_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		ir_resources_enum_t() {
-			this.val = C.next_val++;
-		}
-		
-		public static ir_resources_enum_t getEnum(int val) {
-			for(ir_resources_enum_t entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
