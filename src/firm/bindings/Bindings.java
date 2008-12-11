@@ -19,4 +19,31 @@ public final class Bindings {
 		return (TargetValueBinding) Native.loadLibrary("firm", TargetValueBinding.class);
 	}
 	
+	
+	public final static binding_typerep getTypeRepBinding() {
+		return (binding_typerep) Native.loadLibrary("firm", binding_typerep.class);
+	}
+	
+	public final static binding_irdump getIrDumpBinding() {
+		return (binding_irdump) Native.loadLibrary("firm", binding_irdump.class);
+	}
+	
+	public final static binding_firm_common getFirmCommonBinding() {
+		return (binding_firm_common) Native.loadLibrary("firm", binding_firm_common.class);
+	}
+		
+	public final static binding_irgraph getIrGraphBinding() {
+		return (binding_irgraph) Native.loadLibrary("firm", binding_irgraph.class);
+	}
+		
+	public final static binding_ident getIdentBinding() {
+		return (binding_ident) Native.loadLibrary("firm", binding_ident.class);
+	}
+		
+	public final static binding_irprog getIrProgBinding() {
+		return (binding_irprog) Native.loadLibrary("firm", binding_irprog.class);
+	}
+		
+	
+	
 }

@@ -1,12 +1,12 @@
 package firm;
 
-import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
+import firm.bindings.Bindings;
 import firm.bindings.binding_firm_common;
 
 public final class Firm {
-	private static final binding_firm_common binding = (binding_firm_common) Native.loadLibrary("firm", binding_firm_common.class);	
+	private static final binding_firm_common binding = Bindings.getFirmCommonBinding();
 	
 	public static int getMajorVersion() {
 		return binding.ir_get_version_major();

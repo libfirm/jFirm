@@ -1,13 +1,13 @@
 package firm;
 
-import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
+import firm.bindings.Bindings;
 import firm.bindings.binding_typerep;
 
 public class Entity extends JNAWrapper {
 	
-	protected final static binding_typerep binding = (binding_typerep) Native.loadLibrary("firm", binding_typerep.class); 
+	protected final static binding_typerep binding = Bindings.getTypeRepBinding(); 
 	
 	protected Entity(Pointer ptr) {
 		super(ptr);

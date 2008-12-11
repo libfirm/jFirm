@@ -1,13 +1,13 @@
 package firm;
 
-import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
+import firm.bindings.Bindings;
 import firm.bindings.binding_ident;
 
 public class Ident extends JNAWrapper {
 	
-	private final static binding_ident binding = (binding_ident) Native.loadLibrary("firm", binding_ident.class);
+	private final static binding_ident binding = Bindings.getIdentBinding();
 	
 	protected Ident(Pointer ptr) {
 		super(ptr);

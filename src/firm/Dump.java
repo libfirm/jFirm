@@ -1,11 +1,10 @@
 package firm;
 
-import com.sun.jna.Native;
-
+import firm.bindings.Bindings;
 import firm.bindings.binding_irdump;
 
 public final class Dump {
-	private static final binding_irdump binding = (binding_irdump) Native.loadLibrary("firm", binding_irdump.class);
+	private static final binding_irdump binding = Bindings.getIrDumpBinding();
 	
 	private Dump() {
 	}

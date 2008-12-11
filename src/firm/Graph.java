@@ -1,13 +1,13 @@
 package firm;
 
-import com.sun.jna.Native;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
+import firm.bindings.Bindings;
 import firm.bindings.binding_irgraph;
 
 public final class Graph extends JNAWrapper {
-	private static final binding_irgraph binding = (binding_irgraph) Native.loadLibrary("firm", binding_irgraph.class);
+	private static final binding_irgraph binding = Bindings.getIrGraphBinding();
 	
 	protected Graph(Pointer ptr) {
 		super(ptr);

@@ -136,23 +136,15 @@ public final class Mode extends JNAWrapper {
 	}
 	
 	
-	public static final Mode newIrMode(String name, ir_mode_sort sort, int bitSize, 
+	public Mode(String name, ir_mode_sort sort, int bitSize, 
 			int sign, ir_mode_arithmetic arithmetic, int moduloShift) {
-		Pointer p = b.new_ir_mode(name, sort.val, bitSize, sign, arithmetic.val, moduloShift);
-		
-		Mode mode = new Mode(p);
-		
-		return mode;
+		this(b.new_ir_mode(name, sort.val, bitSize, sign, arithmetic.val, moduloShift));
 	}
 	
-	public static final Mode newIrVectorMode(String name, ir_mode_sort sort, 
+	public Mode(String name, ir_mode_sort sort, 
 			int bitSize, int numOfElem, int sign, ir_mode_arithmetic arithmetic, 
 			int moduloShift) {
-		Pointer p = b.new_ir_vector_mode(name, sort.val, bitSize, numOfElem, sign, arithmetic.val, moduloShift);
-		
-		Mode mode = new Mode(p);
-		
-		return mode;
+		this(b.new_ir_vector_mode(name, sort.val, bitSize, numOfElem, sign, arithmetic.val, moduloShift));
 	}
 	
 	public final String getName() {

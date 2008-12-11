@@ -15,16 +15,12 @@ public class TargetValue extends JNAWrapper {
 	}
 	
 	
-	public final static TargetValue newFromStr(String str, long len, Mode mode) {
-		NativeLong long1 = new NativeLong(len);
-		Pointer ptr = b.new_tarval_from_str(str, long1, mode.ptr);
-		return new TargetValue(ptr);
+	public TargetValue(String str, long len, Mode mode) {
+		this(b.new_tarval_from_str(str, new NativeLong(len), mode.ptr));
 	}
 	
-	public final static TargetValue newFromLong(long l, Mode mode) {
-		NativeLong long1 = new NativeLong(l);
-		Pointer ptr = b.new_tarval_from_long(long1, mode.ptr);
-		return new TargetValue(ptr);
+	public TargetValue(long l, Mode mode) {
+		this(b.new_tarval_from_long(new NativeLong(l), mode.ptr));
 	}
 	
 	public final long getLong() {
