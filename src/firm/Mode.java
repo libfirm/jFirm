@@ -5,17 +5,12 @@ import com.sun.jna.Pointer;
 import firm.bindings.Bindings;
 import firm.bindings.ModeBinding;
 
-public final class Mode {
+public final class Mode extends JNAWrapper {
 
 	private static final ModeBinding b = Bindings.getModeBinding();
 	
-	/**
-	 * Pointer to the ir_mode in lib
-	 */
-	protected final Pointer p;
-	
 	protected Mode(Pointer p) {
-		this.p = p;
+		super(p);
 	}
 	
 	public static enum ir_modecode {
@@ -161,7 +156,7 @@ public final class Mode {
 	}
 	
 	public final String getName() {
-		return b.get_mode_name(p);
+		return b.get_mode_name(ptr);
 	}
 	
 	public String toString() {
@@ -169,72 +164,72 @@ public final class Mode {
 	}
 	
 	public final ir_mode_sort getSort() {
-		int sort = b.get_mode_sort(p);
+		int sort = b.get_mode_sort(ptr);
 		return ir_mode_sort.getEnum(sort);
 	}
 	
 	public final int getSizeBits() {
-		return b.get_mode_size_bits(p);
+		return b.get_mode_size_bits(ptr);
 	}
 	
 	public final int getSizeBytes() {
-		return b.get_mode_size_bytes(p);
+		return b.get_mode_size_bytes(ptr);
 	}
 	
 	public final int getSign() {
-		return b.get_mode_sign(p);
+		return b.get_mode_sign(ptr);
 	}
 	
 	public final ir_mode_arithmetic getArithmetic() {
-		int val = b.get_mode_arithmetic(p);
+		int val = b.get_mode_arithmetic(ptr);
 		return ir_mode_arithmetic.getEnum(val);
 	}
 	
 	public final int getModuloShift() {
-		return b.get_mode_modulo_shift(p);
+		return b.get_mode_modulo_shift(ptr);
 	}
 	
 	public final int getNVectorElements() {
-		return b.get_mode_n_vector_elems(p);
+		return b.get_mode_n_vector_elems(ptr);
 	}
 	
 	public final TargetValue getMin() {
-		Pointer tarval = b.get_mode_min(p);
+		Pointer tarval = b.get_mode_min(ptr);
 		return new TargetValue(tarval);
 	}
 
 	public final TargetValue getMax() {
-		Pointer tarval = b.get_mode_max(p);
+		Pointer tarval = b.get_mode_max(ptr);
 		return new TargetValue(tarval);
 	}
 	
 	public final TargetValue getNull() {
-		Pointer tarval = b.get_mode_null(p);
+		Pointer tarval = b.get_mode_null(ptr);
 		return new TargetValue(tarval);
 	}
 	
 	public final TargetValue getOne() {
-		Pointer tarval = b.get_mode_one(p);
+		Pointer tarval = b.get_mode_one(ptr);
 		return new TargetValue(tarval);
 	}
 	
 	public final TargetValue getMinusOne() {
-		Pointer tarval = b.get_mode_minus_one(p);
+		Pointer tarval = b.get_mode_minus_one(ptr);
 		return new TargetValue(tarval);
 	}
 	
 	public final TargetValue getAllOne() {
-		Pointer tarval = b.get_mode_all_one(p);
+		Pointer tarval = b.get_mode_all_one(ptr);
 		return new TargetValue(tarval);
 	}
 	
 	public final TargetValue getInfinite() {
-		Pointer tarval = b.get_mode_infinite(p);
+		Pointer tarval = b.get_mode_infinite(ptr);
 		return new TargetValue(tarval);
 	}
 	
 	public final TargetValue getNAN() {
-		Pointer tarval = b.get_mode_NAN(p);
+		Pointer tarval = b.get_mode_NAN(ptr);
 		return new TargetValue(tarval);
 	}
 
@@ -354,110 +349,110 @@ public final class Mode {
 	}
 
 	public static final void setPCode(final Mode mode) {
-		b.set_modeP_code(mode.p);
+		b.set_modeP_code(mode.ptr);
 	}
 
 	public static final void setPData(final Mode mode) {
-		b.set_modeP_data(mode.p);
+		b.set_modeP_data(mode.ptr);
 	}
 
 	public final boolean isSigned() {
-		return 0 != b.mode_is_signed(p);
+		return 0 != b.mode_is_signed(ptr);
 	}
 
 	public final boolean isFloat() {
-		return 0 != b.mode_is_float(p);
+		return 0 != b.mode_is_float(ptr);
 	}
 
 	public final boolean isInt() {
-		return 0 != b.mode_is_int(p);
+		return 0 != b.mode_is_int(ptr);
 	}
 
 	public final boolean isReference() {
-		return 0 != b.mode_is_reference(p);
+		return 0 != b.mode_is_reference(ptr);
 	}
 
 	public final boolean isNum() {
-		return 0 != b.mode_is_num(p);
+		return 0 != b.mode_is_num(ptr);
 	}
 
 	public final boolean isData() {
-		return 0 != b.mode_is_data(p);
+		return 0 != b.mode_is_data(ptr);
 	}
 
 	public final boolean isDatab() {
-		return 0 != b.mode_is_datab(p);
+		return 0 != b.mode_is_datab(ptr);
 	}
 
 	public final boolean isDataM() {
-		return 0 != b.mode_is_dataM(p);
+		return 0 != b.mode_is_dataM(ptr);
 	}
 
 	public final boolean isFloatVector() {
-		return 0 != b.mode_is_float_vector(p);
+		return 0 != b.mode_is_float_vector(ptr);
 	}
 
 	public final boolean isIntVector() {
-		return 0 != b.mode_is_int_vector(p);
+		return 0 != b.mode_is_int_vector(ptr);
 	}
 
 	public final boolean isSmallerThan(Mode compareTo) {
-		int val = b.smaller_mode(p, compareTo.p);
+		int val = b.smaller_mode(ptr, compareTo.ptr);
 		return 0 != val;
 	}
 	
 	public final boolean isValuesInMode(Mode compareTo) {
-		int val = b.values_in_mode(p, compareTo.p);
+		int val = b.values_in_mode(ptr, compareTo.ptr);
 		return 0 != val;
 	}
 	
 	public final Mode findUnsigned() {
-		Pointer modep = b.find_unsigned_mode(p);
+		Pointer modep = b.find_unsigned_mode(ptr);
 		return new Mode(modep);
 	}
 	
 	public final Mode findSigned() {
-		Pointer modep = b.find_signed_mode(p);
+		Pointer modep = b.find_signed_mode(ptr);
 		return new Mode(modep);
 	}
 	
 	public final Mode findDoubleBitsInt() {
-		Pointer modep = b.find_double_bits_int_mode(p);
+		Pointer modep = b.find_double_bits_int_mode(ptr);
 		return new Mode(modep);
 	}
 	
 	public final boolean honorSignedZeros() {
-		return 0 != b.mode_honor_signed_zeros(p);
+		return 0 != b.mode_honor_signed_zeros(ptr);
 	}
 
 	public final boolean overflowOnUnaryMinus() {
-		return 0 != b.mode_overflow_on_unary_Minus(p);
+		return 0 != b.mode_overflow_on_unary_Minus(ptr);
 	}
 
 	public final boolean wrapAround() {
-		return 0 != b.mode_wrap_around(p);
+		return 0 != b.mode_wrap_around(ptr);
 	}
 
 	public final Mode getReferenceSignedEq() {
-		Pointer modep = b.get_reference_mode_signed_eq(p);
+		Pointer modep = b.get_reference_mode_signed_eq(ptr);
 		return new Mode(modep);
 	}
 
 	public final void setReferenceSignedEq(Mode intMode) {
-		b.set_reference_mode_signed_eq(p, intMode.p);
+		b.set_reference_mode_signed_eq(ptr, intMode.ptr);
 	}
 	
 	public final Mode getReferenceUnsignedEq() {
-		Pointer modep = b.get_reference_mode_unsigned_eq(p);
+		Pointer modep = b.get_reference_mode_unsigned_eq(ptr);
 		return new Mode(modep);
 	}
 
 	public final void setReferenceUnsignedEq(Mode intMode) {
-		b.set_reference_mode_signed_eq(p, intMode.p);
+		b.set_reference_mode_signed_eq(ptr, intMode.ptr);
 	}
 
 	public final boolean isReinterpretCast(Mode castTo) {
-		return 0 != b.is_reinterpret_cast(p, castTo.p);
+		return 0 != b.is_reinterpret_cast(ptr, castTo.ptr);
 	}
 
 }

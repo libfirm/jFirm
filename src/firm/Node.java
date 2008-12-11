@@ -2,10 +2,9 @@ package firm;
 
 import com.sun.jna.Pointer;
 
-public class Node {
-	protected Pointer ptr;
-	
+public class Node extends JNAWrapper {
+
 	protected Node(Pointer ptr) {
-		this.ptr = ptr;
+		super(ptr);
 	}
 }

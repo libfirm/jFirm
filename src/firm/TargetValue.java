@@ -6,29 +6,24 @@ import com.sun.jna.Pointer;
 import firm.bindings.Bindings;
 import firm.bindings.TargetValueBinding;
 
-public class TargetValue {
+public class TargetValue extends JNAWrapper {
 
 	private static final TargetValueBinding b = Bindings.getTargetValueBinding();
 	
-	/**
-	 * Pointer to the tarval in lib
-	 */
-	protected final Pointer ptr;
-
 	protected TargetValue(Pointer ptr) {
-		this.ptr = ptr;
+		super(ptr);
 	}
 	
 	
 	public final static TargetValue newFromStr(String str, long len, Mode mode) {
 		NativeLong long1 = new NativeLong(len);
-		Pointer ptr = b.new_tarval_from_str(str, long1, mode.p);
+		Pointer ptr = b.new_tarval_from_str(str, long1, mode.ptr);
 		return new TargetValue(ptr);
 	}
 	
 	public final static TargetValue newFromLong(long l, Mode mode) {
 		NativeLong long1 = new NativeLong(l);
-		Pointer ptr = b.new_tarval_from_long(long1, mode.p);
+		Pointer ptr = b.new_tarval_from_long(long1, mode.ptr);
 		return new TargetValue(ptr);
 	}
 	
@@ -42,7 +37,7 @@ public class TargetValue {
 	}
 	
 	public final static TargetValue newFromDouble(double d, Mode mode) {
-		Pointer ptr = b.new_tarval_from_double(d, mode.p);
+		Pointer ptr = b.new_tarval_from_double(d, mode.ptr);
 		return new TargetValue(ptr);
 	}
 	
@@ -114,47 +109,47 @@ public class TargetValue {
 	}
 
 	public static final TargetValue getMax(Mode mode) {
-		Pointer ptr = b.get_tarval_max(mode.p);
+		Pointer ptr = b.get_tarval_max(mode.ptr);
 		return new TargetValue(ptr);
 	}
 
 	public static final TargetValue getMin(Mode mode) {
-		Pointer ptr = b.get_tarval_min(mode.p);
+		Pointer ptr = b.get_tarval_min(mode.ptr);
 		return new TargetValue(ptr);
 	}
 
 	public static final TargetValue getNull(Mode mode) {
-		Pointer ptr = b.get_tarval_null(mode.p);
+		Pointer ptr = b.get_tarval_null(mode.ptr);
 		return new TargetValue(ptr);
 	}
 
 	public static final TargetValue getOne(Mode mode) {
-		Pointer ptr = b.get_tarval_one(mode.p);
+		Pointer ptr = b.get_tarval_one(mode.ptr);
 		return new TargetValue(ptr);
 	}
 
 	public static final TargetValue getMinusOne(Mode mode) {
-		Pointer ptr = b.get_tarval_minus_one(mode.p);
+		Pointer ptr = b.get_tarval_minus_one(mode.ptr);
 		return new TargetValue(ptr);
 	}
 
 	public static final TargetValue getAllOne(Mode mode) {
-		Pointer ptr = b.get_tarval_all_one(mode.p);
+		Pointer ptr = b.get_tarval_all_one(mode.ptr);
 		return new TargetValue(ptr);
 	}
 
 	public static final TargetValue getNAN(Mode mode) {
-		Pointer ptr = b.get_tarval_nan(mode.p);
+		Pointer ptr = b.get_tarval_nan(mode.ptr);
 		return new TargetValue(ptr);
 	}
 
 	public static final TargetValue getPlusInf(Mode mode) {
-		Pointer ptr = b.get_tarval_plus_inf(mode.p);
+		Pointer ptr = b.get_tarval_plus_inf(mode.ptr);
 		return new TargetValue(ptr);
 	}
 
 	public static final TargetValue getMinusInf(Mode mode) {
-		Pointer ptr = b.get_tarval_minus_inf(mode.p);
+		Pointer ptr = b.get_tarval_minus_inf(mode.ptr);
 		return new TargetValue(ptr);
 	}
 	
@@ -194,7 +189,7 @@ public class TargetValue {
 //	/* pn_Cmp */int cmp(Pointer a, Pointer b);
 	
 	public final TargetValue convertTo(Mode mode) {
-		Pointer ptarval = b.tarval_convert_to(ptr, mode.p);
+		Pointer ptarval = b.tarval_convert_to(ptr, mode.ptr);
 		return new TargetValue(ptarval);
 	}
 	
@@ -214,7 +209,7 @@ public class TargetValue {
 	}
 
 	public final TargetValue sub(TargetValue other, Mode dstMode) {
-		Pointer ptarval = b.tarval_sub(ptr, other.ptr, dstMode.p);
+		Pointer ptarval = b.tarval_sub(ptr, other.ptr, dstMode.ptr);
 		return new TargetValue(ptarval);
 	}
 
@@ -314,11 +309,9 @@ public class TargetValue {
 		}
 	}
 	
-	public static class ModeInfo {
-		private final Pointer ptr;
-		
+	public static class ModeInfo extends JNAWrapper {
 		protected ModeInfo(Pointer ptr) {
-			this.ptr = ptr;
+			super(ptr);
 		}
 	}
 	
@@ -327,12 +320,12 @@ public class TargetValue {
 	 */
 	public static final boolean setModeOutputOption(Mode mode, ModeInfo modeinfo) {
 		// returns 0 on success
-		int status = b.set_tarval_mode_output_option(mode.p, modeinfo.ptr);
+		int status = b.set_tarval_mode_output_option(mode.ptr, modeinfo.ptr);
 		return status == 0;
 	}
 
 	public static final ModeInfo getModeOutputOption(Mode mode) {
-		Pointer pModeInfo = b.get_tarval_mode_output_option(mode.p);
+		Pointer pModeInfo = b.get_tarval_mode_output_option(mode.ptr);
 		return new ModeInfo(pModeInfo);
 	}
 
@@ -364,7 +357,7 @@ public class TargetValue {
 	}
 
 	public final boolean ieee754CanConvLossless(Mode mode) {
-		return 0 != b.tarval_ieee754_can_conv_lossless(ptr, mode.p);
+		return 0 != b.tarval_ieee754_can_conv_lossless(ptr, mode.ptr);
 	}
 
 	public static final int ieee754SetImmediatePrecision(int bits) {
@@ -376,7 +369,7 @@ public class TargetValue {
 	}
 
 	public static final int ieee754GetMantissaSize(Mode mode) {
-		return b.tarval_ieee754_get_mantissa_size(mode.p);
+		return b.tarval_ieee754_get_mantissa_size(mode.ptr);
 	}
 
 	public final void setEnableFpOps(boolean enable) {

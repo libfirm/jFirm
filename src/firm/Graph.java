@@ -6,16 +6,15 @@ import com.sun.jna.Pointer;
 
 import firm.bindings.binding_irgraph;
 
-public final class Graph {
-	protected final Pointer ptr;
+public final class Graph extends JNAWrapper {
 	private static final binding_irgraph binding = (binding_irgraph) Native.loadLibrary("firm", binding_irgraph.class);
 	
 	protected Graph(Pointer ptr) {
-		this.ptr = ptr;
+		super(ptr);
 	}
 	
 	public Graph(Entity entity, int nLocalVars) {
-		ptr = binding.new_ir_graph(entity.ptr, nLocalVars);
+		this(binding.new_ir_graph(entity.ptr, nLocalVars));
 	}
 	
 	public static Graph getCurrent() {

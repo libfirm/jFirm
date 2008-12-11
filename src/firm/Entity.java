@@ -5,14 +5,12 @@ import com.sun.jna.Pointer;
 
 import firm.bindings.binding_typerep;
 
-public class Entity {
+public class Entity extends JNAWrapper {
 	
 	protected final static binding_typerep binding = (binding_typerep) Native.loadLibrary("firm", binding_typerep.class); 
 	
-	protected final Pointer ptr;
-	
 	protected Entity(Pointer ptr) {
-		this.ptr = ptr;
+		super(ptr);
 	}
 	
 	public Entity(Type owner, Ident name, Type type) {

@@ -5,14 +5,12 @@ import com.sun.jna.Pointer;
 
 import firm.bindings.binding_ident;
 
-public class Ident {
+public class Ident extends JNAWrapper {
 	
 	private final static binding_ident binding = (binding_ident) Native.loadLibrary("firm", binding_ident.class);
 	
-	protected final Pointer ptr;
-	
 	protected Ident(Pointer ptr) {
-		this.ptr = ptr;
+		super(ptr);
 	}
 	
 	public Ident(String string) {
