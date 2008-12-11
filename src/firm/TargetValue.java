@@ -1,9 +1,15 @@
 package firm;
 
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
+
+import firm.bindings.Bindings;
+import firm.bindings.TargetValueBinding;
 
 public class TargetValue {
 
+	private static final TargetValueBinding b = Bindings.getTargetValueBinding();
+	
 	/**
 	 * Pointer to the tarval in lib
 	 */
@@ -13,4 +19,385 @@ public class TargetValue {
 		this.ptr = ptr;
 	}
 	
+	
+	public final static TargetValue newFromStr(String str, long len, Mode mode) {
+		NativeLong long1 = new NativeLong(len);
+		Pointer ptr = b.new_tarval_from_str(str, long1, mode.p);
+		return new TargetValue(ptr);
+	}
+	
+	public final static TargetValue newFromLong(long l, Mode mode) {
+		NativeLong long1 = new NativeLong(l);
+		Pointer ptr = b.new_tarval_from_long(long1, mode.p);
+		return new TargetValue(ptr);
+	}
+	
+	public final long getLong() {
+		NativeLong l = b.get_tarval_long(ptr);
+		return l.longValue();
+	}
+	
+	public final boolean isLong() {
+		return 0 != b.tarval_is_long(ptr);
+	}
+	
+	public final static TargetValue newFromDouble(double d, Mode mode) {
+		Pointer ptr = b.new_tarval_from_double(d, mode.p);
+		return new TargetValue(ptr);
+	}
+	
+	public final double getDouble() {
+		return b.get_tarval_double(ptr);
+	}
+	
+	public final boolean isDouble() {
+		return 0 != b.tarval_is_double(ptr);
+	}
+	
+	public final Mode getMode() {
+		Pointer pmode = b.get_tarval_mode(ptr);
+		return new Mode(pmode);
+	}
+	
+	public final boolean isNegative() {
+		return 0 != b.tarval_is_negative(ptr); 
+	}
+
+	public final boolean isNull() {
+		return 0 != b.tarval_is_null(ptr);
+	}
+
+	public final boolean isOne() {
+		return 0 != b.tarval_is_one(ptr);
+	}
+
+	public final boolean isMinusOne() {
+		return 0 != b.tarval_is_minus_one(ptr);
+	}
+
+	public final boolean isAllOne() {
+		return 0 != b.tarval_is_all_one(ptr);
+	}
+
+	public final boolean isConstant() {
+		return 0 != b.tarval_is_constant(ptr);
+	}
+
+	public static final TargetValue getBad() {
+		Pointer ptr = b.get_tarval_bad();
+		return new TargetValue(ptr);
+	}
+
+	public static final TargetValue getUndefined() {
+		Pointer ptr = b.get_tarval_undefined();
+		return new TargetValue(ptr);
+	}
+
+	public static final TargetValue getBFalse() {
+		Pointer ptr = b.get_tarval_b_false();
+		return new TargetValue(ptr);
+	}
+
+	public static final TargetValue getBTrue() {
+		Pointer ptr = b.get_tarval_b_true();
+		return new TargetValue(ptr);
+	}
+
+	public static final TargetValue getUnreachable() {
+		Pointer ptr = b.get_tarval_unreachable();
+		return new TargetValue(ptr);
+	}
+
+	public static final TargetValue getReachable() {
+		Pointer ptr = b.get_tarval_reachable();
+		return new TargetValue(ptr);
+	}
+
+	public static final TargetValue getMax(Mode mode) {
+		Pointer ptr = b.get_tarval_max(mode.p);
+		return new TargetValue(ptr);
+	}
+
+	public static final TargetValue getMin(Mode mode) {
+		Pointer ptr = b.get_tarval_min(mode.p);
+		return new TargetValue(ptr);
+	}
+
+	public static final TargetValue getNull(Mode mode) {
+		Pointer ptr = b.get_tarval_null(mode.p);
+		return new TargetValue(ptr);
+	}
+
+	public static final TargetValue getOne(Mode mode) {
+		Pointer ptr = b.get_tarval_one(mode.p);
+		return new TargetValue(ptr);
+	}
+
+	public static final TargetValue getMinusOne(Mode mode) {
+		Pointer ptr = b.get_tarval_minus_one(mode.p);
+		return new TargetValue(ptr);
+	}
+
+	public static final TargetValue getAllOne(Mode mode) {
+		Pointer ptr = b.get_tarval_all_one(mode.p);
+		return new TargetValue(ptr);
+	}
+
+	public static final TargetValue getNAN(Mode mode) {
+		Pointer ptr = b.get_tarval_nan(mode.p);
+		return new TargetValue(ptr);
+	}
+
+	public static final TargetValue getPlusInf(Mode mode) {
+		Pointer ptr = b.get_tarval_plus_inf(mode.p);
+		return new TargetValue(ptr);
+	}
+
+	public static final TargetValue getMinusInf(Mode mode) {
+		Pointer ptr = b.get_tarval_minus_inf(mode.p);
+		return new TargetValue(ptr);
+	}
+	
+	public static enum int_overflow_mode {
+		TV_OVERFLOW_BAD(),      /**< tarval module will return bad if a overflow occurs */
+		TV_OVERFLOW_WRAP(),     /**< tarval module will overflow will be ignored, wrap around occurs */
+		TV_OVERFLOW_SATURATE();  /**< tarval module will saturate the overflow */
+		public final int val;
+		private static class C { static int next_val = 0; }
+
+		int_overflow_mode(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		int_overflow_mode() {
+			this.val = C.next_val++;
+		}
+		
+		public static int_overflow_mode getEnum(int val) {
+			for(int_overflow_mode entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static final void setIntegerOverflowMode(int_overflow_mode ovMode) {
+		b.tarval_set_integer_overflow_mode(ovMode.val);
+	}
+
+	public static final int_overflow_mode getIntegerOverflowMode() {
+		int val = b.tarval_get_integer_overflow_mode();
+		return int_overflow_mode.getEnum(val);
+	}
+	
+//	/* pn_Cmp */int cmp(Pointer a, Pointer b);
+	
+	public final TargetValue convertTo(Mode mode) {
+		Pointer ptarval = b.tarval_convert_to(ptr, mode.p);
+		return new TargetValue(ptarval);
+	}
+	
+	public final TargetValue not() {
+		Pointer ptarval = b.tarval_not(ptr);
+		return new TargetValue(ptarval);
+	}
+
+	public final TargetValue neg() {
+		Pointer ptarval = b.tarval_neg(ptr);
+		return new TargetValue(ptarval);
+	}
+
+	public final TargetValue add(TargetValue other) {
+		Pointer ptarval = b.tarval_add(ptr, other.ptr);
+		return new TargetValue(ptarval);
+	}
+
+	public final TargetValue sub(TargetValue other, Mode dstMode) {
+		Pointer ptarval = b.tarval_sub(ptr, other.ptr, dstMode.p);
+		return new TargetValue(ptarval);
+	}
+
+	public final TargetValue mul(TargetValue other) {
+		Pointer ptarval = b.tarval_mul(ptr, other.ptr);
+		return new TargetValue(ptarval);
+	}
+
+	public final TargetValue quo(TargetValue other) {
+		Pointer ptarval = b.tarval_quo(ptr, other.ptr);
+		return new TargetValue(ptarval);
+	}
+
+	public final TargetValue div(TargetValue other) {
+		Pointer ptarval = b.tarval_div(ptr, other.ptr);
+		return new TargetValue(ptarval);
+	}
+
+	public final TargetValue mod(TargetValue other) {
+		Pointer ptarval = b.tarval_mod(ptr, other.ptr);
+		return new TargetValue(ptarval);
+	}
+
+//	public final TargetValue divmod(TargetValue other, Pointer /* tarval ** >*/ mod_res) {
+//		throw new NotImplementedException();
+//	}
+
+	public final TargetValue abs() {
+		Pointer ptarval = b.tarval_abs(ptr);
+		return new TargetValue(ptarval);
+	}
+
+	public final TargetValue and(TargetValue other) {
+		Pointer ptarval = b.tarval_and(ptr, other.ptr);
+		return new TargetValue(ptarval);
+	}
+
+	public final TargetValue or(TargetValue other) {
+		Pointer ptarval = b.tarval_or(ptr, other.ptr);
+		return new TargetValue(ptarval);
+	}
+
+	public final TargetValue eor(TargetValue other) {
+		Pointer ptarval = b.tarval_eor(ptr, other.ptr);
+		return new TargetValue(ptarval);
+	}
+
+	public final TargetValue shl(TargetValue other) {
+		Pointer ptarval = b.tarval_shl(ptr, other.ptr);
+		return new TargetValue(ptarval);
+	}
+
+	public final TargetValue shr(TargetValue other) {
+		Pointer ptarval = b.tarval_shr(ptr, other.ptr);
+		return new TargetValue(ptarval);
+	}
+
+	public final TargetValue shrs(TargetValue other) {
+		Pointer ptarval = b.tarval_shrs(ptr, other.ptr);
+		return new TargetValue(ptarval);
+	}
+
+	public final TargetValue rotl(TargetValue other) {
+		Pointer ptarval = b.tarval_rotl(ptr, other.ptr);
+		return new TargetValue(ptarval);
+	}
+
+	public final int carry() {
+		return b.tarval_carry();
+	}
+
+	public static enum tv_output_mode {
+		TVO_NATIVE(),
+		TVO_HEX(),
+		TVO_DECIMAL(),
+		TVO_OCTAL(),
+		TVO_BINARY(),
+		TVO_FLOAT(),
+		TVO_HEXFLOAT();
+		public final int val;
+		private static class C { static int next_val; }
+
+		tv_output_mode(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		tv_output_mode() {
+			this.val = C.next_val++;
+		}
+		
+		public static tv_output_mode getEnum(int val) {
+			for(tv_output_mode entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	
+	public static class ModeInfo {
+		private final Pointer ptr;
+		
+		protected ModeInfo(Pointer ptr) {
+			this.ptr = ptr;
+		}
+	}
+	
+	/**
+	 * @return true on success
+	 */
+	public static final boolean setModeOutputOption(Mode mode, ModeInfo modeinfo) {
+		// returns 0 on success
+		int status = b.set_tarval_mode_output_option(mode.p, modeinfo.ptr);
+		return status == 0;
+	}
+
+	public static final ModeInfo getModeOutputOption(Mode mode) {
+		Pointer pModeInfo = b.get_tarval_mode_output_option(mode.p);
+		return new ModeInfo(pModeInfo);
+	}
+
+	public final String getBitpattern() {
+		return b.get_tarval_bitpattern(ptr);
+	}
+
+	public final byte getSubBits(int byteOfs) {
+		return b.get_tarval_sub_bits(ptr, byteOfs);
+	}
+
+	public final boolean isSingleBit() {
+		return 0 != b.tarval_is_single_bit(ptr);
+	}
+
+//	public final int snprintf(String buf, NativeLong buflen, Pointer tv) {
+//	}
+//
+	public final int printf() {
+		return b.tarval_printf(ptr);
+	}
+
+	public final int ieee754ZeroMantissa() {
+		return b.tarval_ieee754_zero_mantissa(ptr);
+	}
+
+	public final int ieee754GetExponent() {
+		return b.tarval_ieee754_get_exponent(ptr);
+	}
+
+	public final boolean ieee754CanConvLossless(Mode mode) {
+		return 0 != b.tarval_ieee754_can_conv_lossless(ptr, mode.p);
+	}
+
+	public static final int ieee754SetImmediatePrecision(int bits) {
+		return b.tarval_ieee754_set_immediate_precision(bits);
+	}
+
+	public static final int ieee754GetExact() {
+		return b.tarval_ieee754_get_exact();
+	}
+
+	public static final int ieee754GetMantissaSize(Mode mode) {
+		return b.tarval_ieee754_get_mantissa_size(mode.p);
+	}
+
+	public final void setEnableFpOps(boolean enable) {
+		int valEnable = (enable ? 1 : 0);
+		b.tarval_enable_fp_ops(valEnable);
+	}
+
+	public final boolean isNaN() {
+		return 0 != b.tarval_is_NaN(ptr);
+	}
+
+	public final boolean isPlusInf() {
+		return 0 != b.tarval_is_plus_inf(ptr);
+	}
+
+	public final boolean isMinusInf() {
+		return 0 != b.tarval_is_minus_inf(ptr);
+	}
+
+	public final boolean isFinite() {
+		return 0 != b.tarval_is_finite(ptr);
+	}
+
 }
