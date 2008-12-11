@@ -2,19 +2,17 @@ package firm;
 
 import java.util.Iterator;
 
-import javax.naming.OperationNotSupportedException;
-
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
+import firm.bindings.Bindings;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irnode;
 
 public class Node extends JNAWrapper {
-	protected static final binding_ircons binding_cons = (binding_ircons) Native.loadLibrary("firm", binding_ircons.class);
-	protected static final binding_irnode binding = (binding_irnode) Native.loadLibrary("firm", binding_irnode.class);
+	protected static final binding_ircons binding_cons = Bindings.getIrConsBinding();
+	protected static final binding_irnode binding = Bindings.getIrNodeBinding();
 
 	protected Node(Pointer ptr) {
 		super(ptr);

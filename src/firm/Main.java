@@ -1,8 +1,10 @@
 package firm;
 
+import java.io.IOException;
+
 /* Test libFirm bindings */
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		Firm.init();
 		System.out.printf("Version: %1s.%2s\n", Firm.getMinorVersion(), Firm.getMajorVersion());
 

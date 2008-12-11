@@ -44,6 +44,20 @@ public final class Bindings {
 		return (binding_irprog) Native.loadLibrary("firm", binding_irprog.class);
 	}
 		
-	
+	public final static binding_be getBeBinding() {
+		return (binding_be) Native.loadLibrary("firm", binding_be.class);
+	}
+
+	public final static binding_libc getLibcBinding() {
+		return (binding_libc) Native.loadLibrary("c", binding_libc.class);
+	}
+
+	public final static binding_ircons getIrConsBinding() {
+		return (binding_ircons) Native.loadLibrary("firm", binding_ircons.class);
+	}
+
+	public final static binding_irnode getIrNodeBinding() {
+		return (binding_irnode) Native.loadLibrary("firm", binding_irnode.class);
+	}
 	
 }
