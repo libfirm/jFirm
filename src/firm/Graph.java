@@ -211,13 +211,34 @@ public final class Graph extends JNAWrapper {
 		}
 	}
 	
+	private void blockWalkHelper(BlockWalker walker, Node node) {
+		Block block = node.getBlock();
+		if (block.blockVisited())
+			return;
+		block.markBlockVisited();
+		
+		walker.visiteBlock(block);
+		for (Node pred : block.getPreds()) {
+			blockWalkHelper(walker, pred);
+		}		
+	}
+	
 	protected void incrementNodeVisited() {
 		binding.inc_irg_visited(ptr);
+	}
+	
+	protected void incrementBlockVisited() {
+		binding.inc_irg_block_visited(ptr);
 	}
 	
 	public void walk(GraphWalker walker) {
 		incrementNodeVisited();
 		walkHelper(walker, getEnd());
+	}
+	
+	public void walkBlocks(BlockWalker walker) {
+		incrementBlockVisited();
+		blockWalkHelper(walker, getEnd());
 	}
 	
 //	int get_irg_fp_model(Pointer irg);

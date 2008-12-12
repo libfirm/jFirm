@@ -19,4 +19,12 @@ public final class Block extends Node {
 	public Block getBlock() {
 		return null;
 	}
+	
+	public boolean blockVisited() {
+		return 0 != binding.Block_block_visited(ptr);
+	}
+	
+	public void markBlockVisited() {
+		binding.mark_Block_block_visited(ptr);
+	}
 }
