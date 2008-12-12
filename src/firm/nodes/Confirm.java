@@ -35,4 +35,6 @@ public class Confirm extends Node {
 		binding.set_Confirm_bound(this.ptr, bound.ptr);
 	}
 	
+
+	
 }

@@ -10,7 +10,7 @@ public class TargetValue extends JNAWrapper {
 
 	private static final TargetValueBinding b = Bindings.getTargetValueBinding();
 	
-	protected TargetValue(Pointer ptr) {
+	public TargetValue(Pointer ptr) {
 		super(ptr);
 	}
 	

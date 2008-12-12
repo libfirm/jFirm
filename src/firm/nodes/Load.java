@@ -35,4 +35,14 @@ public class Load extends Node {
 		binding.set_Load_ptr(this.ptr, ptr.ptr);
 	}
 	
+
+	
+	public static final int pnM = 0;
+	
+	public static final int pnXRegular = 1;
+	
+	public static final int pnXExcept = 2;
+	
+	public static final int pnRes = 3;
+	
 }

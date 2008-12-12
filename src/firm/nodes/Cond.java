@@ -27,4 +27,10 @@ public class Cond extends Node {
 		binding.set_Cond_selector(this.ptr, selector.ptr);
 	}
 	
+
+	
+	public static final int pnFalse = 0;
+	
+	public static final int pnTrue = 1;
+	
 }

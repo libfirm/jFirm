@@ -27,4 +27,6 @@ public class Proj extends Node {
 		binding.set_Proj_pred(this.ptr, pred.ptr);
 	}
 	
+
+	
 }

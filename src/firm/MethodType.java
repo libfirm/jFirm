@@ -28,7 +28,7 @@ public class MethodType extends Type {
 
 	public final Type getParamType(int pos) {
 		Pointer p = binding.get_method_param_type(ptr, pos);
-		return new Type(p);
+		return Type.createWrapper(p);
 	}
 	
 	public final void setParamType(int pos, Type tp) {
@@ -42,7 +42,7 @@ public class MethodType extends Type {
 	
 	public final Type getValueParamType() {
 		Pointer p = binding.get_method_value_param_type(ptr);
-		return (p == null || p == Pointer.NULL ? null : new Type(p));
+		return (p == null || p == Pointer.NULL ? null : Type.createWrapper(p));
 	}
 
 	public final Ident getParamIdent(int pos) {
@@ -64,7 +64,7 @@ public class MethodType extends Type {
 
 	public final Type getResType(int pos) {
 		Pointer p = binding.get_method_res_type(ptr, pos);
-		return new Type(p);
+		return Type.createWrapper(p);
 	}
 	
 	public final void setResType(int pos, Type tp) {
@@ -78,7 +78,7 @@ public class MethodType extends Type {
 
 	public final Type getValueResType() {
 		Pointer p = binding.get_method_value_res_type(ptr);
-		return new Type(p);
+		return Type.createWrapper(p);
 	}
 
 	public final static String getVariadicityName(variadicity vari) {

@@ -27,4 +27,6 @@ public class Not extends Unop {
 		binding.set_Not_op(this.ptr, op.ptr);
 	}
 	
+
+	
 }

@@ -35,4 +35,6 @@ public class Or extends Binop {
 		binding.set_Or_right(this.ptr, right.ptr);
 	}
 	
+
+	
 }

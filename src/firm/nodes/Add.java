@@ -35,4 +35,6 @@ public class Add extends Binop {
 		binding.set_Add_right(this.ptr, right.ptr);
 	}
 	
+
+	
 }

@@ -35,4 +35,6 @@ public class Shrs extends Binop {
 		binding.set_Shrs_right(this.ptr, right.ptr);
 	}
 	
+
+	
 }

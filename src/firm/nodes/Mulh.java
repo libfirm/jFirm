@@ -35,4 +35,6 @@ public class Mulh extends Binop {
 		binding.set_Mulh_right(this.ptr, right.ptr);
 	}
 	
+
+	
 }

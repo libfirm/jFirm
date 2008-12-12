@@ -35,4 +35,6 @@ public class Mul extends Binop {
 		binding.set_Mul_right(this.ptr, right.ptr);
 	}
 	
+
+	
 }

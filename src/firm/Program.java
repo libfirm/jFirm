@@ -8,7 +8,7 @@ public class Program {
 	private static final binding_irprog binding = Bindings.getIrProgBinding();
 	
 	public static Type getGlobalType() {
-		return new Type(binding.get_glob_type());
+		return Type.createWrapper(binding.get_glob_type());
 	}
 
 }

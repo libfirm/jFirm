@@ -5,6 +5,7 @@ import com.sun.jna.Pointer;
 
 import firm.bindings.Bindings;
 import firm.bindings.binding_irgraph;
+import firm.bindings.binding_irnode;
 import firm.nodes.Block;
 import firm.nodes.Node;
 
@@ -40,7 +41,7 @@ public final class Graph extends JNAWrapper {
 	}
 	
 	public Type getFrameType() {
-		return new Type(binding.get_irg_frame_type(ptr));
+		return Type.createWrapper(binding.get_irg_frame_type(ptr));
 	}
 	
 	public void setFrameType(Type type) {
@@ -241,6 +242,14 @@ public final class Graph extends JNAWrapper {
 	public void walkBlocks(BlockWalker walker) {
 		incrementBlockVisited();
 		blockWalkHelper(walker, getEnd());
+	}
+	
+	public void setPhaseState(binding_irgraph.irg_phase_state state) {
+		binding.set_irg_phase_state(ptr, state.val);
+	}
+	
+	public binding_irgraph.irg_phase_state getPhaseState() {
+		return binding_irgraph.irg_phase_state.getEnum(binding.get_irg_phase_state(ptr));
 	}
 	
 //	int get_irg_fp_model(Pointer irg);

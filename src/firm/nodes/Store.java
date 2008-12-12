@@ -43,4 +43,12 @@ public class Store extends Node {
 		binding.set_Store_value(this.ptr, value.ptr);
 	}
 	
+
+	
+	public static final int pnM = 0;
+	
+	public static final int pnXRegular = 1;
+	
+	public static final int pnXExcept = 2;
+	
 }

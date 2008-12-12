@@ -35,4 +35,6 @@ public class And extends Binop {
 		binding.set_And_right(this.ptr, right.ptr);
 	}
 	
+
+	
 }

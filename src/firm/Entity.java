@@ -58,7 +58,7 @@ public class Entity extends JNAWrapper {
 
 	public final Type getOwner() {
 		Pointer p = binding.get_entity_owner(ptr);
-		return new Type(p);
+		return Type.createWrapper(p);
 	}
 
 	public final void setOwner(Type owner) {
@@ -67,7 +67,7 @@ public class Entity extends JNAWrapper {
 
 	public final Type getType() {
 		Pointer p = binding.get_entity_type(ptr);
-		return new Type(p);
+		return Type.createWrapper(p);
 	}
 
 	public final void setType(Type tp) {

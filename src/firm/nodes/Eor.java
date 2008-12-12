@@ -35,4 +35,6 @@ public class Eor extends Binop {
 		binding.set_Eor_right(this.ptr, right.ptr);
 	}
 	
+
+	
 }

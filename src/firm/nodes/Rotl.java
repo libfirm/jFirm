@@ -35,4 +35,6 @@ public class Rotl extends Binop {
 		binding.set_Rotl_right(this.ptr, right.ptr);
 	}
 	
+
+	
 }
