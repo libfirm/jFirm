@@ -7,7 +7,7 @@ import firm.bindings.binding_typerep.variadicity;
 
 public class MethodType extends Type {
 
-	protected MethodType(Pointer ptr) {
+	public MethodType(Pointer ptr) {
 		super(ptr);
 	}
 	

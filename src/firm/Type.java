@@ -8,7 +8,7 @@ public class Type extends JNAWrapper {
 	
 	protected static final binding_typerep binding = Entity.binding;
 	
-	protected Type(Pointer ptr) {
+	public Type(Pointer ptr) {
 		super(ptr);
 	}
 	

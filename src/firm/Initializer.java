@@ -4,6 +4,7 @@ import com.sun.jna.Pointer;
 
 import firm.bindings.binding_typerep;
 import firm.bindings.binding_typerep.ir_initializer_kind_t;
+import firm.nodes.Node;
 
 public class Initializer extends JNAWrapper {
 

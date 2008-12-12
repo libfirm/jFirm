@@ -2,6 +2,7 @@ package firm;
 
 import firm.bindings.Bindings;
 import firm.bindings.binding_irdump;
+import firm.nodes.Node;
 
 public final class Dump {
 	private static final binding_irdump binding = Bindings.getIrDumpBinding();

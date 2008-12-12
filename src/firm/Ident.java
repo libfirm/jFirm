@@ -9,7 +9,7 @@ public class Ident extends JNAWrapper {
 	
 	private final static binding_ident binding = Bindings.getIdentBinding();
 	
-	protected Ident(Pointer ptr) {
+	public Ident(Pointer ptr) {
 		super(ptr);
 	}
 	

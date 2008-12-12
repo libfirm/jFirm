@@ -5,11 +5,13 @@ import com.sun.jna.Pointer;
 
 import firm.bindings.Bindings;
 import firm.bindings.binding_irgraph;
+import firm.nodes.Block;
+import firm.nodes.Node;
 
 public final class Graph extends JNAWrapper {
 	private static final binding_irgraph binding = Bindings.getIrGraphBinding();
 	
-	protected Graph(Pointer ptr) {
+	public Graph(Pointer ptr) {
 		super(ptr);
 	}
 	
@@ -217,7 +219,7 @@ public final class Graph extends JNAWrapper {
 			return;
 		block.markBlockVisited();
 		
-		walker.visiteBlock(block);
+		walker.visitBlock(block);
 		for (Node pred : block.getPreds()) {
 			blockWalkHelper(walker, pred);
 		}		

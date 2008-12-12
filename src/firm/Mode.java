@@ -9,7 +9,7 @@ public final class Mode extends JNAWrapper {
 
 	private static final ModeBinding b = Bindings.getModeBinding();
 	
-	protected Mode(Pointer p) {
+	public Mode(Pointer p) {
 		super(p);
 	}
 	

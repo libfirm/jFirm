@@ -1,7 +1,9 @@
 package firm;
 
+import firm.nodes.Block;
+
 public interface BlockWalker {
 
-	void visiteBlock(Block block);
+	void visitBlock(Block block);
 	
 }

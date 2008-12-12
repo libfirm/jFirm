@@ -2,6 +2,10 @@ package firm;
 
 import java.io.IOException;
 
+import firm.nodes.Block;
+import firm.nodes.Node;
+import firm.nodes.Return;
+
 /* Test libFirm bindings */
 public class Main {
 	public static void main(String[] args) throws IOException {
@@ -20,15 +24,11 @@ public class Main {
 		Entity mainEnt = new Entity(global, ident, type);
 		Graph graph = new Graph(mainEnt, 0);
 		
-		Return nreturn = new Return(graph.getCurrentBlock(), graph.getInitialMem(), new Node[] {});
+		/* construct a return node... */
+		Construction construction = new Construction(graph);		
+		Return nreturn = construction.newReturn(construction.getCurrentMem(), new Node[] {});
 		graph.getEndBlock().addPred(nreturn);
-		
-		/* mature blocks */
-		graph.walkBlocks(new BlockWalker() {
-			public void visiteBlock(Block block) {
-				block.mature();
-			}
-		});
+		construction.finish();
 		
 		Dump.dumpBlockGraph(graph, "-XXX");
 		

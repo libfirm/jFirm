@@ -2,11 +2,11 @@ package firm;
 
 import com.sun.jna.Pointer;
 
-abstract class JNAWrapper {
+public abstract class JNAWrapper {
 
-	protected final Pointer ptr;
+	public final Pointer ptr;
 	
-	JNAWrapper(final Pointer ptr) {
+	protected JNAWrapper(final Pointer ptr) {
 		if (ptr == null) {
 			throw new IllegalArgumentException("Pointer object is null.");
 		} else if (ptr == Pointer.NULL) {

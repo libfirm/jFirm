@@ -12,12 +12,13 @@ import firm.bindings.binding_typerep.ir_stickyness;
 import firm.bindings.binding_typerep.ir_variability;
 import firm.bindings.binding_typerep.ir_visibility;
 import firm.bindings.binding_typerep.ir_volatility;
+import firm.nodes.Node;
 
 public class Entity extends JNAWrapper {
 	
 	protected final static binding_typerep binding = Bindings.getTypeRepBinding(); 
 	
-	protected Entity(Pointer ptr) {
+	public Entity(Pointer ptr) {
 		super(ptr);
 	}
 	
@@ -237,8 +238,8 @@ public class Entity extends JNAWrapper {
 //	}
 
 	public final Node getAtomicValue() {
-		Pointer p = binding.get_atomic_ent_value(ptr);
-		return new Node(p);
+		Pointer node_ptr = binding.get_atomic_ent_value(ptr);
+		return Node.createWrapper(node_ptr);
 	}
 	
 	public final void setAtomicValue(Node val) {

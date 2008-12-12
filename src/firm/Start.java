@@ -3,6 +3,9 @@ package firm;
 
 import com.sun.jna.Pointer;
 
+import firm.nodes.Block;
+import firm.nodes.Node;
+
 public class Start extends Node {
 
 	
