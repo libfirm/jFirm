@@ -22,9 +22,13 @@ public class Main {
 		
 		Return nreturn = new Return(graph.getCurrentBlock(), graph.getInitialMem(), new Node[] {});
 		graph.getEndBlock().addPred(nreturn);
-		graph.getCurrentBlock().mature();
-		graph.getEndBlock().mature();
-		graph.getStartBlock().mature();
+		
+		/* mature blocks */
+		graph.walkBlocks(new BlockWalker() {
+			public void visiteBlock(Block block) {
+				block.mature();
+			}
+		});
 		
 		Dump.dumpBlockGraph(graph, "-XXX");
 		
