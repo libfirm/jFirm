@@ -9,8 +9,8 @@ import firm.Type;
 public class Load extends Node {
 
 	
-	public Load(Block block, Node mem, Node ptr, Mode mode) {
-		super(binding_cons.new_r_Load(Graph.getCurrent().ptr, block.ptr, mem.ptr, ptr.ptr, mode.ptr));
+	public Load(Block block, Node mem, Node ptr, Mode mode, firm.bindings.binding_ircons.cons_flags flags) {
+		super(binding_cons.new_r_Load(Graph.getCurrent().ptr, block.ptr, mem.ptr, ptr.ptr, mode.ptr, flags.val));
 	}
 	
 

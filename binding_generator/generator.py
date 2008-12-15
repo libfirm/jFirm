@@ -117,11 +117,23 @@ Load = dict(
 			name = "mode"
 		),
 	],
+	constructor_args = [
+		dict(
+			type = "cons_flags",
+			name = "flags",
+		),
+	],
 ),
 
 Store = dict(
 	ins      = [ "mem", "ptr", "value" ],
-	outs     = [ "M", "X_regular", "X_except" ]
+	outs     = [ "M", "X_regular", "X_except" ],
+	constructor_args = [
+		dict(
+			type = "cons_flags",
+			name = "flags",
+		),
+	],
 ),
 
 Anchor = dict(
@@ -295,6 +307,27 @@ env.filters['ifset']       = format_ifset
 env.filters['key']         = format_key
 env.filters['filterkeywords'] = format_filter_keywords
 
+def get_java_type(type):
+	if type == "ir_type*":
+		new_type   = "Type"
+		to_wrapper = "%s.ptr"
+	elif type == "ir_mode*":
+		new_type   = "Mode"
+		to_wrapper = "%s.ptr"
+	elif type == "pn_Cmp":
+		new_type   = "int"
+		to_wrapper = "%s"
+	elif type == "long":
+		new_type   = "int"
+		to_wrapper = "new com.sun.jna.NativeLong(%s)"
+	elif type == "cons_flags":
+		new_type   = "firm.bindings.binding_ircons.cons_flags"
+		to_wrapper = "%s.val"
+	else:
+		print "UNKNOWN TYPE"
+		new_type = "BAD"
+	return (new_type,to_wrapper)
+
 def preprocess_node(nodename, node):
 	node["classname"] = format_camel_case_big(nodename)
 
@@ -311,6 +344,8 @@ def preprocess_node(nodename, node):
 		node["arity"] = len(node["ins"])
 	if "attrs" not in node:
 		node["attrs"] = []
+	if "constructor_args" not in node:
+		node["constructor_args"] = []
 
 	# construct node arguments
 	arguments = [ ]
@@ -330,28 +365,24 @@ def preprocess_node(nodename, node):
 			type = "Mode"
 		))
 	for attr in node["attrs"]:
-		old_type   = attr["type"]
-		if old_type == "ir_type*":
-			new_type   = "Type"
-			to_wrapper = "%s.ptr"
-		elif old_type == "ir_mode*":
-			new_type   = "Mode"
-			to_wrapper = "%s.ptr"
-		elif old_type == "pn_Cmp":
-			new_type   = "int"
-			to_wrapper = "%s"
-		elif old_type == "long":
-			new_type   = "int"
-			to_wrapper = "new com.sun.jna.NativeLong(%s)"
-		else:
-			print "UNKNOWN TYPE"
-			new_type = "BAD"
-	
+		old_type = attr["type"]
+		(new_type,to_wrapper) = get_java_type(old_type)
+		
 		arguments.append(dict(
 			name = attr["name"],
 			type = new_type,
 			to_wrapper = to_wrapper
 		))
+	for arg in node["constructor_args"]:
+		old_type = arg["type"]
+		(new_type,to_wrapper) = get_java_type(old_type)
+
+		arguments.append(dict(
+			name = arg["name"],
+			type = new_type,
+			to_wrapper = to_wrapper
+		))
+		
 	node["arguments"] = arguments
 
 	#if "block" not in node:

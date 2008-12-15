@@ -1,0 +1,3 @@
+- create wrapper for Class and Compound types
+- create wrapper for optimisations (really?)
+- create wrapper for verify(checker) functions

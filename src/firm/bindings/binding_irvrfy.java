@@ -7,7 +7,7 @@ import com.sun.jna.Pointer;
 import com.sun.jna.NativeLong;
 
 
-public interface binding_firm_common extends Library {
+public interface binding_irvrfy extends Library {
 	public static enum ip_view_state {
 		ip_view_no(),
 		ip_view_valid(),
@@ -175,47 +175,56 @@ public interface binding_firm_common extends Library {
 			return null;
 		}
 	}
-	public static enum firm_kind {
-		k_BAD(0),
-		k_entity(),
-		k_type(),
-		k_ir_graph(),
-		k_ir_node(),
-		k_ir_mode(),
-		k_ir_op(),
-		k_tarval(),
-		k_ir_loop(),
-		k_ir_compound_graph_path(),
-		k_ir_extblk(),
-		k_ir_prog(),
-		k_ir_region(),
-		k_ir_max();
+	public static enum irg_verify_flags_t {
+		VRFY_NORMAL(0),
+		VRFY_ENFORCE_SSA(1);
 		public final int val;
 		private static class C { static int next_val; }
 
-		firm_kind(int val) {
+		irg_verify_flags_t(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		firm_kind() {
+		irg_verify_flags_t() {
 			this.val = C.next_val++;
 		}
 		
-		public static firm_kind getEnum(int val) {
-			for(firm_kind entry : values()) {
+		public static irg_verify_flags_t getEnum(int val) {
+			for(irg_verify_flags_t entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
 			return null;
 		}
 	}
-	void ir_init(Pointer params);
-	void ir_finish();
-	int ir_get_version_major();
-	int ir_get_version_minor();
-	String ir_get_version_revision();
-	String ir_get_version_build();
-	/* firm_kind */int get_kind(Pointer firm_thing);
-	String print_firm_kind(Pointer firm_thing);
-	void firm_identify_thing(Pointer X);
+	public static enum verify_bad_flags_t {
+		BAD_CF(1),
+		BAD_DF(2),
+		BAD_BLOCK(4),
+		TUPLE(8);
+		public final int val;
+		private static class C { static int next_val; }
+
+		verify_bad_flags_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		verify_bad_flags_t() {
+			this.val = C.next_val++;
+		}
+		
+		public static verify_bad_flags_t getEnum(int val) {
+			for(verify_bad_flags_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	int irn_vrfy(Pointer checknode);
+	int irn_vrfy_irg(Pointer checknode, Pointer irg);
+	int irn_vrfy_irg_dump(Pointer checknode, Pointer irg, Pointer[] bad_string);
+	int irg_verify(Pointer irg, int flags);
+	int irg_vrfy_bads(Pointer irg, int flags);
+	void vrfy_enable_entity_tests(int enable);
 }

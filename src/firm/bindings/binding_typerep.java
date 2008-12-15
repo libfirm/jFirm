@@ -175,36 +175,6 @@ public interface binding_typerep extends Library {
 			return null;
 		}
 	}
-	public static enum ir_resources_enum_t {
-		IR_RESOURCE_BLOCK_VISITED((1<<0)),
-		IR_RESOURCE_BLOCK_MARK((1<<1)),
-		IR_RESOURCE_IRN_VISITED((1<<2)),
-		IR_RESOURCE_IRN_LINK((1<<3)),
-		IR_RESOURCE_LOOP_LINK((1<<4)),
-		IR_RESOURCE_PHI_LIST((1<<5)),
-		IR_RESOURCE_IRG_LINK((1<<6)),
-		IR_RESOURCE_ENTITY_LINK((1<<8)),
-		IR_RESOURCE_LOCAL_MASK(255),
-		IR_RESOURCE_GLOBAL_MASK(65280);
-		public final int val;
-		private static class C { static int next_val; }
-
-		ir_resources_enum_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		ir_resources_enum_t() {
-			this.val = C.next_val++;
-		}
-		
-		public static ir_resources_enum_t getEnum(int val) {
-			for(ir_resources_enum_t entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
 	public static enum ir_visibility {
 		visibility_local(),
 		visibility_external_visible(),
