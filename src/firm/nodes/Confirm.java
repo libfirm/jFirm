@@ -38,6 +38,12 @@ public class Confirm extends Node {
 		int _res = binding.get_Confirm_cmp(ptr);
 		return _res;
 	}
+
+	public void setCmp(int _val) {
+		binding.set_Confirm_cmp(this.ptr, _val);
+	}
+	
+
 	
 
 	

@@ -18,8 +18,8 @@ class NodeWrapperConstruction {
 		
 		
 		
-			case iro_End:
-				return new End(ptr);
+			case iro_Const:
+				return new Const(ptr);
 		
 		
 		
@@ -40,6 +40,11 @@ class NodeWrapperConstruction {
 		
 			case iro_Mux:
 				return new Mux(ptr);
+		
+		
+		
+			case iro_SymConst:
+				return new SymConst(ptr);
 		
 		
 		
@@ -142,6 +147,11 @@ class NodeWrapperConstruction {
 		
 			case iro_Rotl:
 				return new Rotl(ptr);
+		
+		
+		
+			case iro_End:
+				return new End(ptr);
 		
 		
 		

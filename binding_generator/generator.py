@@ -40,10 +40,42 @@ IJmp = dict(
 	ins      = [ "target" ],
 ),
 
-# Const
+Const = dict(
+	mode       = "",
+	knownBlock = True,
+	attrs      = [
+		dict(
+			type = "tarval*",
+			name = "tarval",
+		)
+	],
+	java_add = '''
+	public Const(int value, firm.Mode mode) {
+		this(new firm.TargetValue(value, mode));
+	}'''
+),
+
+SymConst = dict(
+	mode       = "mode_P",
+	knownBlock = True,
+	noconstr   = True,
+	attrs      = [
+		dict(
+			type = "ir_entity*",
+			name = "entity"
+		)
+	],
+	java_add = '''
+	public SymConst(firm.Entity entity) {
+		this(entity, firm.Mode.getP());
+	}
+						
+	public SymConst(firm.Entity entity, firm.Mode mode) {
+		super(binding_cons.new_rd_SymConst_addr_ent(Pointer.NULL, firm.Graph.getCurrent().ptr, mode.ptr, entity.ptr, entity.getType().ptr));
+	}'''
+),
+
 # SymConst
-# simpleSel
-# Sel
 
 Call = dict(
 	ins      = [ "mem", "ptr" ],
@@ -336,6 +368,11 @@ def get_java_type(type):
 		wrap_type    = "Pointer"
 		to_wrapper   = "%s.ptr"
 		from_wrapper = "new firm.Mode(%s)"
+	elif type == "tarval*":
+		java_type    = "firm.TargetValue"
+		wrap_type    = "Pointer"
+		to_wrapper   = "%s.ptr"
+		from_wrapper = "new firm.TargetValue(%s)"
 	elif type == "pn_Cmp":
 		java_type    = "int"
 		wrap_type    = "int"
@@ -384,6 +421,8 @@ def preprocess_node(nodename, node):
 		node["ins"] = []
 	if "outs" in node:
 		node["mode"] = "mode_T"
+	if "java_add" not in node:
+		node["java_add"] = ""
 	if "arity" not in node:
 		node["arity"] = len(node["ins"])
 	if "attrs" not in node:
@@ -483,7 +522,13 @@ public {{"abstract "|ifset(node,"abstract")}}class {{node["classname"]}} extends
 		{{attr.wrap_type}} _res = binding.get_{{nodename}}_{{attr.name}}(ptr);
 		return {{attr.from_wrapper % "_res"}};
 	}
+
+	public void set{{attr.name|CamelCase}}({{attr.java_type}} _val) {
+		binding.set_{{nodename}}_{{attr.name}}(this.ptr, {{attr.to_wrapper % "_val"}});
+	}
 	{% endfor %}
+
+	{{ node.java_add }}
 
 	{% for out in node.outs %}
 	public static final int pn{{out|CamelCase}} = {{loop.index0}};

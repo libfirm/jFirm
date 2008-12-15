@@ -45,10 +45,6 @@ public class Construction extends ConstructionBase {
 		return new SymConst(entity);
 	}
 	
-	public Node newConst(TargetValue value) {
-		return new Const(value);
-	}
-	
 	public Node newConst(int value, Mode mode) {
 		return new Const(value, mode);
 	}

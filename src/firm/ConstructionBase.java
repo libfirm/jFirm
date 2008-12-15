@@ -27,6 +27,11 @@ class ConstructionBase {
 	
 	
 	
+	public Node newConst(firm.TargetValue tarval) {
+		Pointer result_ptr = binding_cons.new_Const(tarval.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
 	
 	
 	public Node newSub(Node left, Node right, firm.Mode mode) {
@@ -54,6 +59,8 @@ class ConstructionBase {
 		Pointer result_ptr = binding_cons.new_Mux(sel.ptr, _false.ptr, _true.ptr, mode.ptr);
 		return Node.createWrapper(result_ptr);
 	}
+	
+	
 	
 	
 	
@@ -186,6 +193,8 @@ class ConstructionBase {
 		Pointer result_ptr = binding_cons.new_Rotl(left.ptr, right.ptr, mode.ptr);
 		return Node.createWrapper(result_ptr);
 	}
+	
+	
 	
 	
 	

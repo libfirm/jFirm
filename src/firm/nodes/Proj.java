@@ -30,6 +30,12 @@ public class Proj extends Node {
 		com.sun.jna.NativeLong _res = binding.get_Proj_proj(ptr);
 		return _res.intValue();
 	}
+
+	public void setProj(int _val) {
+		binding.set_Proj_proj(this.ptr, new com.sun.jna.NativeLong(_val));
+	}
+	
+
 	
 
 	

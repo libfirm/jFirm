@@ -38,6 +38,12 @@ public class Sel extends Node {
 		Pointer _res = binding.get_Sel_entity(ptr);
 		return new firm.Entity(_res);
 	}
+
+	public void setEntity(firm.Entity _val) {
+		binding.set_Sel_entity(this.ptr, _val.ptr);
+	}
+	
+
 	
 
 	

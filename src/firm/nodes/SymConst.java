@@ -1,24 +1,37 @@
+/* Warning: Automatically generated file */
 package firm.nodes;
 
 import com.sun.jna.Pointer;
 
-import firm.Entity;
-import firm.Graph;
-import firm.Mode;
-
 public class SymConst extends Node {
+
+	
 
 	public SymConst(Pointer ptr) {
 		super(ptr);
 	}
+
 	
-	public SymConst(Entity entity) {
-		this(entity, Mode.getP());
+
+	
+	public firm.Entity getEntity() {
+		Pointer _res = binding.get_SymConst_entity(ptr);
+		return new firm.Entity(_res);
 	}
-	
-	public SymConst(Entity entity, Mode mode) {
-		super(binding_cons.new_rd_SymConst_addr_ent(Pointer.NULL, Graph.getCurrent().ptr, mode.ptr, entity.ptr, entity.getType().ptr));
+
+	public void setEntity(firm.Entity _val) {
+		binding.set_SymConst_entity(this.ptr, _val.ptr);
 	}
 	
 
+	
+	public SymConst(firm.Entity entity) {
+		this(entity, firm.Mode.getP());
+	}
+						
+	public SymConst(firm.Entity entity, firm.Mode mode) {
+		super(binding_cons.new_rd_SymConst_addr_ent(Pointer.NULL, firm.Graph.getCurrent().ptr, mode.ptr, entity.ptr, entity.getType().ptr));
+	}
+
+	
 }

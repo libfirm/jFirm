@@ -36,6 +36,8 @@ public class Cmp extends Binop {
 	
 
 	
+
+	
 	public static final int pnFalse = 0;
 	
 	public static final int pnEq = 1;

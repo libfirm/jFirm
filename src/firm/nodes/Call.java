@@ -38,6 +38,12 @@ public class Call extends Node {
 		Pointer _res = binding.get_Call_type(ptr);
 		return firm.Type.createWrapper(_res);
 	}
+
+	public void setType(firm.Type _val) {
+		binding.set_Call_type(this.ptr, _val.ptr);
+	}
+	
+
 	
 
 	
