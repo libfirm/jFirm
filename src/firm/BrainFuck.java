@@ -6,20 +6,13 @@ import java.io.InputStream;
 
 import firm.bindings.binding_typerep.ir_type_state;
 import firm.bindings.binding_typerep.ir_visibility;
-import firm.nodes.Add;
 import firm.nodes.Block;
 import firm.nodes.Call;
 import firm.nodes.Cmp;
 import firm.nodes.Cond;
-import firm.nodes.Const;
-import firm.nodes.Conv;
-import firm.nodes.Jmp;
 import firm.nodes.Load;
 import firm.nodes.Node;
-import firm.nodes.Proj;
-import firm.nodes.Return;
 import firm.nodes.Store;
-import firm.nodes.SymConst;
 
 public class BrainFuck {
 	private static int DATA_SIZE = 1000;
@@ -27,8 +20,8 @@ public class BrainFuck {
 	private InputStream input;
 	private Entity putcharEntity;
 	private Entity getcharEntity;
-	private SymConst putcharSymConst;
-	private SymConst getcharSymConst;
+	private Node putcharSymConst;
+	private Node getcharSymConst;
 	
 	public BrainFuck() {
 	}
@@ -61,7 +54,7 @@ public class BrainFuck {
 		Graph graph = new Graph(mainEnt, n_vars);
 		construction = new Construction(graph);
 		
-		SymConst symconst = construction.newSymConst(data);
+		Node symconst = construction.newSymConst(data);
 		construction.setVariable(0, symconst);
 		
 		/* create putchar entity */
@@ -95,7 +88,7 @@ public class BrainFuck {
 		input.close();
 		
 		/* create return statement */
-		Return nreturn = construction.newReturn(construction.getCurrentMem(), new Node[] {});
+		Node nreturn = construction.newReturn(construction.getCurrentMem(), new Node[] {});
 		graph.getEndBlock().addPred(nreturn);
 		
 		construction.finish();
@@ -125,20 +118,20 @@ public class BrainFuck {
 	private void inputByte() {
 		Node mem = construction.getCurrentMem();
 		
-		Call call = construction.newCall(mem, getcharSymConst, new Node[] {}, getcharEntity.getType());
-		Proj callMem = construction.newProj(call, Mode.getM(), Call.pnMRegular);
-		Proj callResults = construction.newProj(call, Mode.getT(), Call.pnTResult);
-		Proj result = construction.newProj(callResults, Mode.getIs(), 0);
-		Conv conv = construction.newConv(result, Mode.getBu());
+		Node call = construction.newCall(mem, getcharSymConst, new Node[] {}, getcharEntity.getType());
+		Node callMem = construction.newProj(call, Mode.getM(), Call.pnMRegular);
+		Node callResults = construction.newProj(call, Mode.getT(), Call.pnTResult);
+		Node result = construction.newProj(callResults, Mode.getIs(), 0);
+		Node conv = construction.newConv(result, Mode.getBu());
 		
 		Node pointer = construction.getVariable(0, Mode.getP());
-		Store store = construction.newStore(callMem, pointer, conv);
-		Proj storeMem = construction.newProj(store, Mode.getM(), Store.pnM);
+		Node store = construction.newStore(callMem, pointer, conv);
+		Node storeMem = construction.newProj(store, Mode.getM(), Store.pnM);
 		construction.setCurrentMem(storeMem);
 	}
 
 	private void parseLoop() throws IOException {
-		Jmp jump = construction.newJmp();
+		Node jump = construction.newJmp();
 		
 		Block loopHeader = construction.newBlock();
 		loopHeader.addPred(jump);
@@ -147,18 +140,18 @@ public class BrainFuck {
 		Node pointer = construction.getVariable(0, Mode.getP());
 		Node mem = construction.getCurrentMem();
 		
-		Load load = construction.newLoad(mem, pointer, Mode.getBu());
-		Proj loadRes = construction.newProj(load, Mode.getBu(), Load.pnRes);
-		Proj loadMem = construction.newProj(load, Mode.getM(), Load.pnM);
+		Node load = construction.newLoad(mem, pointer, Mode.getBu());
+		Node loadRes = construction.newProj(load, Mode.getBu(), Load.pnRes);
+		Node loadMem = construction.newProj(load, Mode.getM(), Load.pnM);
 		construction.setCurrentMem(loadMem);
 		
-		Const zero = construction.newConst(0, Mode.getBu());
-		Cmp cmp = construction.newCmp(loadRes, zero);
-		Proj pEqual = construction.newProj(cmp, Mode.getb(), Cmp.pnEq);
-		Cond cond = construction.newCond(pEqual);
+		Node zero = construction.newConst(0, Mode.getBu());
+		Node cmp = construction.newCmp(loadRes, zero);
+		Node pEqual = construction.newProj(cmp, Mode.getb(), Cmp.pnEq);
+		Node cond = construction.newCond(pEqual);
 		
-		Proj projTrue = construction.newProj(cond, Mode.getX(), Cond.pnTrue);
-		Proj projFalse = construction.newProj(cond, Mode.getX(), Cond.pnFalse);
+		Node projTrue = construction.newProj(cond, Mode.getX(), Cond.pnTrue);
+		Node projFalse = construction.newProj(cond, Mode.getX(), Cond.pnFalse);
 		
 		Block loopBody = construction.newBlock();
 		loopBody.addPred(projFalse);
@@ -169,7 +162,7 @@ public class BrainFuck {
 			System.err.println("Parse Error: unmatched '['");
 		}
 		
-		Jmp jmp2 = construction.newJmp();
+		Node jmp2 = construction.newJmp();
 		loopHeader.addPred(jmp2);
 		
 		Block afterLoop = construction.newBlock();
@@ -181,11 +174,11 @@ public class BrainFuck {
 		Node pointer = construction.getVariable(0, Mode.getP());
 		Node mem = construction.getCurrentMem();
 		
-		Load load = construction.newLoad(mem, pointer, Mode.getBu());
-		Proj result = construction.newProj(load, Mode.getBu(), Load.pnRes);
+		Node load = construction.newLoad(mem, pointer, Mode.getBu());
+		Node result = construction.newProj(load, Mode.getBu(), Load.pnRes);
 		
-		Conv conv = construction.newConv(result, Mode.getIs());
-		Call call = construction.newCall(mem, putcharSymConst, new Node[] {conv}, putcharEntity.getType());
+		Node conv = construction.newConv(result, Mode.getIs());
+		Node call = construction.newCall(mem, putcharSymConst, new Node[] {conv}, putcharEntity.getType());
 		
 		Node callMem = construction.newProj(call, Mode.getM(), Call.pnMRegular);
 		construction.setCurrentMem(callMem);
@@ -195,26 +188,26 @@ public class BrainFuck {
 		Node pointer = construction.getVariable(0, Mode.getP());
 		Node mem = construction.getCurrentMem();
 		
-		Load load = construction.newLoad(mem, pointer, Mode.getBu());
-		Proj result = construction.newProj(load, Mode.getBu(), Load.pnRes);
-		Proj loadMem = construction.newProj(load, Mode.getM(), Load.pnM);
+		Node load = construction.newLoad(mem, pointer, Mode.getBu());
+		Node result = construction.newProj(load, Mode.getBu(), Load.pnRes);
+		Node loadMem = construction.newProj(load, Mode.getM(), Load.pnM);
 		
-		Const delta = construction.newConst(Math.abs(delta_int), Mode.getBu());
+		Node delta = construction.newConst(Math.abs(delta_int), Mode.getBu());
 		Node op;
 		if (delta_int < 0)
 			op = construction.newSub(result, delta, Mode.getBu());
 		else
 			op = construction.newAdd(result, delta, Mode.getBu());
 		
-		Store store = construction.newStore(loadMem, pointer, op);
-		Proj storeMem = construction.newProj(store, Mode.getM(), Store.pnM);
+		Node store = construction.newStore(loadMem, pointer, op);
+		Node storeMem = construction.newProj(store, Mode.getM(), Store.pnM);
 		construction.setCurrentMem(storeMem);
 	}
 
 	private void changePointer(int delta_int) {
 		Node pointer = construction.getVariable(0, Mode.getP());
-		Const delta = construction.newConst(delta_int, Mode.getIs());
-		Add add = construction.newAdd(pointer, delta, Mode.getP());
+		Node delta = construction.newConst(delta_int, Mode.getIs());
+		Node add = construction.newAdd(pointer, delta, Mode.getP());
 		construction.setVariable(0, add);
 	}
 }

@@ -125,6 +125,11 @@ class NodeWrapperConstruction {
 		
 		
 		
+			case iro_Phi:
+				return new Phi(ptr);
+		
+		
+		
 			case iro_Eor:
 				return new Eor(ptr);
 		
@@ -187,6 +192,11 @@ class NodeWrapperConstruction {
 		
 			case iro_Shrs:
 				return new Shrs(ptr);
+		
+		
+		
+			case iro_Sel:
+				return new Sel(ptr);
 		
 		
 			default:

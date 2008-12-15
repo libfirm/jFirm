@@ -6,7 +6,7 @@ import com.sun.jna.Pointer;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irnode;
 import firm.bindings.Bindings;
-import firm.nodes.*;
+import firm.nodes.Node;
 
 class ConstructionBase {
 
@@ -20,234 +20,243 @@ class ConstructionBase {
 	
 	
 	
-	public NoMem newNoMem() {
+	public Node newNoMem() {
 		Pointer result_ptr = binding_cons.new_NoMem();
-		return new NoMem(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
 	
 	
-	public Sub newSub(Node left, Node right, firm.Mode mode) {
+	public Node newSub(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Sub(left.ptr, right.ptr, mode.ptr);
-		return new Sub(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Confirm newConfirm(Node value, Node bound, int cmp) {
+	public Node newConfirm(Node value, Node bound, int cmp) {
 		Pointer result_ptr = binding_cons.new_Confirm(value.ptr, bound.ptr, cmp);
-		return new Confirm(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Unknown newUnknown(firm.Mode mode) {
+	public Node newUnknown(firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Unknown(mode.ptr);
-		return new Unknown(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Mux newMux(Node sel, Node _false, Node _true, firm.Mode mode) {
+	public Node newMux(Node sel, Node _false, Node _true, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Mux(sel.ptr, _false.ptr, _true.ptr, mode.ptr);
-		return new Mux(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
 	
 	
-	public Add newAdd(Node left, Node right, firm.Mode mode) {
+	public Node newAdd(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Add(left.ptr, right.ptr, mode.ptr);
-		return new Add(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Abs newAbs(Node op, firm.Mode mode) {
+	public Node newAbs(Node op, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Abs(op.ptr, mode.ptr);
-		return new Abs(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Call newCall(Node mem, Node ptr, Node[] ins, firm.Type type) {
+	public Node newCall(Node mem, Node ptr, Node[] ins, firm.Type type) {
 		Pointer result_ptr = binding_cons.new_Call(mem.ptr, ptr.ptr, ins.length, Node.getPointerListFromNodeList(ins), type.ptr);
-		return new Call(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Proj newProj(Node pred, firm.Mode mode, int proj) {
+	public Node newProj(Node pred, firm.Mode mode, int proj) {
 		Pointer result_ptr = binding_cons.new_Proj(pred.ptr, mode.ptr, new com.sun.jna.NativeLong(proj));
-		return new Proj(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Mul newMul(Node left, Node right, firm.Mode mode) {
+	public Node newMul(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Mul(left.ptr, right.ptr, mode.ptr);
-		return new Mul(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Store newStore(Node mem, Node ptr, Node value, firm.bindings.binding_ircons.cons_flags flags) {
+	public Node newStore(Node mem, Node ptr, Node value, firm.bindings.binding_ircons.cons_flags flags) {
 		Pointer result_ptr = binding_cons.new_Store(mem.ptr, ptr.ptr, value.ptr, flags.val);
-		return new Store(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Mulh newMulh(Node left, Node right, firm.Mode mode) {
+	public Node newMulh(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Mulh(left.ptr, right.ptr, mode.ptr);
-		return new Mulh(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Return newReturn(Node mem, Node[] ins) {
+	public Node newReturn(Node mem, Node[] ins) {
 		Pointer result_ptr = binding_cons.new_Return(mem.ptr, ins.length, Node.getPointerListFromNodeList(ins));
-		return new Return(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Tuple newTuple(Node[] ins) {
+	public Node newTuple(Node[] ins) {
 		Pointer result_ptr = binding_cons.new_Tuple(ins.length, Node.getPointerListFromNodeList(ins));
-		return new Tuple(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Jmp newJmp() {
+	public Node newJmp() {
 		Pointer result_ptr = binding_cons.new_Jmp();
-		return new Jmp(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Minus newMinus(Node op, firm.Mode mode) {
+	public Node newMinus(Node op, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Minus(op.ptr, mode.ptr);
-		return new Minus(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Not newNot(Node op, firm.Mode mode) {
+	public Node newNot(Node op, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Not(op.ptr, mode.ptr);
-		return new Not(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Cond newCond(Node selector) {
+	public Node newCond(Node selector) {
 		Pointer result_ptr = binding_cons.new_Cond(selector.ptr);
-		return new Cond(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Load newLoad(Node mem, Node ptr, firm.Mode mode, firm.bindings.binding_ircons.cons_flags flags) {
+	public Node newLoad(Node mem, Node ptr, firm.Mode mode, firm.bindings.binding_ircons.cons_flags flags) {
 		Pointer result_ptr = binding_cons.new_Load(mem.ptr, ptr.ptr, mode.ptr, flags.val);
-		return new Load(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Shr newShr(Node left, Node right, firm.Mode mode) {
+	public Node newShr(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Shr(left.ptr, right.ptr, mode.ptr);
-		return new Shr(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
 	
 	
-	public Eor newEor(Node left, Node right, firm.Mode mode) {
+	
+	
+	public Node newEor(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Eor(left.ptr, right.ptr, mode.ptr);
-		return new Eor(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Bad newBad() {
+	public Node newBad() {
 		Pointer result_ptr = binding_cons.new_Bad();
-		return new Bad(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Rotl newRotl(Node left, Node right, firm.Mode mode) {
+	public Node newRotl(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Rotl(left.ptr, right.ptr, mode.ptr);
-		return new Rotl(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Shl newShl(Node left, Node right, firm.Mode mode) {
+	public Node newShl(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Shl(left.ptr, right.ptr, mode.ptr);
-		return new Shl(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Or newOr(Node left, Node right, firm.Mode mode) {
+	public Node newOr(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Or(left.ptr, right.ptr, mode.ptr);
-		return new Or(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Cmp newCmp(Node left, Node right) {
+	public Node newCmp(Node left, Node right) {
 		Pointer result_ptr = binding_cons.new_Cmp(left.ptr, right.ptr);
-		return new Cmp(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public And newAnd(Node left, Node right, firm.Mode mode) {
+	public Node newAnd(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_And(left.ptr, right.ptr, mode.ptr);
-		return new And(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Pin newPin(Node op) {
+	public Node newPin(Node op) {
 		Pointer result_ptr = binding_cons.new_Pin(op.ptr);
-		return new Pin(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Conv newConv(Node op, firm.Mode mode) {
+	public Node newConv(Node op, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Conv(op.ptr, mode.ptr);
-		return new Conv(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public Sync newSync(Node[] ins) {
+	public Node newSync(Node[] ins) {
 		Pointer result_ptr = binding_cons.new_Sync(ins.length, Node.getPointerListFromNodeList(ins));
-		return new Sync(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
-	public IJmp newIJmp(Node target) {
+	public Node newIJmp(Node target) {
 		Pointer result_ptr = binding_cons.new_IJmp(target.ptr);
-		return new IJmp(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
 	
 	
-	public Shrs newShrs(Node left, Node right, firm.Mode mode) {
+	public Node newShrs(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Shrs(left.ptr, right.ptr, mode.ptr);
-		return new Shrs(result_ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
+	public Node newSel(Node mem, Node ptr, Node[] ins, firm.Entity entity) {
+		Pointer result_ptr = binding_cons.new_Sel(mem.ptr, ptr.ptr, ins.length, Node.getPointerListFromNodeList(ins), entity.ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	
 	

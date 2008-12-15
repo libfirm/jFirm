@@ -20,6 +20,12 @@ End = dict(
 	noconstr   = True,
 ),
 
+Phi = dict(
+	noconstr = True,
+	state    = "pinned",
+	arity    = "variable",
+),
+
 Jmp = dict(
 	mode     = "mode_X",
 	op_flags = "cfopcode",
@@ -163,6 +169,18 @@ Proj = dict(
 		dict(
 			type = "long",
 			name = "proj"
+		)
+	]
+),
+
+Sel = dict(
+	ins    = [ "mem", "ptr" ],
+	arity  = "variable",
+	mode   = "mode_P",
+	attrs    = [
+		dict(
+			type = "ir_entity*",
+			name = "entity"
 		)
 	]
 ),
@@ -323,6 +341,9 @@ def get_java_type(type):
 	elif type == "cons_flags":
 		new_type   = "firm.bindings.binding_ircons.cons_flags"
 		to_wrapper = "%s.val"
+	elif type == "ir_entity*":
+		new_type   = "firm.Entity"
+		to_wrapper = "%s.ptr"
 	else:
 		print "UNKNOWN TYPE"
 		new_type = "BAD"
@@ -452,7 +473,7 @@ import com.sun.jna.Pointer;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irnode;
 import firm.bindings.Bindings;
-import firm.nodes.*;
+import firm.nodes.Node;
 
 class ConstructionBase {
 
@@ -464,9 +485,9 @@ class ConstructionBase {
 
 	{% for nodename, node in nodes.iteritems() %}
 	{% if not node.abstract and not node.noconstr %}
-	public {{node["classname"]}} new{{node["classname"]}}({{node["arguments"]|argdecls}}) {
+	public Node new{{node["classname"]}}({{node["arguments"]|argdecls}}) {
 		Pointer result_ptr = binding_cons.new_{{nodename}}({{node["arguments"]|bindingargs}});
-		return new {{node["classname"]}}(result_ptr);
+		return Node.createWrapper(result_ptr);
 	}
 	{% endif %}
 	{% endfor %}
