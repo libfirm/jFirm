@@ -8,7 +8,7 @@ import firm.bindings.binding_irnode;
 import firm.bindings.Bindings;
 import firm.nodes.*;
 
-public class ConstructionBase {
+class ConstructionBase {
 
 	protected static final binding_ircons binding_cons = Bindings.getIrConsBinding();
 	protected static final binding_irnode binding = Bindings.getIrNodeBinding();

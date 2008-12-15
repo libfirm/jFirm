@@ -2,11 +2,6 @@ package firm;
 
 import java.io.IOException;
 
-import firm.bindings.binding_typerep.ir_visibility;
-import firm.nodes.Block;
-import firm.nodes.Node;
-import firm.nodes.Return;
-
 /* Test libFirm bindings */
 public class Main {
 
@@ -36,7 +31,7 @@ public class Main {
 //		Dump.dumpBlockGraph(graph, "-XXX");
 		
 		BrainFuck fuck = new BrainFuck();
-		Graph bfmain = fuck.compile("rot13.bf");
+		fuck.compile("rot13.bf");
 		
 //		System.out.println("Nodes:");
 //		bfmain.walk(new GraphWalker() {

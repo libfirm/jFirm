@@ -1,14 +1,9 @@
 package firm;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-import sun.org.mozilla.javascript.internal.Node.Jump;
-
-import firm.bindings.binding_irnode.pn_Call;
-import firm.bindings.binding_irnode.pn_Load;
 import firm.bindings.binding_typerep.ir_type_state;
 import firm.bindings.binding_typerep.ir_visibility;
 import firm.nodes.Add;
@@ -104,6 +99,8 @@ public class BrainFuck {
 		graph.getEndBlock().addPred(nreturn);
 		
 		construction.finish();
+		
+		/* TODO: call optimisations here... */
 		
 		return graph;
 	}
