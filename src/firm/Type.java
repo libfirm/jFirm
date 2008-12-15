@@ -19,6 +19,8 @@ public class Type extends JNAWrapper {
 			return new MethodType(ptr);
 		} else if (binding.is_Array_type(ptr) != 0) {
 			return new ArrayType(ptr);
+		} else if (binding.is_Class_type(ptr) != 0) {
+			return new ClassType(ptr);
 		} else {
 			/* TODO: add missing types */
 			return new Type(ptr);

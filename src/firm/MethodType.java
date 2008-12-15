@@ -12,7 +12,11 @@ public class MethodType extends Type {
 	}
 	
 	public MethodType(Ident name, int nParameters, int nResults) {
-		this(binding.new_type_method(name.ptr, nParameters, nResults));
+		super(binding.new_type_method(name.ptr, nParameters, nResults));
+	}
+	
+	public MethodType(String name, int nParameters, int nResults) {
+		this(new Ident(name), nParameters, nResults);
 	}
 	
 //	Pointer new_d_type_method(Pointer name, int n_param, int n_res, Pointer db);

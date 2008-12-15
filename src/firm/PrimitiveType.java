@@ -12,6 +12,10 @@ public class PrimitiveType extends Type {
 		super(binding.new_type_primitive(name.ptr, mode.ptr));
 	}
 	
+	public PrimitiveType(String name, Mode mode) {
+		this(new Ident(name), mode);
+	}
+	
 	Type getBaseType() {
 		return Type.createWrapper(binding.get_primitive_base_type(ptr));
 	}

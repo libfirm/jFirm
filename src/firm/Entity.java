@@ -26,6 +26,10 @@ public class Entity extends JNAWrapper {
 		this(binding.new_entity(owner.ptr, name.ptr, type.ptr));
 	}
 	
+	public Entity(Type owner, String name, Type type) {
+		this(owner, new Ident(name), type);
+	}
+	
 	public final void free() {
 		binding.free_entity(ptr);
 	}

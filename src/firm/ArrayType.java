@@ -15,6 +15,10 @@ public class ArrayType extends Type {
 		super(binding.new_type_array(name.ptr, n_dims, elementType.ptr));
 	}
 
+	public ArrayType(String name, int n_dims, Type elementType) {
+		this(new Ident(name), n_dims, elementType);
+	}
+	
 	public int getNDimensions() {
 		return binding.get_array_n_dimensions(ptr);
 	}
