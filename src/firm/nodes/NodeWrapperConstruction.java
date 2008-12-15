@@ -1,4 +1,4 @@
-/* Warning: automatically generated fiel */
+/* Warning: automatically generated file */
 package firm.nodes;
 
 import com.sun.jna.Pointer;
@@ -162,6 +162,11 @@ class NodeWrapperConstruction {
 		
 			case iro_Or:
 				return new Or(ptr);
+		
+		
+		
+			case iro_Block:
+				return new Block(ptr);
 		
 		
 		

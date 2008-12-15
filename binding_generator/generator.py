@@ -55,6 +55,33 @@ Const = dict(
 	}'''
 ),
 
+Block = dict(
+	mode   = "mode_BB",
+	knownBlock = True,
+	noconstr   = True,
+	arity      = "variable",
+	java_add   = '''
+	public void addPred(Node node) {
+		binding_cons.add_immBlock_pred(ptr, node.ptr);
+	}
+	
+	public void mature() {
+		binding_cons.mature_immBlock(ptr);
+	}
+	
+	public Block getBlock() {
+		return null;
+	}
+	
+	public boolean blockVisited() {
+		return 0 != binding.Block_block_visited(ptr);
+	}
+	
+	public void markBlockVisited() {
+		binding.mark_Block_block_visited(ptr);
+	}''',
+),
+
 SymConst = dict(
 	mode       = "mode_P",
 	knownBlock = True,
@@ -571,7 +598,7 @@ file = open("ConstructionBase.java", "w")
 file.write(template.render(nodes = nodes))
 file.close()
 
-template = env.from_string('''/* Warning: automatically generated fiel */
+template = env.from_string('''/* Warning: automatically generated file */
 package firm.nodes;
 
 import com.sun.jna.Pointer;
@@ -598,3 +625,26 @@ file = open("NodeWrapperConstruction.java", "w")
 file.write(template.render(nodes = nodes))
 file.close()
 
+template = env.from_string('''/* Warning: automatically generated file */
+package firm.nodes;
+
+import com.sun.jna.Pointer;
+
+public class Node extends NodeBase {
+
+	public Node(Pointer pointer) {
+		super(pointer);
+	}
+
+	{% for nodename, node in nodes.iteritems() %}
+	{% if not node.abstract and not node.noconstr %}
+	public Node new{{node["classname"]}}({{node.ext_arguments|argdecls}}) {
+		return Node.createWrapper(binding_cons.new_r_{{nodename}}({{node.ext_arguments|bindingargs(True)}}));
+	}
+	{% endif %}
+	{% endfor %}
+
+}''')
+file = open("Node.java", "w")
+file.write(template.render(nodes = nodes))
+file.close()

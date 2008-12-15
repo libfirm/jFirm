@@ -239,13 +239,6 @@ public class Entity extends JNAWrapper {
 		binding.set_entity_usage(ptr, flag.val);
 	}
 
-// TODO no debug info for now
-//	public final Pointer getDbgInfo() {
-//	}
-//
-//	public final void setDbgInfo(Pointer db) {
-//	}
-
 	public final Node getAtomicValue() {
 		Pointer node_ptr = binding.get_atomic_ent_value(ptr);
 		return Node.createWrapper(node_ptr);

@@ -212,6 +212,8 @@ class ConstructionBase {
 	
 	
 	
+	
+	
 	public Node newCmp(Node left, Node right) {
 		Pointer result_ptr = binding_cons.new_Cmp(left.ptr, right.ptr);
 		return Node.createWrapper(result_ptr);
