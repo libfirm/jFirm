@@ -34,4 +34,11 @@ public class Confirm extends Node {
 	
 
 	
+	public int getCmp() {
+		int _res = binding.get_Confirm_cmp(ptr);
+		return _res;
+	}
+	
+
+	
 }

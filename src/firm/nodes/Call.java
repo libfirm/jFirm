@@ -34,6 +34,13 @@ public class Call extends Node {
 	
 
 	
+	public firm.Type getType() {
+		Pointer _res = binding.get_Call_type(ptr);
+		return firm.Type.createWrapper(_res);
+	}
+	
+
+	
 	public static final int pnMRegular = 0;
 	
 	public static final int pnXRegular = 1;

@@ -8,6 +8,7 @@ import com.sun.jna.Pointer;
 
 import firm.Graph;
 import firm.JNAWrapper;
+import firm.Mode;
 import firm.bindings.Bindings;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irnode;
@@ -34,6 +35,10 @@ public class Node extends JNAWrapper {
 			ptrlist[i] = list[i].ptr;
 		}
 		return ptrlist;
+	}
+	
+	public Mode getMode() {
+		return new Mode(binding.get_irn_mode(ptr));
 	}
 	
 	public int getPredCount() {

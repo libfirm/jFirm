@@ -34,4 +34,11 @@ public class Sel extends Node {
 	
 
 	
+	public firm.Entity getEntity() {
+		Pointer _res = binding.get_Sel_entity(ptr);
+		return new firm.Entity(_res);
+	}
+	
+
+	
 }

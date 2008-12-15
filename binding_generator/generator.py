@@ -327,27 +327,50 @@ env.filters['filterkeywords'] = format_filter_keywords
 
 def get_java_type(type):
 	if type == "ir_type*":
-		new_type   = "firm.Type"
-		to_wrapper = "%s.ptr"
+		java_type    = "firm.Type"
+		wrap_type    = "Pointer"
+		to_wrapper   = "%s.ptr"
+		from_wrapper = "firm.Type.createWrapper(%s)"
 	elif type == "ir_mode*":
-		new_type   = "firm.Mode"
-		to_wrapper = "%s.ptr"
+		java_type    = "firm.Mode"
+		wrap_type    = "Pointer"
+		to_wrapper   = "%s.ptr"
+		from_wrapper = "new firm.Mode(%s)"
 	elif type == "pn_Cmp":
-		new_type   = "int"
-		to_wrapper = "%s"
+		java_type    = "int"
+		wrap_type    = "int"
+		to_wrapper   = "%s"
+		from_wrapper = "%s"
 	elif type == "long":
-		new_type   = "int"
-		to_wrapper = "new com.sun.jna.NativeLong(%s)"
+		java_type    = "int"
+		wrap_type    = "com.sun.jna.NativeLong"
+		to_wrapper   = "new com.sun.jna.NativeLong(%s)"
+		from_wrapper = "%s.intValue()"
 	elif type == "cons_flags":
-		new_type   = "firm.bindings.binding_ircons.cons_flags"
-		to_wrapper = "%s.val"
+		java_type    = "firm.bindings.binding_ircons.cons_flags"
+		wrap_type    = "int"
+		to_wrapper   = "%s.val"
+		from_wrapper = "firm.bindings.binding_ircons.cons_flags.getEnum(%s)"
 	elif type == "ir_entity*":
-		new_type   = "firm.Entity"
-		to_wrapper = "%s.ptr"
+		java_type    = "firm.Entity"
+		wrap_type    = "Pointer"
+		to_wrapper   = "%s.ptr"
+		from_wrapper = "new firm.Entity(%s)"
 	else:
 		print "UNKNOWN TYPE"
-		new_type = "BAD"
-	return (new_type,to_wrapper)
+		java_type    = "BAD"
+		wrap_type    = "BAD"
+		to_wrapper   = "BAD"
+		from_wrapper = "BAD"
+	return (java_type,wrap_type,to_wrapper,from_wrapper)
+
+def prepare_attr(attr):
+	type = attr["type"]
+	(java_type,wrap_type,to_wrapper,from_wrapper) = get_java_type(type)
+	attr["java_type"] = java_type
+	attr["wrap_type"] = wrap_type
+	attr["to_wrapper"] = to_wrapper
+	attr["from_wrapper"] = from_wrapper
 
 def preprocess_node(nodename, node):
 	node["classname"] = format_camel_case_big(nodename)
@@ -386,21 +409,20 @@ def preprocess_node(nodename, node):
 			type = "firm.Mode"
 		))
 	for attr in node["attrs"]:
-		old_type = attr["type"]
-		(new_type,to_wrapper) = get_java_type(old_type)
+		prepare_attr(attr)
 		
 		arguments.append(dict(
 			name = attr["name"],
-			type = new_type,
-			to_wrapper = to_wrapper
+			type = attr["java_type"],
+			to_wrapper = attr["to_wrapper"]
 		))
 	for arg in node["constructor_args"]:
 		old_type = arg["type"]
-		(new_type,to_wrapper) = get_java_type(old_type)
+		(java_type,wrap_type,to_wrapper,from_wrapper) = get_java_type(old_type)
 
 		arguments.append(dict(
 			name = arg["name"],
-			type = new_type,
+			type = java_type,
 			to_wrapper = to_wrapper
 		))
 		
@@ -453,6 +475,13 @@ public {{"abstract "|ifset(node,"abstract")}}class {{node["classname"]}} extends
 
 	public void set{{input|CamelCase}}(Node {{input|filterkeywords}}) {
 		binding.set_{{nodename}}_{{input}}(this.ptr, {{input|filterkeywords}}.ptr);
+	}
+	{% endfor %}
+
+	{% for attr in node.attrs %}
+	public {{attr.java_type}} get{{attr.name|CamelCase}}() {
+		{{attr.wrap_type}} _res = binding.get_{{nodename}}_{{attr.name}}(ptr);
+		return {{attr.from_wrapper % "_res"}};
 	}
 	{% endfor %}
 

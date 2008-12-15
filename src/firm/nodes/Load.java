@@ -34,6 +34,13 @@ public class Load extends Node {
 	
 
 	
+	public firm.Mode getMode() {
+		Pointer _res = binding.get_Load_mode(ptr);
+		return new firm.Mode(_res);
+	}
+	
+
+	
 	public static final int pnM = 0;
 	
 	public static final int pnXRegular = 1;

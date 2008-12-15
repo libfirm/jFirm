@@ -26,4 +26,11 @@ public class Proj extends Node {
 	
 
 	
+	public int getProj() {
+		com.sun.jna.NativeLong _res = binding.get_Proj_proj(ptr);
+		return _res.intValue();
+	}
+	
+
+	
 }
