@@ -55,6 +55,10 @@ public class Entity extends JNAWrapper {
 	public final void setLdIdent(Ident ldIdent) {
 		binding.set_entity_ld_ident(ptr, ldIdent.ptr);
 	}
+	
+	public final void setLdIdent(String ldIdent) {
+		setLdIdent(new Ident(ldIdent));
+	}
 
 	public final String getLdName() {
 		return binding.get_entity_ld_name(ptr);

@@ -31,22 +31,21 @@ public class BrainFuck {
 		this.input = input;
 		
 		/* create a new entity for the main function */
-		Ident ident = new Ident("main");
-		MethodType type = new MethodType(new Ident("V()"), 0, 0);
+		MethodType type = new MethodType("V()", 0, 0);
 		Type global = Program.getGlobalType();
-		Entity mainEnt = new Entity(global, ident, type);
-		mainEnt.setLdIdent(ident);
+		Entity mainEnt = new Entity(global, "main", type);
+		mainEnt.setLdIdent("main");
 		mainEnt.setVisibility(ir_visibility.visibility_external_visible);
 		
 		/* create a new global array for the brainfuck data */
-		PrimitiveType btype = new PrimitiveType(new Ident("type_byte"), Mode.getBu());
-		ArrayType     atype = new ArrayType(new Ident("type_array"), 1, btype);
+		PrimitiveType btype = new PrimitiveType("type_byte", Mode.getBu());
+		ArrayType     atype = new ArrayType("type_array", 1, btype);
 		atype.setBounds(0, 0, DATA_SIZE);
 		atype.setSizeBytes(DATA_SIZE);
 		atype.setTypeState(ir_type_state.layout_fixed);
 		
 		Type globalType = Program.getGlobalType();
-		Entity data = new Entity(globalType, new Ident("data"), atype);
+		Entity data = new Entity(globalType, "data", atype);
 		data.setVisibility(ir_visibility.visibility_local);
 		
 		/* create a graph */
@@ -58,23 +57,23 @@ public class BrainFuck {
 		construction.setVariable(0, symconst);
 		
 		/* create putchar entity */
-		PrimitiveType intType = new PrimitiveType(new Ident("type_ind"), Mode.getIs());
-		MethodType putcharType = new MethodType(new Ident("putchar_type"), 1, 1);
+		PrimitiveType intType = new PrimitiveType("type_ind", Mode.getIs());
+		MethodType putcharType = new MethodType("putchar_type", 1, 1);
 		putcharType.setParamType(0, intType);
 		putcharType.setResType(0, intType);
 		
-		putcharEntity = new Entity(globalType, new Ident("putchar"), putcharType);
+		putcharEntity = new Entity(globalType, "putchar", putcharType);
 		putcharEntity.setVisibility(ir_visibility.visibility_external_allocated);
-		putcharEntity.setLdIdent(new Ident("putchar"));
+		putcharEntity.setLdIdent("putchar");
 		putcharSymConst = construction.newSymConst(putcharEntity);
 		
 		/* create getchar entity */
-		MethodType getcharType = new MethodType(new Ident("getchar_type"), 0, 1);
+		MethodType getcharType = new MethodType("getchar_type", 0, 1);
 		getcharType.setResType(0, intType);
 		
-		getcharEntity = new Entity(globalType, new Ident("getchar"), getcharType);
+		getcharEntity = new Entity(globalType, "getchar", getcharType);
 		getcharEntity.setVisibility(ir_visibility.visibility_external_allocated);
-		getcharEntity.setLdIdent(new Ident("getchar"));
+		getcharEntity.setLdIdent("getchar");
 		getcharSymConst = construction.newSymConst(getcharEntity); 
 				
 		while (true) {
