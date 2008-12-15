@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import firm.bindings.binding_ircons.cons_flags;
 import firm.bindings.binding_typerep.ir_type_state;
 import firm.bindings.binding_typerep.ir_visibility;
 import firm.nodes.Add;
@@ -133,7 +132,7 @@ public class BrainFuck {
 		Conv conv = construction.newConv(result, Mode.getBu());
 		
 		Node pointer = construction.getVariable(0, Mode.getP());
-		Store store = construction.newStore(callMem, pointer, conv, cons_flags.cons_none);
+		Store store = construction.newStore(callMem, pointer, conv);
 		Proj storeMem = construction.newProj(store, Mode.getM(), Store.pnM);
 		construction.setCurrentMem(storeMem);
 	}
@@ -148,7 +147,7 @@ public class BrainFuck {
 		Node pointer = construction.getVariable(0, Mode.getP());
 		Node mem = construction.getCurrentMem();
 		
-		Load load = construction.newLoad(mem, pointer, Mode.getBu(), cons_flags.cons_none);
+		Load load = construction.newLoad(mem, pointer, Mode.getBu());
 		Proj loadRes = construction.newProj(load, Mode.getBu(), Load.pnRes);
 		Proj loadMem = construction.newProj(load, Mode.getM(), Load.pnM);
 		construction.setCurrentMem(loadMem);
@@ -182,7 +181,7 @@ public class BrainFuck {
 		Node pointer = construction.getVariable(0, Mode.getP());
 		Node mem = construction.getCurrentMem();
 		
-		Load load = construction.newLoad(mem, pointer, Mode.getBu(), cons_flags.cons_none);
+		Load load = construction.newLoad(mem, pointer, Mode.getBu());
 		Proj result = construction.newProj(load, Mode.getBu(), Load.pnRes);
 		
 		Conv conv = construction.newConv(result, Mode.getIs());
@@ -196,7 +195,7 @@ public class BrainFuck {
 		Node pointer = construction.getVariable(0, Mode.getP());
 		Node mem = construction.getCurrentMem();
 		
-		Load load = construction.newLoad(mem, pointer, Mode.getBu(), cons_flags.cons_none);
+		Load load = construction.newLoad(mem, pointer, Mode.getBu());
 		Proj result = construction.newProj(load, Mode.getBu(), Load.pnRes);
 		Proj loadMem = construction.newProj(load, Mode.getM(), Load.pnM);
 		
@@ -207,7 +206,7 @@ public class BrainFuck {
 		else
 			op = construction.newAdd(result, delta, Mode.getBu());
 		
-		Store store = construction.newStore(loadMem, pointer, op, cons_flags.cons_none);
+		Store store = construction.newStore(loadMem, pointer, op);
 		Proj storeMem = construction.newProj(store, Mode.getM(), Store.pnM);
 		construction.setCurrentMem(storeMem);
 	}

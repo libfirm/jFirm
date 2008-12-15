@@ -246,7 +246,7 @@ def format_binding_args(arglist, need_graph = False):
 	first = True
 	res   = ""
 	if need_graph:
-		res = "Graph.getCurrent().ptr"
+		res = "firm.Graph.getCurrent().ptr"
 		first = False
 
 	for arg in arglist:
@@ -309,10 +309,10 @@ env.filters['filterkeywords'] = format_filter_keywords
 
 def get_java_type(type):
 	if type == "ir_type*":
-		new_type   = "Type"
+		new_type   = "firm.Type"
 		to_wrapper = "%s.ptr"
 	elif type == "ir_mode*":
-		new_type   = "Mode"
+		new_type   = "firm.Mode"
 		to_wrapper = "%s.ptr"
 	elif type == "pn_Cmp":
 		new_type   = "int"
@@ -362,7 +362,7 @@ def preprocess_node(nodename, node):
 	if "mode" not in node:
 		arguments.append(dict(
 			name = "mode",
-			type = "Mode"
+			type = "firm.Mode"
 		))
 	for attr in node["attrs"]:
 		old_type = attr["type"]
@@ -412,9 +412,6 @@ for nodename, node in nodes.iteritems():
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.Graph;
-import firm.Mode;
-import firm.Type;
 
 public {{"abstract "|ifset(node,"abstract")}}class {{node["classname"]}} extends {{node|key("is_a", "node")|CamelCase}} {
 

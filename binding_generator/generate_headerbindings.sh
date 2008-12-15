@@ -2,8 +2,7 @@
 #
 # You need a new version cparser (with jna backend) and firm headers
 
-FIRM_HOME="${HOME}/develop/firm/"
-FIRM_INC="${FIRM_HOME}/libfirm/include"
+. config
 
 for i in irmode tv ircons irnode firm_common irdump iroptimize irgraph typerep ident irprog be irvrfy; do
 	RES="../src/firm/bindings/binding_$i.java"

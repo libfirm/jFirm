@@ -29,7 +29,7 @@ class ConstructionBase {
 	
 	
 	
-	public Sub newSub(Node left, Node right, Mode mode) {
+	public Sub newSub(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Sub(left.ptr, right.ptr, mode.ptr);
 		return new Sub(result_ptr);
 	}
@@ -43,14 +43,14 @@ class ConstructionBase {
 	
 	
 	
-	public Unknown newUnknown(Mode mode) {
+	public Unknown newUnknown(firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Unknown(mode.ptr);
 		return new Unknown(result_ptr);
 	}
 	
 	
 	
-	public Mux newMux(Node sel, Node _false, Node _true, Mode mode) {
+	public Mux newMux(Node sel, Node _false, Node _true, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Mux(sel.ptr, _false.ptr, _true.ptr, mode.ptr);
 		return new Mux(result_ptr);
 	}
@@ -59,35 +59,35 @@ class ConstructionBase {
 	
 	
 	
-	public Add newAdd(Node left, Node right, Mode mode) {
+	public Add newAdd(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Add(left.ptr, right.ptr, mode.ptr);
 		return new Add(result_ptr);
 	}
 	
 	
 	
-	public Abs newAbs(Node op, Mode mode) {
+	public Abs newAbs(Node op, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Abs(op.ptr, mode.ptr);
 		return new Abs(result_ptr);
 	}
 	
 	
 	
-	public Call newCall(Node mem, Node ptr, Node[] ins, Type type) {
+	public Call newCall(Node mem, Node ptr, Node[] ins, firm.Type type) {
 		Pointer result_ptr = binding_cons.new_Call(mem.ptr, ptr.ptr, ins.length, Node.getPointerListFromNodeList(ins), type.ptr);
 		return new Call(result_ptr);
 	}
 	
 	
 	
-	public Proj newProj(Node pred, Mode mode, int proj) {
+	public Proj newProj(Node pred, firm.Mode mode, int proj) {
 		Pointer result_ptr = binding_cons.new_Proj(pred.ptr, mode.ptr, new com.sun.jna.NativeLong(proj));
 		return new Proj(result_ptr);
 	}
 	
 	
 	
-	public Mul newMul(Node left, Node right, Mode mode) {
+	public Mul newMul(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Mul(left.ptr, right.ptr, mode.ptr);
 		return new Mul(result_ptr);
 	}
@@ -101,7 +101,7 @@ class ConstructionBase {
 	
 	
 	
-	public Mulh newMulh(Node left, Node right, Mode mode) {
+	public Mulh newMulh(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Mulh(left.ptr, right.ptr, mode.ptr);
 		return new Mulh(result_ptr);
 	}
@@ -129,14 +129,14 @@ class ConstructionBase {
 	
 	
 	
-	public Minus newMinus(Node op, Mode mode) {
+	public Minus newMinus(Node op, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Minus(op.ptr, mode.ptr);
 		return new Minus(result_ptr);
 	}
 	
 	
 	
-	public Not newNot(Node op, Mode mode) {
+	public Not newNot(Node op, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Not(op.ptr, mode.ptr);
 		return new Not(result_ptr);
 	}
@@ -150,14 +150,14 @@ class ConstructionBase {
 	
 	
 	
-	public Load newLoad(Node mem, Node ptr, Mode mode, firm.bindings.binding_ircons.cons_flags flags) {
+	public Load newLoad(Node mem, Node ptr, firm.Mode mode, firm.bindings.binding_ircons.cons_flags flags) {
 		Pointer result_ptr = binding_cons.new_Load(mem.ptr, ptr.ptr, mode.ptr, flags.val);
 		return new Load(result_ptr);
 	}
 	
 	
 	
-	public Shr newShr(Node left, Node right, Mode mode) {
+	public Shr newShr(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Shr(left.ptr, right.ptr, mode.ptr);
 		return new Shr(result_ptr);
 	}
@@ -166,7 +166,7 @@ class ConstructionBase {
 	
 	
 	
-	public Eor newEor(Node left, Node right, Mode mode) {
+	public Eor newEor(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Eor(left.ptr, right.ptr, mode.ptr);
 		return new Eor(result_ptr);
 	}
@@ -180,21 +180,21 @@ class ConstructionBase {
 	
 	
 	
-	public Rotl newRotl(Node left, Node right, Mode mode) {
+	public Rotl newRotl(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Rotl(left.ptr, right.ptr, mode.ptr);
 		return new Rotl(result_ptr);
 	}
 	
 	
 	
-	public Shl newShl(Node left, Node right, Mode mode) {
+	public Shl newShl(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Shl(left.ptr, right.ptr, mode.ptr);
 		return new Shl(result_ptr);
 	}
 	
 	
 	
-	public Or newOr(Node left, Node right, Mode mode) {
+	public Or newOr(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Or(left.ptr, right.ptr, mode.ptr);
 		return new Or(result_ptr);
 	}
@@ -208,7 +208,7 @@ class ConstructionBase {
 	
 	
 	
-	public And newAnd(Node left, Node right, Mode mode) {
+	public And newAnd(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_And(left.ptr, right.ptr, mode.ptr);
 		return new And(result_ptr);
 	}
@@ -222,7 +222,7 @@ class ConstructionBase {
 	
 	
 	
-	public Conv newConv(Node op, Mode mode) {
+	public Conv newConv(Node op, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Conv(op.ptr, mode.ptr);
 		return new Conv(result_ptr);
 	}
@@ -245,7 +245,7 @@ class ConstructionBase {
 	
 	
 	
-	public Shrs newShrs(Node left, Node right, Mode mode) {
+	public Shrs newShrs(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Shrs(left.ptr, right.ptr, mode.ptr);
 		return new Shrs(result_ptr);
 	}

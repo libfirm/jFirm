@@ -2,11 +2,14 @@ package firm;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_ircons.cons_flags;
 import firm.bindings.binding_irgraph.irg_phase_state;
 import firm.bindings.binding_typerep.ir_type_state;
 import firm.nodes.Block;
 import firm.nodes.Const;
+import firm.nodes.Load;
 import firm.nodes.Node;
+import firm.nodes.Store;
 import firm.nodes.SymConst;
 
 public class Construction extends ConstructionBase {
@@ -36,6 +39,14 @@ public class Construction extends ConstructionBase {
 	
 	public Const newConst(int value, Mode mode) {
 		return new Const(value, mode);
+	}
+	
+	public Load newLoad(Node mem, Node ptr, Mode loadMode) {
+		return newLoad(mem, ptr, loadMode, cons_flags.cons_none);
+	}
+	
+	public Store newStore(Node mem, Node ptr, Node value) {
+		return newStore(mem, ptr, value, cons_flags.cons_none);
 	}
 	
 	public void setCurrentBlock(Block block) {
