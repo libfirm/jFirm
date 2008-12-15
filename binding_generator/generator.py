@@ -638,7 +638,7 @@ public class Node extends NodeBase {
 
 	{% for nodename, node in nodes.iteritems() %}
 	{% if not node.abstract and not node.noconstr %}
-	public Node new{{node["classname"]}}({{node.ext_arguments|argdecls}}) {
+	public static Node new{{node["classname"]}}({{node.ext_arguments|argdecls}}) {
 		return Node.createWrapper(binding_cons.new_r_{{nodename}}({{node.ext_arguments|bindingargs(True)}}));
 	}
 	{% endif %}
