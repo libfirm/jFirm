@@ -1,11 +1,11 @@
 package firm.bindings;
 /* WARNING: Automatically generated file */
+import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
 import com.sun.jna.NativeLong;
-
 
 public interface binding_be extends Library {
 	public static enum __codecvt_result {
@@ -396,4 +396,6 @@ public interface binding_be extends Library {
 	void be_main(Pointer output, String compilation_unit_name);
 	/* asm_constraint_flags_t */int be_parse_asm_constraints(String constraints);
 	int be_is_valid_clobber(String clobber);
+	
+	
 }
