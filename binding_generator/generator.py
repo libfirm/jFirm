@@ -444,6 +444,34 @@ class ConstructionBase {
 	{% endfor %}
 }''')
 
-file = open("ConstructionBase.java", "w");
+file = open("ConstructionBase.java", "w")
 file.write(template.render(nodes = nodes))
 file.close()
+
+template = env.from_string('''/* Warning: automatically generated fiel */
+package firm.nodes;
+
+import com.sun.jna.Pointer;
+
+import firm.bindings.binding_irnode;
+
+class NodeWrapperConstruction {
+
+	public static Node createWrapper(Pointer ptr) {
+		switch (binding_irnode.ir_opcode.getEnum(Node.binding.get_irn_opcode(ptr))) {
+		{% for nodename, node in nodes.iteritems() %}
+		{% if not node.abstract %}
+			case iro_{{nodename}}:
+				return new {{node["classname"]}}(ptr);
+		{% endif %}
+		{% endfor %}
+			default:
+				return new Node(ptr);
+		}
+	}
+
+}''')
+file = open("NodeWrapperConstruction.java", "w")
+file.write(template.render(nodes = nodes))
+file.close()
+

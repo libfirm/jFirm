@@ -25,12 +25,7 @@ public class Node extends JNAWrapper {
 	}
 	
 	public static Node createWrapper(Pointer ptr) {
-		switch (binding_irnode.ir_opcode.getEnum(binding.get_irn_opcode(ptr))) {
-		case iro_Block:
-			return new Block(ptr);
-		default:
-			return new Node(ptr);
-		}
+		return NodeWrapperConstruction.createWrapper(ptr);
 	}
 	
 	public static Pointer[] getPointerListFromNodeList(Node[] list) {
