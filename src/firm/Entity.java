@@ -24,6 +24,7 @@ public class Entity extends JNAWrapper {
 	
 	public Entity(Type owner, Ident name, Type type) {
 		this(binding.new_entity(owner.ptr, name.ptr, type.ptr));
+		setLdIdent(name);
 	}
 	
 	public Entity(Type owner, String name, Type type) {
