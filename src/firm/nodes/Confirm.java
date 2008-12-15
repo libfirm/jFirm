@@ -2,15 +2,12 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.Graph;
-import firm.Mode;
-import firm.Type;
 
 public class Confirm extends Node {
 
 	
 	public Confirm(Block block, Node value, Node bound, int cmp) {
-		super(binding_cons.new_r_Confirm(Graph.getCurrent().ptr, block.ptr, value.ptr, bound.ptr, cmp));
+		super(binding_cons.new_r_Confirm(firm.Graph.getCurrent().ptr, block.ptr, value.ptr, bound.ptr, cmp));
 	}
 	
 

@@ -2,15 +2,12 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.Graph;
-import firm.Mode;
-import firm.Type;
 
 public class Conv extends Unop {
 
 	
-	public Conv(Block block, Node op, Mode mode) {
-		super(binding_cons.new_r_Conv(Graph.getCurrent().ptr, block.ptr, op.ptr, mode.ptr));
+	public Conv(Block block, Node op, firm.Mode mode) {
+		super(binding_cons.new_r_Conv(firm.Graph.getCurrent().ptr, block.ptr, op.ptr, mode.ptr));
 	}
 	
 

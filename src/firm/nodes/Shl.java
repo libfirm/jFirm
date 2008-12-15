@@ -2,15 +2,12 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.Graph;
-import firm.Mode;
-import firm.Type;
 
 public class Shl extends Binop {
 
 	
-	public Shl(Block block, Node left, Node right, Mode mode) {
-		super(binding_cons.new_r_Shl(Graph.getCurrent().ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
+	public Shl(Block block, Node left, Node right, firm.Mode mode) {
+		super(binding_cons.new_r_Shl(firm.Graph.getCurrent().ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 	
 

@@ -2,15 +2,12 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.Graph;
-import firm.Mode;
-import firm.Type;
 
 public class Return extends Node {
 
 	
 	public Return(Block block, Node mem, Node[] ins) {
-		super(binding_cons.new_r_Return(Graph.getCurrent().ptr, block.ptr, mem.ptr, ins.length, Node.getPointerListFromNodeList(ins)));
+		super(binding_cons.new_r_Return(firm.Graph.getCurrent().ptr, block.ptr, mem.ptr, ins.length, Node.getPointerListFromNodeList(ins)));
 	}
 	
 

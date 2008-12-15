@@ -2,15 +2,12 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.Graph;
-import firm.Mode;
-import firm.Type;
 
 public class IJmp extends Node {
 
 	
 	public IJmp(Block block, Node target) {
-		super(binding_cons.new_r_IJmp(Graph.getCurrent().ptr, block.ptr, target.ptr));
+		super(binding_cons.new_r_IJmp(firm.Graph.getCurrent().ptr, block.ptr, target.ptr));
 	}
 	
 

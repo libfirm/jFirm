@@ -2,15 +2,12 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.Graph;
-import firm.Mode;
-import firm.Type;
 
 public class Pin extends Node {
 
 	
 	public Pin(Block block, Node op) {
-		super(binding_cons.new_r_Pin(Graph.getCurrent().ptr, block.ptr, op.ptr));
+		super(binding_cons.new_r_Pin(firm.Graph.getCurrent().ptr, block.ptr, op.ptr));
 	}
 	
 

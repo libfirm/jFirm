@@ -2,15 +2,12 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.Graph;
-import firm.Mode;
-import firm.Type;
 
 public class Mulh extends Binop {
 
 	
-	public Mulh(Block block, Node left, Node right, Mode mode) {
-		super(binding_cons.new_r_Mulh(Graph.getCurrent().ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
+	public Mulh(Block block, Node left, Node right, firm.Mode mode) {
+		super(binding_cons.new_r_Mulh(firm.Graph.getCurrent().ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 	
 

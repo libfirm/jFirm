@@ -2,15 +2,12 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.Graph;
-import firm.Mode;
-import firm.Type;
 
 public class Cmp extends Binop {
 
 	
 	public Cmp(Block block, Node left, Node right) {
-		super(binding_cons.new_r_Cmp(Graph.getCurrent().ptr, block.ptr, left.ptr, right.ptr));
+		super(binding_cons.new_r_Cmp(firm.Graph.getCurrent().ptr, block.ptr, left.ptr, right.ptr));
 	}
 	
 

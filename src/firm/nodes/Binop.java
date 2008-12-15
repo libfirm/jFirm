@@ -2,9 +2,6 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.Graph;
-import firm.Mode;
-import firm.Type;
 
 public abstract class Binop extends Node {
 

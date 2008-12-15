@@ -2,15 +2,12 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.Graph;
-import firm.Mode;
-import firm.Type;
 
 public class Minus extends Unop {
 
 	
-	public Minus(Block block, Node op, Mode mode) {
-		super(binding_cons.new_r_Minus(Graph.getCurrent().ptr, block.ptr, op.ptr, mode.ptr));
+	public Minus(Block block, Node op, firm.Mode mode) {
+		super(binding_cons.new_r_Minus(firm.Graph.getCurrent().ptr, block.ptr, op.ptr, mode.ptr));
 	}
 	
 

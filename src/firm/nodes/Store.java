@@ -2,15 +2,12 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.Graph;
-import firm.Mode;
-import firm.Type;
 
 public class Store extends Node {
 
 	
 	public Store(Block block, Node mem, Node ptr, Node value, firm.bindings.binding_ircons.cons_flags flags) {
-		super(binding_cons.new_r_Store(Graph.getCurrent().ptr, block.ptr, mem.ptr, ptr.ptr, value.ptr, flags.val));
+		super(binding_cons.new_r_Store(firm.Graph.getCurrent().ptr, block.ptr, mem.ptr, ptr.ptr, value.ptr, flags.val));
 	}
 	
 

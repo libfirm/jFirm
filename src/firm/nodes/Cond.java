@@ -2,15 +2,12 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.Graph;
-import firm.Mode;
-import firm.Type;
 
 public class Cond extends Node {
 
 	
 	public Cond(Block block, Node selector) {
-		super(binding_cons.new_r_Cond(Graph.getCurrent().ptr, block.ptr, selector.ptr));
+		super(binding_cons.new_r_Cond(firm.Graph.getCurrent().ptr, block.ptr, selector.ptr));
 	}
 	
 
