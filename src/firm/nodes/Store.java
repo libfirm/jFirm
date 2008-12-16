@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Store extends Node {
 
-	
-	public Store(Block block, Node mem, Node ptr, Node value, firm.bindings.binding_ircons.cons_flags flags) {
-		super(binding_cons.new_r_Store(firm.Graph.getCurrent().ptr, block.ptr, mem.ptr, ptr.ptr, value.ptr, flags.val));
-	}
-	
-
 	public Store(Pointer ptr) {
 		super(ptr);
 	}

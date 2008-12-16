@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Or extends Binop {
 
-	
-	public Or(Block block, Node left, Node right, firm.Mode mode) {
-		super(binding_cons.new_r_Or(firm.Graph.getCurrent().ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
-	}
-	
-
 	public Or(Pointer ptr) {
 		super(ptr);
 	}

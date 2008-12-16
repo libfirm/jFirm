@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Call extends Node {
 
-	
-	public Call(Block block, Node mem, Node ptr, Node[] ins, firm.Type type) {
-		super(binding_cons.new_r_Call(firm.Graph.getCurrent().ptr, block.ptr, mem.ptr, ptr.ptr, ins.length, Node.getPointerListFromNodeList(ins), type.ptr));
-	}
-	
-
 	public Call(Pointer ptr) {
 		super(ptr);
 	}

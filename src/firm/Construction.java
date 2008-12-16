@@ -6,8 +6,6 @@ import firm.bindings.binding_ircons.cons_flags;
 import firm.bindings.binding_irgraph.irg_phase_state;
 import firm.bindings.binding_typerep.ir_type_state;
 import firm.nodes.Block;
-import firm.nodes.Const;
-import firm.nodes.NoMem;
 import firm.nodes.Node;
 import firm.nodes.SymConst;
 
@@ -45,8 +43,12 @@ public class Construction extends ConstructionBase {
 		return new SymConst(entity);
 	}
 	
+	public Node newConst(TargetValue tarval) {
+		return Node.newConst(tarval);
+	}
+	
 	public Node newConst(int value, Mode mode) {
-		return new Const(value, mode);
+		return newConst(new TargetValue(value, mode));
 	}
 	
 	public Node newLoad(Node mem, Node ptr, Mode loadMode) {
@@ -58,7 +60,7 @@ public class Construction extends ConstructionBase {
 	}
 	
 	public Node newSel(Node ptr, Entity entity) {
-		return newSel(new NoMem(), ptr, new Node[] {}, entity);
+		return newSel(newNoMem(), ptr, new Node[] {}, entity);
 	}
 	
 	/**

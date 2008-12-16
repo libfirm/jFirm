@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Mul extends Binop {
 
-	
-	public Mul(Block block, Node left, Node right, firm.Mode mode) {
-		super(binding_cons.new_r_Mul(firm.Graph.getCurrent().ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
-	}
-	
-
 	public Mul(Pointer ptr) {
 		super(ptr);
 	}

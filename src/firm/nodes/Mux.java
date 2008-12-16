@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Mux extends Node {
 
-	
-	public Mux(Block block, Node sel, Node _false, Node _true, firm.Mode mode) {
-		super(binding_cons.new_r_Mux(firm.Graph.getCurrent().ptr, block.ptr, sel.ptr, _false.ptr, _true.ptr, mode.ptr));
-	}
-	
-
 	public Mux(Pointer ptr) {
 		super(ptr);
 	}

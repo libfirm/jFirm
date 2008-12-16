@@ -5,8 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Start extends Node {
 
-	
-
 	public Start(Pointer ptr) {
 		super(ptr);
 	}

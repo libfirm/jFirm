@@ -48,6 +48,11 @@ class NodeWrapperConstruction {
 		
 		
 		
+			case iro_Alloc:
+				return new Alloc(ptr);
+		
+		
+		
 			case iro_Start:
 				return new Start(ptr);
 		
@@ -100,6 +105,11 @@ class NodeWrapperConstruction {
 		
 			case iro_Jmp:
 				return new Jmp(ptr);
+		
+		
+		
+			case iro_Free:
+				return new Free(ptr);
 		
 		
 		

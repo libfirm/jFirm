@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Not extends Unop {
 
-	
-	public Not(Block block, Node op, firm.Mode mode) {
-		super(binding_cons.new_r_Not(firm.Graph.getCurrent().ptr, block.ptr, op.ptr, mode.ptr));
-	}
-	
-
 	public Not(Pointer ptr) {
 		super(ptr);
 	}

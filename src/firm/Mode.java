@@ -185,41 +185,49 @@ public final class Mode extends JNAWrapper {
 		return b.get_mode_n_vector_elems(ptr);
 	}
 	
+	/** returns the smallest representable value of a mode */
 	public final TargetValue getMin() {
 		Pointer tarval = b.get_mode_min(ptr);
 		return new TargetValue(tarval);
 	}
 
+	/** returns the biggest representable value of a mode */
 	public final TargetValue getMax() {
 		Pointer tarval = b.get_mode_max(ptr);
 		return new TargetValue(tarval);
 	}
 	
+	/** returns the neutral element of the addition (aka 0) */
 	public final TargetValue getNull() {
 		Pointer tarval = b.get_mode_null(ptr);
 		return new TargetValue(tarval);
 	}
 	
+	/** returns the neutral element of multiplication (aka 1) */
 	public final TargetValue getOne() {
 		Pointer tarval = b.get_mode_one(ptr);
 		return new TargetValue(tarval);
 	}
 	
+	/** returns a -1 (if the mode has one) */
 	public final TargetValue getMinusOne() {
 		Pointer tarval = b.get_mode_minus_one(ptr);
 		return new TargetValue(tarval);
 	}
 	
+	/** return the value where all bits are set to 1 */
 	public final TargetValue getAllOne() {
 		Pointer tarval = b.get_mode_all_one(ptr);
 		return new TargetValue(tarval);
 	}
 	
+	/** returns infinite (for float modes) */
 	public final TargetValue getInfinite() {
 		Pointer tarval = b.get_mode_infinite(ptr);
 		return new TargetValue(tarval);
 	}
 	
+	/** returns Not A Number (for float modes) */
 	public final TargetValue getNAN() {
 		Pointer tarval = b.get_mode_NAN(ptr);
 		return new TargetValue(tarval);

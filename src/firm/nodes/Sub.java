@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Sub extends Binop {
 
-	
-	public Sub(Block block, Node left, Node right, firm.Mode mode) {
-		super(binding_cons.new_r_Sub(firm.Graph.getCurrent().ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
-	}
-	
-
 	public Sub(Pointer ptr) {
 		super(ptr);
 	}

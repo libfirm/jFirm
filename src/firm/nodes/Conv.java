@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Conv extends Unop {
 
-	
-	public Conv(Block block, Node op, firm.Mode mode) {
-		super(binding_cons.new_r_Conv(firm.Graph.getCurrent().ptr, block.ptr, op.ptr, mode.ptr));
-	}
-	
-
 	public Conv(Pointer ptr) {
 		super(ptr);
 	}

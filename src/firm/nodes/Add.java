@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Add extends Binop {
 
-	
-	public Add(Block block, Node left, Node right, firm.Mode mode) {
-		super(binding_cons.new_r_Add(firm.Graph.getCurrent().ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
-	}
-	
-
 	public Add(Pointer ptr) {
 		super(ptr);
 	}

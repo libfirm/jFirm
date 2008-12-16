@@ -64,6 +64,13 @@ class ConstructionBase {
 	
 	
 	
+	public Node newAlloc(Node mem, Node size, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
+		Pointer result_ptr = binding_cons.new_Alloc(mem.ptr, size.ptr, type.ptr, where.val);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
 	
 	
 	public Node newAdd(Node left, Node right, firm.Mode mode) {
@@ -131,6 +138,13 @@ class ConstructionBase {
 	
 	public Node newJmp() {
 		Pointer result_ptr = binding_cons.new_Jmp();
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
+	public Node newFree(Node mem, Node ptr, Node size, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
+		Pointer result_ptr = binding_cons.new_Free(mem.ptr, ptr.ptr, size.ptr, type.ptr, where.val);
 		return Node.createWrapper(result_ptr);
 	}
 	

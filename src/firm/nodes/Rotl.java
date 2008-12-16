@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Rotl extends Binop {
 
-	
-	public Rotl(Block block, Node left, Node right, firm.Mode mode) {
-		super(binding_cons.new_r_Rotl(firm.Graph.getCurrent().ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
-	}
-	
-
 	public Rotl(Pointer ptr) {
 		super(ptr);
 	}

@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Return extends Node {
 
-	
-	public Return(Block block, Node mem, Node[] ins) {
-		super(binding_cons.new_r_Return(firm.Graph.getCurrent().ptr, block.ptr, mem.ptr, ins.length, Node.getPointerListFromNodeList(ins)));
-	}
-	
-
 	public Return(Pointer ptr) {
 		super(ptr);
 	}

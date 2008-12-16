@@ -72,4 +72,11 @@ public class ArrayType extends Type {
 	public Entity getElmentEntity() {
 		return new Entity(binding.get_array_element_entity(ptr));
 	}
+	
+	public void fixed() {
+		/* calculate the array size */
+		int size = getElementType().
+		
+		super.fixed();
+	}
 }

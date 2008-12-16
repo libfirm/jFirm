@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Eor extends Binop {
 
-	
-	public Eor(Block block, Node left, Node right, firm.Mode mode) {
-		super(binding_cons.new_r_Eor(firm.Graph.getCurrent().ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
-	}
-	
-
 	public Eor(Pointer ptr) {
 		super(ptr);
 	}

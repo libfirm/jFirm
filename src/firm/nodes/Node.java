@@ -51,6 +51,12 @@ public class Node extends NodeBase {
 	
 	
 	
+	public static Node newAlloc(Block block, Node mem, Node size, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
+		return Node.createWrapper(binding_cons.new_r_Alloc(firm.Graph.getCurrent().ptr, block.ptr, mem.ptr, size.ptr, type.ptr, where.val));
+	}
+	
+	
+	
 	
 	
 	public static Node newAdd(Block block, Node left, Node right, firm.Mode mode) {
@@ -109,6 +115,12 @@ public class Node extends NodeBase {
 	
 	public static Node newJmp(Block block) {
 		return Node.createWrapper(binding_cons.new_r_Jmp(firm.Graph.getCurrent().ptr, block.ptr));
+	}
+	
+	
+	
+	public static Node newFree(Block block, Node mem, Node ptr, Node size, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
+		return Node.createWrapper(binding_cons.new_r_Free(firm.Graph.getCurrent().ptr, block.ptr, mem.ptr, ptr.ptr, size.ptr, type.ptr, where.val));
 	}
 	
 	

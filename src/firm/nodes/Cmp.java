@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Cmp extends Binop {
 
-	
-	public Cmp(Block block, Node left, Node right) {
-		super(binding_cons.new_r_Cmp(firm.Graph.getCurrent().ptr, block.ptr, left.ptr, right.ptr));
-	}
-	
-
 	public Cmp(Pointer ptr) {
 		super(ptr);
 	}

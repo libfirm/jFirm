@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Const extends Node {
 
-	
-	public Const(firm.TargetValue tarval) {
-		super(binding_cons.new_r_Const(firm.Graph.getCurrent().ptr, tarval.ptr));
-	}
-	
-
 	public Const(Pointer ptr) {
 		super(ptr);
 	}
@@ -29,9 +23,6 @@ public class Const extends Node {
 	
 
 	
-	public Const(int value, firm.Mode mode) {
-		this(new firm.TargetValue(value, mode));
-	}
 
 	
 }

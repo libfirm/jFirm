@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Sel extends Node {
 
-	
-	public Sel(Block block, Node mem, Node ptr, Node[] ins, firm.Entity entity) {
-		super(binding_cons.new_r_Sel(firm.Graph.getCurrent().ptr, block.ptr, mem.ptr, ptr.ptr, ins.length, Node.getPointerListFromNodeList(ins), entity.ptr));
-	}
-	
-
 	public Sel(Pointer ptr) {
 		super(ptr);
 	}

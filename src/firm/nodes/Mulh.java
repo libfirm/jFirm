@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Mulh extends Binop {
 
-	
-	public Mulh(Block block, Node left, Node right, firm.Mode mode) {
-		super(binding_cons.new_r_Mulh(firm.Graph.getCurrent().ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
-	}
-	
-
 	public Mulh(Pointer ptr) {
 		super(ptr);
 	}

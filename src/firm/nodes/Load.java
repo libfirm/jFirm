@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Load extends Node {
 
-	
-	public Load(Block block, Node mem, Node ptr, firm.Mode mode, firm.bindings.binding_ircons.cons_flags flags) {
-		super(binding_cons.new_r_Load(firm.Graph.getCurrent().ptr, block.ptr, mem.ptr, ptr.ptr, mode.ptr, flags.val));
-	}
-	
-
 	public Load(Pointer ptr) {
 		super(ptr);
 	}

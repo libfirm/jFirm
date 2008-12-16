@@ -5,8 +5,6 @@ import com.sun.jna.Pointer;
 
 public class SymConst extends Node {
 
-	
-
 	public SymConst(Pointer ptr) {
 		super(ptr);
 	}

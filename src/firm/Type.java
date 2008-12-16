@@ -3,6 +3,7 @@ package firm;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_typerep;
+import firm.bindings.binding_typerep.ir_type_state;
 
 public class Type extends JNAWrapper {
 	
@@ -31,11 +32,28 @@ public class Type extends JNAWrapper {
 		binding.set_type_size_bytes(ptr, size);
 	}
 	
+	public int getSizeBytes() {
+		return binding.get_type_size_bytes(ptr);
+	}
+	
 	public void setAlignmentBytes(int alignment) {
 		binding.set_type_alignment_bytes(ptr, alignment);
 	}
 	
+	public int getAlignmentBytes() {
+		return binding.get_type_alignment_bytes(ptr);
+	}
+	
 	public void setTypeState(binding_typerep.ir_type_state state) {
 		binding.set_type_state(ptr, state.val);
+	}
+	
+	public binding_typerep.ir_type_state getTypeState() {
+		return ir_type_state.getEnum(binding.get_type_state(ptr));
+	}
+
+	/** you must call this function when you are finished constructing a type */
+	public void fixed() {
+		setTypeState(ir_type_state.layout_fixed);
 	}
 }

@@ -5,12 +5,6 @@ import com.sun.jna.Pointer;
 
 public class Confirm extends Node {
 
-	
-	public Confirm(Block block, Node value, Node bound, int cmp) {
-		super(binding_cons.new_r_Confirm(firm.Graph.getCurrent().ptr, block.ptr, value.ptr, bound.ptr, cmp));
-	}
-	
-
 	public Confirm(Pointer ptr) {
 		super(ptr);
 	}

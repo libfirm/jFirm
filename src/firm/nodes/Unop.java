@@ -5,8 +5,6 @@ import com.sun.jna.Pointer;
 
 public abstract class Unop extends Node {
 
-	
-
 	public Unop(Pointer ptr) {
 		super(ptr);
 	}

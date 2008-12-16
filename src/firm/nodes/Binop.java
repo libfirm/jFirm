@@ -5,8 +5,6 @@ import com.sun.jna.Pointer;
 
 public abstract class Binop extends Node {
 
-	
-
 	public Binop(Pointer ptr) {
 		super(ptr);
 	}

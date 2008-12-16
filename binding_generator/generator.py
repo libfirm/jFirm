@@ -49,10 +49,6 @@ Const = dict(
 			name = "tarval",
 		)
 	],
-	java_add = '''
-	public Const(int value, firm.Mode mode) {
-		this(new firm.TargetValue(value, mode));
-	}'''
 ),
 
 Block = dict(
@@ -301,7 +297,37 @@ Cmp = dict(
 
 Conv = dict(
 	is_a     = "unop"
-)
+),
+
+Alloc = dict(
+	ins   = [ "mem", "size" ],
+	outs  = [ "M", "X_regular", "X_except", "res" ],
+	attrs = [
+		dict(
+			name = "type",
+			type = "ir_type*"
+		),
+		dict(
+			name = "where",
+			type = "ir_where_alloc"
+		)
+	]
+),
+
+Free = dict(
+	ins   = [ "mem", "ptr", "size" ],
+	mode  = "mode_M",
+	attrs = [
+		dict(
+			name = "type",
+			type = "ir_type*"
+		),
+		dict(
+			name = "where",
+			type = "ir_where_alloc"
+		)
+	]
+),
 )
 
 java_keywords = [ "public", "private", "protected", "true", "false" ]
@@ -415,6 +441,11 @@ def get_java_type(type):
 		wrap_type    = "int"
 		to_wrapper   = "%s.val"
 		from_wrapper = "firm.bindings.binding_ircons.cons_flags.getEnum(%s)"
+	elif type == "ir_where_alloc":
+		java_type    = "firm.bindings.binding_ircons.ir_where_alloc"
+		wrap_type    = "int"
+		to_wrapper   = "%s.val"
+		from_wrapper = "firm.bindings.binding_ircons.ir_where_alloc.getEnum(%s)"
 	elif type == "ir_entity*":
 		java_type    = "firm.Entity"
 		wrap_type    = "Pointer"
@@ -523,12 +554,6 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public {{"abstract "|ifset(node,"abstract")}}class {{node["classname"]}} extends {{node|key("is_a", "node")|CamelCase}} {
-
-	{% if not node.abstract and not node.noconstr %}
-	public {{node["classname"]}}({{ext_arguments|argdecls}}) {
-		super(binding_cons.new_r_{{nodename}}({{ext_arguments|bindingargs(True)}}));
-	}
-	{% endif %}
 
 	public {{node["classname"]}}(Pointer ptr) {
 		super(ptr);
