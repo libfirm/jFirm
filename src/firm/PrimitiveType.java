@@ -23,4 +23,11 @@ public class PrimitiveType extends Type {
 	public void setBaseType(Type type) {
 		binding.set_primitive_base_type(ptr, type.ptr);
 	}
+	
+	public void setMode(Mode mode) {
+		binding.set_type_mode(ptr, mode.ptr);
+	}
+	
+	public void fixed() {
+	}
 }

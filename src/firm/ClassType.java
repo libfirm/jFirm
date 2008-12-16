@@ -71,4 +71,14 @@ public class ClassType extends Type {
 	public void removeSuperType(Type superType) {
 		binding.remove_class_supertype(ptr, superType.ptr);
 	}
+	
+	public void fixed() {
+		/* frontend should have set the offsets of the data entities... */
+		/* I don't know a way to test if this has happened... */
+		
+		/* At least we should have a size >= 0 */
+		assert getSizeBytes() >= 0;
+		
+		super.fixed();		
+	}
 }

@@ -131,4 +131,15 @@ public class MethodType extends Type {
 		binding.set_method_n_regparams(ptr, nRegs);
 	}
 
+	public void fixed() {
+		/* make sure all arguments and return types have been set */
+		for (int r = 0; r < getNRess(); ++r) {
+			assert getResType(r) != null;
+		}
+		for (int p = 0; p < getNParams(); ++p) {
+			assert getParamType(p) != null;
+		}
+		
+		super.fixed();		
+	}
 }

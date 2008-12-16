@@ -3,6 +3,7 @@ package firm;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_typerep.ir_type_state;
 import firm.nodes.Node;
 
 public class ArrayType extends Type {
@@ -75,7 +76,14 @@ public class ArrayType extends Type {
 	
 	public void fixed() {
 		/* calculate the array size */
-		int size = getElementType().
+		assert getElementType().getTypeState() == ir_type_state.layout_fixed;
+		
+		int size = getElementType().getSizeBytes();
+		for (int d = 0; d < getNDimensions(); ++d) {
+			int n = getUpperBoundInt(d) - getLowerBoundInt(d);
+			size *= n;
+		}
+		setSizeBytes(size);
 		
 		super.fixed();
 	}
