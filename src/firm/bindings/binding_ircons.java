@@ -175,7 +175,7 @@ public interface binding_ircons extends Library {
 			return null;
 		}
 	}
-	public static enum cons_flags {
+	public static enum ir_cons_flags {
 		cons_none(0),
 		cons_volatile((1<<0)),
 		cons_unaligned((1<<1)),
@@ -183,16 +183,16 @@ public interface binding_ircons extends Library {
 		public final int val;
 		private static class C { static int next_val; }
 
-		cons_flags(int val) {
+		ir_cons_flags(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		cons_flags() {
+		ir_cons_flags() {
 			this.val = C.next_val++;
 		}
 		
-		public static cons_flags getEnum(int val) {
-			for(cons_flags entry : values()) {
+		public static ir_cons_flags getEnum(int val) {
+			for(ir_cons_flags entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -244,8 +244,8 @@ public interface binding_ircons extends Library {
 	Pointer new_rd_Carry(Pointer db, Pointer irg, Pointer block, Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_rd_Borrow(Pointer db, Pointer irg, Pointer block, Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_rd_Phi(Pointer db, Pointer irg, Pointer block, int arity, Pointer[] in, Pointer mode);
-	Pointer new_rd_Load(Pointer db, Pointer irg, Pointer block, Pointer store, Pointer adr, Pointer mode, /* cons_flags */int flags);
-	Pointer new_rd_Store(Pointer db, Pointer irg, Pointer block, Pointer store, Pointer adr, Pointer val, /* cons_flags */int flags);
+	Pointer new_rd_Load(Pointer db, Pointer irg, Pointer block, Pointer store, Pointer adr, Pointer mode, /* ir_cons_flags */int flags);
+	Pointer new_rd_Store(Pointer db, Pointer irg, Pointer block, Pointer store, Pointer adr, Pointer val, /* ir_cons_flags */int flags);
 	Pointer new_rd_Alloc(Pointer db, Pointer irg, Pointer block, Pointer store, Pointer size, Pointer alloc_type, /* ir_where_alloc */int where);
 	Pointer new_rd_Free(Pointer db, Pointer irg, Pointer block, Pointer store, Pointer ptr, Pointer size, Pointer free_type, /* ir_where_alloc */int where);
 	Pointer new_rd_Sync(Pointer db, Pointer irg, Pointer block, int arity, Pointer[] in);
@@ -304,8 +304,8 @@ public interface binding_ircons extends Library {
 	Pointer new_r_Carry(Pointer irg, Pointer block, Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_r_Borrow(Pointer irg, Pointer block, Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_r_Phi(Pointer irg, Pointer block, int arity, Pointer[] in, Pointer mode);
-	Pointer new_r_Load(Pointer irg, Pointer block, Pointer store, Pointer adr, Pointer mode, /* cons_flags */int flags);
-	Pointer new_r_Store(Pointer irg, Pointer block, Pointer store, Pointer adr, Pointer val, /* cons_flags */int flags);
+	Pointer new_r_Load(Pointer irg, Pointer block, Pointer store, Pointer adr, Pointer mode, /* ir_cons_flags */int flags);
+	Pointer new_r_Store(Pointer irg, Pointer block, Pointer store, Pointer adr, Pointer val, /* ir_cons_flags */int flags);
 	Pointer new_r_Alloc(Pointer irg, Pointer block, Pointer store, Pointer size, Pointer alloc_type, /* ir_where_alloc */int where);
 	Pointer new_r_Free(Pointer irg, Pointer block, Pointer store, Pointer ptr, Pointer size, Pointer free_type, /* ir_where_alloc */int where);
 	Pointer new_r_Sync(Pointer irg, Pointer block, int arity, Pointer[] in);
@@ -369,8 +369,8 @@ public interface binding_ircons extends Library {
 	Pointer new_d_Carry(Pointer db, Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_d_Borrow(Pointer db, Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_d_Phi(Pointer db, int arity, Pointer[] in, Pointer mode);
-	Pointer new_d_Load(Pointer db, Pointer store, Pointer addr, Pointer mode, /* cons_flags */int flags);
-	Pointer new_d_Store(Pointer db, Pointer store, Pointer addr, Pointer val, /* cons_flags */int flags);
+	Pointer new_d_Load(Pointer db, Pointer store, Pointer addr, Pointer mode, /* ir_cons_flags */int flags);
+	Pointer new_d_Store(Pointer db, Pointer store, Pointer addr, Pointer val, /* ir_cons_flags */int flags);
 	Pointer new_d_Alloc(Pointer db, Pointer store, Pointer size, Pointer alloc_type, /* ir_where_alloc */int where);
 	Pointer new_d_Free(Pointer db, Pointer store, Pointer ptr, Pointer size, Pointer free_type, /* ir_where_alloc */int where);
 	Pointer new_d_Sync(Pointer db, int arity, Pointer[] in);
@@ -435,8 +435,8 @@ public interface binding_ircons extends Library {
 	Pointer new_Carry(Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_Borrow(Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_Phi(int arity, Pointer[] in, Pointer mode);
-	Pointer new_Load(Pointer store, Pointer addr, Pointer mode, /* cons_flags */int flags);
-	Pointer new_Store(Pointer store, Pointer addr, Pointer val, /* cons_flags */int flags);
+	Pointer new_Load(Pointer store, Pointer addr, Pointer mode, /* ir_cons_flags */int flags);
+	Pointer new_Store(Pointer store, Pointer addr, Pointer val, /* ir_cons_flags */int flags);
 	Pointer new_Alloc(Pointer store, Pointer size, Pointer alloc_type, /* ir_where_alloc */int where);
 	Pointer new_Free(Pointer store, Pointer ptr, Pointer size, Pointer free_type, /* ir_where_alloc */int where);
 	Pointer new_Sync(int arity, Pointer[] in);

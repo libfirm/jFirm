@@ -24,4 +24,5 @@ public class Conv extends Unop {
 	
 
 	
+	public static final int pnMax = 0;
 }

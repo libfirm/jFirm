@@ -6,6 +6,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import com.sun.jna.Pointer;
 
+import firm.Entity;
 import firm.Graph;
 import firm.JNAWrapper;
 import firm.Mode;
@@ -55,6 +56,14 @@ class NodeBase extends JNAWrapper {
 	
 	public Node getPred(int n) {
 		return createWrapper(binding.get_irn_n(ptr, n));
+	}
+	
+	public void setPred(int n, Node node) {
+		binding.set_irn_n(ptr, n, node.ptr);
+	}
+	
+	public static Node newSymConst(Entity entity) {
+		return createWrapper(binding_cons.new_rd_SymConst_addr_ent(Pointer.NULL, Graph.getCurrent().ptr, Mode.getP().ptr, entity.ptr, entity.getType().ptr));
 	}
 	
 	public class PredIterator implements Iterator<Node> {

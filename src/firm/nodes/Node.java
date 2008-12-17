@@ -89,7 +89,7 @@ public class Node extends NodeBase {
 	
 	
 	
-	public static Node newStore(Block block, Node mem, Node ptr, Node value, firm.bindings.binding_ircons.cons_flags flags) {
+	public static Node newStore(Block block, Node mem, Node ptr, Node value, firm.bindings.binding_ircons.ir_cons_flags flags) {
 		return Node.createWrapper(binding_cons.new_r_Store(firm.Graph.getCurrent().ptr, block.ptr, mem.ptr, ptr.ptr, value.ptr, flags.val));
 	}
 	
@@ -143,7 +143,7 @@ public class Node extends NodeBase {
 	
 	
 	
-	public static Node newLoad(Block block, Node mem, Node ptr, firm.Mode mode, firm.bindings.binding_ircons.cons_flags flags) {
+	public static Node newLoad(Block block, Node mem, Node ptr, firm.Mode mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
 		return Node.createWrapper(binding_cons.new_r_Load(firm.Graph.getCurrent().ptr, block.ptr, mem.ptr, ptr.ptr, mode.ptr, flags.val));
 	}
 	

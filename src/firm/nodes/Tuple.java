@@ -16,4 +16,5 @@ public class Tuple extends Node {
 	
 
 	
+	public static final int pnMax = 0;
 }

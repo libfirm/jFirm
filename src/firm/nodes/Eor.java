@@ -32,4 +32,5 @@ public class Eor extends Binop {
 	
 
 	
+	public static final int pnMax = 0;
 }

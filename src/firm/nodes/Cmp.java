@@ -64,4 +64,5 @@ public class Cmp extends Binop {
 	
 	public static final int pnTrue = 15;
 	
+	public static final int pnMax = 16;
 }

@@ -23,13 +23,7 @@ public class SymConst extends Node {
 	
 
 	
-	public SymConst(firm.Entity entity) {
-		this(entity, firm.Mode.getP());
-	}
-						
-	public SymConst(firm.Entity entity, firm.Mode mode) {
-		super(binding_cons.new_rd_SymConst_addr_ent(Pointer.NULL, firm.Graph.getCurrent().ptr, mode.ptr, entity.ptr, entity.getType().ptr));
-	}
 
 	
+	public static final int pnMax = 0;
 }

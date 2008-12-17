@@ -46,4 +46,5 @@ public class Store extends Node {
 	
 	public static final int pnXExcept = 2;
 	
+	public static final int pnMax = 3;
 }

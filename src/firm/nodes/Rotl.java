@@ -32,4 +32,5 @@ public class Rotl extends Binop {
 	
 
 	
+	public static final int pnMax = 0;
 }

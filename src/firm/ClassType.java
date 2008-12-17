@@ -72,6 +72,30 @@ public class ClassType extends Type {
 		binding.remove_class_supertype(ptr, superType.ptr);
 	}
 	
+	public void layoutAttributes() {
+		int offset = 0;
+		int alignment = 1;
+		
+		for (int m = 0; m < getNMembers(); ++m) {
+			Entity entity = getMember(m);
+			if (entity.getType() instanceof MethodType)
+				continue;
+			
+			/* align entity */
+			int align = entity.getType().getAlignmentBytes();
+			if (align > 0 && offset % align != 0) {
+				offset += align - (offset % align);
+			}
+			/* remember maximum alignment */
+			if (align > alignment)
+				alignment = align;
+			
+			entity.setOffset(offset);
+			offset += entity.getType().getSizeBytes();
+		}
+		setAlignmentBytes(alignment);
+	}
+	
 	public void fixed() {
 		/* frontend should have set the offsets of the data entities... */
 		/* I don't know a way to test if this has happened... */

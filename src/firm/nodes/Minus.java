@@ -24,4 +24,5 @@ public class Minus extends Unop {
 	
 
 	
+	public static final int pnMax = 0;
 }

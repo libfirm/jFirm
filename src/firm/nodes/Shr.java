@@ -32,4 +32,5 @@ public class Shr extends Binop {
 	
 
 	
+	public static final int pnMax = 0;
 }

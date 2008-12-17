@@ -4,7 +4,9 @@ import com.sun.jna.Native;
 
 import firm.bindings.binding_irgmod;
 import firm.bindings.binding_irvrfy;
+import firm.bindings.binding_lowering;
 import firm.nodes.Node;
+import firm.nodes.Tuple;
 
 /**
  * Class containing various static utility functions
@@ -12,6 +14,7 @@ import firm.nodes.Node;
 public class Util {
 	protected static binding_irvrfy binding_vrfy = (binding_irvrfy) Native.loadLibrary("firm", binding_irvrfy.class);
 	protected static binding_irgmod binding_mod = (binding_irgmod) Native.loadLibrary("firm", binding_irgmod.class);
+	protected static binding_lowering binding_lower = (binding_lowering) Native.loadLibrary("firm", binding_lowering.class);
 	
 	private Util() {
 	}
@@ -46,8 +49,13 @@ public class Util {
 	 *  @param node The node to be turned into a tuple.
 	 *  @param outArity The number of values formed into a Tuple.
 	 */
-	public static void turnIntoTuple(Node node, int outArity) {
+	public static Node turnIntoTuple(Node node, int outArity) {
 		binding_mod.turn_into_tuple(node.ptr, outArity);
+		Node tuple = Node.createWrapper(node.ptr);
+		for (int i = 0; i < outArity; ++i) {
+			tuple.setPred(i, Node.newBad());
+		}
+		return tuple;
 	}
 	
 	/**
@@ -56,5 +64,9 @@ public class Util {
 	 */
 	public static void killNode(Node node) {
 		binding_mod.kill_node(node.ptr);
+	}
+	
+	public static void lowerSels() {
+		binding_lower.lower_highlevel(0);
 	}
 }

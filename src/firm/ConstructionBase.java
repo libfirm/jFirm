@@ -108,7 +108,7 @@ class ConstructionBase {
 	
 	
 	
-	public Node newStore(Node mem, Node ptr, Node value, firm.bindings.binding_ircons.cons_flags flags) {
+	public Node newStore(Node mem, Node ptr, Node value, firm.bindings.binding_ircons.ir_cons_flags flags) {
 		Pointer result_ptr = binding_cons.new_Store(mem.ptr, ptr.ptr, value.ptr, flags.val);
 		return Node.createWrapper(result_ptr);
 	}
@@ -171,7 +171,7 @@ class ConstructionBase {
 	
 	
 	
-	public Node newLoad(Node mem, Node ptr, firm.Mode mode, firm.bindings.binding_ircons.cons_flags flags) {
+	public Node newLoad(Node mem, Node ptr, firm.Mode mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
 		Pointer result_ptr = binding_cons.new_Load(mem.ptr, ptr.ptr, mode.ptr, flags.val);
 		return Node.createWrapper(result_ptr);
 	}

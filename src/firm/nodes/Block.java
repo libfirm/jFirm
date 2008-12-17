@@ -35,4 +35,5 @@ public class Block extends Node {
 	}
 
 	
+	public static final int pnMax = 0;
 }

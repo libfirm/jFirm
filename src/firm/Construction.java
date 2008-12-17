@@ -2,12 +2,11 @@ package firm;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.binding_ircons.cons_flags;
+import firm.bindings.binding_ircons.ir_cons_flags;
 import firm.bindings.binding_irgraph.irg_phase_state;
 import firm.bindings.binding_typerep.ir_type_state;
 import firm.nodes.Block;
 import firm.nodes.Node;
-import firm.nodes.SymConst;
 
 public class Construction extends ConstructionBase {
 	
@@ -35,12 +34,8 @@ public class Construction extends ConstructionBase {
 		return new Block(binding_cons.new_immBlock());
 	}
 	
-	public Node newSymConst(Entity entity, Mode mode) {
-		return new SymConst(entity, mode);
-	}
-	
 	public Node newSymConst(Entity entity) {
-		return new SymConst(entity);
+		return Node.newSymConst(entity);
 	}
 	
 	public Node newConst(TargetValue tarval) {
@@ -52,11 +47,11 @@ public class Construction extends ConstructionBase {
 	}
 	
 	public Node newLoad(Node mem, Node ptr, Mode loadMode) {
-		return newLoad(mem, ptr, loadMode, cons_flags.cons_none);
+		return newLoad(mem, ptr, loadMode, ir_cons_flags.cons_none);
 	}
 	
 	public Node newStore(Node mem, Node ptr, Node value) {
-		return newStore(mem, ptr, value, cons_flags.cons_none);
+		return newStore(mem, ptr, value, ir_cons_flags.cons_none);
 	}
 	
 	public Node newSel(Node ptr, Entity entity) {

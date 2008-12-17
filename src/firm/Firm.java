@@ -4,7 +4,6 @@ import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
 import firm.bindings.Bindings;
-import firm.bindings.binding_be;
 import firm.bindings.binding_firm_common;
 import firm.bindings.binding_irflag;
 import firm.bindings.binding_libc;
@@ -47,6 +46,5 @@ public final class Firm {
 	}
 	
 	private Firm() {
-
 	}
 }

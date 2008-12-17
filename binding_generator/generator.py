@@ -88,14 +88,6 @@ SymConst = dict(
 			name = "entity"
 		)
 	],
-	java_add = '''
-	public SymConst(firm.Entity entity) {
-		this(entity, firm.Mode.getP());
-	}
-						
-	public SymConst(firm.Entity entity, firm.Mode mode) {
-		super(binding_cons.new_rd_SymConst_addr_ent(Pointer.NULL, firm.Graph.getCurrent().ptr, mode.ptr, entity.ptr, entity.getType().ptr));
-	}'''
 ),
 
 # SymConst
@@ -437,10 +429,10 @@ def get_java_type(type):
 		to_wrapper   = "new com.sun.jna.NativeLong(%s)"
 		from_wrapper = "%s.intValue()"
 	elif type == "cons_flags":
-		java_type    = "firm.bindings.binding_ircons.cons_flags"
+		java_type    = "firm.bindings.binding_ircons.ir_cons_flags"
 		wrap_type    = "int"
 		to_wrapper   = "%s.val"
-		from_wrapper = "firm.bindings.binding_ircons.cons_flags.getEnum(%s)"
+		from_wrapper = "firm.bindings.binding_ircons.ir_cons_flags.getEnum(%s)"
 	elif type == "ir_where_alloc":
 		java_type    = "firm.bindings.binding_ircons.ir_where_alloc"
 		wrap_type    = "int"
@@ -585,10 +577,11 @@ public {{"abstract "|ifset(node,"abstract")}}class {{node["classname"]}} extends
 	{% for out in node.outs %}
 	public static final int pn{{out|CamelCase}} = {{loop.index0}};
 	{% endfor %}
+	public static final int pnMax = {{len(node.outs)}};
 }
 ''')
 
-	file.write(template.render(vars()))
+	file.write(template.render(vars(), len=len))
 	file.close()
 
 template = env.from_string('''/* Warning: Automatically generated file */

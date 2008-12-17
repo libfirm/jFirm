@@ -28,4 +28,5 @@ public class Cond extends Node {
 	
 	public static final int pnTrue = 1;
 	
+	public static final int pnMax = 2;
 }

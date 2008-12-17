@@ -58,4 +58,5 @@ public class Free extends Node {
 	
 
 	
+	public static final int pnMax = 0;
 }

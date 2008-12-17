@@ -24,4 +24,5 @@ public class IJmp extends Node {
 	
 
 	
+	public static final int pnMax = 0;
 }
