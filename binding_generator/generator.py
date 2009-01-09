@@ -341,7 +341,8 @@ def format_binding_args(arglist, need_graph = False):
 	first = True
 	res   = ""
 	if need_graph:
-		res = "firm.Graph.getCurrent().ptr"
+#		res = "firm.Graph.getCurrent().ptr"
+		res = "this.ptr"
 		first = False
 
 	for arg in arglist:
@@ -644,25 +645,40 @@ file.write(template.render(nodes = nodes))
 file.close()
 
 template = env.from_string('''/* Warning: automatically generated file */
-package firm.nodes;
+package firm;
 
 import com.sun.jna.Pointer;
 
-public class Node extends NodeBase {
+import firm.nodes.Block;
+import firm.nodes.Node;
 
-	public Node(Pointer pointer) {
+public class Graph extends GraphBase {
+
+	public Graph(Pointer pointer) {
 		super(pointer);
 	}
 
+	/**
+	 * create a new firm graph.
+	 * You have to specify the number of parameters, you want to use during
+	 * graph construction (for Construction.setVariable/Construction.getVariable)
+	 * @param entity      Entity for the graph (an entity with MethodType)
+	 * @param nLocalVars  number of local variables during graph construction
+	 */
+	public Graph(Entity entity, int nLocalVars) {
+		this(binding.new_ir_graph(entity.ptr, nLocalVars));
+	}
+
+
 	{% for nodename, node in nodes.iteritems() %}
 	{% if not node.abstract and not node.noconstr %}
-	public static Node new{{node["classname"]}}({{node.ext_arguments|argdecls}}) {
+	public final Node new{{node["classname"]}}({{node.ext_arguments|argdecls}}) {
 		return Node.createWrapper(binding_cons.new_r_{{nodename}}({{node.ext_arguments|bindingargs(True)}}));
 	}
 	{% endif %}
 	{% endfor %}
 
 }''')
-file = open("Node.java", "w")
+file = open("Graph.java", "w")
 file.write(template.render(nodes = nodes))
 file.close()

@@ -52,8 +52,9 @@ public class Util {
 	public static Node turnIntoTuple(Node node, int outArity) {
 		binding_mod.turn_into_tuple(node.ptr, outArity);
 		Node tuple = Node.createWrapper(node.ptr);
+		Graph graph = node.getGraph();
 		for (int i = 0; i < outArity; ++i) {
-			tuple.setPred(i, Node.newBad());
+			tuple.setPred(i, graph.newBad());
 		}
 		return tuple;
 	}

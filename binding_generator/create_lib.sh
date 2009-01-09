@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. config
+. config"."${USER}
 
 GOAL="../lib/libfirm.so"
 cat > /tmp/dummy.c << __EOF__
