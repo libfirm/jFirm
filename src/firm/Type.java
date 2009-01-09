@@ -51,6 +51,14 @@ public class Type extends JNAWrapper {
 	public binding_typerep.ir_type_state getTypeState() {
 		return ir_type_state.getEnum(binding.get_type_state(ptr));
 	}
+	
+	public Ident getIdent() {
+		return new Ident(binding.get_type_ident(ptr));
+	}
+	
+	public String getName() {
+		return binding.get_type_name(ptr);
+	}
 
 	/** you must call this function when you are finished constructing a type */
 	public void fixed() {
