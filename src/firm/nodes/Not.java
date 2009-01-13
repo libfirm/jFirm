@@ -10,10 +10,12 @@ public class Not extends Unop {
 	}
 
 	
+	@Override
 	public Node getOp() {
 		return createWrapper(binding.get_Not_op(ptr));
 	}
 
+	@Override
 	public void setOp(Node op) {
 		binding.set_Not_op(this.ptr, op.ptr);
 	}

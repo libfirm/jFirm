@@ -176,6 +176,7 @@ public class ClassType extends Type {
 		setAlignmentBytes(alignment);
 	}
 	
+	@Override
 	public void fixed() {
 		/* frontend should have set the offsets of the data entities... */
 		/* I don't know a way to test if this has happened... */

@@ -21,7 +21,8 @@ public class Block extends Node {
 	public void mature() {
 		binding_cons.mature_immBlock(ptr);
 	}
-	
+
+	@Override
 	public Block getBlock() {
 		return null;
 	}

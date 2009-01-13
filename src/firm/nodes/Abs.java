@@ -10,10 +10,12 @@ public class Abs extends Unop {
 	}
 
 	
+	@Override
 	public Node getOp() {
 		return createWrapper(binding.get_Abs_op(ptr));
 	}
 
+	@Override
 	public void setOp(Node op) {
 		binding.set_Abs_op(this.ptr, op.ptr);
 	}

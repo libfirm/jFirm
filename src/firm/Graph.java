@@ -158,8 +158,8 @@ public class Graph extends GraphBase {
 	
 	
 	
-	public final Node newLoad(Block block, Node mem, Node ptr, firm.Mode mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
-		return Node.createWrapper(binding_cons.new_r_Load(this.ptr, block.ptr, mem.ptr, ptr.ptr, mode.ptr, flags.val));
+	public final Node newLoad(Block block, Node mem, Node ptr, firm.Mode load_mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
+		return Node.createWrapper(binding_cons.new_r_Load(this.ptr, block.ptr, mem.ptr, ptr.ptr, load_mode.ptr, flags.val));
 	}
 	
 	

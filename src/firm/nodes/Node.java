@@ -90,6 +90,7 @@ public class Node extends JNAWrapper {
 		};
 	}
 	
+	@Override
 	public String toString() {
 		return binding.gdb_node_helper(ptr);
 	}

@@ -10,10 +10,12 @@ public class Conv extends Unop {
 	}
 
 	
+	@Override
 	public Node getOp() {
 		return createWrapper(binding.get_Conv_op(ptr));
 	}
 
+	@Override
 	public void setOp(Node op) {
 		binding.set_Conv_op(this.ptr, op.ptr);
 	}

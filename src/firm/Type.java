@@ -23,8 +23,9 @@ public class Type extends JNAWrapper {
 		} else if (binding.is_Class_type(ptr) != 0) {
 			return new ClassType(ptr);
 		} else {
-			/* TODO: add missing types */
-			return new Type(ptr);
+			Type type = new Type(ptr);
+			System.err.println("Unknown Type kind found (" + type.getName() + ")");
+			return type;
 		}
 	}
 	
@@ -60,6 +61,7 @@ public class Type extends JNAWrapper {
 		return binding.get_type_name(ptr);
 	}
 	
+	@Override
 	public String toString() {
 		return getName();
 	}

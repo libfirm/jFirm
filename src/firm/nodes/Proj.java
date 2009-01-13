@@ -10,10 +10,12 @@ public class Proj extends Node {
 	}
 
 	
+	
 	public Node getPred() {
 		return createWrapper(binding.get_Proj_pred(ptr));
 	}
 
+	
 	public void setPred(Node pred) {
 		binding.set_Proj_pred(this.ptr, pred.ptr);
 	}

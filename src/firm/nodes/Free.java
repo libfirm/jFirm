@@ -10,26 +10,32 @@ public class Free extends Node {
 	}
 
 	
+	
 	public Node getMem() {
 		return createWrapper(binding.get_Free_mem(ptr));
 	}
 
+	
 	public void setMem(Node mem) {
 		binding.set_Free_mem(this.ptr, mem.ptr);
 	}
+	
 	
 	public Node getPtr() {
 		return createWrapper(binding.get_Free_ptr(ptr));
 	}
 
+	
 	public void setPtr(Node ptr) {
 		binding.set_Free_ptr(this.ptr, ptr.ptr);
 	}
+	
 	
 	public Node getSize() {
 		return createWrapper(binding.get_Free_size(ptr));
 	}
 
+	
 	public void setSize(Node size) {
 		binding.set_Free_size(this.ptr, size.ptr);
 	}

@@ -10,10 +10,12 @@ public class Minus extends Unop {
 	}
 
 	
+	@Override
 	public Node getOp() {
 		return createWrapper(binding.get_Minus_op(ptr));
 	}
 
+	@Override
 	public void setOp(Node op) {
 		binding.set_Minus_op(this.ptr, op.ptr);
 	}

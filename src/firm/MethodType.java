@@ -131,6 +131,7 @@ public class MethodType extends Type {
 		binding.set_method_n_regparams(ptr, nRegs);
 	}
 
+	@Override
 	public void fixed() {
 		/* make sure all arguments and return types have been set */
 		for (int r = 0; r < getNRess(); ++r) {

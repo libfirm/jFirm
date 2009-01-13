@@ -38,6 +38,12 @@ public class Entity extends JNAWrapper {
 	public final String getName() {
 		return binding.get_entity_name(ptr);
 	}
+	
+	
+	@Override
+	public String toString() {
+		return getName();
+	}
 
 	public final Ident getIdent() {
 		Pointer p = binding.get_entity_ident(ptr);
@@ -173,15 +179,11 @@ public class Entity extends JNAWrapper {
 		binding.set_entity_offset_bits_remainder(ptr, offset);
 	}
 
-//TODO gets and sets void pointer ...
-//	public final Pointer getLink() {
-//	}
-//
-//	public final void setLink(Pointer l) {
-//	}
-
-	public final Graph getIrg() {
+	public final Graph getGraph() {
 		Pointer p = binding.get_entity_irg(ptr);
+		if (p == Pointer.NULL)
+			return null;
+		
 		return new Graph(p);
 	}
 

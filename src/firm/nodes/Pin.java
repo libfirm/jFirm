@@ -10,10 +10,12 @@ public class Pin extends Node {
 	}
 
 	
+	
 	public Node getOp() {
 		return createWrapper(binding.get_Pin_op(ptr));
 	}
 
+	
 	public void setOp(Node op) {
 		binding.set_Pin_op(this.ptr, op.ptr);
 	}

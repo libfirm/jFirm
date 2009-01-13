@@ -16,6 +16,7 @@ public abstract class JNAWrapper {
 		this.ptr = ptr;
 	}
 	
+	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof JNAWrapper) {
 			return ptr.equals(((JNAWrapper) obj).ptr);
@@ -24,6 +25,7 @@ public abstract class JNAWrapper {
 		return false;
 	}
 	
+	@Override
 	public int hashCode() {
 		return ptr.hashCode();
 	}

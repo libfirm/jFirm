@@ -28,6 +28,7 @@ public class PrimitiveType extends Type {
 		binding.set_type_mode(ptr, mode.ptr);
 	}
 	
+	@Override
 	public void fixed() {
 	}
 }

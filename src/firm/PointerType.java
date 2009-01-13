@@ -25,6 +25,7 @@ public class PointerType extends Type {
 		binding.set_pointer_points_to_type(ptr, type.ptr);
 	}
 	
+	@Override
 	public void fixed() {
 		super.fixed();
 	}

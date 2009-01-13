@@ -10,10 +10,12 @@ public class Cond extends Node {
 	}
 
 	
+	
 	public Node getSelector() {
 		return createWrapper(binding.get_Cond_selector(ptr));
 	}
 
+	
 	public void setSelector(Node selector) {
 		binding.set_Cond_selector(this.ptr, selector.ptr);
 	}

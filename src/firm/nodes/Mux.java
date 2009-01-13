@@ -10,26 +10,32 @@ public class Mux extends Node {
 	}
 
 	
+	
 	public Node getSel() {
 		return createWrapper(binding.get_Mux_sel(ptr));
 	}
 
+	
 	public void setSel(Node sel) {
 		binding.set_Mux_sel(this.ptr, sel.ptr);
 	}
+	
 	
 	public Node getFalse() {
 		return createWrapper(binding.get_Mux_false(ptr));
 	}
 
+	
 	public void setFalse(Node _false) {
 		binding.set_Mux_false(this.ptr, _false.ptr);
 	}
+	
 	
 	public Node getTrue() {
 		return createWrapper(binding.get_Mux_true(ptr));
 	}
 
+	
 	public void setTrue(Node _true) {
 		binding.set_Mux_true(this.ptr, _true.ptr);
 	}

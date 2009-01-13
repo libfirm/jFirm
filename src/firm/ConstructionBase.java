@@ -171,8 +171,8 @@ class ConstructionBase {
 	
 	
 	
-	public Node newLoad(Node mem, Node ptr, firm.Mode mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
-		Pointer result_ptr = binding_cons.new_Load(mem.ptr, ptr.ptr, mode.ptr, flags.val);
+	public Node newLoad(Node mem, Node ptr, firm.Mode load_mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
+		Pointer result_ptr = binding_cons.new_Load(mem.ptr, ptr.ptr, load_mode.ptr, flags.val);
 		return Node.createWrapper(result_ptr);
 	}
 	

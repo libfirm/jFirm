@@ -10,10 +10,12 @@ public class Return extends Node {
 	}
 
 	
+	
 	public Node getMem() {
 		return createWrapper(binding.get_Return_mem(ptr));
 	}
 
+	
 	public void setMem(Node mem) {
 		binding.set_Return_mem(this.ptr, mem.ptr);
 	}

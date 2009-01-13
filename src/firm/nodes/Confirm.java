@@ -10,18 +10,22 @@ public class Confirm extends Node {
 	}
 
 	
+	
 	public Node getValue() {
 		return createWrapper(binding.get_Confirm_value(ptr));
 	}
 
+	
 	public void setValue(Node value) {
 		binding.set_Confirm_value(this.ptr, value.ptr);
 	}
+	
 	
 	public Node getBound() {
 		return createWrapper(binding.get_Confirm_bound(ptr));
 	}
 
+	
 	public void setBound(Node bound) {
 		binding.set_Confirm_bound(this.ptr, bound.ptr);
 	}

@@ -10,18 +10,22 @@ public class Cmp extends Binop {
 	}
 
 	
+	@Override
 	public Node getLeft() {
 		return createWrapper(binding.get_Cmp_left(ptr));
 	}
 
+	@Override
 	public void setLeft(Node left) {
 		binding.set_Cmp_left(this.ptr, left.ptr);
 	}
 	
+	@Override
 	public Node getRight() {
 		return createWrapper(binding.get_Cmp_right(ptr));
 	}
 
+	@Override
 	public void setRight(Node right) {
 		binding.set_Cmp_right(this.ptr, right.ptr);
 	}

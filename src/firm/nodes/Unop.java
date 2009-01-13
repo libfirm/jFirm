@@ -10,10 +10,12 @@ public abstract class Unop extends Node {
 	}
 
 	
+	
 	public Node getOp() {
 		return createWrapper(binding.get_unop_op(ptr));
 	}
 
+	
 	public void setOp(Node op) {
 		binding.set_unop_op(this.ptr, op.ptr);
 	}

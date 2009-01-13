@@ -21,6 +21,7 @@ public class Ident extends JNAWrapper {
 		return binding.get_id_str(ptr);
 	}
 	
+	@Override
 	public String toString() {
 		return getString();
 	}

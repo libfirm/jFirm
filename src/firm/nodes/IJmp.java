@@ -10,10 +10,12 @@ public class IJmp extends Node {
 	}
 
 	
+	
 	public Node getTarget() {
 		return createWrapper(binding.get_IJmp_target(ptr));
 	}
 
+	
 	public void setTarget(Node target) {
 		binding.set_IJmp_target(this.ptr, target.ptr);
 	}

@@ -10,18 +10,22 @@ public class Call extends Node {
 	}
 
 	
+	
 	public Node getMem() {
 		return createWrapper(binding.get_Call_mem(ptr));
 	}
 
+	
 	public void setMem(Node mem) {
 		binding.set_Call_mem(this.ptr, mem.ptr);
 	}
+	
 	
 	public Node getPtr() {
 		return createWrapper(binding.get_Call_ptr(ptr));
 	}
 
+	
 	public void setPtr(Node ptr) {
 		binding.set_Call_ptr(this.ptr, ptr.ptr);
 	}

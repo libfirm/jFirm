@@ -151,6 +151,7 @@ public final class Mode extends JNAWrapper {
 		return b.get_mode_name(ptr);
 	}
 	
+	@Override
 	public String toString() {
 		return getName();
 	}

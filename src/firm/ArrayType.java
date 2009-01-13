@@ -74,6 +74,7 @@ public class ArrayType extends Type {
 		return new Entity(binding.get_array_element_entity(ptr));
 	}
 	
+	@Override
 	public void fixed() {
 		/* calculate the array size */
 		assert getElementType().getTypeState() == ir_type_state.layout_fixed;

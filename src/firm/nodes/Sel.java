@@ -10,18 +10,22 @@ public class Sel extends Node {
 	}
 
 	
+	
 	public Node getMem() {
 		return createWrapper(binding.get_Sel_mem(ptr));
 	}
 
+	
 	public void setMem(Node mem) {
 		binding.set_Sel_mem(this.ptr, mem.ptr);
 	}
+	
 	
 	public Node getPtr() {
 		return createWrapper(binding.get_Sel_ptr(ptr));
 	}
 
+	
 	public void setPtr(Node ptr) {
 		binding.set_Sel_ptr(this.ptr, ptr.ptr);
 	}

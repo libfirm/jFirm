@@ -10,30 +10,32 @@ public class Load extends Node {
 	}
 
 	
+	
 	public Node getMem() {
 		return createWrapper(binding.get_Load_mem(ptr));
 	}
 
+	
 	public void setMem(Node mem) {
 		binding.set_Load_mem(this.ptr, mem.ptr);
 	}
+	
 	
 	public Node getPtr() {
 		return createWrapper(binding.get_Load_ptr(ptr));
 	}
 
+	
 	public void setPtr(Node ptr) {
 		binding.set_Load_ptr(this.ptr, ptr.ptr);
 	}
 	
-
-	
-	public firm.Mode getMode() {
+	public firm.Mode getLoadMode() {
 		Pointer _res = binding.get_Load_mode(ptr);
 		return new firm.Mode(_res);
 	}
 
-	public void setMode(firm.Mode _val) {
+	public void setLoadMode(firm.Mode _val) {
 		binding.set_Load_mode(this.ptr, _val.ptr);
 	}
 	

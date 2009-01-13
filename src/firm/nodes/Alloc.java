@@ -10,18 +10,22 @@ public class Alloc extends Node {
 	}
 
 	
+	
 	public Node getMem() {
 		return createWrapper(binding.get_Alloc_mem(ptr));
 	}
 
+	
 	public void setMem(Node mem) {
 		binding.set_Alloc_mem(this.ptr, mem.ptr);
 	}
+	
 	
 	public Node getSize() {
 		return createWrapper(binding.get_Alloc_size(ptr));
 	}
 
+	
 	public void setSize(Node size) {
 		binding.set_Alloc_size(this.ptr, size.ptr);
 	}
