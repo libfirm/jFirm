@@ -64,7 +64,8 @@ Block = dict(
 	public void mature() {
 		binding_cons.mature_immBlock(ptr);
 	}
-	
+
+	@Override
 	public Block getBlock() {
 		return null;
 	}
@@ -167,7 +168,8 @@ Load = dict(
 	attrs    = [
 		dict(
 			type = "ir_mode*",
-			name = "mode"
+			name = "mode",
+			java_name = "load_mode"
 		),
 	],
 	constructor_args = [
@@ -459,6 +461,8 @@ def prepare_attr(attr):
 	attr["wrap_type"] = wrap_type
 	attr["to_wrapper"] = to_wrapper
 	attr["from_wrapper"] = from_wrapper
+	if "java_name" not in attr:
+		attr["java_name"] = attr["name"]
 
 def preprocess_node(nodename, node):
 	node["classname"] = format_camel_case_big(nodename)
@@ -502,7 +506,7 @@ def preprocess_node(nodename, node):
 		prepare_attr(attr)
 		
 		arguments.append(dict(
-			name = attr["name"],
+			name = attr["java_name"],
 			type = attr["java_type"],
 			to_wrapper = attr["to_wrapper"]
 		))
@@ -553,22 +557,24 @@ public {{"abstract "|ifset(node,"abstract")}}class {{node["classname"]}} extends
 	}
 
 	{% for input in node.ins %}
+	{{"@Override"|ifset(node,"is_a")}}
 	public Node get{{input|CamelCase}}() {
 		return createWrapper(binding.get_{{nodename}}_{{input}}(ptr));
 	}
 
+	{{"@Override"|ifset(node,"is_a")}}
 	public void set{{input|CamelCase}}(Node {{input|filterkeywords}}) {
 		binding.set_{{nodename}}_{{input}}(this.ptr, {{input|filterkeywords}}.ptr);
 	}
 	{% endfor %}
 
 	{% for attr in node.attrs %}
-	public {{attr.java_type}} get{{attr.name|CamelCase}}() {
+	public {{attr.java_type}} get{{attr.java_name|CamelCase}}() {
 		{{attr.wrap_type}} _res = binding.get_{{nodename}}_{{attr.name}}(ptr);
 		return {{attr.from_wrapper % "_res"}};
 	}
 
-	public void set{{attr.name|CamelCase}}({{attr.java_type}} _val) {
+	public void set{{attr.java_name|CamelCase}}({{attr.java_type}} _val) {
 		binding.set_{{nodename}}_{{attr.name}}(this.ptr, {{attr.to_wrapper % "_val"}});
 	}
 	{% endfor %}

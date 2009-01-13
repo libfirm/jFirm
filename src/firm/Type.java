@@ -22,9 +22,12 @@ public class Type extends JNAWrapper {
 			return new ArrayType(ptr);
 		} else if (binding.is_Class_type(ptr) != 0) {
 			return new ClassType(ptr);
+		} else if (binding.is_Pointer_type(ptr) != 0) {
+			return new PointerType(ptr);
 		} else {
 			Type type = new Type(ptr);
-			System.err.println("Unknown Type kind found (" + type.getName() + ")");
+			if (binding.is_Struct_type(ptr) == 0)
+				System.err.println("Unknown Type kind found (" + type.getName() + ")");
 			return type;
 		}
 	}
