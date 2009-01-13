@@ -59,6 +59,18 @@ public class Type extends JNAWrapper {
 	public String getName() {
 		return binding.get_type_name(ptr);
 	}
+	
+	public String toString() {
+		return getName();
+	}
+	
+	/** returns the mode of a type (or null for non-atomic types) */
+	public Mode getMode() {
+		Pointer mode_ptr = binding.get_type_mode(ptr);
+		if (mode_ptr.equals(Pointer.NULL))
+			return null;
+		return new Mode(mode_ptr);
+	}
 
 	/** you must call this function when you are finished constructing a type */
 	public void fixed() {

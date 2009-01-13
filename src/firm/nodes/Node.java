@@ -6,7 +6,6 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import com.sun.jna.Pointer;
 
-import firm.Entity;
 import firm.Graph;
 import firm.GraphBase;
 import firm.JNAWrapper;

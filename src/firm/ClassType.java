@@ -1,5 +1,9 @@
 package firm;
 
+import java.util.Iterator;
+
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import com.sun.jna.Pointer;
 
 public class ClassType extends Type {
@@ -28,6 +32,31 @@ public class ClassType extends Type {
 		return new Entity(binding.get_class_member(ptr, n));
 	}
 	
+	public Iterable<Entity> getMembers() {
+		return new Iterable<Entity>() {
+			@Override
+			public Iterator<Entity> iterator() {
+				return new Iterator<Entity>() {
+					int n;
+					@Override
+					public boolean hasNext() {
+						return n < getNMembers();
+					}
+
+					@Override
+					public Entity next() {
+						return getMember(n++);
+					}
+
+					@Override
+					public void remove() {
+						throw new NotImplementedException();
+					}
+				};
+			}
+		};
+	}
+	
 	public Entity getMemberByName(Ident name) {
 		return new Entity(binding.get_class_member_by_name(ptr, name.ptr));
 	}
@@ -52,6 +81,31 @@ public class ClassType extends Type {
 		return Type.createWrapper(binding.get_class_subtype(ptr, n));
 	}
 	
+	public Iterable<Type> getSubTypes() {
+		return new Iterable<Type>() {
+			@Override
+			public Iterator<Type> iterator() {
+				return new Iterator<Type>() {
+					int n;
+					@Override
+					public boolean hasNext() {
+						return n < getNSubTypes();
+					}
+
+					@Override
+					public Type next() {
+						return getSubType(n++);
+					}
+
+					@Override
+					public void remove() {
+						throw new NotImplementedException();
+					}
+				};
+			}
+		};
+	}
+	
 	public void removeSubType(Type subType) {
 		binding.remove_class_subtype(ptr, subType.ptr);
 	}
@@ -68,11 +122,37 @@ public class ClassType extends Type {
 		return Type.createWrapper(binding.get_class_supertype(ptr, n));
 	}
 	
+	public Iterable<Type> getSuperTypes() {
+		return new Iterable<Type>() {
+			@Override
+			public Iterator<Type> iterator() {
+				return new Iterator<Type>() {
+					int n;
+					@Override
+					public boolean hasNext() {
+						return n < getNSuperTypes();
+					}
+
+					@Override
+					public Type next() {
+						// TODO Auto-generated method stub
+						return getSuperType(n++);
+					}
+
+					@Override
+					public void remove() {
+						throw new NotImplementedException();
+					}	
+				};
+			}
+		};
+	}
+	
 	public void removeSuperType(Type superType) {
 		binding.remove_class_supertype(ptr, superType.ptr);
 	}
 	
-	public void layoutAttributes() {
+	public void layoutFields() {
 		int offset = 0;
 		int alignment = 1;
 		

@@ -6,7 +6,6 @@ import firm.bindings.binding_irgmod;
 import firm.bindings.binding_irvrfy;
 import firm.bindings.binding_lowering;
 import firm.nodes.Node;
-import firm.nodes.Tuple;
 
 /**
  * Class containing various static utility functions
