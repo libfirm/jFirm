@@ -62,6 +62,10 @@ public class Node extends JNAWrapper {
 		binding.set_irn_n(ptr, n, node.ptr);
 	}
 	
+	public int getNr() {
+		return binding.get_irn_node_nr(ptr).intValue();
+	}
+	
 	public class PredIterator implements Iterator<Node> {
 		private int i;
 
@@ -97,5 +101,5 @@ public class Node extends JNAWrapper {
 	
 	public Block getBlock() {
 		return new Block(binding.get_nodes_block(ptr));
-	}
+	} 
 }
