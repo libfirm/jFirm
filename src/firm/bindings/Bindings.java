@@ -7,10 +7,6 @@ public final class Bindings {
 	private Bindings() {
 	}
 	
-	public final static FirmBinding getBinding() {
-		return (FirmBinding) Native.loadLibrary("firm", FirmBinding.class);
-	}
-	
 	public final static ModeBinding getModeBinding() {
 		return (ModeBinding) Native.loadLibrary("firm", ModeBinding.class);
 	}
@@ -58,6 +54,10 @@ public final class Bindings {
 
 	public final static binding_irnode getIrNodeBinding() {
 		return (binding_irnode) Native.loadLibrary("firm", binding_irnode.class);
+	}
+	
+	public final static binding_iroptimize getIrOptimizeBinding() {
+		return (binding_iroptimize) Native.loadLibrary("firm", binding_iroptimize.class);
 	}
 	
 }

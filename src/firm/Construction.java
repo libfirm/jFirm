@@ -64,10 +64,15 @@ public class Construction extends ConstructionBase {
 	 * @param block
 	 */
 	public void setCurrentBlock(Block block) {
-		if (block == null)
-			binding_cons.set_cur_block(Pointer.NULL);
-		else
-			binding_cons.set_cur_block(block.ptr);
+		binding_cons.set_cur_block(block.ptr);
+	}
+	
+	/** sets current block to bad, this will result in all
+	 * generated code being remove immediately.
+	 * You should use this after generating Jmp or
+	 * Return nodes. */
+	public void setCurrentBlockBad() {
+		binding_cons.set_cur_block(newBad().ptr);
 	}
 	
 	/**

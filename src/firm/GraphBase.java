@@ -6,6 +6,7 @@ import com.sun.jna.Pointer;
 import firm.bindings.Bindings;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irgraph;
+import firm.nodes.Bad;
 import firm.nodes.Block;
 import firm.nodes.Node;
 
@@ -273,7 +274,11 @@ public abstract class GraphBase extends JNAWrapper {
 	}
 	
 	private void blockWalkHelper(BlockWalker walker, Node node) {
-		Block block = node.getBlock();
+		Node nodeBlock = node.getBlock();
+		if (nodeBlock instanceof Bad)
+			return;
+		
+		Block block = (Block) nodeBlock;
 		if (block.blockVisited())
 			return;
 		block.markBlockVisited();

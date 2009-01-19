@@ -99,7 +99,7 @@ public class Node extends JNAWrapper {
 		return binding.gdb_node_helper(ptr);
 	}
 	
-	public Block getBlock() {
-		return new Block(binding.get_nodes_block(ptr));
+	public Node getBlock() {
+		return createWrapper(binding.get_nodes_block(ptr));
 	} 
 }
