@@ -29,18 +29,16 @@ public class BackEdges {
 	
 	private static class EdgeIterator implements Iterator<Edge> {
 		private Pointer edge;
-		private Pointer next;
 		private Pointer node;
 		
 		public EdgeIterator(Node newNode, ir_edge_kind_t kind) {
 			this.node = newNode.ptr;
 			edge = binding.get_irn_out_edge_first_kind(node, kind.val);
-			next = binding.get_irn_out_edge_next(node, edge); 
 		}
 
 		@Override
 		public boolean hasNext() {
-			return next != Pointer.NULL; 
+			return edge != Pointer.NULL; 
 		}
 
 		@Override
@@ -50,7 +48,7 @@ public class BackEdges {
 			Edge result = new Edge();
 			result.node = Node.createWrapper(binding.get_edge_src_irn(edge));
 			result.pos  = binding.get_edge_src_pos(edge);
-			edge = next;
+			edge = binding.get_irn_out_edge_next(node, edge);
 			return result;
 		}
 
@@ -74,10 +72,13 @@ public class BackEdges {
 	}
 	
 	public static Iterable<Edge> getOuts(Node node) {
+		if (binding.edges_activated_kind(node.getGraph().ptr, ir_edge_kind_t.EDGE_KIND_NORMAL.val) == 0)
+			throw new RuntimeException("Edges not activated");
+		
 		return new EdgeIterable(node);
 	}
 	
 	public static int getNOuts(Node node) {
-		return binding.get_irn_n_edges(node.ptr);
+		return binding.get_irn_n_edges_kind(node.ptr, ir_edge_kind_t.EDGE_KIND_NORMAL.val);
 	}
 }

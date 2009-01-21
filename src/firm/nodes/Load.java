@@ -30,6 +30,8 @@ public class Load extends Node {
 		binding.set_Load_ptr(this.ptr, ptr.ptr);
 	}
 	
+
+	
 	public firm.Mode getLoadMode() {
 		Pointer _res = binding.get_Load_mode(ptr);
 		return new firm.Mode(_res);

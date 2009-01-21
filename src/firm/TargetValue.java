@@ -388,5 +388,13 @@ public class TargetValue extends JNAWrapper {
 	public final boolean isFinite() {
 		return 0 != b.tarval_is_finite(ptr);
 	}
-
+	
+	@Override
+	public String toString() {
+		if (getMode().isInt()) {
+			long val = b.get_tarval_long(ptr).longValue();
+			return Long.toString(val);
+		}
+		return super.toString();
+	}
 }

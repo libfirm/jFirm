@@ -175,6 +175,39 @@ public interface binding_iroptimize extends Library {
 			return null;
 		}
 	}
+	public static enum ir_builtin_kind {
+		ir_bk_trap(),
+		ir_bk_debugbreak(),
+		ir_bk_return_address(),
+		ir_bk_frame_addess(),
+		ir_bk_prefetch(),
+		ir_bk_ffs(),
+		ir_bk_clz(),
+		ir_bk_ctz(),
+		ir_bk_popcount(),
+		ir_bk_parity(),
+		ir_bk_bswap(),
+		ir_bk_inport(),
+		ir_bk_outport();
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_builtin_kind(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_builtin_kind() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_builtin_kind getEnum(int val) {
+			for(ir_builtin_kind entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
 	public static enum osr_flags {
 		osr_flag_none(0),
 		osr_flag_lftr_with_ov_check(1),
@@ -199,6 +232,25 @@ public interface binding_iroptimize extends Library {
 			return null;
 		}
 	}
+	Pointer __builtin_alloca();
+	double __builtin_huge_val();
+	double __builtin_inf();
+	float __builtin_inff();
+	double __builtin_infl();
+	double __builtin_nan();
+	float __builtin_nanf();
+	double __builtin_nanl();
+	void __builtin_va_end();
+	NativeLong __builtin_expect();
+	Pointer __builtin_return_address();
+	Pointer __builtin_frame_address();
+	int __builtin_ffs();
+	int __builtin_clz();
+	int __builtin_ctz();
+	int __builtin_popcount();
+	int __builtin_parity();
+	float __builtin_prefetch(Object ... args);
+	void __builtin_trap();
 	void optimize_cf(Pointer irg);
 	void opt_cond_eval(Pointer irg);
 	void opt_bool(Pointer irg);

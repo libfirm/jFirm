@@ -7,6 +7,7 @@ cat > /tmp/dummy.c << __EOF__
 #include <libfirm/firm.h>
 
 void __dummy__(void) {
+	ir_init(NULL);
 	ir_get_version_major();
 	lower_highlevel(0);
 }

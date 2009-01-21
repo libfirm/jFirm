@@ -175,6 +175,39 @@ public interface binding_lowering extends Library {
 			return null;
 		}
 	}
+	public static enum ir_builtin_kind {
+		ir_bk_trap(),
+		ir_bk_debugbreak(),
+		ir_bk_return_address(),
+		ir_bk_frame_addess(),
+		ir_bk_prefetch(),
+		ir_bk_ffs(),
+		ir_bk_clz(),
+		ir_bk_ctz(),
+		ir_bk_popcount(),
+		ir_bk_parity(),
+		ir_bk_bswap(),
+		ir_bk_inport(),
+		ir_bk_outport();
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_builtin_kind(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_builtin_kind() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_builtin_kind getEnum(int val) {
+			for(ir_builtin_kind entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
 	public static enum add_hidden {
 		ADD_HIDDEN_ALWAYS_IN_FRONT(0),
 		ADD_HIDDEN_ALWAYS_LAST(1),
@@ -245,6 +278,25 @@ public interface binding_lowering extends Library {
 			return null;
 		}
 	}
+	Pointer __builtin_alloca();
+	double __builtin_huge_val();
+	double __builtin_inf();
+	float __builtin_inff();
+	double __builtin_infl();
+	double __builtin_nan();
+	float __builtin_nanf();
+	double __builtin_nanl();
+	void __builtin_va_end();
+	NativeLong __builtin_expect();
+	Pointer __builtin_return_address();
+	Pointer __builtin_frame_address();
+	int __builtin_ffs();
+	int __builtin_clz();
+	int __builtin_ctz();
+	int __builtin_popcount();
+	int __builtin_parity();
+	float __builtin_prefetch(Object ... args);
+	void __builtin_trap();
 	void lower_calls_with_compounds(Pointer params);
 	void lower_CopyB(Pointer irg, int max_size, int native_mode_bytes);
 	void lower_switch(Pointer irg, int spare_size);
@@ -272,9 +324,13 @@ public interface binding_lowering extends Library {
 	int i_mapper_tanh(Pointer call, Pointer ctx);
 	int i_mapper_strcmp(Pointer call, Pointer ctx);
 	int i_mapper_strncmp(Pointer call, Pointer ctx);
+	int i_mapper_strcpy(Pointer call, Pointer ctx);
 	int i_mapper_strlen(Pointer call, Pointer ctx);
 	int i_mapper_memcpy(Pointer call, Pointer ctx);
+	int i_mapper_mempcpy(Pointer call, Pointer ctx);
+	int i_mapper_memmove(Pointer call, Pointer ctx);
 	int i_mapper_memset(Pointer call, Pointer ctx);
+	int i_mapper_memcmp(Pointer call, Pointer ctx);
 	int i_mapper_alloca(Pointer call, Pointer ctx);
 	int i_mapper_RuntimeCall(Pointer node, Pointer rt);
 }

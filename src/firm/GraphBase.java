@@ -130,11 +130,6 @@ public abstract class GraphBase extends JNAWrapper {
 		return new Node(binding.get_irg_args(ptr));
 	}
 	
-	/** returns function arguments pointers for objects passed by value */
-	public Node getValueParambase() {
-		return new Node(binding.get_irg_value_param_base(ptr));
-	}
-	
 	/** returns the Bad node */
 	public Node getBad() {
 		return new Node(binding.get_irg_bad(ptr));
@@ -183,10 +178,6 @@ public abstract class GraphBase extends JNAWrapper {
 	
 	public void setArgs(Node node) {
 		binding.set_irg_args(ptr, node.ptr);
-	}
-	
-	public void setValueParamBase(Node node) {
-		binding.set_irg_value_param_base(ptr, node.ptr);
 	}
 	
 	public void setBad(Node node) {
@@ -265,12 +256,12 @@ public abstract class GraphBase extends JNAWrapper {
 		node.markVisited();
 		
 		if (node.getBlock() != null) {
-			walkHelper(walker, node.getBlock());			
+			walkHelperPostorder(walker, node.getBlock());			
 		}
 		for (Node pred : node.getPreds()) {
-			walkHelper(walker, pred);
+			walkHelperPostorder(walker, pred);
 		}
-		walker.visiteNode(node);		
+		walker.visiteNode(node);
 	}
 	
 	private void blockWalkHelper(BlockWalker walker, Node node) {
@@ -289,6 +280,22 @@ public abstract class GraphBase extends JNAWrapper {
 		}		
 	}
 	
+	private void blockWalkHelperPostorder(BlockWalker walker, Node node) {
+		Node nodeBlock = node.getBlock();
+		if (nodeBlock instanceof Bad)
+			return;
+		
+		Block block = (Block) nodeBlock;
+		if (block.blockVisited())
+			return;
+		block.markBlockVisited();
+		
+		for (Node pred : block.getPreds()) {
+			blockWalkHelperPostorder(walker, pred);
+		}		
+		walker.visitBlock(block);
+	}
+	
 	protected void incrementNodeVisited() {
 		binding.inc_irg_visited(ptr);
 	}
@@ -302,6 +309,7 @@ public abstract class GraphBase extends JNAWrapper {
 	 * @param walker
 	 */
 	public void walk(GraphWalker walker) {
+		Graph.setCurrent(this);
 		incrementNodeVisited();
 		walkHelper(walker, getEnd());
 	}
@@ -313,6 +321,7 @@ public abstract class GraphBase extends JNAWrapper {
 	 * @param walker
 	 */
 	public void walkPostorder(GraphWalker walker) {
+		Graph.setCurrent(this);
 		incrementNodeVisited();
 		walkHelperPostorder(walker, getEnd());
 	}
@@ -322,8 +331,19 @@ public abstract class GraphBase extends JNAWrapper {
 	 * @param walker
 	 */
 	public void walkBlocks(BlockWalker walker) {
+		Graph.setCurrent(this);
 		incrementBlockVisited();
 		blockWalkHelper(walker, getEnd());
+	}
+	
+	/**
+	 * Visits all block nodes in a graph in postorder
+	 * @param walker
+	 */
+	public void walkBlocksPostorder(BlockWalker walker) {
+		Graph.setCurrent(this);
+		incrementBlockVisited();
+		blockWalkHelperPostorder(walker, getEnd());
 	}
 	
 	public void setPhaseState(binding_irgraph.irg_phase_state state) {
@@ -332,5 +352,10 @@ public abstract class GraphBase extends JNAWrapper {
 	
 	public binding_irgraph.irg_phase_state getPhaseState() {
 		return binding_irgraph.irg_phase_state.getEnum(binding.get_irg_phase_state(ptr));
+	}
+	
+	@Override
+	public String toString() {
+		return "Graph " + getEntity().getName();
 	}
 }

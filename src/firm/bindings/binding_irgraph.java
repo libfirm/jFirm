@@ -175,6 +175,39 @@ public interface binding_irgraph extends Library {
 			return null;
 		}
 	}
+	public static enum ir_builtin_kind {
+		ir_bk_trap(),
+		ir_bk_debugbreak(),
+		ir_bk_return_address(),
+		ir_bk_frame_addess(),
+		ir_bk_prefetch(),
+		ir_bk_ffs(),
+		ir_bk_clz(),
+		ir_bk_ctz(),
+		ir_bk_popcount(),
+		ir_bk_parity(),
+		ir_bk_bswap(),
+		ir_bk_inport(),
+		ir_bk_outport();
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_builtin_kind(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_builtin_kind() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_builtin_kind getEnum(int val) {
+			for(ir_builtin_kind entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
 	public static enum irg_phase_state {
 		phase_building(),
 		phase_high(),
@@ -379,6 +412,25 @@ public interface binding_irgraph extends Library {
 			return null;
 		}
 	}
+	Pointer __builtin_alloca();
+	double __builtin_huge_val();
+	double __builtin_inf();
+	float __builtin_inff();
+	double __builtin_infl();
+	double __builtin_nan();
+	float __builtin_nanf();
+	double __builtin_nanl();
+	void __builtin_va_end();
+	NativeLong __builtin_expect();
+	Pointer __builtin_return_address();
+	Pointer __builtin_frame_address();
+	int __builtin_ffs();
+	int __builtin_clz();
+	int __builtin_ctz();
+	int __builtin_popcount();
+	int __builtin_parity();
+	float __builtin_prefetch(Object ... args);
+	void __builtin_trap();
 	Pointer get_current_ir_graph();
 	void set_current_ir_graph(Pointer graph);
 	Pointer new_ir_graph(Pointer ent, int n_loc);
@@ -410,8 +462,6 @@ public interface binding_irgraph extends Library {
 	void set_irg_initial_mem(Pointer irg, Pointer node);
 	Pointer get_irg_args(Pointer irg);
 	void set_irg_args(Pointer irg, Pointer node);
-	Pointer get_irg_value_param_base(Pointer irg);
-	void set_irg_value_param_base(Pointer irg, Pointer node);
 	Pointer get_irg_current_block(Pointer irg);
 	void set_irg_current_block(Pointer irg, Pointer node);
 	Pointer get_irg_bad(Pointer irg);
@@ -421,6 +471,7 @@ public interface binding_irgraph extends Library {
 	int get_irg_n_locs(Pointer irg);
 	NativeLong get_irg_graph_nr(Pointer irg);
 	int get_irg_idx(Pointer irg);
+	Pointer get_idx_irn(Pointer irg, int idx);
 	/* irg_phase_state */int get_irg_phase_state(Pointer irg);
 	void set_irg_phase_state(Pointer irg, /* irg_phase_state */int state);
 	/* op_pin_state */int get_irg_pinned(Pointer irg);

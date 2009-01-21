@@ -175,6 +175,39 @@ public interface binding_tv extends Library {
 			return null;
 		}
 	}
+	public static enum ir_builtin_kind {
+		ir_bk_trap(),
+		ir_bk_debugbreak(),
+		ir_bk_return_address(),
+		ir_bk_frame_addess(),
+		ir_bk_prefetch(),
+		ir_bk_ffs(),
+		ir_bk_clz(),
+		ir_bk_ctz(),
+		ir_bk_popcount(),
+		ir_bk_parity(),
+		ir_bk_bswap(),
+		ir_bk_inport(),
+		ir_bk_outport();
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_builtin_kind(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_builtin_kind() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_builtin_kind getEnum(int val) {
+			for(ir_builtin_kind entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
 	public static enum firm_kind {
 		k_BAD(0),
 		k_entity(),
@@ -772,14 +805,13 @@ public interface binding_tv extends Library {
 		iro_EndExcept(),
 		iro_NoMem(),
 		iro_Mux(),
-		iro_Min(),
-		iro_Max(),
 		iro_CopyB(),
 		iro_InstOf(),
 		iro_Raise(),
 		iro_Bound(),
 		iro_Pin(),
 		iro_ASM(),
+		iro_Builtin(),
 		iro_Anchor(),
 		iro_Last(ir_opcode.iro_Anchor.val),
 		beo_First(),
@@ -995,7 +1027,6 @@ public interface binding_tv extends Library {
 		pn_Start_P_frame_base(),
 		pn_Start_P_tls(),
 		pn_Start_T_args(),
-		pn_Start_P_value_arg_base(),
 		pn_Start_max();
 		public final int val;
 		private static class C { static int next_val; }
@@ -1082,6 +1113,29 @@ public interface binding_tv extends Library {
 		
 		public static pn_Call getEnum(int val) {
 			for(pn_Call entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum pn_Builtin {
+		pn_Builtin_M(pn_generic.pn_Generic_M_regular.val),
+		pn_Builtin_1_result(pn_generic.pn_Generic_other.val),
+		pn_Builtin_max();
+		public final int val;
+		private static class C { static int next_val; }
+
+		pn_Builtin(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		pn_Builtin() {
+			this.val = C.next_val++;
+		}
+		
+		public static pn_Builtin getEnum(int val) {
+			for(pn_Builtin entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -1435,6 +1489,25 @@ public interface binding_tv extends Library {
 			return null;
 		}
 	}
+	Pointer __builtin_alloca();
+	double __builtin_huge_val();
+	double __builtin_inf();
+	float __builtin_inff();
+	double __builtin_infl();
+	double __builtin_nan();
+	float __builtin_nanf();
+	double __builtin_nanl();
+	void __builtin_va_end();
+	NativeLong __builtin_expect();
+	Pointer __builtin_return_address();
+	Pointer __builtin_frame_address();
+	int __builtin_ffs();
+	int __builtin_clz();
+	int __builtin_ctz();
+	int __builtin_popcount();
+	int __builtin_parity();
+	float __builtin_prefetch(Object ... args);
+	void __builtin_trap();
 	void ir_init(Pointer params);
 	void ir_finish();
 	int ir_get_version_major();
@@ -1875,14 +1948,13 @@ public interface binding_tv extends Library {
 	Pointer get_op_EndExcept();
 	Pointer get_op_NoMem();
 	Pointer get_op_Mux();
-	Pointer get_op_Min();
-	Pointer get_op_Max();
 	Pointer get_op_CopyB();
 	Pointer get_op_InstOf();
 	Pointer get_op_Raise();
 	Pointer get_op_Bound();
 	Pointer get_op_Pin();
 	Pointer get_op_ASM();
+	Pointer get_op_Builtin();
 	Pointer get_op_Anchor();
 	Pointer get_op_ident(Pointer op);
 	String get_op_name(Pointer op);
@@ -2013,7 +2085,6 @@ public interface binding_tv extends Library {
 	Pointer get_nodes_MacroBlock(Pointer node);
 	Pointer is_frame_pointer(Pointer n);
 	Pointer is_tls_pointer(Pointer n);
-	int is_value_arg_pointer(Pointer n);
 	Pointer[] get_Block_cfgpred_arr(Pointer node);
 	int get_Block_n_cfgpreds(Pointer node);
 	Pointer get_Block_cfgpred(Pointer node, int pos);
@@ -2103,13 +2174,23 @@ public interface binding_tv extends Library {
 	void set_Call_param(Pointer node, int pos, Pointer param);
 	Pointer get_Call_type(Pointer node);
 	void set_Call_type(Pointer node, Pointer tp);
-	int get_Call_arity(Pointer node);
 	int is_self_recursive_Call(Pointer call);
 	int Call_has_callees(Pointer node);
 	int get_Call_n_callees(Pointer node);
 	Pointer get_Call_callee(Pointer node, int pos);
 	void set_Call_callee_arr(Pointer node, int n, Pointer[] arr);
 	void remove_Call_callee_arr(Pointer node);
+	Pointer get_Builtin_mem(Pointer node);
+	void set_Builtin_mem(Pointer node, Pointer mem);
+	/* ir_builtin_kind */int get_Builtin_kind(Pointer node);
+	void set_Builtin_kind(Pointer node, /* ir_builtin_kind */int kind);
+	Pointer[] get_Builtin_param_arr(Pointer node);
+	int get_Builtin_n_params(Pointer node);
+	Pointer get_Builtin_param(Pointer node, int pos);
+	void set_Builtin_param(Pointer node, int pos, Pointer param);
+	Pointer get_Builtin_type(Pointer node);
+	void set_Builtin_type(Pointer node, Pointer tp);
+	String get_builtin_kind_name(/* ir_builtin_kind */int kind);
 	Pointer get_CallBegin_ptr(Pointer node);
 	void set_CallBegin_ptr(Pointer node, Pointer ptr);
 	Pointer get_CallBegin_call(Pointer node);
@@ -2390,6 +2471,7 @@ public interface binding_tv extends Library {
 	int is_Unknown(Pointer node);
 	int is_Return(Pointer node);
 	int is_Call(Pointer node);
+	int is_Builtin(Pointer node);
 	int is_CallBegin(Pointer node);
 	int is_Sel(Pointer node);
 	int is_Mul(Pointer node);

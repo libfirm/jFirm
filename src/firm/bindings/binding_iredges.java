@@ -175,6 +175,39 @@ public interface binding_iredges extends Library {
 			return null;
 		}
 	}
+	public static enum ir_builtin_kind {
+		ir_bk_trap(),
+		ir_bk_debugbreak(),
+		ir_bk_return_address(),
+		ir_bk_frame_addess(),
+		ir_bk_prefetch(),
+		ir_bk_ffs(),
+		ir_bk_clz(),
+		ir_bk_ctz(),
+		ir_bk_popcount(),
+		ir_bk_parity(),
+		ir_bk_bswap(),
+		ir_bk_inport(),
+		ir_bk_outport();
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_builtin_kind(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_builtin_kind() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_builtin_kind getEnum(int val) {
+			for(ir_builtin_kind entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
 	public static enum ir_edge_kind_t {
 		EDGE_KIND_NORMAL(),
 		EDGE_KIND_BLOCK(),
@@ -199,11 +232,29 @@ public interface binding_iredges extends Library {
 			return null;
 		}
 	}
+	Pointer __builtin_alloca();
+	double __builtin_huge_val();
+	double __builtin_inf();
+	float __builtin_inff();
+	double __builtin_infl();
+	double __builtin_nan();
+	float __builtin_nanf();
+	double __builtin_nanl();
+	void __builtin_va_end();
+	NativeLong __builtin_expect();
+	Pointer __builtin_return_address();
+	Pointer __builtin_frame_address();
+	int __builtin_ffs();
+	int __builtin_clz();
+	int __builtin_ctz();
+	int __builtin_popcount();
+	int __builtin_parity();
+	float __builtin_prefetch(Object ... args);
+	void __builtin_trap();
 	void edges_notify_edge_kind(Pointer src, int pos, Pointer tgt, Pointer old_tgt, /* ir_edge_kind_t */int kind, Pointer irg);
 	Pointer get_irn_out_edge_first_kind(Pointer irn, /* ir_edge_kind_t */int kind);
 	Pointer get_irn_out_edge_next(Pointer irn, Pointer last);
 	Pointer get_edge_src_irn(Pointer edge);
-	int get_irn_n_edges(Pointer irn);
 	int get_edge_src_pos(Pointer edge);
 	Pointer get_irn_edge_kind(Pointer irg, Pointer irn, int pos, /* ir_edge_kind_t */int kind);
 	int get_irn_n_edges_kind(Pointer irn, /* ir_edge_kind_t */int kind);
