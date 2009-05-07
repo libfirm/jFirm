@@ -179,7 +179,7 @@ public interface binding_tv extends Library {
 		ir_bk_trap(),
 		ir_bk_debugbreak(),
 		ir_bk_return_address(),
-		ir_bk_frame_addess(),
+		ir_bk_frame_address(),
 		ir_bk_prefetch(),
 		ir_bk_ffs(),
 		ir_bk_clz(),
@@ -188,7 +188,8 @@ public interface binding_tv extends Library {
 		ir_bk_parity(),
 		ir_bk_bswap(),
 		ir_bk_inport(),
-		ir_bk_outport();
+		ir_bk_outport(),
+		ir_bk_inner_trampoline();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -611,22 +612,22 @@ public interface binding_tv extends Library {
 			return null;
 		}
 	}
-	public static enum variadicity {
+	public static enum ir_variadicity {
 		variadicity_non_variadic(),
 		variadicity_variadic();
 		public final int val;
 		private static class C { static int next_val; }
 
-		variadicity(int val) {
+		ir_variadicity(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		variadicity() {
+		ir_variadicity() {
 			this.val = C.next_val++;
 		}
 		
-		public static variadicity getEnum(int val) {
-			for(variadicity entry : values()) {
+		public static ir_variadicity getEnum(int val) {
+			for(ir_variadicity entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -812,6 +813,7 @@ public interface binding_tv extends Library {
 		iro_Pin(),
 		iro_ASM(),
 		iro_Builtin(),
+		iro_Dummy(),
 		iro_Anchor(),
 		iro_Last(ir_opcode.iro_Anchor.val),
 		beo_First(),
@@ -1534,7 +1536,7 @@ public interface binding_tv extends Library {
 	void set_entity_type(Pointer ent, Pointer tp);
 	/* ir_allocation */int get_entity_allocation(Pointer ent);
 	void set_entity_allocation(Pointer ent, /* ir_allocation */int al);
-	String get_allocation_name(/* ir_allocation */int vis);
+	String get_allocation_name(/* ir_allocation */int al);
 	/* ir_visibility */int get_entity_visibility(Pointer ent);
 	void set_entity_visibility(Pointer ent, /* ir_visibility */int vis);
 	String get_visibility_name(/* ir_visibility */int vis);
@@ -1544,8 +1546,10 @@ public interface binding_tv extends Library {
 	/* ir_volatility */int get_entity_volatility(Pointer ent);
 	void set_entity_volatility(Pointer ent, /* ir_volatility */int vol);
 	String get_volatility_name(/* ir_volatility */int var);
-	/* ir_align */int get_entity_align(Pointer ent);
-	void set_entity_align(Pointer ent, /* ir_align */int a);
+	int get_entity_alignment(Pointer entity);
+	void set_entity_alignment(Pointer entity, int alignment);
+	/* ir_align */int get_entity_aligned(Pointer ent);
+	void set_entity_aligned(Pointer ent, /* ir_align */int a);
 	String get_align_name(/* ir_align */int a);
 	/* ir_stickyness */int get_entity_stickyness(Pointer ent);
 	void set_entity_stickyness(Pointer ent, /* ir_stickyness */int stickyness);
@@ -1576,6 +1580,7 @@ public interface binding_tv extends Library {
 	Pointer get_atomic_ent_value(Pointer ent);
 	void set_atomic_ent_value(Pointer ent, Pointer val);
 	/* ir_initializer_kind_t */int get_initializer_kind(Pointer initializer);
+	String get_initializer_kind_name(/* ir_initializer_kind_t */int ini);
 	Pointer get_initializer_null();
 	Pointer create_initializer_const(Pointer value);
 	Pointer create_initializer_tarval(Pointer tv);
@@ -1606,6 +1611,7 @@ public interface binding_tv extends Library {
 	Pointer get_compound_ent_value_member(Pointer ent, int pos);
 	void set_compound_ent_value(Pointer ent, Pointer val, Pointer member, int pos);
 	void set_entity_initializer(Pointer entity, Pointer initializer);
+	int has_entity_initializer(Pointer entity);
 	Pointer get_entity_initializer(Pointer entity);
 	void set_array_entity_values(Pointer ent, Pointer[] values, int num_vals);
 	int get_compound_ent_value_offset_bit_remainder(Pointer ent, int pos);
@@ -1772,6 +1778,7 @@ public interface binding_tv extends Library {
 	Pointer get_method_param_type(Pointer method, int pos);
 	void set_method_param_type(Pointer method, int pos, Pointer tp);
 	Pointer get_method_value_param_ent(Pointer method, int pos);
+	void set_method_value_param_type(Pointer method, Pointer tp);
 	Pointer get_method_value_param_type(Pointer method);
 	Pointer get_method_param_ident(Pointer method, int pos);
 	String get_method_param_name(Pointer method, int pos);
@@ -1781,9 +1788,9 @@ public interface binding_tv extends Library {
 	void set_method_res_type(Pointer method, int pos, Pointer tp);
 	Pointer get_method_value_res_ent(Pointer method, int pos);
 	Pointer get_method_value_res_type(Pointer method);
-	String get_variadicity_name(/* variadicity */int vari);
-	/* variadicity */int get_method_variadicity(Pointer method);
-	void set_method_variadicity(Pointer method, /* variadicity */int vari);
+	String get_variadicity_name(/* ir_variadicity */int vari);
+	/* ir_variadicity */int get_method_variadicity(Pointer method);
+	void set_method_variadicity(Pointer method, /* ir_variadicity */int vari);
 	int get_method_first_variadic_param_index(Pointer method);
 	void set_method_first_variadic_param_index(Pointer method, int index);
 	int get_method_additional_properties(Pointer method);
@@ -1860,6 +1867,7 @@ public interface binding_tv extends Library {
 	int is_frame_type(Pointer tp);
 	int is_value_param_type(Pointer tp);
 	int is_lowered_type(Pointer tp);
+	Pointer new_type_value(Pointer name);
 	Pointer new_type_frame(Pointer name);
 	Pointer clone_frame_type(Pointer type);
 	void set_lowered_type(Pointer tp, Pointer lowered_type);
@@ -1874,6 +1882,7 @@ public interface binding_tv extends Library {
 	Pointer mature_type_free_entities(Pointer tp);
 	void init_type_identify(Pointer ti_if);
 	void type_walk(Pointer pre, Pointer post, Pointer env);
+	void type_walk_prog(Pointer pre, Pointer post, Pointer env);
 	void type_walk_irg(Pointer irg, Pointer pre, Pointer post, Pointer env);
 	void type_walk_super2sub(Pointer pre, Pointer post, Pointer env);
 	void type_walk_super(Pointer pre, Pointer post, Pointer env);
@@ -1955,6 +1964,7 @@ public interface binding_tv extends Library {
 	Pointer get_op_Pin();
 	Pointer get_op_ASM();
 	Pointer get_op_Builtin();
+	Pointer get_op_Dummy();
 	Pointer get_op_Anchor();
 	Pointer get_op_ident(Pointer op);
 	String get_op_name(Pointer op);
@@ -1969,6 +1979,7 @@ public interface binding_tv extends Library {
 	/* irop_flags */int get_op_flags(Pointer op);
 	Pointer new_ir_op(int code, String name, /* op_pin_state */int p, int flags, /* op_arity */int opar, int op_index, NativeLong attr_size, Pointer ops);
 	Pointer get_op_ops(Pointer op);
+	String get_mode_arithmetic_name(/* ir_mode_arithmetic */int ari);
 	Pointer new_ir_mode(String name, /* ir_mode_sort */int sort, int bit_size, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
 	Pointer new_ir_vector_mode(String name, /* ir_mode_sort */int sort, int bit_size, int num_of_elem, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
 	int is_mode(Pointer thing);
@@ -2085,15 +2096,15 @@ public interface binding_tv extends Library {
 	Pointer get_nodes_MacroBlock(Pointer node);
 	Pointer is_frame_pointer(Pointer n);
 	Pointer is_tls_pointer(Pointer n);
-	Pointer[] get_Block_cfgpred_arr(Pointer node);
-	int get_Block_n_cfgpreds(Pointer node);
-	Pointer get_Block_cfgpred(Pointer node, int pos);
-	void set_Block_cfgpred(Pointer node, int pos, Pointer pred);
+	int get_Block_n_cfgpreds(Pointer block);
+	Pointer get_Block_cfgpred(Pointer block, int pos);
+	void set_Block_cfgpred(Pointer block, int pos, Pointer pred);
+	int get_Block_cfgpred_pos(Pointer block, Pointer pred);
 	Pointer get_Block_cfgpred_block(Pointer node, int pos);
-	int get_Block_matured(Pointer node);
-	void set_Block_matured(Pointer node, int matured);
-	NativeLong get_Block_block_visited(Pointer node);
-	void set_Block_block_visited(Pointer node, NativeLong visit);
+	int get_Block_matured(Pointer block);
+	void set_Block_matured(Pointer block, int matured);
+	NativeLong get_Block_block_visited(Pointer block);
+	void set_Block_block_visited(Pointer block, NativeLong visit);
 	Pointer set_Block_dead(Pointer block);
 	int is_Block_dead(Pointer block);
 	void mark_Block_block_visited(Pointer node);
@@ -2122,11 +2133,13 @@ public interface binding_tv extends Library {
 	void free_End(Pointer end);
 	Pointer get_IJmp_target(Pointer ijmp);
 	void set_IJmp_target(Pointer ijmp, Pointer tgt);
+	String get_cond_kind_name(/* cond_kind */int kind);
 	Pointer get_Cond_selector(Pointer node);
 	void set_Cond_selector(Pointer node, Pointer selector);
 	/* cond_kind */int get_Cond_kind(Pointer node);
 	void set_Cond_kind(Pointer node, /* cond_kind */int kind);
-	NativeLong get_Cond_defaultProj(Pointer node);
+	NativeLong get_Cond_default_proj(Pointer node);
+	void set_Cond_default_proj(Pointer node, NativeLong defproj);
 	Pointer get_Return_mem(Pointer node);
 	void set_Return_mem(Pointer node, Pointer mem);
 	Pointer[] get_Return_res_arr(Pointer node);
@@ -2211,6 +2224,10 @@ public interface binding_tv extends Library {
 	void set_Carry_left(Pointer node, Pointer left);
 	Pointer get_Carry_right(Pointer node);
 	void set_Carry_right(Pointer node, Pointer right);
+	Pointer get_Borrow_left(Pointer node);
+	void set_Borrow_left(Pointer node, Pointer left);
+	Pointer get_Borrow_right(Pointer node);
+	void set_Borrow_right(Pointer node, Pointer right);
 	Pointer get_Sub_left(Pointer node);
 	void set_Sub_left(Pointer node, Pointer left);
 	Pointer get_Sub_right(Pointer node);
@@ -2249,7 +2266,8 @@ public interface binding_tv extends Library {
 	void set_Div_mem(Pointer node, Pointer mem);
 	Pointer get_Div_resmode(Pointer node);
 	void set_Div_resmode(Pointer node, Pointer mode);
-	int is_Div_remainderless(Pointer node);
+	int get_Div_no_remainder(Pointer node);
+	void set_Div_no_remainder(Pointer node, int no_remainder);
 	Pointer get_Mod_left(Pointer node);
 	void set_Mod_left(Pointer node, Pointer left);
 	Pointer get_Mod_right(Pointer node);
@@ -2493,6 +2511,7 @@ public interface binding_tv extends Library {
 	int is_IJmp(Pointer node);
 	int is_Raise(Pointer node);
 	int is_ASM(Pointer node);
+	int is_Dummy(Pointer node);
 	int is_Proj(Pointer node);
 	int is_Filter(Pointer node);
 	int is_cfop(Pointer node);

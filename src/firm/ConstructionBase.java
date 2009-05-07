@@ -27,11 +27,6 @@ class ConstructionBase {
 	
 	
 	
-	public Node newConst(firm.TargetValue tarval) {
-		Pointer result_ptr = binding_cons.new_Const(tarval.ptr);
-		return Node.createWrapper(result_ptr);
-	}
-	
 	
 	
 	public Node newSub(Node left, Node right, firm.Mode mode) {
@@ -41,8 +36,8 @@ class ConstructionBase {
 	
 	
 	
-	public Node newConfirm(Node value, Node bound, int cmp) {
-		Pointer result_ptr = binding_cons.new_Confirm(value.ptr, bound.ptr, cmp);
+	public Node newQuot(Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
+		Pointer result_ptr = binding_cons.new_Quot(mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val);
 		return Node.createWrapper(result_ptr);
 	}
 	
@@ -64,8 +59,8 @@ class ConstructionBase {
 	
 	
 	
-	public Node newAlloc(Node mem, Node size, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
-		Pointer result_ptr = binding_cons.new_Alloc(mem.ptr, size.ptr, type.ptr, where.val);
+	public Node newSync(Node[] ins) {
+		Pointer result_ptr = binding_cons.new_Sync(ins.length, Node.getPointerListFromNodeList(ins));
 		return Node.createWrapper(result_ptr);
 	}
 	
@@ -73,8 +68,8 @@ class ConstructionBase {
 	
 	
 	
-	public Node newAdd(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = binding_cons.new_Add(left.ptr, right.ptr, mode.ptr);
+	public Node newBuiltin(Node mem, Node[] ins, firm.bindings.binding_ircons.ir_builtin_kind kind, firm.Type type) {
+		Pointer result_ptr = binding_cons.new_Builtin(mem.ptr, ins.length, Node.getPointerListFromNodeList(ins), kind.val, type.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 	
@@ -101,8 +96,22 @@ class ConstructionBase {
 	
 	
 	
+	public Node newShr(Node left, Node right, firm.Mode mode) {
+		Pointer result_ptr = binding_cons.new_Shr(left.ptr, right.ptr, mode.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
 	public Node newMul(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = binding_cons.new_Mul(left.ptr, right.ptr, mode.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
+	public Node newAdd(Node left, Node right, firm.Mode mode) {
+		Pointer result_ptr = binding_cons.new_Add(left.ptr, right.ptr, mode.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 	
@@ -115,10 +124,12 @@ class ConstructionBase {
 	
 	
 	
-	public Node newMulh(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = binding_cons.new_Mulh(left.ptr, right.ptr, mode.ptr);
+	public Node newRaise(Node mem, Node exo_ptr) {
+		Pointer result_ptr = binding_cons.new_Raise(mem.ptr, exo_ptr.ptr);
 		return Node.createWrapper(result_ptr);
 	}
+	
+	
 	
 	
 	
@@ -143,6 +154,13 @@ class ConstructionBase {
 	
 	
 	
+	public Node newConfirm(Node value, Node bound, int cmp) {
+		Pointer result_ptr = binding_cons.new_Confirm(value.ptr, bound.ptr, cmp);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
 	public Node newFree(Node mem, Node ptr, Node size, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
 		Pointer result_ptr = binding_cons.new_Free(mem.ptr, ptr.ptr, size.ptr, type.ptr, where.val);
 		return Node.createWrapper(result_ptr);
@@ -150,8 +168,15 @@ class ConstructionBase {
 	
 	
 	
-	public Node newMinus(Node op, firm.Mode mode) {
-		Pointer result_ptr = binding_cons.new_Minus(op.ptr, mode.ptr);
+	public Node newOr(Node left, Node right, firm.Mode mode) {
+		Pointer result_ptr = binding_cons.new_Or(left.ptr, right.ptr, mode.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
+	public Node newBreak() {
+		Pointer result_ptr = binding_cons.new_Break();
 		return Node.createWrapper(result_ptr);
 	}
 	
@@ -164,8 +189,29 @@ class ConstructionBase {
 	
 	
 	
-	public Node newCond(Node selector) {
-		Pointer result_ptr = binding_cons.new_Cond(selector.ptr);
+	public Node newShrs(Node left, Node right, firm.Mode mode) {
+		Pointer result_ptr = binding_cons.new_Shrs(left.ptr, right.ptr, mode.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
+	public Node newCopyB(Node mem, Node dst, Node src, firm.Type type) {
+		Pointer result_ptr = binding_cons.new_CopyB(mem.ptr, dst.ptr, src.ptr, type.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
+	public Node newInstOf(Node store, Node obj, firm.Type type) {
+		Pointer result_ptr = binding_cons.new_InstOf(store.ptr, obj.ptr, type.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
+	public Node newMod(Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
+		Pointer result_ptr = binding_cons.new_Mod(mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val);
 		return Node.createWrapper(result_ptr);
 	}
 	
@@ -178,14 +224,40 @@ class ConstructionBase {
 	
 	
 	
-	public Node newShr(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = binding_cons.new_Shr(left.ptr, right.ptr, mode.ptr);
+	public Node newAlloc(Node mem, Node size, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
+		Pointer result_ptr = binding_cons.new_Alloc(mem.ptr, size.ptr, type.ptr, where.val);
 		return Node.createWrapper(result_ptr);
 	}
 	
 	
 	
 	
+	
+	public Node newMulh(Node left, Node right, firm.Mode mode) {
+		Pointer result_ptr = binding_cons.new_Mulh(left.ptr, right.ptr, mode.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
+	public Node newConst(firm.TargetValue tarval) {
+		Pointer result_ptr = binding_cons.new_Const(tarval.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
+	public Node newBorrow(Node left, Node right, firm.Mode mode) {
+		Pointer result_ptr = binding_cons.new_Borrow(left.ptr, right.ptr, mode.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
+	public Node newFilter(Node pred, firm.Mode mode, int proj) {
+		Pointer result_ptr = binding_cons.new_Filter(pred.ptr, mode.ptr, new com.sun.jna.NativeLong(proj));
+		return Node.createWrapper(result_ptr);
+	}
 	
 	
 	
@@ -210,6 +282,11 @@ class ConstructionBase {
 	
 	
 	
+	public Node newDiv(Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
+		Pointer result_ptr = binding_cons.new_Div(mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val);
+		return Node.createWrapper(result_ptr);
+	}
+	
 	
 	
 	public Node newShl(Node left, Node right, firm.Mode mode) {
@@ -219,8 +296,8 @@ class ConstructionBase {
 	
 	
 	
-	public Node newOr(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = binding_cons.new_Or(left.ptr, right.ptr, mode.ptr);
+	public Node newMinus(Node op, firm.Mode mode) {
+		Pointer result_ptr = binding_cons.new_Minus(op.ptr, mode.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 	
@@ -256,8 +333,15 @@ class ConstructionBase {
 	
 	
 	
-	public Node newSync(Node[] ins) {
-		Pointer result_ptr = binding_cons.new_Sync(ins.length, Node.getPointerListFromNodeList(ins));
+	public Node newCast(Node op, firm.Type type) {
+		Pointer result_ptr = binding_cons.new_Cast(op.ptr, type.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
+	public Node newBound(Node mem, Node index, Node lower, Node upper) {
+		Pointer result_ptr = binding_cons.new_Bound(mem.ptr, index.ptr, lower.ptr, upper.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 	
@@ -272,8 +356,15 @@ class ConstructionBase {
 	
 	
 	
-	public Node newShrs(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = binding_cons.new_Shrs(left.ptr, right.ptr, mode.ptr);
+	public Node newCond(Node selector) {
+		Pointer result_ptr = binding_cons.new_Cond(selector.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
+	public Node newCarry(Node left, Node right, firm.Mode mode) {
+		Pointer result_ptr = binding_cons.new_Carry(left.ptr, right.ptr, mode.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 	
@@ -281,6 +372,20 @@ class ConstructionBase {
 	
 	public Node newSel(Node mem, Node ptr, Node[] ins, firm.Entity entity) {
 		Pointer result_ptr = binding_cons.new_Sel(mem.ptr, ptr.ptr, ins.length, Node.getPointerListFromNodeList(ins), entity.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
+	public Node newId(Node pred, firm.Mode mode) {
+		Pointer result_ptr = binding_cons.new_Id(pred.ptr, mode.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+	
+	
+	
+	public Node newDivMod(Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
+		Pointer result_ptr = binding_cons.new_DivMod(mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val);
 		return Node.createWrapper(result_ptr);
 	}
 	

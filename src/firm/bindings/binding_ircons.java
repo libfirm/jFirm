@@ -179,7 +179,7 @@ public interface binding_ircons extends Library {
 		ir_bk_trap(),
 		ir_bk_debugbreak(),
 		ir_bk_return_address(),
-		ir_bk_frame_addess(),
+		ir_bk_frame_address(),
 		ir_bk_prefetch(),
 		ir_bk_ffs(),
 		ir_bk_clz(),
@@ -188,7 +188,8 @@ public interface binding_ircons extends Library {
 		ir_bk_parity(),
 		ir_bk_bswap(),
 		ir_bk_inport(),
-		ir_bk_outport();
+		ir_bk_outport(),
+		ir_bk_inner_trampoline();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -271,7 +272,7 @@ public interface binding_ircons extends Library {
 	Pointer new_rd_simpleSel(Pointer db, Pointer irg, Pointer block, Pointer store, Pointer objptr, Pointer ent);
 	Pointer new_rd_Sel(Pointer db, Pointer irg, Pointer block, Pointer store, Pointer objptr, int n_index, Pointer[] index, Pointer ent);
 	Pointer new_rd_Call(Pointer db, Pointer irg, Pointer block, Pointer store, Pointer callee, int arity, Pointer[] in, Pointer tp);
-	Pointer new_rd_Builtin(Pointer db, Pointer irg, Pointer block, Pointer store, /* ir_builtin_kind */int kind, int arity, Pointer[] in, Pointer tp);
+	Pointer new_rd_Builtin(Pointer db, Pointer irg, Pointer block, Pointer store, int arity, Pointer[] in, /* ir_builtin_kind */int kind, Pointer tp);
 	Pointer new_rd_Add(Pointer db, Pointer irg, Pointer block, Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_rd_Sub(Pointer db, Pointer irg, Pointer block, Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_rd_Minus(Pointer db, Pointer irg, Pointer block, Pointer op, Pointer mode);
@@ -293,6 +294,7 @@ public interface binding_ircons extends Library {
 	Pointer new_rd_Shrs(Pointer db, Pointer irg, Pointer block, Pointer op, Pointer k, Pointer mode);
 	Pointer new_rd_Rotl(Pointer db, Pointer irg, Pointer block, Pointer op, Pointer k, Pointer mode);
 	Pointer new_rd_Conv(Pointer db, Pointer irg, Pointer block, Pointer op, Pointer mode);
+	Pointer new_rd_strictConv(Pointer db, Pointer irg, Pointer block, Pointer op, Pointer mode);
 	Pointer new_rd_Cast(Pointer db, Pointer irg, Pointer block, Pointer op, Pointer to_tp);
 	Pointer new_rd_Carry(Pointer db, Pointer irg, Pointer block, Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_rd_Borrow(Pointer db, Pointer irg, Pointer block, Pointer op1, Pointer op2, Pointer mode);
@@ -332,7 +334,7 @@ public interface binding_ircons extends Library {
 	Pointer new_r_simpleSel(Pointer irg, Pointer block, Pointer store, Pointer objptr, Pointer ent);
 	Pointer new_r_Sel(Pointer irg, Pointer block, Pointer store, Pointer objptr, int n_index, Pointer[] index, Pointer ent);
 	Pointer new_r_Call(Pointer irg, Pointer block, Pointer store, Pointer callee, int arity, Pointer[] in, Pointer tp);
-	Pointer new_r_Builtin(Pointer irg, Pointer block, Pointer store, /* ir_builtin_kind */int kind, int arity, Pointer[] in, Pointer tp);
+	Pointer new_r_Builtin(Pointer irg, Pointer block, Pointer store, int arity, Pointer[] in, /* ir_builtin_kind */int kind, Pointer tp);
 	Pointer new_r_Add(Pointer irg, Pointer block, Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_r_Sub(Pointer irg, Pointer block, Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_r_Minus(Pointer irg, Pointer block, Pointer op, Pointer mode);
@@ -354,6 +356,7 @@ public interface binding_ircons extends Library {
 	Pointer new_r_Shrs(Pointer irg, Pointer block, Pointer op, Pointer k, Pointer mode);
 	Pointer new_r_Rotl(Pointer irg, Pointer block, Pointer op, Pointer k, Pointer mode);
 	Pointer new_r_Conv(Pointer irg, Pointer block, Pointer op, Pointer mode);
+	Pointer new_r_strictConv(Pointer irg, Pointer block, Pointer op, Pointer mode);
 	Pointer new_r_Cast(Pointer irg, Pointer block, Pointer op, Pointer to_tp);
 	Pointer new_r_Carry(Pointer irg, Pointer block, Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_r_Borrow(Pointer irg, Pointer block, Pointer op1, Pointer op2, Pointer mode);
@@ -397,7 +400,7 @@ public interface binding_ircons extends Library {
 	Pointer new_d_simpleSel(Pointer db, Pointer store, Pointer objptr, Pointer ent);
 	Pointer new_d_Sel(Pointer db, Pointer store, Pointer objptr, int arity, Pointer[] in, Pointer ent);
 	Pointer new_d_Call(Pointer db, Pointer store, Pointer callee, int arity, Pointer[] in, Pointer tp);
-	Pointer new_d_Builtin(Pointer db, Pointer store, /* ir_builtin_kind */int kind, int arity, Pointer[] in, Pointer tp);
+	Pointer new_d_Builtin(Pointer db, Pointer store, int arity, Pointer[] in, /* ir_builtin_kind */int kind, Pointer tp);
 	Pointer new_d_Add(Pointer db, Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_d_Sub(Pointer db, Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_d_Minus(Pointer db, Pointer op, Pointer mode);
@@ -463,7 +466,7 @@ public interface binding_ircons extends Library {
 	Pointer new_simpleSel(Pointer store, Pointer objptr, Pointer ent);
 	Pointer new_Sel(Pointer store, Pointer objptr, int arity, Pointer[] in, Pointer ent);
 	Pointer new_Call(Pointer store, Pointer callee, int arity, Pointer[] in, Pointer tp);
-	Pointer new_Builtin(Pointer store, /* ir_builtin_kind */int kind, int arity, Pointer[] in, Pointer tp);
+	Pointer new_Builtin(Pointer store, int arity, Pointer[] in, /* ir_builtin_kind */int kind, Pointer tp);
 	Pointer new_CallBegin(Pointer callee);
 	Pointer new_Add(Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_Sub(Pointer op1, Pointer op2, Pointer mode);
@@ -512,6 +515,7 @@ public interface binding_ircons extends Library {
 	Pointer new_Bound(Pointer store, Pointer idx, Pointer lower, Pointer upper);
 	Pointer new_Pin(Pointer node);
 	Pointer new_ASM(int arity, Pointer[] in, Pointer inputs, int n_outs, Pointer outputs, int n_clobber, Pointer[] clobber, Pointer asm_text);
+	Pointer new_Dummy(Pointer mode);
 	Pointer new_d_immBlock(Pointer db);
 	Pointer new_immBlock();
 	Pointer new_d_immPartBlock(Pointer db, Pointer pred_jmp);

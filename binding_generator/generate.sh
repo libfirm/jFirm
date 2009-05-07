@@ -1,5 +1,11 @@
 #!/bin/bash
 
+. config"."${USER}
+
+# grab latest ir_spec
+cp -puv ${FIRM_HOME}/libfirm/scripts/ir_spec.py .
+cp -puv ${FIRM_HOME}/libfirm/scripts/ir_util.py .
+
 rm -f *.java || exit $?
 python generator.py || exit $?
 mv ConstructionBase.java ../src/firm

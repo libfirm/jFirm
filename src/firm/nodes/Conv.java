@@ -22,6 +22,15 @@ public class Conv extends Unop {
 	
 
 	
+	public int getStrict() {
+		int _res = binding.get_Conv_strict(ptr);
+		return _res;
+	}
+
+	public void setStrict(int _val) {
+		binding.set_Conv_strict(this.ptr, _val);
+	}
+	
 
 	
 

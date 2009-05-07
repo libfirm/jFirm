@@ -22,6 +22,33 @@ public class Cond extends Node {
 	
 
 	
+	public int getKind() {
+		int _res = binding.get_Cond_kind(ptr);
+		return _res;
+	}
+
+	public void setKind(int _val) {
+		binding.set_Cond_kind(this.ptr, _val);
+	}
+	
+	public int getDefaultProj() {
+		com.sun.jna.NativeLong _res = binding.get_Cond_default_proj(ptr);
+		return _res.intValue();
+	}
+
+	public void setDefaultProj(int _val) {
+		binding.set_Cond_default_proj(this.ptr, new com.sun.jna.NativeLong(_val));
+	}
+	
+	public firm.bindings.binding_irnode.cond_jmp_predicate getJmpPred() {
+		int _res = binding.get_Cond_jmp_pred(ptr);
+		return firm.bindings.binding_irnode.cond_jmp_predicate.getEnum(_res);
+	}
+
+	public void setJmpPred(firm.bindings.binding_irnode.cond_jmp_predicate _val) {
+		binding.set_Cond_jmp_pred(this.ptr, _val.val);
+	}
+	
 
 	
 

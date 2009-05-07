@@ -179,7 +179,7 @@ public interface binding_irmode extends Library {
 		ir_bk_trap(),
 		ir_bk_debugbreak(),
 		ir_bk_return_address(),
-		ir_bk_frame_addess(),
+		ir_bk_frame_address(),
 		ir_bk_prefetch(),
 		ir_bk_ffs(),
 		ir_bk_clz(),
@@ -188,7 +188,8 @@ public interface binding_irmode extends Library {
 		ir_bk_parity(),
 		ir_bk_bswap(),
 		ir_bk_inport(),
-		ir_bk_outport();
+		ir_bk_outport(),
+		ir_bk_inner_trampoline();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -348,6 +349,7 @@ public interface binding_irmode extends Library {
 	int __builtin_parity();
 	float __builtin_prefetch(Object ... args);
 	void __builtin_trap();
+	String get_mode_arithmetic_name(/* ir_mode_arithmetic */int ari);
 	Pointer new_ir_mode(String name, /* ir_mode_sort */int sort, int bit_size, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
 	Pointer new_ir_vector_mode(String name, /* ir_mode_sort */int sort, int bit_size, int num_of_elem, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
 	int is_mode(Pointer thing);

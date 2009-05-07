@@ -142,12 +142,12 @@ public class Entity extends JNAWrapper {
 	}
 
 	public final ir_align getAlign() {
-		int val = binding.get_entity_align(ptr);
+		int val = binding.get_entity_alignment(ptr);
 		return ir_align.getEnum(val);
 	}
 
 	public final void setAlign(ir_align a) {
-		binding.set_entity_align(ptr, a.val);
+		binding.set_entity_alignment(ptr, a.val);
 	}
 
 	public static final String getAlignName(ir_align a) {

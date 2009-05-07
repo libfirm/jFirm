@@ -179,7 +179,7 @@ public interface binding_irgraph extends Library {
 		ir_bk_trap(),
 		ir_bk_debugbreak(),
 		ir_bk_return_address(),
-		ir_bk_frame_addess(),
+		ir_bk_frame_address(),
 		ir_bk_prefetch(),
 		ir_bk_ffs(),
 		ir_bk_clz(),
@@ -188,7 +188,8 @@ public interface binding_irgraph extends Library {
 		ir_bk_parity(),
 		ir_bk_bswap(),
 		ir_bk_inport(),
-		ir_bk_outport();
+		ir_bk_outport(),
+		ir_bk_inner_trampoline();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -440,6 +441,7 @@ public interface binding_irgraph extends Library {
 	void set_irg_entity(Pointer irg, Pointer ent);
 	Pointer get_irg_frame_type(Pointer irg);
 	void set_irg_frame_type(Pointer irg, Pointer ftp);
+	Pointer get_irg_value_param_type(Pointer irg);
 	Pointer get_irg_start_block(Pointer irg);
 	void set_irg_start_block(Pointer irg, Pointer node);
 	Pointer get_irg_start(Pointer irg);

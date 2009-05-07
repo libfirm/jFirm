@@ -35,6 +35,11 @@ public class Block extends Node {
 		binding.mark_Block_block_visited(ptr);
 	}
 
+	public boolean isBad() {	
+		return binding.is_Bad(ptr) != 0;
+	}
+	
+
 	
 	public static final int pnMax = 0;
 }

@@ -3,7 +3,7 @@ package firm;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_typerep.mtp_additional_property;
-import firm.bindings.binding_typerep.variadicity;
+import firm.bindings.binding_typerep.ir_variadicity;
 
 public class MethodType extends Type {
 
@@ -85,16 +85,16 @@ public class MethodType extends Type {
 		return Type.createWrapper(p);
 	}
 
-	public final static String getVariadicityName(variadicity vari) {
+	public final static String getVariadicityName(ir_variadicity vari) {
 		return binding.get_variadicity_name(vari.val);
 	}
 	
-	public final variadicity getVariadicity() {
+	public final ir_variadicity getVariadicity() {
 		int val = binding.get_method_variadicity(ptr);
-		return variadicity.getEnum(val);
+		return ir_variadicity.getEnum(val);
 	}
 	
-	public final void setVariadicity(variadicity vari) {
+	public final void setVariadicity(ir_variadicity vari) {
 		binding.set_method_variadicity(ptr, vari.val);
 	}
 

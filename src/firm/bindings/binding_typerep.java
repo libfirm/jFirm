@@ -179,7 +179,7 @@ public interface binding_typerep extends Library {
 		ir_bk_trap(),
 		ir_bk_debugbreak(),
 		ir_bk_return_address(),
-		ir_bk_frame_addess(),
+		ir_bk_frame_address(),
 		ir_bk_prefetch(),
 		ir_bk_ffs(),
 		ir_bk_clz(),
@@ -188,7 +188,8 @@ public interface binding_typerep extends Library {
 		ir_bk_parity(),
 		ir_bk_bswap(),
 		ir_bk_inport(),
-		ir_bk_outport();
+		ir_bk_outport(),
+		ir_bk_inner_trampoline();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -577,22 +578,22 @@ public interface binding_typerep extends Library {
 			return null;
 		}
 	}
-	public static enum variadicity {
+	public static enum ir_variadicity {
 		variadicity_non_variadic(),
 		variadicity_variadic();
 		public final int val;
 		private static class C { static int next_val; }
 
-		variadicity(int val) {
+		ir_variadicity(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		variadicity() {
+		ir_variadicity() {
 			this.val = C.next_val++;
 		}
 		
-		public static variadicity getEnum(int val) {
-			for(variadicity entry : values()) {
+		public static ir_variadicity getEnum(int val) {
+			for(ir_variadicity entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -663,7 +664,7 @@ public interface binding_typerep extends Library {
 	void set_entity_type(Pointer ent, Pointer tp);
 	/* ir_allocation */int get_entity_allocation(Pointer ent);
 	void set_entity_allocation(Pointer ent, /* ir_allocation */int al);
-	String get_allocation_name(/* ir_allocation */int vis);
+	String get_allocation_name(/* ir_allocation */int al);
 	/* ir_visibility */int get_entity_visibility(Pointer ent);
 	void set_entity_visibility(Pointer ent, /* ir_visibility */int vis);
 	String get_visibility_name(/* ir_visibility */int vis);
@@ -673,8 +674,10 @@ public interface binding_typerep extends Library {
 	/* ir_volatility */int get_entity_volatility(Pointer ent);
 	void set_entity_volatility(Pointer ent, /* ir_volatility */int vol);
 	String get_volatility_name(/* ir_volatility */int var);
-	/* ir_align */int get_entity_align(Pointer ent);
-	void set_entity_align(Pointer ent, /* ir_align */int a);
+	int get_entity_alignment(Pointer entity);
+	void set_entity_alignment(Pointer entity, int alignment);
+	/* ir_align */int get_entity_aligned(Pointer ent);
+	void set_entity_aligned(Pointer ent, /* ir_align */int a);
 	String get_align_name(/* ir_align */int a);
 	/* ir_stickyness */int get_entity_stickyness(Pointer ent);
 	void set_entity_stickyness(Pointer ent, /* ir_stickyness */int stickyness);
@@ -705,6 +708,7 @@ public interface binding_typerep extends Library {
 	Pointer get_atomic_ent_value(Pointer ent);
 	void set_atomic_ent_value(Pointer ent, Pointer val);
 	/* ir_initializer_kind_t */int get_initializer_kind(Pointer initializer);
+	String get_initializer_kind_name(/* ir_initializer_kind_t */int ini);
 	Pointer get_initializer_null();
 	Pointer create_initializer_const(Pointer value);
 	Pointer create_initializer_tarval(Pointer tv);
@@ -735,6 +739,7 @@ public interface binding_typerep extends Library {
 	Pointer get_compound_ent_value_member(Pointer ent, int pos);
 	void set_compound_ent_value(Pointer ent, Pointer val, Pointer member, int pos);
 	void set_entity_initializer(Pointer entity, Pointer initializer);
+	int has_entity_initializer(Pointer entity);
 	Pointer get_entity_initializer(Pointer entity);
 	void set_array_entity_values(Pointer ent, Pointer[] values, int num_vals);
 	int get_compound_ent_value_offset_bit_remainder(Pointer ent, int pos);
@@ -901,6 +906,7 @@ public interface binding_typerep extends Library {
 	Pointer get_method_param_type(Pointer method, int pos);
 	void set_method_param_type(Pointer method, int pos, Pointer tp);
 	Pointer get_method_value_param_ent(Pointer method, int pos);
+	void set_method_value_param_type(Pointer method, Pointer tp);
 	Pointer get_method_value_param_type(Pointer method);
 	Pointer get_method_param_ident(Pointer method, int pos);
 	String get_method_param_name(Pointer method, int pos);
@@ -910,9 +916,9 @@ public interface binding_typerep extends Library {
 	void set_method_res_type(Pointer method, int pos, Pointer tp);
 	Pointer get_method_value_res_ent(Pointer method, int pos);
 	Pointer get_method_value_res_type(Pointer method);
-	String get_variadicity_name(/* variadicity */int vari);
-	/* variadicity */int get_method_variadicity(Pointer method);
-	void set_method_variadicity(Pointer method, /* variadicity */int vari);
+	String get_variadicity_name(/* ir_variadicity */int vari);
+	/* ir_variadicity */int get_method_variadicity(Pointer method);
+	void set_method_variadicity(Pointer method, /* ir_variadicity */int vari);
 	int get_method_first_variadic_param_index(Pointer method);
 	void set_method_first_variadic_param_index(Pointer method, int index);
 	int get_method_additional_properties(Pointer method);
@@ -989,6 +995,7 @@ public interface binding_typerep extends Library {
 	int is_frame_type(Pointer tp);
 	int is_value_param_type(Pointer tp);
 	int is_lowered_type(Pointer tp);
+	Pointer new_type_value(Pointer name);
 	Pointer new_type_frame(Pointer name);
 	Pointer clone_frame_type(Pointer type);
 	void set_lowered_type(Pointer tp, Pointer lowered_type);
@@ -1003,6 +1010,7 @@ public interface binding_typerep extends Library {
 	Pointer mature_type_free_entities(Pointer tp);
 	void init_type_identify(Pointer ti_if);
 	void type_walk(Pointer pre, Pointer post, Pointer env);
+	void type_walk_prog(Pointer pre, Pointer post, Pointer env);
 	void type_walk_irg(Pointer irg, Pointer pre, Pointer post, Pointer env);
 	void type_walk_super2sub(Pointer pre, Pointer post, Pointer env);
 	void type_walk_super(Pointer pre, Pointer post, Pointer env);
