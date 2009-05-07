@@ -89,6 +89,7 @@ public class Construction extends ConstructionBase {
 	 * return the current memory node
 	 */
 	public Node getCurrentMem() {
+		assert !getCurrentBlock().isBad();
 		return Node.createWrapper(binding_cons.get_store());
 	}
 	
