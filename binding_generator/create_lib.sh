@@ -2,7 +2,7 @@
 
 . config"."${USER}
 
-GOAL="../lib/libfirm.so"
+GOAL="../lib/${FIRM_TARGET_LIB}"
 cat > /tmp/dummy.c << __EOF__
 #include <libfirm/firm.h>
 
@@ -12,6 +12,6 @@ void __dummy__(void) {
 	lower_highlevel(0);
 }
 __EOF__
-CMD="gcc -shared /tmp/dummy.c -o ${GOAL} -I${FIRM_INC} ${FIRM_LFLAGS}"
+CMD="gcc ${GCC_SHARED} /tmp/dummy.c -o ${GOAL} -I${FIRM_INC} ${FIRM_LFLAGS}"
 echo $CMD
 $CMD
