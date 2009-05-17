@@ -8,9 +8,8 @@ Setup libFirm
 1. Download libFirm-XX from libfirm.org
 2. Extract libfirm to ~/Firm/firm/libfirm-XX
 
--- Callback stuff --
-- Edit ir/common/firm_common.c: Include callback code
-- Copy modified assert.h to include/libfirm/
+If you want to use the callback mechanism then follow the steps described in
+"Callback Stuff" before building libfirm.
 
 3. cd ~/Firm/firm && mkdir build
 4. cd build &&  ../libfirm-XX/configure --prefix ~/Firm/firm/ CFLAGS='-arch x86_64'
@@ -27,5 +26,52 @@ Adjust JFirm
 5.1. Choose firm.Main as Class with main method
 5.2. Adjust environment variables -> New Variable
 	Variable: DYLD_LIBRARY_PATH
-	Value:    ${project_loc}/lib
+	Value:    ${workspace_loc}/JFirm/lib
 6. Run: "JFirm Test"
+
+
+Callback Stuff
+==============
+
+1. Edit ir/common/firm_common.c: Include callback code - just append to the end of the existing file
+
+#include<assert.h>
+
+void firm_std_abort_callback(const char * expr, const char * file, int line) {
+	printf("%s:%u: failed assertion `%s'\n", file, line, expr);
+	abort();
+}
+
+static firm_assert_callback_t firm_assert_callback = firm_std_abort_callback;
+
+void firm_set_assert_callback(firm_assert_callback_t cb) {
+	firm_assert_callback = cb;
+}
+
+firm_assert_callback_t firm_get_assert_callback() {
+	return firm_assert_callback;
+}
+
+
+2. Create include/libfirm/firm_callback.h:
+
+#ifndef __FIRM_ASSERT_CALLBACK
+#define __FIRM_ASSERT_CALLBACK
+
+/**
+ * Copy the assert.h file of your system to the directory of this file and change
+ * the definition of the assert macro as follows in order to activate the callback.
+ *
+#include<firm_callback.h>
+#define assert(e)  \
+	((void) ((e) ? 0 : ((void) firm_get_assert_callback()(#e, __FILE__, __LINE__))))
+*/
+
+typedef void (*firm_assert_callback_t)(const char * expr, const char * file, int line);
+
+__BEGIN_DECLS
+firm_assert_callback_t firm_get_assert_callback();
+__END_DECLS
+#endif
+
+3. Set USE_FIRM_ASSERT_CALLBACK in class Firm.java of JFirm to true.
