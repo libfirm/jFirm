@@ -1,0 +1,53 @@
+                                   jFirm
+                           a Java binding for libFirm
+
+1. Introduction
+
+libFirm is a library to repesent computer programs in order to analyse and
+transform them. Its main application is compiler construction.
+
+jFirm is a binding of the libFirm library to java.
+Design goal was to make usage easy and class/type hierarchies transparent where
+possible. The intended target are students in a compiler construction course.
+The binding often prefers readabilty/ease of use over performance and memory
+efficiency.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2. Usage
+
+2.1 JNA
+Make sure the lib directory is in your CLASSPATH because libfirm depends on the
+JNA.jar java library
+
+2.2 Native Code
+We ship several prebuilt libraries containing the native libFirm code with jFirm:
+
+	lib/libfirm.so    - linux x86 Version
+	lib/libfirm.dylib - Mac OS/X (Leopard) Version
+
+a) Linux
+
+You have to make sure java can find these platform specific libraries.
+In Linux/Mac this works by setting LD_LIBRARY_PATH to the directory that
+contains the library.
+
+b) Mac
+
+You have to make sure java can find these platform specific libraries.
+In Linux/Mac this works by setting DYLD_LIBRARY_PATH to the directory that
+contains the library.
+
+2.3 Eclipse Users:
+
+Remember to add JNA.jar to JFirms build Java build path.
+To set the LD_LIBRARY_PATH/DYLD_LIBRARY_PATH environment variables you have to
+set them as Environment variables in your Run Configurations (pointing them to
+${project_loc:JFirm}/lib or something similar).
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3. Contact
+
+	firm@ipd.info.uni-karlsruhe.de
+
