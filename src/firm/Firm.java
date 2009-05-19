@@ -8,6 +8,7 @@ import com.sun.jna.Pointer;
 import firm.bindings.Bindings;
 import firm.bindings.binding_firm_common;
 import firm.bindings.binding_irflag;
+import firm.bindings.binding_libc;
 
 public final class Firm {
 	/**
@@ -24,7 +25,7 @@ public final class Firm {
 			void callback(String expr, String file, int line);
 		}
 	
-		void firm_set_assert_callback(FirmCallback handler);
+		void firm_set_assert_callback2(FirmCallback handler);
 	}	
 
 	public static int getMajorVersion() {
@@ -43,8 +44,7 @@ public final class Firm {
 		return binding.ir_get_version_revision();
 	}
 		
-	private static final binding_callback binding_cb = (USE_FIRM_ASSERT_CALLBACK ?
-		(binding_callback) Native.loadLibrary("firm", binding_callback.class) : null);
+	private static binding_callback binding_cb = null;
 	
 	private static final binding_callback.FirmCallback handler = (USE_FIRM_ASSERT_CALLBACK ?
 		new binding_callback.FirmCallback() {
@@ -55,13 +55,30 @@ public final class Firm {
 			}			
 		} : null); 
 	
+	public static binding_libc.SigHandler sigHandler = new binding_libc.SigHandler() {
+		@Override
+		public void callback(int arg) {
+			throw new RuntimeException("Prog Aborted");
+		}			
+	}; 
+	
 	public static void init() {
 		/* hack to catch asserts... */
-//		Backend.binding_c.signal(/*SIGABRT*/ 6, handler);
-		if (USE_FIRM_ASSERT_CALLBACK) {
-			binding_cb.firm_set_assert_callback(handler);
+		if (binding_cb == null) {
+			binding_cb = (binding_callback) Native.loadLibrary("firm", binding_callback.class);
 		}
 		
+		if (binding_cb != null) {
+			try {
+				binding_cb.firm_set_assert_callback2(handler);
+			} catch (UnsatisfiedLinkError e) {
+				System.out.println("Callback has not been activated: firm_set_assert_callback not found.");
+			}
+		}
+
+		// catch abort signal
+		Backend.binding_c.signal(/*SIGABRT*/ 6, sigHandler);
+
 		binding.ir_init(Pointer.NULL);
 		
 		/* disable all optimisations */
