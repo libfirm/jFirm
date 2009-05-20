@@ -11,6 +11,9 @@ import firm.Program;
 /* Test libFirm bindings */
 public class Main {
 	
+	public static final boolean IS_ON_MAC_OSX =
+		"Mac OS X".equals(System.getProperty("os.name"));
+	
 	public static void main(String[] args) throws IOException {
 		Firm.init();
 		System.out.printf("Initialized Firm Version: %1s.%2s\n",
@@ -33,6 +36,13 @@ public class Main {
 		
 		/* omit frame pointer for speed :) */
 		Backend.option("omitfp");
+		
+		if (IS_ON_MAC_OSX) {
+			Backend.option("ia32-gasmode=macho");
+			Backend.option("ia32-stackalign=4");
+			Backend.option("pic");
+		}
+		
 		/* transform to x86 assembler */
 		Backend.createAssembler("test.s", "<builtin>");
 		/* assembler */

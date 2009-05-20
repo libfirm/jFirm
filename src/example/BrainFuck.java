@@ -14,6 +14,7 @@ import firm.PrimitiveType;
 import firm.Program;
 import firm.Type;
 import firm.bindings.binding_typerep.ir_type_state;
+import firm.bindings.binding_typerep.ir_variability;
 import firm.bindings.binding_typerep.ir_visibility;
 import firm.nodes.Block;
 import firm.nodes.Call;
@@ -35,8 +36,8 @@ public class BrainFuck {
 	public BrainFuck() {
 	}
 	
-	private static boolean isOnMacOSX() {
-		return "Mac OS X".equals(System.getProperty("os.name"));
+	private static String makeLdIdent(String str) {
+		return (Main.IS_ON_MAC_OSX ? "_" + str : str);
 	}
 	
 	public Graph compile(String name) throws IOException {
@@ -47,11 +48,7 @@ public class BrainFuck {
 		MethodType type = new MethodType("V()", 0, 0);
 		Type global = Program.getGlobalType();
 		Entity mainEnt = new Entity(global, "main", type);
-		if (isOnMacOSX()) {
-			mainEnt.setLdIdent("_main");
-		} else {
-			mainEnt.setLdIdent("main");
-		}
+		mainEnt.setLdIdent(makeLdIdent("main"));
 		mainEnt.setVisibility(ir_visibility.visibility_external_visible);
 		
 		/* create a new global array for the brainfuck data */
@@ -63,6 +60,8 @@ public class BrainFuck {
 		
 		Type globalType = Program.getGlobalType();
 		Entity data = new Entity(globalType, "data", atype);
+		data.setLdIdent(makeLdIdent("data"));
+		data.setVariability(ir_variability.variability_initialized);
 		data.setVisibility(ir_visibility.visibility_local);
 		
 		/* create a graph */
@@ -81,7 +80,7 @@ public class BrainFuck {
 		
 		putcharEntity = new Entity(globalType, "putchar", putcharType);
 		putcharEntity.setVisibility(ir_visibility.visibility_external_allocated);
-		putcharEntity.setLdIdent("putchar");
+		putcharEntity.setLdIdent(makeLdIdent("putchar"));
 		putcharSymConst = construction.newSymConst(putcharEntity);
 		
 		/* create getchar entity */
@@ -90,7 +89,7 @@ public class BrainFuck {
 		
 		getcharEntity = new Entity(globalType, "getchar", getcharType);
 		getcharEntity.setVisibility(ir_visibility.visibility_external_allocated);
-		getcharEntity.setLdIdent("getchar");
+		getcharEntity.setLdIdent(makeLdIdent("getchar"));
 		getcharSymConst = construction.newSymConst(getcharEntity); 
 				
 		while (true) {
