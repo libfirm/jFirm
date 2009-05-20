@@ -25,7 +25,7 @@ public final class Firm {
 			void callback(String expr, String file, int line);
 		}
 	
-		void firm_set_assert_callback2(FirmCallback handler);
+		void firm_set_assert_callback(FirmCallback handler);
 	}	
 
 	public static int getMajorVersion() {
@@ -70,7 +70,8 @@ public final class Firm {
 		
 		if (binding_cb != null) {
 			try {
-				binding_cb.firm_set_assert_callback2(handler);
+				binding_cb.firm_set_assert_callback(handler);
+				System.out.println("Callback activated: firm_set_assert_callback found.");
 			} catch (UnsatisfiedLinkError e) {
 				System.out.println("Callback has not been activated: firm_set_assert_callback not found.");
 			}
