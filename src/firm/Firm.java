@@ -69,7 +69,7 @@ public final class Firm {
 				binding_cb.firm_set_assert_callback(handler);
 				System.out.println("Callback activated: firm_set_assert_callback found.");
 			} catch (UnsatisfiedLinkError e) {
-				System.out.println("Callback has not been activated: firm_set_assert_callback not found.");
+				/* not critical */
 			}
 		}
 

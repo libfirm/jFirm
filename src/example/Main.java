@@ -37,10 +37,14 @@ public class Main {
 		/* omit frame pointer for speed :) */
 		Backend.option("omitfp");
 		
+		/* mac os/x */
 		if (IS_ON_MAC_OSX) {
 			Backend.option("ia32-gasmode=macho");
 			Backend.option("ia32-stackalign=4");
 			Backend.option("pic");
+		} else {
+			/* linux */
+			Backend.option("ia32-gasmode=elf");
 		}
 		
 		/* transform to x86 assembler */
