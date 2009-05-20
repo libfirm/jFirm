@@ -35,6 +35,10 @@ public class BrainFuck {
 	public BrainFuck() {
 	}
 	
+	private static boolean isOnMacOSX() {
+		return "Mac OS X".equals(System.getProperty("os.name"));
+	}
+	
 	public Graph compile(String name) throws IOException {
 		FileInputStream input = new FileInputStream(name);
 		this.input = input;
@@ -43,7 +47,11 @@ public class BrainFuck {
 		MethodType type = new MethodType("V()", 0, 0);
 		Type global = Program.getGlobalType();
 		Entity mainEnt = new Entity(global, "main", type);
-		mainEnt.setLdIdent("main");
+		if (isOnMacOSX()) {
+			mainEnt.setLdIdent("_main");
+		} else {
+			mainEnt.setLdIdent("main");
+		}
 		mainEnt.setVisibility(ir_visibility.visibility_external_visible);
 		
 		/* create a new global array for the brainfuck data */
