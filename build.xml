@@ -48,7 +48,6 @@
 	    	<or>
 			   	<filename name="README"/>
 			   	<filename name="README.OSX"/>
-			   	<filename name="rot13.bf"/>
 			   	<filename name="bf_examples/*.bf"/>
 			   	<filename name="lib/jna.jar"/>
 			   	<filename name="lib/libfirm.so"/>
