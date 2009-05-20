@@ -8,8 +8,8 @@ Setup libFirm
 1. Download libFirm-XX from libfirm.org
 2. Extract libfirm to ~/Firm/firm/libfirm-XX
 
-If you want to use the callback mechanism then follow the steps described in
-"Callback Stuff" before building libfirm.
+If you want to use the callback mechanism (enhances debugging capabilitites)
+then follow the steps described in "Callback Stuff" before building libfirm.
 
 3. cd ~/Firm/firm && mkdir build
 4. cd build &&  ../libfirm-XX/configure --prefix ~/Firm/firm/ CFLAGS='-arch x86_64'

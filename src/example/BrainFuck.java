@@ -1,9 +1,18 @@
-package firm;
+package example;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import firm.ArrayType;
+import firm.Construction;
+import firm.Entity;
+import firm.Graph;
+import firm.MethodType;
+import firm.Mode;
+import firm.PrimitiveType;
+import firm.Program;
+import firm.Type;
 import firm.bindings.binding_typerep.ir_type_state;
 import firm.bindings.binding_typerep.ir_visibility;
 import firm.nodes.Block;

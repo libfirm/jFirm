@@ -38,9 +38,16 @@ You have to make sure java can find these platform specific libraries.
 In Linux/Mac this works by setting DYLD_LIBRARY_PATH to the directory that
 contains the library.
 
+2.4 Compile Java Source
+Just compile the java sourcecode. You have to set your java compiler to
+be at least jdk 1.5 (java 5) compliant.
+
+There's a simple brainfuck compiler included for testing.
+
 2.3 Eclipse Users:
 
-Remember to add JNA.jar to JFirms build Java build path.
+Remember to add JNA.jar to JFirms build Java build path and to set your jdk
+compliance level to 1.5.
 To set the LD_LIBRARY_PATH/DYLD_LIBRARY_PATH environment variables you have to
 set them as Environment variables in your Run Configurations (pointing them to
 ${project_loc:JFirm}/lib or something similar).
