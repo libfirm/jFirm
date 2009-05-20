@@ -74,4 +74,3 @@ firm_assert_callback_t firm_get_assert_callback();
 __END_DECLS
 #endif
 
-3. Set USE_FIRM_ASSERT_CALLBACK in class Firm.java of JFirm to true.

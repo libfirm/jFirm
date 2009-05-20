@@ -11,10 +11,6 @@ import firm.bindings.binding_irflag;
 import firm.bindings.binding_libc;
 
 public final class Firm {
-	/**
-	 * See README.OSX for details of the callback stuff
-	 */
-	public static final boolean USE_FIRM_ASSERT_CALLBACK = true;
 	
 	private static final binding_firm_common binding = Bindings.getFirmCommonBinding();
 	private static final binding_irflag binding_flag = (binding_irflag) Native.loadLibrary("firm", binding_irflag.class);
@@ -46,14 +42,14 @@ public final class Firm {
 		
 	private static binding_callback binding_cb = null;
 	
-	private static final binding_callback.FirmCallback handler = (USE_FIRM_ASSERT_CALLBACK ?
+	private static final binding_callback.FirmCallback handler = 
 		new binding_callback.FirmCallback() {
 			@Override
 			public void callback(String expr, String file, int line) {
 				throw new FirmAssertionException(expr, file, line);
 //				System.err.printf("Failed assert('%1s') in %2s:%3d", expr, file, line);
 			}			
-		} : null); 
+		}; 
 	
 	public static binding_libc.SigHandler sigHandler = new binding_libc.SigHandler() {
 		@Override
