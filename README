@@ -12,6 +12,9 @@ possible. The intended target are students in a compiler construction course.
 The binding often prefers readabilty/ease of use over performance and memory
 efficiency.
 
+Note: This version contains no bindings for the optimisation functions
+(students should develop their own optimisations).
+
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 2. Usage
