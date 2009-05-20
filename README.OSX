@@ -14,13 +14,12 @@ then follow the steps described in "Callback Stuff" before building libfirm.
 3. cd ~/Firm/firm && mkdir build
 4. cd build &&  ../libfirm-XX/configure --prefix ~/Firm/firm/ CFLAGS='-arch x86_64'
 5. make && make install
+6. A .dylib should have been created and copied to ~/Firm/firm/lib
 
 Adjust JFirm
 ============
 
-1. Copy binding_generator/config.juergengraf to binding_generator/config.YOUR_MAC_USERNAME
-2. Edit config.YOUR_MAC_USERNAME to see if directories match
-3. Run ./create_lib.sh in binding_generator/ -> a libfirm.dylib should have been created in lib/
+1. Copy ~/Firm/firm/lib/libfirm.0.dylib to ${workspace}/JFirm/lib/libfirm.dylib
 4. Refresh Project
 5. Create new Run Configuration "JFirm Test"
 5.1. Choose firm.Main as Class with main method
