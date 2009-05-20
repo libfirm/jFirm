@@ -1,10 +1,8 @@
 package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Library;
-import com.sun.jna.Native;
-import com.sun.jna.Platform;
-import com.sun.jna.Pointer;
 import com.sun.jna.NativeLong;
+import com.sun.jna.Pointer;
 
 
 public interface binding_irgmod extends Library {

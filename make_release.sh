@@ -14,7 +14,7 @@ mkdir -p "$FULLRELEASEDIR"
 
 find src -name "*.java" -exec cp -p --parents "{}" "$FULLRELEASEDIR" ';'
 
-SINGLE_FILES="README lib/libfirm.so lib/libfirm.dylib"
+SINGLE_FILES="README lib/libfirm.so lib/libfirm.dylib lib/jna.jar"
 for f in $SINGLE_FILES; do
 	cp -p --parents "$f" "$FULLRELEASEDIR"
 done
