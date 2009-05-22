@@ -241,7 +241,7 @@ public abstract class GraphBase extends JNAWrapper {
 			return;
 		node.markVisited();
 		
-		walker.visiteNode(node);
+		walker.visitNode(node);
 		if (node.getBlock() != null) {
 			walkHelper(walker, node.getBlock());			
 		}
@@ -261,7 +261,7 @@ public abstract class GraphBase extends JNAWrapper {
 		for (Node pred : node.getPreds()) {
 			walkHelperPostorder(walker, pred);
 		}
-		walker.visiteNode(node);
+		walker.visitNode(node);
 	}
 	
 	private void blockWalkHelper(BlockWalker walker, Node node) {
