@@ -4,6 +4,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import com.sun.jna.Platform;
+
 import firm.ArrayType;
 import firm.Construction;
 import firm.Entity;
@@ -37,7 +39,10 @@ public class BrainFuck {
 	}
 	
 	private static String makeLdIdent(String str) {
-		return (Main.IS_ON_MAC_OSX ? "_" + str : str);
+		if (Platform.isMac() || Platform.isWindows()) {
+			str = "_" + str;
+		}
+		return str;
 	}
 	
 	public Graph compile(String name) throws IOException {

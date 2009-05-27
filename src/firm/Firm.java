@@ -3,6 +3,7 @@ package firm;
 import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
+import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
 
 import firm.bindings.Bindings;
@@ -80,6 +81,18 @@ public final class Firm {
 		
 		/* disable all optimisations */
 		binding_flag.set_optimize(0);
+		
+		/* adapt backend to architecture */
+		if (Platform.isMac()) {
+			Backend.option("ia32-gasmode=macho");
+			Backend.option("ia32-stackalign=4");
+			Backend.option("pic");
+		} else if (Platform.isWindows()) {
+			Backend.option("ia32-gasmode=mingw");			
+		} else {
+			/* linux */
+			Backend.option("ia32-gasmode=elf");
+		}		
 	}
 	
 	private Firm() {

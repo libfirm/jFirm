@@ -1,6 +1,7 @@
 package firm.bindings;
 
 import com.sun.jna.Native;
+import com.sun.jna.Platform;
 
 public final class Bindings {
 
@@ -45,7 +46,9 @@ public final class Bindings {
 	}
 
 	public final static binding_libc getLibcBinding() {
-		return (binding_libc) Native.loadLibrary("c", binding_libc.class);
+		return (binding_libc) Native.loadLibrary(
+				Platform.isWindows() ? "msvcrt" : "c",
+				binding_libc.class);
 	}
 
 	public final static binding_ircons getIrConsBinding() {
