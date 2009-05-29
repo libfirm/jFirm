@@ -26,6 +26,14 @@ public class Ident extends JNAWrapper {
 		return getString();
 	}
 	
+	@Override
+	public boolean equals(Object object) {
+		/* this is to prevent you from doing stupid things, use toString() before
+		 * comparing with a string */
+		assert ! (object instanceof String);
+		return super.equals(object);
+	}
+	
 	public final static Ident createUnique(String tag) {
 		Pointer pIdent = binding.id_unique(tag);
 		return new Ident(pIdent);

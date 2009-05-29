@@ -5,6 +5,7 @@ import com.sun.jna.Native;
 import firm.bindings.binding_irgmod;
 import firm.bindings.binding_irvrfy;
 import firm.bindings.binding_lowering;
+import firm.nodes.Cmp;
 import firm.nodes.Node;
 
 /**
@@ -31,9 +32,6 @@ public class Util {
 	 * pointers pointing to old).  Turns the old node into an Id. 
 	 */
 	public static void exchange(Node oldNode, Node newNode) {
-		//assert ! oldNode.equals(newNode);
-		//System.err.println("I'm here");
-		//Backend.binding.invoke();
 		binding_mod.exchange(oldNode.ptr, newNode.ptr);
 	}
 	
@@ -59,6 +57,27 @@ public class Util {
 	}
 	
 	/**
+	 * Calculates a negated pnc condition (ie. a<b becomes a>=b)
+	 */
+	public int getNegatedCmpPn(Mode mode, int pnc) {
+		pnc ^= Cmp.pnTrue;
+		if (!mode.isFloat())
+			pnc &= ~Cmp.pnUo;
+		return pnc;
+	}
+	
+	/**
+	 * Calculates the inversed pnc condition (ie. a<b becomes a>b)
+	 */
+	public int getInverseCmpPn(Mode mode, int pnc) {
+		int     code    = pnc & ~(Cmp.pnLt|Cmp.pnGt);
+		boolean lesser  = (pnc & Cmp.pnLt) != 0;
+		boolean greater = (pnc & Cmp.pnGt) != 0;
+		code           |= (lesser ? Cmp.pnGt : 0) | (greater ? Cmp.pnLt : 0);
+		return code;
+	}
+	
+	/**
 	 * Kill a node by setting its predecessors to Bad and finally
 	 * exchange the node by Bad itself.
 	 */
@@ -66,6 +85,9 @@ public class Util {
 		binding_mod.kill_node(node.ptr);
 	}
 	
+	/**
+	 * Replace Sel nodes by explicit address arithmetic
+	 */
 	public static void lowerSels() {
 		binding_lower.lower_highlevel(0);
 	}

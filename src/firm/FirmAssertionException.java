@@ -1,5 +1,6 @@
 package firm;
 
+@SuppressWarnings("serial")
 public class FirmAssertionException extends RuntimeException {
 	
 	private final int lineNr;

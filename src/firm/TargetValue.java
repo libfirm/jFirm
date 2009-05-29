@@ -6,6 +6,11 @@ import com.sun.jna.Pointer;
 import firm.bindings.Bindings;
 import firm.bindings.TargetValueBinding;
 
+/**
+ * Represents a (numeric) architecture independent value. This allows doing
+ * arithmetic of the destination machine independent of the arithmetic of
+ * the host machine where the compiler is running.
+ */
 public class TargetValue extends JNAWrapper {
 
 	private static final TargetValueBinding b = Bindings.getTargetValueBinding();
