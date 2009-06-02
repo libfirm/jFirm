@@ -32,6 +32,8 @@ public class Util {
 	 * pointers pointing to old).  Turns the old node into an Id. 
 	 */
 	public static void exchange(Node oldNode, Node newNode) {
+		assert oldNode != newNode;
+		assert !oldNode.equals(newNode);
 		binding_mod.exchange(oldNode.ptr, newNode.ptr);
 	}
 	
