@@ -8,7 +8,10 @@ import firm.bindings.binding_irnode;
 class NodeWrapperConstruction {
 
 	public static Node createWrapper(Pointer ptr) {
-		switch (binding_irnode.ir_opcode.getEnum(Node.binding.get_irn_opcode(ptr))) {
+		final binding_irnode.ir_opcode opcode = 
+			binding_irnode.ir_opcode.getEnum(Node.binding.get_irn_opcode(ptr));
+
+		switch (opcode) {
 		
 		
 		
@@ -300,7 +303,7 @@ class NodeWrapperConstruction {
 		
 		
 			default:
-				return new Node(ptr);
+				throw new IllegalStateException("Unkown node type: " + opcode);
 		}
 	}
 

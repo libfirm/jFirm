@@ -307,6 +307,12 @@ public {{"abstract "|ifset(node,"abstract")}}class {{node["classname"]}} extends
 	public static final int pn{{out|CamelCase}} = {{loop.index0}};
 	{% endfor %}
 	public static final int pnMax = {{len(node.outs)}};
+
+	{% if not node.abstract %}
+	public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	} 
+	{% endif %}
 }
 ''')
 
@@ -355,7 +361,10 @@ import firm.bindings.binding_irnode;
 class NodeWrapperConstruction {
 
 	public static Node createWrapper(Pointer ptr) {
-		switch (binding_irnode.ir_opcode.getEnum(Node.binding.get_irn_opcode(ptr))) {
+		final binding_irnode.ir_opcode opcode = 
+			binding_irnode.ir_opcode.getEnum(Node.binding.get_irn_opcode(ptr));
+
+		switch (opcode) {
 		{% for nodename, node in nodes.iteritems() %}
 		{% if not node.abstract %}
 			case iro_{{nodename}}:
@@ -363,7 +372,7 @@ class NodeWrapperConstruction {
 		{% endif %}
 		{% endfor %}
 			default:
-				return new Node(ptr);
+				throw new IllegalStateException("Unkown node type: " + opcode);
 		}
 	}
 
@@ -371,6 +380,38 @@ class NodeWrapperConstruction {
 file = open("NodeWrapperConstruction.java", "w")
 file.write(template.render(nodes = nodes))
 file.close()
+
+template = env.from_string('''/* Warning: automatically generated file */
+package firm.nodes;
+
+public interface NodeVisitor {
+
+	{% for nodename, node in nodes.iteritems() %}
+	{% if not node.abstract %}
+	void visit({{node["classname"]}} node);
+	{% endif %}
+	{% endfor %}
+
+	public static abstract class Default implements NodeVisitor {
+
+		public abstract void defaultVisit(Node n);
+		
+	{% for nodename, node in nodes.iteritems() %}
+	{% if not node.abstract %}
+		@Override
+		public void visit({{node["classname"]}} node) {
+			defaultVisit(node);
+		}
+	{% endif %}
+	{% endfor %}
+	
+	}
+
+}''')
+file = open("NodeVisitor.java", "w")
+file.write(template.render(nodes = nodes))
+file.close()
+
 
 template = env.from_string('''/* Warning: automatically generated file */
 package firm;

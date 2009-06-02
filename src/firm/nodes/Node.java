@@ -14,7 +14,7 @@ import firm.bindings.Bindings;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irnode;
 
-public class Node extends JNAWrapper {
+public abstract class Node extends JNAWrapper {
 	protected static final binding_irnode binding = Bindings.getIrNodeBinding();
 	protected static final binding_ircons binding_cons = GraphBase.binding_cons;
 
@@ -102,4 +102,6 @@ public class Node extends JNAWrapper {
 	public Node getBlock() {
 		return createWrapper(binding.get_nodes_block(ptr));
 	} 
+	
+	public abstract void accept(NodeVisitor visitor);
 }

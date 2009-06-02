@@ -66,4 +66,10 @@ public class DivMod extends Node {
 	public static final int pnResMod = 4;
 	
 	public static final int pnMax = 5;
+
+	
+	public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	} 
+	
 }

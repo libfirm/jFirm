@@ -56,4 +56,10 @@ public class InstOf extends Node {
 	public static final int pnMExcept = 4;
 	
 	public static final int pnMax = 5;
+
+	
+	public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	} 
+	
 }

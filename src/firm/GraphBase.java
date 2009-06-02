@@ -8,7 +8,12 @@ import firm.bindings.binding_ircons;
 import firm.bindings.binding_irgraph;
 import firm.nodes.Bad;
 import firm.nodes.Block;
+import firm.nodes.End;
+import firm.nodes.NoMem;
 import firm.nodes.Node;
+import firm.nodes.NodeVisitor;
+import firm.nodes.Proj;
+import firm.nodes.Start;
 
 /**
  * A graph is an object owning stuff related to a firm graph. That is:
@@ -86,8 +91,8 @@ public abstract class GraphBase extends JNAWrapper {
 	/**
 	 * returns the start node
 	 */
-	public Node getStart() {
-		return new Node(binding.get_irg_start(ptr));
+	public Start getStart() {
+		return new Start(binding.get_irg_start(ptr));
 	}
 	
 	/** returns the end block */
@@ -96,48 +101,48 @@ public abstract class GraphBase extends JNAWrapper {
 	}
 	
 	/** returns the end node */
-	public Node getEnd() {
-		return new Node(binding.get_irg_end(ptr));
+	public End getEnd() {
+		return new End(binding.get_irg_end(ptr));
 	}
 	
 	/** returns the end node for exceptions */
-	public Node getEndReg() {
-		return new Node(binding.get_irg_end_reg(ptr));
+	public End getEndReg() {
+		return new End(binding.get_irg_end_reg(ptr));
 	}
 	
 	/** returns the initial ProjX node (start of control flow) */
-	public Node getInitialExec() {
-		return new Node(binding.get_irg_initial_exec(ptr));
+	public Proj getInitialExec() {
+		return new Proj(binding.get_irg_initial_exec(ptr));
 	}
 	
 	/** returns the initial memory */
 	public Node getInitialMem() {
-		return new Node(binding.get_irg_initial_mem(ptr));
+		return Node.createWrapper(binding.get_irg_initial_mem(ptr));
 	}
 	
 	/** returns the pointer to the functions stackframe */
 	public Node getFrame() {
-		return new Node(binding.get_irg_frame(ptr));
+		return Node.createWrapper(binding.get_irg_frame(ptr));
 	}
 	
 	/** returns the pointer to the thread local storage area */
 	public Node getTls() {
-		return new Node(binding.get_irg_tls(ptr));
+		return Node.createWrapper(binding.get_irg_tls(ptr));
 	}
 	
 	/** returns function arguments */
 	public Node getArgs() {
-		return new Node(binding.get_irg_args(ptr));
+		return Node.createWrapper(binding.get_irg_args(ptr));
 	}
 	
 	/** returns the Bad node */
-	public Node getBad() {
-		return new Node(binding.get_irg_bad(ptr));
+	public Bad getBad() {
+		return new Bad(binding.get_irg_bad(ptr));
 	}
 	
 	/** return the NoMem node */
-	public Node getNoMem() {
-		return new Node(binding.get_irg_no_mem(ptr));
+	public NoMem getNoMem() {
+		return new NoMem(binding.get_irg_no_mem(ptr));
 	}
 	
 	public void setStartBlock(Block block) {
@@ -236,12 +241,12 @@ public abstract class GraphBase extends JNAWrapper {
 		return binding.get_irg_last_idx(ptr);
 	}
 	
-	private void walkHelper(GraphWalker walker, Node node) {
+	private void walkHelper(NodeVisitor walker, Node node) {
 		if (node.visited())
 			return;
 		node.markVisited();
 		
-		walker.visitNode(node);
+		node.accept(walker);
 		if (node.getBlock() != null) {
 			walkHelper(walker, node.getBlock());			
 		}
@@ -250,7 +255,7 @@ public abstract class GraphBase extends JNAWrapper {
 		}
 	}
 	
-	private void walkHelperPostorder(GraphWalker walker, Node node) {
+	private void walkHelperPostorder(NodeVisitor walker, Node node) {
 		if (node.visited())
 			return;
 		node.markVisited();
@@ -261,7 +266,7 @@ public abstract class GraphBase extends JNAWrapper {
 		for (Node pred : node.getPreds()) {
 			walkHelperPostorder(walker, pred);
 		}
-		walker.visitNode(node);
+		node.accept(walker);
 	}
 	
 	private void blockWalkHelper(BlockWalker walker, Node node) {
@@ -308,7 +313,7 @@ public abstract class GraphBase extends JNAWrapper {
 	 * visits all nodes of the graph, starting at the end node
 	 * @param walker
 	 */
-	public void walk(GraphWalker walker) {
+	public void walk(NodeVisitor walker) {
 		Graph.setCurrent(this);
 		incrementNodeVisited();
 		walkHelper(walker, getEnd());
@@ -320,7 +325,7 @@ public abstract class GraphBase extends JNAWrapper {
 	 * will have been visited before a node is visited.
 	 * @param walker
 	 */
-	public void walkPostorder(GraphWalker walker) {
+	public void walkPostorder(NodeVisitor walker) {
 		Graph.setCurrent(this);
 		incrementNodeVisited();
 		walkHelperPostorder(walker, getEnd());

@@ -73,4 +73,10 @@ public class Div extends Node {
 	public static final int pnRes = 3;
 	
 	public static final int pnMax = 4;
+
+	
+	public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	} 
+	
 }

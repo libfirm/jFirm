@@ -4,6 +4,7 @@ import com.sun.jna.Pointer;
 
 import firm.bindings.binding_typerep;
 import firm.bindings.binding_typerep.ir_initializer_kind_t;
+import firm.nodes.Const;
 import firm.nodes.Node;
 
 public class Initializer extends JNAWrapper {
@@ -36,9 +37,9 @@ public class Initializer extends JNAWrapper {
 		return new Initializer(p);
 	}
 	
-	public final Node getConstValue() {
+	public final Const getConstValue() {
 		Pointer p = binding.get_initializer_const_value(ptr);
-		return new Node(p);
+		return new Const(p);
 	}
 	
 	public final TargetValue getTarvalValue() {

@@ -37,4 +37,10 @@ public class Shl extends Binop {
 
 	
 	public static final int pnMax = 0;
+
+	
+	public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	} 
+	
 }

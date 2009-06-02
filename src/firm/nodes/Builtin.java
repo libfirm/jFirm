@@ -57,4 +57,10 @@ public class Builtin extends Node {
 	public static final int pnPValueResBase = 5;
 	
 	public static final int pnMax = 6;
+
+	
+	public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	} 
+	
 }

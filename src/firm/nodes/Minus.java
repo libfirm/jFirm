@@ -27,4 +27,10 @@ public class Minus extends Unop {
 
 	
 	public static final int pnMax = 0;
+
+	
+	public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	} 
+	
 }

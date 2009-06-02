@@ -47,8 +47,8 @@ public final class Firm {
 		new binding_callback.FirmCallback() {
 			@Override
 			public void callback(String expr, String file, int line) {
-				throw new FirmAssertionException(expr, file, line);
-//				System.err.printf("Failed assert('%1s') in %2s:%3d", expr, file, line);
+//				throw new FirmAssertionException(expr, file, line);
+				System.err.printf("Failed assert('%1s') in %2s:%3d\n", expr, file, line);
 			}			
 		}; 
 	
@@ -90,7 +90,6 @@ public final class Firm {
 		} else if (Platform.isWindows()) {
 			Backend.option("ia32-gasmode=mingw");			
 		} else {
-			/* linux */
 			Backend.option("ia32-gasmode=elf");
 		}		
 	}
