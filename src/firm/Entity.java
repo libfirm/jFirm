@@ -181,7 +181,7 @@ public class Entity extends JNAWrapper {
 
 	public final Graph getGraph() {
 		Pointer p = binding.get_entity_irg(ptr);
-		if (p == Pointer.NULL)
+		if (p == null)
 			return null;
 		
 		return new Graph(p);

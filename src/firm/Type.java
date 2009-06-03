@@ -72,7 +72,7 @@ public class Type extends JNAWrapper {
 	/** returns the mode of a type (or null for non-atomic types) */
 	public Mode getMode() {
 		Pointer mode_ptr = binding.get_type_mode(ptr);
-		if (mode_ptr.equals(Pointer.NULL))
+		if (mode_ptr == null)
 			return null;
 		return new Mode(mode_ptr);
 	}

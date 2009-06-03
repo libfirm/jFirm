@@ -38,12 +38,12 @@ public class BackEdges {
 
 		@Override
 		public boolean hasNext() {
-			return edge != Pointer.NULL; 
+			return edge != null; 
 		}
 
 		@Override
 		public Edge next() {
-			assert edge != Pointer.NULL;
+			assert edge != null;
 			
 			Edge result = new Edge();
 			result.node = Node.createWrapper(binding.get_edge_src_irn(edge));

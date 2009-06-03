@@ -9,7 +9,7 @@ public abstract class JNAWrapper {
 	protected JNAWrapper(final Pointer ptr) {
 		if (ptr == null) {
 			throw new IllegalArgumentException("Pointer object is null.");
-		} else if (ptr == Pointer.NULL) {
+		} else if (ptr == null) {
 			throw new IllegalArgumentException("Pointer object holds a C NULL pointer.");
 		}
 		

@@ -80,7 +80,7 @@ public class Construction extends ConstructionBase {
 	 */
 	public Block getCurrentBlock() {
 		Pointer ptr = binding_cons.get_cur_block();
-		if (ptr == Pointer.NULL)
+		if (ptr == null)
 			return null;
 		return new Block(binding_cons.get_cur_block());
 	}
