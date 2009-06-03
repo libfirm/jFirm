@@ -1,0 +1,20 @@
+========= jFirm 0.1.0 ==========
+* Initial revision
+
+========= jFirm 0.1.1 ==========
+* Includes jna.jar now
+* Includes firm brainfuck compiler example
+* A new hack to catch C asserts from java on OS/X
+
+========= jFirm 0.1.2 ==========
+ * Cleanup
+ * More Documentation, added README
+
+=========  jFirm 0.1.3 ==========
+* Fixed mac dylib
+
+========= jFirm 0.2.0 ==========
+* Includes a windows dll now
+* Moved some functions from Util class to Graph class (exchange, killNode, turnIntoTuple)
+* Reworked visitor/graph walk interface. It is now using the visitor pattern (use DefaultVisitor to port old code)
+  
