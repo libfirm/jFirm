@@ -16,7 +16,7 @@ public class Backend {
 	
 	public static void createAssembler(String outputFileName, String compilationUnitName) throws IOException {
 		Pointer file = binding_c.fopen(outputFileName, "w");
-		if (file == null || file == null) {
+		if (file == null) {
 			throw new IOException("Couldn't open output file (write access): " + outputFileName);
 		}
 		

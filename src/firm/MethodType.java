@@ -46,7 +46,7 @@ public class MethodType extends Type {
 	
 	public final Type getValueParamType() {
 		Pointer p = binding.get_method_value_param_type(ptr);
-		return (p == null || p == null ? null : Type.createWrapper(p));
+		return (p == null ? null : Type.createWrapper(p));
 	}
 
 	public final Ident getParamIdent(int pos) {
