@@ -1,3 +1,8 @@
+========= jFirm 0.2.1 (2009-06-03) ==========
+* Fix Type.getMode() throwing NullPointer exceptions for types without modes
+* Make layoutFields set the size of a class Type
+* sync/update nodespecification/node classes with firm 
+
 ========= jFirm 0.2.0 (2009-06-03) ==========
 * Includes a windows dll now
 * Moved some functions from Util class to Graph class (exchange, killNode, turnIntoTuple)

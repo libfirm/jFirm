@@ -173,13 +173,16 @@ public class ClassType extends Type {
 			entity.setOffset(offset);
 			offset += entity.getType().getSizeBytes();
 		}
+		
 		setAlignmentBytes(alignment);
+		setSizeBytes(offset);
 	}
 	
 	@Override
 	public void fixed() {
-		/* frontend should have set the offsets of the data entities... */
-		/* I don't know a way to test if this has happened... */
+		/* frontend should have set the offsets of the data entities
+		 *  (by calling Type.layoutFields for example)
+		 * I don't know a way to test if this has happened. */
 		
 		/* At least we should have a size >= 0 */
 		assert getSizeBytes() >= 0;

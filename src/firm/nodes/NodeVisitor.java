@@ -5,17 +5,15 @@ public interface NodeVisitor {
 
 	
 	
-	
-	
 	void visit(NoMem node);
 	
 	
 	
-	void visit(End node);
+	void visit(Const node);
 	
 	
 	
-	void visit(Sub node);
+	void visit(Raise node);
 	
 	
 	
@@ -27,43 +25,7 @@ public interface NodeVisitor {
 	
 	
 	
-	void visit(Mux node);
-	
-	
-	
-	void visit(SymConst node);
-	
-	
-	
-	void visit(Sync node);
-	
-	
-	
 	void visit(Start node);
-	
-	
-	
-	void visit(Builtin node);
-	
-	
-	
-	void visit(Abs node);
-	
-	
-	
-	void visit(Call node);
-	
-	
-	
-	void visit(Proj node);
-	
-	
-	
-	void visit(Shr node);
-	
-	
-	
-	void visit(Mul node);
 	
 	
 	
@@ -71,19 +33,15 @@ public interface NodeVisitor {
 	
 	
 	
+	void visit(Proj node);
+	
+	
+	
 	void visit(Store node);
 	
 	
 	
-	void visit(Raise node);
-	
-	
-	
-	void visit(Phi node);
-	
-	
-	
-	void visit(Return node);
+	void visit(Mulh node);
 	
 	
 	
@@ -92,10 +50,6 @@ public interface NodeVisitor {
 	
 	
 	void visit(Jmp node);
-	
-	
-	
-	void visit(Confirm node);
 	
 	
 	
@@ -115,14 +69,6 @@ public interface NodeVisitor {
 	
 	
 	
-	void visit(Shrs node);
-	
-	
-	
-	void visit(CopyB node);
-	
-	
-	
 	void visit(InstOf node);
 	
 	
@@ -135,21 +81,9 @@ public interface NodeVisitor {
 	
 	
 	
-	void visit(Alloc node);
+	void visit(Shr node);
 	
 	
-	
-	
-	
-	void visit(Mulh node);
-	
-	
-	
-	void visit(Const node);
-	
-	
-	
-	void visit(Borrow node);
 	
 	
 	
@@ -157,15 +91,11 @@ public interface NodeVisitor {
 	
 	
 	
-	void visit(Eor node);
-	
-	
-	
 	void visit(Bad node);
 	
 	
 	
-	void visit(Rotl node);
+	void visit(DivMod node);
 	
 	
 	
@@ -181,10 +111,6 @@ public interface NodeVisitor {
 	
 	
 	
-	void visit(Block node);
-	
-	
-	
 	void visit(Cmp node);
 	
 	
@@ -194,6 +120,96 @@ public interface NodeVisitor {
 	
 	
 	void visit(Pin node);
+	
+	
+	
+	void visit(IJmp node);
+	
+	
+	
+	void visit(Shrs node);
+	
+	
+	
+	void visit(Sel node);
+	
+	
+	
+	
+	
+	void visit(End node);
+	
+	
+	
+	void visit(Sub node);
+	
+	
+	
+	void visit(Confirm node);
+	
+	
+	
+	void visit(Mux node);
+	
+	
+	
+	void visit(SymConst node);
+	
+	
+	
+	void visit(Sync node);
+	
+	
+	
+	void visit(Builtin node);
+	
+	
+	
+	void visit(Abs node);
+	
+	
+	
+	void visit(Call node);
+	
+	
+	
+	void visit(Mul node);
+	
+	
+	
+	void visit(Phi node);
+	
+	
+	
+	void visit(Return node);
+	
+	
+	
+	void visit(CopyB node);
+	
+	
+	
+	void visit(Dummy node);
+	
+	
+	
+	void visit(Alloc node);
+	
+	
+	
+	void visit(Eor node);
+	
+	
+	
+	void visit(Rotl node);
+	
+	
+	
+	void visit(Anchor node);
+	
+	
+	
+	void visit(Block node);
 	
 	
 	
@@ -209,40 +225,18 @@ public interface NodeVisitor {
 	
 	
 	
-	void visit(IJmp node);
-	
-	
-	
-	void visit(Anchor node);
-	
-	
-	
 	void visit(Cond node);
-	
-	
-	
-	void visit(Carry node);
-	
-	
-	
-	void visit(Sel node);
 	
 	
 	
 	void visit(Id node);
 	
 	
-	
-	void visit(DivMod node);
-	
-	
 
 	public static abstract class Default implements NodeVisitor {
 
-		public abstract void defaultVisit(Node n);
+		public void defaultVisit(Node n) {}
 		
-	
-	
 	
 	
 		@Override
@@ -253,14 +247,14 @@ public interface NodeVisitor {
 	
 	
 		@Override
-		public void visit(End node) {
+		public void visit(Const node) {
 			defaultVisit(node);
 		}
 	
 	
 	
 		@Override
-		public void visit(Sub node) {
+		public void visit(Raise node) {
 			defaultVisit(node);
 		}
 	
@@ -281,70 +275,7 @@ public interface NodeVisitor {
 	
 	
 		@Override
-		public void visit(Mux node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(SymConst node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Sync node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
 		public void visit(Start node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Builtin node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Abs node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Call node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Proj node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Shr node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Mul node) {
 			defaultVisit(node);
 		}
 	
@@ -358,6 +289,13 @@ public interface NodeVisitor {
 	
 	
 		@Override
+		public void visit(Proj node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
 		public void visit(Store node) {
 			defaultVisit(node);
 		}
@@ -365,21 +303,7 @@ public interface NodeVisitor {
 	
 	
 		@Override
-		public void visit(Raise node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Phi node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Return node) {
+		public void visit(Mulh node) {
 			defaultVisit(node);
 		}
 	
@@ -394,13 +318,6 @@ public interface NodeVisitor {
 	
 		@Override
 		public void visit(Jmp node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Confirm node) {
 			defaultVisit(node);
 		}
 	
@@ -435,20 +352,6 @@ public interface NodeVisitor {
 	
 	
 		@Override
-		public void visit(Shrs node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(CopyB node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
 		public void visit(InstOf node) {
 			defaultVisit(node);
 		}
@@ -470,44 +373,16 @@ public interface NodeVisitor {
 	
 	
 		@Override
-		public void visit(Alloc node) {
+		public void visit(Shr node) {
 			defaultVisit(node);
 		}
 	
 	
-	
-	
-	
-		@Override
-		public void visit(Mulh node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Const node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Borrow node) {
-			defaultVisit(node);
-		}
 	
 	
 	
 		@Override
 		public void visit(Filter node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Eor node) {
 			defaultVisit(node);
 		}
 	
@@ -521,7 +396,7 @@ public interface NodeVisitor {
 	
 	
 		@Override
-		public void visit(Rotl node) {
+		public void visit(DivMod node) {
 			defaultVisit(node);
 		}
 	
@@ -549,13 +424,6 @@ public interface NodeVisitor {
 	
 	
 		@Override
-		public void visit(Block node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
 		public void visit(Cmp node) {
 			defaultVisit(node);
 		}
@@ -571,6 +439,162 @@ public interface NodeVisitor {
 	
 		@Override
 		public void visit(Pin node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(IJmp node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Shrs node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Sel node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+	
+	
+		@Override
+		public void visit(End node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Sub node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Confirm node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Mux node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(SymConst node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Sync node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Builtin node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Abs node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Call node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Mul node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Phi node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Return node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(CopyB node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Dummy node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Alloc node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Eor node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Rotl node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Anchor node) {
+			defaultVisit(node);
+		}
+	
+	
+	
+		@Override
+		public void visit(Block node) {
 			defaultVisit(node);
 		}
 	
@@ -598,20 +622,6 @@ public interface NodeVisitor {
 	
 	
 		@Override
-		public void visit(IJmp node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Anchor node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
 		public void visit(Cond node) {
 			defaultVisit(node);
 		}
@@ -619,28 +629,7 @@ public interface NodeVisitor {
 	
 	
 		@Override
-		public void visit(Carry node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(Sel node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
 		public void visit(Id node) {
-			defaultVisit(node);
-		}
-	
-	
-	
-		@Override
-		public void visit(DivMod node) {
 			defaultVisit(node);
 		}
 	

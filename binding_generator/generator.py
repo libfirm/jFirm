@@ -5,6 +5,17 @@ from spec_util import verify_node, is_dynamic_pinned
 
 java_keywords = [ "public", "private", "protected", "true", "false" ]
 
+# Filter out some special nodes we don't really need/want here
+del nodes["ASM"]
+del nodes["CallBegin"]
+del nodes["Borrow"]
+del nodes["Carry"]
+del nodes["EndExcept"]
+del nodes["EndReg"]
+# Some nodes need special constructors for now...
+for n in ["SymConst", "End", "Start", "Dummy", "Anchor"]:
+	nodes[n]["noconstr"] = True
+
 def format_filter_keywords(arg):
 	if arg in java_keywords:
 		return "_" + arg
@@ -100,6 +111,16 @@ def get_java_type(type):
 		wrap_type    = "Pointer"
 		to_wrapper   = "%s.ptr"
 		from_wrapper = "new firm.TargetValue(%s)"
+	elif type == "ir_node*":
+		java_type    = "firm.Node"
+		wrap_type    = "Pointer"
+		to_wrapper   = "%s.ptr"
+		from_wrapper = "firm.Node.createWrapper(%s)"
+	elif type == "ident*":
+		java_type    = "firm.Ident"
+		wrap_type    = "Pointer"
+		to_wrapper   = "%s.ptr"
+		from_wrapper = "new firm.Ident(%s)"
 	elif type == "pn_Cmp":
 		java_type    = "int"
 		wrap_type    = "int"
@@ -155,8 +176,14 @@ def get_java_type(type):
 		wrap_type    = "int"
 		to_wrapper   = "%s.val"
 		from_wrapper = "firm.bindings.binding_irnode.cond_jmp_predicate.getEnum(%s)"
+	elif type == "ident**" or type == "ir_asm_constraint*":
+		# cheat...
+		java_type    = "Pointer"
+		wrap_type    = "Pointer"
+		to_wrapper   = "%s"
+		from_wrapper = "%s"
 	else:
-		print "UNKNOWN TYPE"
+		print "UNKNOWN TYPE %s" % type
 		java_type    = "BAD"
 		wrap_type    = "BAD"
 		to_wrapper   = "BAD"
@@ -394,7 +421,7 @@ public interface NodeVisitor {
 
 	public static abstract class Default implements NodeVisitor {
 
-		public abstract void defaultVisit(Node n);
+		public void defaultVisit(Node n) {}
 		
 	{% for nodename, node in nodes.iteritems() %}
 	{% if not node.abstract %}

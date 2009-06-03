@@ -14,20 +14,18 @@ class NodeWrapperConstruction {
 		switch (opcode) {
 		
 		
-		
-		
 			case iro_NoMem:
 				return new NoMem(ptr);
 		
 		
 		
-			case iro_End:
-				return new End(ptr);
+			case iro_Const:
+				return new Const(ptr);
 		
 		
 		
-			case iro_Sub:
-				return new Sub(ptr);
+			case iro_Raise:
+				return new Raise(ptr);
 		
 		
 		
@@ -41,53 +39,8 @@ class NodeWrapperConstruction {
 		
 		
 		
-			case iro_Mux:
-				return new Mux(ptr);
-		
-		
-		
-			case iro_SymConst:
-				return new SymConst(ptr);
-		
-		
-		
-			case iro_Sync:
-				return new Sync(ptr);
-		
-		
-		
 			case iro_Start:
 				return new Start(ptr);
-		
-		
-		
-			case iro_Builtin:
-				return new Builtin(ptr);
-		
-		
-		
-			case iro_Abs:
-				return new Abs(ptr);
-		
-		
-		
-			case iro_Call:
-				return new Call(ptr);
-		
-		
-		
-			case iro_Proj:
-				return new Proj(ptr);
-		
-		
-		
-			case iro_Shr:
-				return new Shr(ptr);
-		
-		
-		
-			case iro_Mul:
-				return new Mul(ptr);
 		
 		
 		
@@ -96,23 +49,18 @@ class NodeWrapperConstruction {
 		
 		
 		
+			case iro_Proj:
+				return new Proj(ptr);
+		
+		
+		
 			case iro_Store:
 				return new Store(ptr);
 		
 		
 		
-			case iro_Raise:
-				return new Raise(ptr);
-		
-		
-		
-			case iro_Phi:
-				return new Phi(ptr);
-		
-		
-		
-			case iro_Return:
-				return new Return(ptr);
+			case iro_Mulh:
+				return new Mulh(ptr);
 		
 		
 		
@@ -123,11 +71,6 @@ class NodeWrapperConstruction {
 		
 			case iro_Jmp:
 				return new Jmp(ptr);
-		
-		
-		
-			case iro_Confirm:
-				return new Confirm(ptr);
 		
 		
 		
@@ -151,16 +94,6 @@ class NodeWrapperConstruction {
 		
 		
 		
-			case iro_Shrs:
-				return new Shrs(ptr);
-		
-		
-		
-			case iro_CopyB:
-				return new CopyB(ptr);
-		
-		
-		
 			case iro_InstOf:
 				return new InstOf(ptr);
 		
@@ -176,25 +109,10 @@ class NodeWrapperConstruction {
 		
 		
 		
-			case iro_Alloc:
-				return new Alloc(ptr);
+			case iro_Shr:
+				return new Shr(ptr);
 		
 		
-		
-		
-		
-			case iro_Mulh:
-				return new Mulh(ptr);
-		
-		
-		
-			case iro_Const:
-				return new Const(ptr);
-		
-		
-		
-			case iro_Borrow:
-				return new Borrow(ptr);
 		
 		
 		
@@ -203,18 +121,13 @@ class NodeWrapperConstruction {
 		
 		
 		
-			case iro_Eor:
-				return new Eor(ptr);
-		
-		
-		
 			case iro_Bad:
 				return new Bad(ptr);
 		
 		
 		
-			case iro_Rotl:
-				return new Rotl(ptr);
+			case iro_DivMod:
+				return new DivMod(ptr);
 		
 		
 		
@@ -233,11 +146,6 @@ class NodeWrapperConstruction {
 		
 		
 		
-			case iro_Block:
-				return new Block(ptr);
-		
-		
-		
 			case iro_Cmp:
 				return new Cmp(ptr);
 		
@@ -250,6 +158,118 @@ class NodeWrapperConstruction {
 		
 			case iro_Pin:
 				return new Pin(ptr);
+		
+		
+		
+			case iro_IJmp:
+				return new IJmp(ptr);
+		
+		
+		
+			case iro_Shrs:
+				return new Shrs(ptr);
+		
+		
+		
+			case iro_Sel:
+				return new Sel(ptr);
+		
+		
+		
+		
+		
+			case iro_End:
+				return new End(ptr);
+		
+		
+		
+			case iro_Sub:
+				return new Sub(ptr);
+		
+		
+		
+			case iro_Confirm:
+				return new Confirm(ptr);
+		
+		
+		
+			case iro_Mux:
+				return new Mux(ptr);
+		
+		
+		
+			case iro_SymConst:
+				return new SymConst(ptr);
+		
+		
+		
+			case iro_Sync:
+				return new Sync(ptr);
+		
+		
+		
+			case iro_Builtin:
+				return new Builtin(ptr);
+		
+		
+		
+			case iro_Abs:
+				return new Abs(ptr);
+		
+		
+		
+			case iro_Call:
+				return new Call(ptr);
+		
+		
+		
+			case iro_Mul:
+				return new Mul(ptr);
+		
+		
+		
+			case iro_Phi:
+				return new Phi(ptr);
+		
+		
+		
+			case iro_Return:
+				return new Return(ptr);
+		
+		
+		
+			case iro_CopyB:
+				return new CopyB(ptr);
+		
+		
+		
+			case iro_Dummy:
+				return new Dummy(ptr);
+		
+		
+		
+			case iro_Alloc:
+				return new Alloc(ptr);
+		
+		
+		
+			case iro_Eor:
+				return new Eor(ptr);
+		
+		
+		
+			case iro_Rotl:
+				return new Rotl(ptr);
+		
+		
+		
+			case iro_Anchor:
+				return new Anchor(ptr);
+		
+		
+		
+			case iro_Block:
+				return new Block(ptr);
 		
 		
 		
@@ -268,38 +288,13 @@ class NodeWrapperConstruction {
 		
 		
 		
-			case iro_IJmp:
-				return new IJmp(ptr);
-		
-		
-		
-			case iro_Anchor:
-				return new Anchor(ptr);
-		
-		
-		
 			case iro_Cond:
 				return new Cond(ptr);
 		
 		
 		
-			case iro_Carry:
-				return new Carry(ptr);
-		
-		
-		
-			case iro_Sel:
-				return new Sel(ptr);
-		
-		
-		
 			case iro_Id:
 				return new Id(ptr);
-		
-		
-		
-			case iro_DivMod:
-				return new DivMod(ptr);
 		
 		
 			default:
