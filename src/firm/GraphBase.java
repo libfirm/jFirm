@@ -6,6 +6,7 @@ import com.sun.jna.Pointer;
 import firm.bindings.Bindings;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irgraph;
+import firm.bindings.binding_irvrfy.irg_verify_flags_t;
 import firm.nodes.Bad;
 import firm.nodes.Block;
 import firm.nodes.End;
@@ -362,5 +363,53 @@ public abstract class GraphBase extends JNAWrapper {
 	@Override
 	public String toString() {
 		return "Graph " + getEntity().getName();
+	}
+
+	/**
+	 * Checks if a graph is well formed
+	 * @param graph   the graph to check
+	 */
+	public void check() {
+		Util.binding_vrfy.irg_verify(ptr, irg_verify_flags_t.VRFY_ENFORCE_SSA.val);
+	}
+
+	/** 
+	 * Turns a node into a "useless" Tuple.
+	 *
+	 *  Turns a node into a "useless" Tuple.  The Tuple node just forms a tuple
+	 *  from several inputs.  The predecessors of the tuple have to be
+	 *  set by hand.  The block predecessor automatically remains the same.
+	 *  This is useful if a node returning a tuple is removed, but the Projs
+	 *  extracting values from the tuple are not available.
+	 *
+	 *  @param node The node to be turned into a tuple.
+	 *  @param outArity The number of values formed into a Tuple.
+	 */
+	public static Node turnIntoTuple(Node node, int outArity) {
+		Util.binding_mod.turn_into_tuple(node.ptr, outArity);
+		Node tuple = Node.createWrapper(node.ptr);
+		Graph graph = node.getGraph();
+		for (int i = 0; i < outArity; ++i) {
+			tuple.setPred(i, graph.newBad());
+		}
+		return tuple;
+	}
+
+	/**
+	 * Kill a node by setting its predecessors to Bad and finally
+	 * exchange the node by Bad itself.
+	 */
+	public static void killNode(Node node) {
+		Util.binding_mod.kill_node(node.ptr);
+	}
+
+	/** 
+	 * Exchanges two nodes by conserving edges leaving old (i.e.,
+	 * pointers pointing to old).  Turns the old node into an Id. 
+	 */
+	public static void exchange(Node oldNode, Node newNode) {
+		assert oldNode != newNode;
+		assert !oldNode.equals(newNode);
+		Util.binding_mod.exchange(oldNode.ptr, newNode.ptr);
 	}
 }
