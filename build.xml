@@ -11,6 +11,7 @@
   <property name="releasename" value="${projectname}-${version}"/>
   <property name="fullreleasedir" location="${workdir}/${releasename}"/>
   <property name="releasefile" location="${workdir}/${projectname}-${version}.zip"/>
+  <property name="releasefile-tgz" location="${workdir}/${projectname}-${version}.tgz"/>
 	
 	
 	<target name="clean" description="clean up" >
@@ -30,7 +31,7 @@
 	</target>
 
 	<target name="tar" depends="copy_stuff" description="pack everything to a tgz file">
-		<tar destfile="${basedir}/jSDG.tgz" compression="gzip">
+		<tar destfile="${releasefile-tgz}" compression="gzip">
 			<fileset dir="${workdir}">
 				<filename name="${releasename}/**/*" />
 			</fileset>
