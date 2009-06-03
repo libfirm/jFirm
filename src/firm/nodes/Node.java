@@ -94,6 +94,18 @@ public abstract class Node extends JNAWrapper {
 		};
 	}
 	
+	/**
+	 * May be used instead of instanceof tests.
+	 * (node.getOpCode() == ir_opcode.iro_Add) => node instanceof Add
+	 * 
+	 * @return Type of the current node
+	 */
+	public binding_irnode.ir_opcode getOpCode() {
+		int code = binding.get_irn_opcode(this.ptr);
+		binding_irnode.ir_opcode op = binding_irnode.ir_opcode.getEnum(code);
+		return op;
+	}
+	
 	@Override
 	public String toString() {
 		return binding.gdb_node_helper(ptr);
