@@ -1,3 +1,9 @@
+========= jFirm 0.2.2 (XXXX-XX-XX) =========
+* Graph.newXXX takes a Node instead of a Block for the block input now (using
+   Bad is allowed and this is more consistent with Node.getBlock())
+* Add missing TargetValue.compare function
+* Create a helper Enum to deal with Cmp Proj numbers
+
 ========= jFirm 0.2.1 (2009-06-03) ==========
 * Fix Type.getMode() throwing NullPointer exceptions for types without modes
 * Make layoutFields set the size of a class Type

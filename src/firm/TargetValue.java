@@ -187,7 +187,9 @@ public class TargetValue extends JNAWrapper {
 		return int_overflow_mode.getEnum(val);
 	}
 	
-//	/* pn_Cmp */int cmp(Pointer a, Pointer b);
+	public final int compare(TargetValue other) {
+		return b.tarval_cmp(ptr, other.ptr);
+	}
 	
 	public final TargetValue convertTo(Mode mode) {
 		Pointer ptarval = b.tarval_convert_to(ptr, mode.ptr);

@@ -5,7 +5,6 @@ import com.sun.jna.Native;
 import firm.bindings.binding_irgmod;
 import firm.bindings.binding_irvrfy;
 import firm.bindings.binding_lowering;
-import firm.nodes.Cmp;
 
 /**
  * Class containing various static utility functions
@@ -20,27 +19,6 @@ public class Util {
 	 * creating an instance makes no sense
 	 */
 	private Util() {
-	}
-	
-	/**
-	 * Calculates a negated pnc condition (ie. a<b becomes a>=b)
-	 */
-	public int getNegatedCmpPn(Mode mode, int pnc) {
-		pnc ^= Cmp.pnTrue;
-		if (!mode.isFloat())
-			pnc &= ~Cmp.pnUo;
-		return pnc;
-	}
-	
-	/**
-	 * Calculates the inversed pnc condition (ie. a<b becomes a>b)
-	 */
-	public int getInverseCmpPn(Mode mode, int pnc) {
-		int     code    = pnc & ~(Cmp.pnLt|Cmp.pnGt);
-		boolean lesser  = (pnc & Cmp.pnLt) != 0;
-		boolean greater = (pnc & Cmp.pnGt) != 0;
-		code           |= (lesser ? Cmp.pnGt : 0) | (greater ? Cmp.pnLt : 0);
-		return code;
 	}
 	
 	/**
