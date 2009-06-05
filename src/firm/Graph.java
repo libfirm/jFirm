@@ -3,7 +3,6 @@ package firm;
 
 import com.sun.jna.Pointer;
 
-import firm.nodes.Block;
 import firm.nodes.Node;
 
 public class Graph extends GraphBase {
@@ -38,13 +37,13 @@ public class Graph extends GraphBase {
 	
 	
 	
-	public final Node newRaise(Block block, Node mem, Node exo_ptr) {
+	public final Node newRaise(Node block, Node mem, Node exo_ptr) {
 		return Node.createWrapper(binding_cons.new_r_Raise(this.ptr, block.ptr, mem.ptr, exo_ptr.ptr));
 	}
 	
 	
 	
-	public final Node newQuot(Block block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
+	public final Node newQuot(Node block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
 		return Node.createWrapper(binding_cons.new_r_Quot(this.ptr, block.ptr, mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val));
 	}
 	
@@ -58,85 +57,85 @@ public class Graph extends GraphBase {
 	
 	
 	
-	public final Node newAdd(Block block, Node left, Node right, firm.Mode mode) {
+	public final Node newAdd(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Add(this.ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 	
 	
 	
-	public final Node newProj(Block block, Node pred, firm.Mode mode, int proj) {
+	public final Node newProj(Node block, Node pred, firm.Mode mode, int proj) {
 		return Node.createWrapper(binding_cons.new_r_Proj(this.ptr, block.ptr, pred.ptr, mode.ptr, new com.sun.jna.NativeLong(proj)));
 	}
 	
 	
 	
-	public final Node newStore(Block block, Node mem, Node ptr, Node value, firm.bindings.binding_ircons.ir_cons_flags flags) {
+	public final Node newStore(Node block, Node mem, Node ptr, Node value, firm.bindings.binding_ircons.ir_cons_flags flags) {
 		return Node.createWrapper(binding_cons.new_r_Store(this.ptr, block.ptr, mem.ptr, ptr.ptr, value.ptr, flags.val));
 	}
 	
 	
 	
-	public final Node newMulh(Block block, Node left, Node right, firm.Mode mode) {
+	public final Node newMulh(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Mulh(this.ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 	
 	
 	
-	public final Node newTuple(Block block, Node[] ins) {
+	public final Node newTuple(Node block, Node[] ins) {
 		return Node.createWrapper(binding_cons.new_r_Tuple(this.ptr, block.ptr, ins.length, Node.getPointerListFromNodeList(ins)));
 	}
 	
 	
 	
-	public final Node newJmp(Block block) {
+	public final Node newJmp(Node block) {
 		return Node.createWrapper(binding_cons.new_r_Jmp(this.ptr, block.ptr));
 	}
 	
 	
 	
-	public final Node newFree(Block block, Node mem, Node ptr, Node size, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
+	public final Node newFree(Node block, Node mem, Node ptr, Node size, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
 		return Node.createWrapper(binding_cons.new_r_Free(this.ptr, block.ptr, mem.ptr, ptr.ptr, size.ptr, type.ptr, where.val));
 	}
 	
 	
 	
-	public final Node newOr(Block block, Node left, Node right, firm.Mode mode) {
+	public final Node newOr(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Or(this.ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 	
 	
 	
-	public final Node newBreak(Block block) {
+	public final Node newBreak(Node block) {
 		return Node.createWrapper(binding_cons.new_r_Break(this.ptr, block.ptr));
 	}
 	
 	
 	
-	public final Node newNot(Block block, Node op, firm.Mode mode) {
+	public final Node newNot(Node block, Node op, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Not(this.ptr, block.ptr, op.ptr, mode.ptr));
 	}
 	
 	
 	
-	public final Node newInstOf(Block block, Node store, Node obj, firm.Type type) {
+	public final Node newInstOf(Node block, Node store, Node obj, firm.Type type) {
 		return Node.createWrapper(binding_cons.new_r_InstOf(this.ptr, block.ptr, store.ptr, obj.ptr, type.ptr));
 	}
 	
 	
 	
-	public final Node newMod(Block block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
+	public final Node newMod(Node block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
 		return Node.createWrapper(binding_cons.new_r_Mod(this.ptr, block.ptr, mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val));
 	}
 	
 	
 	
-	public final Node newLoad(Block block, Node mem, Node ptr, firm.Mode load_mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
+	public final Node newLoad(Node block, Node mem, Node ptr, firm.Mode load_mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
 		return Node.createWrapper(binding_cons.new_r_Load(this.ptr, block.ptr, mem.ptr, ptr.ptr, load_mode.ptr, flags.val));
 	}
 	
 	
 	
-	public final Node newShr(Block block, Node left, Node right, firm.Mode mode) {
+	public final Node newShr(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Shr(this.ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 	
@@ -144,7 +143,7 @@ public class Graph extends GraphBase {
 	
 	
 	
-	public final Node newFilter(Block block, Node pred, firm.Mode mode, int proj) {
+	public final Node newFilter(Node block, Node pred, firm.Mode mode, int proj) {
 		return Node.createWrapper(binding_cons.new_r_Filter(this.ptr, block.ptr, pred.ptr, mode.ptr, new com.sun.jna.NativeLong(proj)));
 	}
 	
@@ -156,61 +155,61 @@ public class Graph extends GraphBase {
 	
 	
 	
-	public final Node newDivMod(Block block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
+	public final Node newDivMod(Node block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
 		return Node.createWrapper(binding_cons.new_r_DivMod(this.ptr, block.ptr, mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val));
 	}
 	
 	
 	
-	public final Node newDiv(Block block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
+	public final Node newDiv(Node block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
 		return Node.createWrapper(binding_cons.new_r_Div(this.ptr, block.ptr, mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val));
 	}
 	
 	
 	
-	public final Node newShl(Block block, Node left, Node right, firm.Mode mode) {
+	public final Node newShl(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Shl(this.ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 	
 	
 	
-	public final Node newMinus(Block block, Node op, firm.Mode mode) {
+	public final Node newMinus(Node block, Node op, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Minus(this.ptr, block.ptr, op.ptr, mode.ptr));
 	}
 	
 	
 	
-	public final Node newCmp(Block block, Node left, Node right) {
+	public final Node newCmp(Node block, Node left, Node right) {
 		return Node.createWrapper(binding_cons.new_r_Cmp(this.ptr, block.ptr, left.ptr, right.ptr));
 	}
 	
 	
 	
-	public final Node newAnd(Block block, Node left, Node right, firm.Mode mode) {
+	public final Node newAnd(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_And(this.ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 	
 	
 	
-	public final Node newPin(Block block, Node op) {
+	public final Node newPin(Node block, Node op) {
 		return Node.createWrapper(binding_cons.new_r_Pin(this.ptr, block.ptr, op.ptr));
 	}
 	
 	
 	
-	public final Node newIJmp(Block block, Node target) {
+	public final Node newIJmp(Node block, Node target) {
 		return Node.createWrapper(binding_cons.new_r_IJmp(this.ptr, block.ptr, target.ptr));
 	}
 	
 	
 	
-	public final Node newShrs(Block block, Node left, Node right, firm.Mode mode) {
+	public final Node newShrs(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Shrs(this.ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 	
 	
 	
-	public final Node newSel(Block block, Node mem, Node ptr, Node[] ins, firm.Entity entity) {
+	public final Node newSel(Node block, Node mem, Node ptr, Node[] ins, firm.Entity entity) {
 		return Node.createWrapper(binding_cons.new_r_Sel(this.ptr, block.ptr, mem.ptr, ptr.ptr, ins.length, Node.getPointerListFromNodeList(ins), entity.ptr));
 	}
 	
@@ -220,19 +219,19 @@ public class Graph extends GraphBase {
 	
 	
 	
-	public final Node newSub(Block block, Node left, Node right, firm.Mode mode) {
+	public final Node newSub(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Sub(this.ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 	
 	
 	
-	public final Node newConfirm(Block block, Node value, Node bound, int cmp) {
+	public final Node newConfirm(Node block, Node value, Node bound, int cmp) {
 		return Node.createWrapper(binding_cons.new_r_Confirm(this.ptr, block.ptr, value.ptr, bound.ptr, cmp));
 	}
 	
 	
 	
-	public final Node newMux(Block block, Node sel, Node _false, Node _true, firm.Mode mode) {
+	public final Node newMux(Node block, Node sel, Node _false, Node _true, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Mux(this.ptr, block.ptr, sel.ptr, _false.ptr, _true.ptr, mode.ptr));
 	}
 	
@@ -240,49 +239,49 @@ public class Graph extends GraphBase {
 	
 	
 	
-	public final Node newSync(Block block, Node[] ins) {
+	public final Node newSync(Node block, Node[] ins) {
 		return Node.createWrapper(binding_cons.new_r_Sync(this.ptr, block.ptr, ins.length, Node.getPointerListFromNodeList(ins)));
 	}
 	
 	
 	
-	public final Node newBuiltin(Block block, Node mem, Node[] ins, firm.bindings.binding_ircons.ir_builtin_kind kind, firm.Type type) {
+	public final Node newBuiltin(Node block, Node mem, Node[] ins, firm.bindings.binding_ircons.ir_builtin_kind kind, firm.Type type) {
 		return Node.createWrapper(binding_cons.new_r_Builtin(this.ptr, block.ptr, mem.ptr, ins.length, Node.getPointerListFromNodeList(ins), kind.val, type.ptr));
 	}
 	
 	
 	
-	public final Node newAbs(Block block, Node op, firm.Mode mode) {
+	public final Node newAbs(Node block, Node op, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Abs(this.ptr, block.ptr, op.ptr, mode.ptr));
 	}
 	
 	
 	
-	public final Node newCall(Block block, Node mem, Node ptr, Node[] ins, firm.Type type) {
+	public final Node newCall(Node block, Node mem, Node ptr, Node[] ins, firm.Type type) {
 		return Node.createWrapper(binding_cons.new_r_Call(this.ptr, block.ptr, mem.ptr, ptr.ptr, ins.length, Node.getPointerListFromNodeList(ins), type.ptr));
 	}
 	
 	
 	
-	public final Node newMul(Block block, Node left, Node right, firm.Mode mode) {
+	public final Node newMul(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Mul(this.ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 	
 	
 	
-	public final Node newPhi(Block block, Node[] ins, firm.Mode mode) {
+	public final Node newPhi(Node block, Node[] ins, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Phi(this.ptr, block.ptr, ins.length, Node.getPointerListFromNodeList(ins), mode.ptr));
 	}
 	
 	
 	
-	public final Node newReturn(Block block, Node mem, Node[] ins) {
+	public final Node newReturn(Node block, Node mem, Node[] ins) {
 		return Node.createWrapper(binding_cons.new_r_Return(this.ptr, block.ptr, mem.ptr, ins.length, Node.getPointerListFromNodeList(ins)));
 	}
 	
 	
 	
-	public final Node newCopyB(Block block, Node mem, Node dst, Node src, firm.Type type) {
+	public final Node newCopyB(Node block, Node mem, Node dst, Node src, firm.Type type) {
 		return Node.createWrapper(binding_cons.new_r_CopyB(this.ptr, block.ptr, mem.ptr, dst.ptr, src.ptr, type.ptr));
 	}
 	
@@ -290,19 +289,19 @@ public class Graph extends GraphBase {
 	
 	
 	
-	public final Node newAlloc(Block block, Node mem, Node size, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
+	public final Node newAlloc(Node block, Node mem, Node size, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
 		return Node.createWrapper(binding_cons.new_r_Alloc(this.ptr, block.ptr, mem.ptr, size.ptr, type.ptr, where.val));
 	}
 	
 	
 	
-	public final Node newEor(Block block, Node left, Node right, firm.Mode mode) {
+	public final Node newEor(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Eor(this.ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 	
 	
 	
-	public final Node newRotl(Block block, Node left, Node right, firm.Mode mode) {
+	public final Node newRotl(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Rotl(this.ptr, block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 	
@@ -316,31 +315,31 @@ public class Graph extends GraphBase {
 	
 	
 	
-	public final Node newConv(Block block, Node op, firm.Mode mode) {
+	public final Node newConv(Node block, Node op, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Conv(this.ptr, block.ptr, op.ptr, mode.ptr));
 	}
 	
 	
 	
-	public final Node newCast(Block block, Node op, firm.Type type) {
+	public final Node newCast(Node block, Node op, firm.Type type) {
 		return Node.createWrapper(binding_cons.new_r_Cast(this.ptr, block.ptr, op.ptr, type.ptr));
 	}
 	
 	
 	
-	public final Node newBound(Block block, Node mem, Node index, Node lower, Node upper) {
+	public final Node newBound(Node block, Node mem, Node index, Node lower, Node upper) {
 		return Node.createWrapper(binding_cons.new_r_Bound(this.ptr, block.ptr, mem.ptr, index.ptr, lower.ptr, upper.ptr));
 	}
 	
 	
 	
-	public final Node newCond(Block block, Node selector) {
+	public final Node newCond(Node block, Node selector) {
 		return Node.createWrapper(binding_cons.new_r_Cond(this.ptr, block.ptr, selector.ptr));
 	}
 	
 	
 	
-	public final Node newId(Block block, Node pred, firm.Mode mode) {
+	public final Node newId(Node block, Node pred, firm.Mode mode) {
 		return Node.createWrapper(binding_cons.new_r_Id(this.ptr, block.ptr, pred.ptr, mode.ptr));
 	}
 	

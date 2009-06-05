@@ -276,7 +276,7 @@ def preprocess_node(nodename, node):
 	if not "knownBlock" in node:
 		ext_arguments.append(dict(
 			name       = "block",
-			type       = "Block",
+			type       = "Node",
 			to_wrapper = "%s.ptr"
 		))
 	for a in arguments:
@@ -445,7 +445,6 @@ package firm;
 
 import com.sun.jna.Pointer;
 
-import firm.nodes.Block;
 import firm.nodes.Node;
 
 public class Graph extends GraphBase {
