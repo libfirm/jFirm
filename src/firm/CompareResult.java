@@ -56,7 +56,7 @@ public enum CompareResult {
 	}
 	
 	/**
-	 * Calculates a negated pnc condition (ie. a<b becomes a>=b)
+	 * Calculates a negated pnc condition (ie. a&lt;b becomes a&gt;=b)
 	 */
 	public CompareResult getNegated(Mode mode) {
 		int newn = num ^ UnorderedLessGreaterEqual.num;
@@ -66,7 +66,7 @@ public enum CompareResult {
 	}
 	
 	/**
-	 * Calculates the inversed pnc condition (ie. a<b becomes a>b)
+	 * Calculates the inversed pnc condition (ie. a&lt;b becomes a&gt;b)
 	 */
 	public CompareResult getInverse() {
 		int newn = num & ~(Less.num | Greater.num);
@@ -75,5 +75,13 @@ public enum CompareResult {
 		if ((num & Greater.num) != 0)
 			newn |= Less.num;
 		return fromProjNum(newn);
-	}	
+	}
+	
+	/**
+	 * return true if the result fullfills all specifis of the other.
+	 * (ie. GreaterEqual.fullfills(Greater) gives true) 
+	 */
+	public boolean fullFills(CompareResult condition) {
+		return (condition.num & num) != 0;
+	}
 }

@@ -187,8 +187,8 @@ public class TargetValue extends JNAWrapper {
 		return int_overflow_mode.getEnum(val);
 	}
 	
-	public final int compare(TargetValue other) {
-		return b.tarval_cmp(ptr, other.ptr);
+	public final CompareResult compare(TargetValue other) {
+		return CompareResult.fromProjNum(b.tarval_cmp(ptr, other.ptr));
 	}
 	
 	public final TargetValue convertTo(Mode mode) {
