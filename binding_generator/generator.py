@@ -402,7 +402,6 @@ class NodeWrapperConstruction {
 				throw new IllegalStateException("Unkown node type: " + opcode);
 		}
 	}
-
 }''')
 file = open("NodeWrapperConstruction.java", "w")
 file.write(template.render(nodes = nodes))
@@ -411,27 +410,36 @@ file.close()
 template = env.from_string('''/* Warning: automatically generated file */
 package firm.nodes;
 
+/**
+ * Visitor interface for firm nodes
+ */
 public interface NodeVisitor {
 
-	{% for nodename, node in nodes.iteritems() %}
-	{% if not node.abstract %}
+	{% for nodename, node in nodes.iteritems() -%}
+	{% if not node.abstract -%}
+	/** called when accept is called on a {{node["classname"]}} node */
 	void visit({{node["classname"]}} node);
 	{% endif %}
-	{% endfor %}
+	{%- endfor %}
 
+	/**
+	 * Default Visitor: A class which implements every visit function of
+	 * the NodeVisitor interface with a call to the defaultVisit function.
+	 * Usefull as base for own visitors which need to treat all nodes
+	 * equally or only need to override some visit functions.
+	 */
 	public static abstract class Default implements NodeVisitor {
 
 		public void defaultVisit(Node n) {}
 		
-	{% for nodename, node in nodes.iteritems() %}
+	{% for nodename, node in nodes.iteritems() -%}
 	{% if not node.abstract %}
 		@Override
 		public void visit({{node["classname"]}} node) {
 			defaultVisit(node);
 		}
 	{% endif %}
-	{% endfor %}
-	
+	{%- endfor %}	
 	}
 
 }''')
@@ -447,6 +455,14 @@ import com.sun.jna.Pointer;
 
 import firm.nodes.Node;
 
+/**
+ * A graph is an object owning stuff related to a firm graph. That is:
+ * 
+ * - Nodes and Blocks
+ * - A type describing the stackframe layout
+ * - Direct pointers to some unique nodes (StartBlock, Start, ...)
+ * - Helper functions to traverse the graph
+ */
 public class Graph extends GraphBase {
 
 	public Graph(Pointer pointer) {
@@ -464,15 +480,14 @@ public class Graph extends GraphBase {
 		this(binding.new_ir_graph(entity.ptr, nLocalVars));
 	}
 
-
-	{% for nodename, node in nodes.iteritems() %}
+	{% for nodename, node in nodes.iteritems() -%}
 	{% if not node.abstract and not node.noconstr %}
+	/** Create a new {{nodename}} node */
 	public final Node new{{node["classname"]}}({{node.ext_arguments|argdecls}}) {
 		return Node.createWrapper(binding_cons.new_r_{{nodename}}({{node.ext_arguments|bindingargs(True)}}));
 	}
 	{% endif %}
-	{% endfor %}
-
+	{%- endfor %}
 }''')
 file = open("Graph.java", "w")
 file.write(template.render(nodes = nodes))

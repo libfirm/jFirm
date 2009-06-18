@@ -1,7 +1,6 @@
 package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Library;
-import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 
@@ -94,8 +93,7 @@ public interface binding_irprog extends Library {
 		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const(),
-		symconst_label();
+		symconst_enum_const();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -411,6 +409,28 @@ public interface binding_irprog extends Library {
 			return null;
 		}
 	}
+	public static enum ir_graph_state_t {
+		IR_GRAPH_STATE_KEEP_MUX((1<<0)),
+		IR_GRAPH_STATE_ARCH_DEP((1<<1));
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_graph_state_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_graph_state_t() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_graph_state_t getEnum(int val) {
+			for(ir_graph_state_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
 	public static enum ir_segment_t {
 		IR_SEGMENT_FIRST(),
 		IR_SEGMENT_GLOBAL(ir_segment_t.IR_SEGMENT_FIRST.val),
@@ -446,7 +466,7 @@ public interface binding_irprog extends Library {
 	float __builtin_nanf();
 	double __builtin_nanl();
 	void __builtin_va_end();
-	NativeLong __builtin_expect();
+	com.sun.jna.NativeLong __builtin_expect();
 	Pointer __builtin_return_address();
 	Pointer __builtin_frame_address();
 	int __builtin_ffs();
@@ -495,7 +515,7 @@ public interface binding_irprog extends Library {
 	Pointer get_irg_no_mem(Pointer irg);
 	void set_irg_no_mem(Pointer irg, Pointer node);
 	int get_irg_n_locs(Pointer irg);
-	NativeLong get_irg_graph_nr(Pointer irg);
+	com.sun.jna.NativeLong get_irg_graph_nr(Pointer irg);
 	int get_irg_idx(Pointer irg);
 	Pointer get_idx_irn(Pointer irg, int idx);
 	/* irg_phase_state */int get_irg_phase_state(Pointer irg);
@@ -522,17 +542,20 @@ public interface binding_irprog extends Library {
 	void set_irg_link(Pointer irg, Pointer thing);
 	Pointer get_irg_link(Pointer irg);
 	void inc_irg_visited(Pointer irg);
-	NativeLong get_irg_visited(Pointer irg);
-	void set_irg_visited(Pointer irg, NativeLong i);
-	NativeLong get_max_irg_visited();
+	com.sun.jna.NativeLong get_irg_visited(Pointer irg);
+	void set_irg_visited(Pointer irg, com.sun.jna.NativeLong i);
+	com.sun.jna.NativeLong get_max_irg_visited();
 	void set_max_irg_visited(int val);
-	NativeLong inc_max_irg_visited();
+	com.sun.jna.NativeLong inc_max_irg_visited();
 	void inc_irg_block_visited(Pointer irg);
-	NativeLong get_irg_block_visited(Pointer irg);
-	void set_irg_block_visited(Pointer irg, NativeLong i);
+	com.sun.jna.NativeLong get_irg_block_visited(Pointer irg);
+	void set_irg_block_visited(Pointer irg, com.sun.jna.NativeLong i);
 	void ir_reserve_resources(Pointer irg, int resources);
 	void ir_free_resources(Pointer irg, int resources);
 	int ir_resources_reserved(Pointer irg);
+	void set_irg_state(Pointer irg, /* ir_graph_state_t */int state);
+	void clear_irg_state(Pointer irg, /* ir_graph_state_t */int state);
+	int is_irg_state(Pointer irg, /* ir_graph_state_t */int state);
 	void normalize_proj_nodes(Pointer irg);
 	void set_irg_loc_description(Pointer irg, int n, Pointer description);
 	Pointer get_irg_loc_description(Pointer irg, int n);
@@ -540,17 +563,17 @@ public interface binding_irprog extends Library {
 	int get_irg_last_idx(Pointer irg);
 	int get_irg_fp_model(Pointer irg);
 	void set_irg_fp_model(Pointer irg, int model);
-	NativeLong register_additional_graph_data(NativeLong size);
+	com.sun.jna.NativeLong register_additional_graph_data(com.sun.jna.NativeLong size);
 	void irp_reserve_resources(Pointer irp, int resources);
 	void irp_free_resources(Pointer irp, int resources);
 	int irp_resources_reserved(Pointer irp);
 	Pointer get_irp();
-	Pointer new_ir_prog();
+	Pointer new_ir_prog(String name);
 	void free_ir_prog();
 	void set_irp_prog_name(Pointer name);
 	int irp_prog_name_is_set();
-	Pointer get_irp_prog_ident();
-	String get_irp_prog_name();
+	Pointer get_irp_ident();
+	String get_irp_name();
 	Pointer get_irp_main_irg();
 	void set_irp_main_irg(Pointer main_irg);
 	void add_irp_irg(Pointer irg);
@@ -584,8 +607,8 @@ public interface binding_irprog extends Library {
 	void set_irp_ip_outs_inconsistent();
 	/* irg_callee_info_state */int get_irp_callee_info_state();
 	void set_irp_callee_info_state(/* irg_callee_info_state */int s);
-	NativeLong get_irp_next_region_nr();
-	NativeLong get_irp_next_label_nr();
+	com.sun.jna.NativeLong get_irp_next_region_nr();
+	com.sun.jna.NativeLong get_irp_next_label_nr();
 	void add_irp_asm(Pointer asm_string);
 	int get_irp_n_asms();
 	Pointer get_irp_asm(int pos);

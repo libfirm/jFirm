@@ -1,7 +1,6 @@
 package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Library;
-import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 
@@ -94,8 +93,7 @@ public interface binding_ircons extends Library {
 		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const(),
-		symconst_label();
+		symconst_enum_const();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -240,7 +238,7 @@ public interface binding_ircons extends Library {
 	float __builtin_nanf();
 	double __builtin_nanl();
 	void __builtin_va_end();
-	NativeLong __builtin_expect();
+	com.sun.jna.NativeLong __builtin_expect();
 	Pointer __builtin_return_address();
 	Pointer __builtin_frame_address();
 	int __builtin_ffs();
@@ -260,7 +258,7 @@ public interface binding_ircons extends Library {
 	Pointer new_rd_Return(Pointer db, Pointer irg, Pointer block, Pointer store, int arity, Pointer[] in);
 	Pointer new_rd_Const_type(Pointer db, Pointer irg, Pointer con, Pointer tp);
 	Pointer new_rd_Const(Pointer db, Pointer irg, Pointer con);
-	Pointer new_rd_Const_long(Pointer db, Pointer irg, Pointer mode, NativeLong value);
+	Pointer new_rd_Const_long(Pointer db, Pointer irg, Pointer mode, com.sun.jna.NativeLong value);
 	Pointer new_rd_SymConst_addr_ent(Pointer db, Pointer irg, Pointer mode, Pointer symbol, Pointer tp);
 	Pointer new_rd_SymConst_ofs_ent(Pointer db, Pointer irg, Pointer mode, Pointer symbol, Pointer tp);
 	Pointer new_rd_SymConst_addr_name(Pointer db, Pointer irg, Pointer mode, Pointer symbol, Pointer tp);
@@ -302,16 +300,16 @@ public interface binding_ircons extends Library {
 	Pointer new_rd_Alloc(Pointer db, Pointer irg, Pointer block, Pointer store, Pointer size, Pointer alloc_type, /* ir_where_alloc */int where);
 	Pointer new_rd_Free(Pointer db, Pointer irg, Pointer block, Pointer store, Pointer ptr, Pointer size, Pointer free_type, /* ir_where_alloc */int where);
 	Pointer new_rd_Sync(Pointer db, Pointer irg, Pointer block, int arity, Pointer[] in);
-	Pointer new_rd_Proj(Pointer db, Pointer irg, Pointer block, Pointer arg, Pointer mode, NativeLong proj);
-	Pointer new_rd_defaultProj(Pointer db, Pointer irg, Pointer block, Pointer arg, NativeLong max_proj);
+	Pointer new_rd_Proj(Pointer db, Pointer irg, Pointer block, Pointer arg, Pointer mode, com.sun.jna.NativeLong proj);
+	Pointer new_rd_defaultProj(Pointer db, Pointer irg, Pointer block, Pointer arg, com.sun.jna.NativeLong max_proj);
 	Pointer new_rd_Tuple(Pointer db, Pointer irg, Pointer block, int arity, Pointer[] in);
 	Pointer new_rd_Id(Pointer db, Pointer irg, Pointer block, Pointer val, Pointer mode);
 	Pointer new_rd_Confirm(Pointer db, Pointer irg, Pointer block, Pointer val, Pointer bound, /* pn_Cmp */int cmp);
-	Pointer new_rd_Unknown(Pointer irg, Pointer m);
-	Pointer new_rd_CallBegin(Pointer db, Pointer irg, Pointer block, Pointer callee);
+	Pointer new_rd_Unknown(Pointer db, Pointer irg, Pointer m);
+	Pointer new_rd_CallBegin(Pointer db, Pointer irg, Pointer block, Pointer ptr, Pointer call);
 	Pointer new_rd_EndReg(Pointer db, Pointer irg, Pointer block);
 	Pointer new_rd_EndExcept(Pointer db, Pointer irg, Pointer block);
-	Pointer new_rd_Filter(Pointer db, Pointer irg, Pointer block, Pointer arg, Pointer mode, NativeLong proj);
+	Pointer new_rd_Filter(Pointer db, Pointer irg, Pointer block, Pointer arg, Pointer mode, com.sun.jna.NativeLong proj);
 	Pointer new_rd_Mux(Pointer db, Pointer irg, Pointer block, Pointer sel, Pointer ir_false, Pointer ir_true, Pointer mode);
 	Pointer new_rd_CopyB(Pointer db, Pointer irg, Pointer block, Pointer store, Pointer dst, Pointer src, Pointer data_type);
 	Pointer new_rd_InstOf(Pointer db, Pointer irg, Pointer block, Pointer store, Pointer objptr, Pointer type);
@@ -327,7 +325,7 @@ public interface binding_ircons extends Library {
 	Pointer new_r_Cond(Pointer irg, Pointer block, Pointer c);
 	Pointer new_r_Return(Pointer irg, Pointer block, Pointer store, int arity, Pointer[] in);
 	Pointer new_r_Const(Pointer irg, Pointer con);
-	Pointer new_r_Const_long(Pointer irg, Pointer mode, NativeLong value);
+	Pointer new_r_Const_long(Pointer irg, Pointer mode, com.sun.jna.NativeLong value);
 	Pointer new_r_Const_type(Pointer irg, Pointer con, Pointer tp);
 	Pointer new_r_simpleSel(Pointer irg, Pointer block, Pointer store, Pointer objptr, Pointer ent);
 	Pointer new_r_Sel(Pointer irg, Pointer block, Pointer store, Pointer objptr, int n_index, Pointer[] index, Pointer ent);
@@ -364,18 +362,18 @@ public interface binding_ircons extends Library {
 	Pointer new_r_Alloc(Pointer irg, Pointer block, Pointer store, Pointer size, Pointer alloc_type, /* ir_where_alloc */int where);
 	Pointer new_r_Free(Pointer irg, Pointer block, Pointer store, Pointer ptr, Pointer size, Pointer free_type, /* ir_where_alloc */int where);
 	Pointer new_r_Sync(Pointer irg, Pointer block, int arity, Pointer[] in);
-	Pointer new_r_Proj(Pointer irg, Pointer block, Pointer arg, Pointer mode, NativeLong proj);
-	Pointer new_r_defaultProj(Pointer irg, Pointer block, Pointer arg, NativeLong max_proj);
+	Pointer new_r_Proj(Pointer irg, Pointer block, Pointer arg, Pointer mode, com.sun.jna.NativeLong proj);
+	Pointer new_r_defaultProj(Pointer irg, Pointer block, Pointer arg, com.sun.jna.NativeLong max_proj);
 	Pointer new_r_Tuple(Pointer irg, Pointer block, int arity, Pointer[] in);
 	Pointer new_r_Id(Pointer irg, Pointer block, Pointer val, Pointer mode);
 	Pointer new_r_Bad(Pointer irg);
 	Pointer new_r_Confirm(Pointer irg, Pointer block, Pointer val, Pointer bound, /* pn_Cmp */int cmp);
 	Pointer new_r_Unknown(Pointer irg, Pointer m);
-	Pointer new_r_CallBegin(Pointer irg, Pointer block, Pointer callee);
+	Pointer new_r_CallBegin(Pointer irg, Pointer block, Pointer ptr, Pointer call);
 	Pointer new_r_EndReg(Pointer irg, Pointer block);
 	Pointer new_r_EndExcept(Pointer irg, Pointer block);
 	Pointer new_r_Break(Pointer irg, Pointer block);
-	Pointer new_r_Filter(Pointer irg, Pointer block, Pointer arg, Pointer mode, NativeLong proj);
+	Pointer new_r_Filter(Pointer irg, Pointer block, Pointer arg, Pointer mode, com.sun.jna.NativeLong proj);
 	Pointer new_r_NoMem(Pointer irg);
 	Pointer new_r_Mux(Pointer irg, Pointer block, Pointer sel, Pointer ir_false, Pointer ir_true, Pointer mode);
 	Pointer new_r_CopyB(Pointer irg, Pointer block, Pointer store, Pointer dst, Pointer src, Pointer data_type);
@@ -430,17 +428,17 @@ public interface binding_ircons extends Library {
 	Pointer new_d_Alloc(Pointer db, Pointer store, Pointer size, Pointer alloc_type, /* ir_where_alloc */int where);
 	Pointer new_d_Free(Pointer db, Pointer store, Pointer ptr, Pointer size, Pointer free_type, /* ir_where_alloc */int where);
 	Pointer new_d_Sync(Pointer db, int arity, Pointer[] in);
-	Pointer new_d_Proj(Pointer db, Pointer arg, Pointer mode, NativeLong proj);
-	Pointer new_d_defaultProj(Pointer db, Pointer arg, NativeLong max_proj);
+	Pointer new_d_Proj(Pointer db, Pointer arg, Pointer mode, com.sun.jna.NativeLong proj);
+	Pointer new_d_defaultProj(Pointer db, Pointer arg, com.sun.jna.NativeLong max_proj);
 	Pointer new_d_Tuple(Pointer db, int arity, Pointer[] in);
 	Pointer new_d_Id(Pointer db, Pointer val, Pointer mode);
 	Pointer new_d_Confirm(Pointer db, Pointer val, Pointer bound, /* pn_Cmp */int cmp);
-	Pointer new_d_Unknown(Pointer m);
-	Pointer new_d_CallBegin(Pointer db, Pointer callee);
+	Pointer new_d_Unknown(Pointer db, Pointer m);
+	Pointer new_d_CallBegin(Pointer db, Pointer ptr, Pointer call);
 	Pointer new_d_EndReg(Pointer db);
 	Pointer new_d_EndExcept(Pointer db);
 	Pointer new_d_Break(Pointer db);
-	Pointer new_d_Filter(Pointer db, Pointer arg, Pointer mode, NativeLong proj);
+	Pointer new_d_Filter(Pointer db, Pointer arg, Pointer mode, com.sun.jna.NativeLong proj);
 	Pointer new_d_Mux(Pointer db, Pointer sel, Pointer ir_false, Pointer ir_true, Pointer mode);
 	Pointer new_d_CopyB(Pointer db, Pointer store, Pointer dst, Pointer src, Pointer data_type);
 	Pointer new_d_InstOf(Pointer db, Pointer store, Pointer objptr, Pointer type);
@@ -459,13 +457,13 @@ public interface binding_ircons extends Library {
 	Pointer new_Cond(Pointer c);
 	Pointer new_Return(Pointer store, int arity, Pointer[] in);
 	Pointer new_Const(Pointer con);
-	Pointer new_Const_long(Pointer mode, NativeLong value);
+	Pointer new_Const_long(Pointer mode, com.sun.jna.NativeLong value);
 	Pointer new_Const_type(Pointer con, Pointer tp);
 	Pointer new_simpleSel(Pointer store, Pointer objptr, Pointer ent);
 	Pointer new_Sel(Pointer store, Pointer objptr, int arity, Pointer[] in, Pointer ent);
 	Pointer new_Call(Pointer store, Pointer callee, int arity, Pointer[] in, Pointer tp);
 	Pointer new_Builtin(Pointer store, int arity, Pointer[] in, /* ir_builtin_kind */int kind, Pointer tp);
-	Pointer new_CallBegin(Pointer callee);
+	Pointer new_CallBegin(Pointer ptr, Pointer call);
 	Pointer new_Add(Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_Sub(Pointer op1, Pointer op2, Pointer mode);
 	Pointer new_Minus(Pointer op, Pointer mode);
@@ -497,9 +495,9 @@ public interface binding_ircons extends Library {
 	Pointer new_Alloc(Pointer store, Pointer size, Pointer alloc_type, /* ir_where_alloc */int where);
 	Pointer new_Free(Pointer store, Pointer ptr, Pointer size, Pointer free_type, /* ir_where_alloc */int where);
 	Pointer new_Sync(int arity, Pointer[] in);
-	Pointer new_Proj(Pointer arg, Pointer mode, NativeLong proj);
-	Pointer new_Filter(Pointer arg, Pointer mode, NativeLong proj);
-	Pointer new_defaultProj(Pointer arg, NativeLong max_proj);
+	Pointer new_Proj(Pointer arg, Pointer mode, com.sun.jna.NativeLong proj);
+	Pointer new_Filter(Pointer arg, Pointer mode, com.sun.jna.NativeLong proj);
+	Pointer new_defaultProj(Pointer arg, com.sun.jna.NativeLong max_proj);
 	Pointer new_Tuple(int arity, Pointer[] in);
 	Pointer new_Id(Pointer val, Pointer mode);
 	Pointer new_Bad();
@@ -514,6 +512,8 @@ public interface binding_ircons extends Library {
 	Pointer new_Pin(Pointer node);
 	Pointer new_ASM(int arity, Pointer[] in, Pointer inputs, int n_outs, Pointer outputs, int n_clobber, Pointer[] clobber, Pointer asm_text);
 	Pointer new_Dummy(Pointer mode);
+	Pointer new_r_Dummy(Pointer irg, Pointer mode);
+	Pointer new_rd_Dummy(Pointer db, Pointer irg, Pointer mode);
 	Pointer new_d_immBlock(Pointer db);
 	Pointer new_immBlock();
 	Pointer new_d_immPartBlock(Pointer db, Pointer pred_jmp);

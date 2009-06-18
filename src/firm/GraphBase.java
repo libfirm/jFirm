@@ -1,11 +1,16 @@
 package firm;
 
+import com.sun.jna.Callback;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
+import com.sun.jna.Structure;
 
 import firm.bindings.Bindings;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irgraph;
+import firm.bindings.binding_irnode;
+import firm.bindings.binding_irop;
+import firm.bindings.binding_irnode.ir_opcode;
 import firm.bindings.binding_irvrfy.irg_verify_flags_t;
 import firm.nodes.Bad;
 import firm.nodes.Block;
@@ -17,18 +22,15 @@ import firm.nodes.Proj;
 import firm.nodes.Start;
 
 /**
- * A graph is an object owning stuff related to a firm graph. That is:
- * 
- * - Nodes and Blocks
- * - A type describing the stackframe layout
- * - Direct pointers to some unique nodes (StartBlock, Start, ...)
- * - Helper functions to traverse the graph
+ * Implements basic Graph functions. This is supposed to be the base for
+ * the automatically generated code in the Graph class.
  */
 public abstract class GraphBase extends JNAWrapper {
 	
 	static final binding_irgraph binding = Bindings.getIrGraphBinding();
+	static final binding_irnode binding_node = Bindings.getIrNodeBinding();
+	static final binding_irop binding_op = Bindings.getIrOpBinding();
 	public static final binding_ircons binding_cons = Bindings.getIrConsBinding();
-
 
 	public GraphBase(Pointer ptr) {
 		super(ptr);
@@ -411,5 +413,70 @@ public abstract class GraphBase extends JNAWrapper {
 		assert oldNode != newNode;
 		assert !oldNode.equals(newNode);
 		Util.binding_mod.exchange(oldNode.ptr, newNode.ptr);
+	}
+	
+	private static class IrOpOps extends Structure {
+		public IrOpOps(Pointer ptr) {
+			super(ptr);
+		}
+		
+		Pointer    hash_func;
+		Pointer    computed_value;
+		Pointer    computed_value_Proj;
+		Pointer    equivalent_node;
+		Pointer    transform_node;
+		Pointer    transform_node_Proj;
+		Pointer    node_cmp_attr;
+		Pointer    reassociate;
+		private static interface CopyAttrCallback extends Callback {
+			void invoke(Pointer old_node, Pointer new_node);
+		}
+		CopyAttrCallback copy_attr;
+		Pointer    get_type;
+		Pointer    get_type_attr;
+		Pointer    get_entity_attr;
+		Pointer    verify_node;
+		Pointer    verify_proj_node;
+		Pointer    dump_node;
+		Pointer    generic;
+		Pointer    be_ops;
+	}
+	
+	private void copyNodeAttr(Pointer old_node, Pointer new_node) {
+		Pointer op = binding_node.get_irn_op(old_node);
+		IrOpOps ops = new IrOpOps(binding_op.get_op_ops(op));
+		ops.copy_attr.invoke(old_node, new_node);
+	}
+	
+	/**
+	 * Copies a node and its attributes into the graph.
+	 * The node is allowed to be on a different graph.
+	 * Note that the predecessors might still point to nodes on the other
+	 * graph after the copy operation which is not valid until you have
+	 * exchanged the predecessors.
+	 */
+	public Node copyNode(Node node) {
+		Pointer dbgi = binding_node.get_irn_dbg_info(node.ptr);
+		Pointer op = binding_node.get_irn_op(node.ptr);
+		Pointer mode = binding_node.get_irn_mode(node.ptr);
+		int arity = binding_node.get_irn_arity(node.ptr);
+		Pointer[] ins = new Pointer[arity];
+		for (int i = 0; i < arity; ++i) {
+			ins[i] = node.getPred(i).ptr;
+		}
+		Pointer block;
+		if (node.getOpCode() == ir_opcode.iro_Block) {
+			block = null;
+		} else {
+			block = binding_node.get_nodes_block(node.ptr);
+		}
+		Pointer new_node = binding_node.new_ir_node(dbgi, ptr, block, op, mode, arity, ins);
+		if (node.getOpCode() == ir_opcode.iro_Block) {
+			Pointer macroblock = binding_node.get_Block_MacroBlock(node.ptr);
+			binding_node.set_Block_MacroBlock(new_node, macroblock);
+		}
+		copyNodeAttr(node.ptr, new_node);
+		
+		return Node.createWrapper(new_node);
 	}
 }

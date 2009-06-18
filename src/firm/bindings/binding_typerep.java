@@ -1,7 +1,6 @@
 package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Library;
-import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 
@@ -94,8 +93,7 @@ public interface binding_typerep extends Library {
 		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const(),
-		symconst_label();
+		symconst_enum_const();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -454,6 +452,7 @@ public interface binding_typerep extends Library {
 		tpo_pointer(),
 		tpo_primitive(),
 		tpo_id(),
+		tpo_code(),
 		tpo_none(),
 		tpo_unknown(),
 		tpo_max();
@@ -635,7 +634,7 @@ public interface binding_typerep extends Library {
 	float __builtin_nanf();
 	double __builtin_nanl();
 	void __builtin_va_end();
-	NativeLong __builtin_expect();
+	com.sun.jna.NativeLong __builtin_expect();
 	Pointer __builtin_return_address();
 	Pointer __builtin_frame_address();
 	int __builtin_ffs();
@@ -693,6 +692,8 @@ public interface binding_typerep extends Library {
 	void set_entity_peculiarity(Pointer ent, /* ir_peculiarity */int pec);
 	int is_entity_final(Pointer ent);
 	void set_entity_final(Pointer ent, int _final);
+	void set_entity_label(Pointer ent, com.sun.jna.NativeLong label);
+	com.sun.jna.NativeLong get_entity_label(Pointer ent);
 	int is_entity_compiler_generated(Pointer ent);
 	void set_entity_compiler_generated(Pointer ent, int flag);
 	int is_entity_backend_marked(Pointer ent);
@@ -759,9 +760,9 @@ public interface binding_typerep extends Library {
 	int is_compound_entity(Pointer ent);
 	int is_method_entity(Pointer ent);
 	int equal_entity(Pointer ent1, Pointer ent2);
-	NativeLong get_entity_nr(Pointer ent);
-	NativeLong get_entity_visited(Pointer ent);
-	void set_entity_visited(Pointer ent, NativeLong num);
+	com.sun.jna.NativeLong get_entity_nr(Pointer ent);
+	com.sun.jna.NativeLong get_entity_visited(Pointer ent);
+	void set_entity_visited(Pointer ent, com.sun.jna.NativeLong num);
 	void mark_entity_visited(Pointer ent);
 	int entity_visited(Pointer ent);
 	int entity_not_visited(Pointer ent);
@@ -782,6 +783,7 @@ public interface binding_typerep extends Library {
 	Pointer get_tpop_pointer();
 	Pointer get_tpop_primitive();
 	Pointer get_tpop_id();
+	Pointer get_tpop_code_type();
 	Pointer get_tpop_none();
 	Pointer get_tpop_unknown();
 	int is_SubClass_of(Pointer low, Pointer high);
@@ -835,15 +837,15 @@ public interface binding_typerep extends Library {
 	void set_type_size_bytes(Pointer tp, int size);
 	int get_type_alignment_bytes(Pointer tp);
 	void set_type_alignment_bytes(Pointer tp, int align);
-	NativeLong get_type_visited(Pointer tp);
-	void set_type_visited(Pointer tp, NativeLong num);
+	com.sun.jna.NativeLong get_type_visited(Pointer tp);
+	void set_type_visited(Pointer tp, com.sun.jna.NativeLong num);
 	void mark_type_visited(Pointer tp);
 	int type_visited(Pointer tp);
 	int type_not_visited(Pointer tp);
 	Pointer get_type_link(Pointer tp);
 	void set_type_link(Pointer tp, Pointer l);
-	void set_master_type_visited(NativeLong val);
-	NativeLong get_master_type_visited();
+	void set_master_type_visited(com.sun.jna.NativeLong val);
+	com.sun.jna.NativeLong get_master_type_visited();
 	void inc_master_type_visited();
 	void set_type_dbg_info(Pointer tp, Pointer db);
 	Pointer get_type_dbg_info(Pointer tp);
@@ -948,10 +950,10 @@ public interface binding_typerep extends Library {
 	void set_array_upper_bound_int(Pointer array, int dimension, int upper_bound);
 	int has_array_lower_bound(Pointer array, int dimension);
 	Pointer get_array_lower_bound(Pointer array, int dimension);
-	NativeLong get_array_lower_bound_int(Pointer array, int dimension);
+	com.sun.jna.NativeLong get_array_lower_bound_int(Pointer array, int dimension);
 	int has_array_upper_bound(Pointer array, int dimension);
 	Pointer get_array_upper_bound(Pointer array, int dimension);
-	NativeLong get_array_upper_bound_int(Pointer array, int dimension);
+	com.sun.jna.NativeLong get_array_upper_bound_int(Pointer array, int dimension);
 	void set_array_order(Pointer array, int dimension, int order);
 	int get_array_order(Pointer array, int dimension);
 	int find_array_dimension(Pointer array, int order);
@@ -984,12 +986,14 @@ public interface binding_typerep extends Library {
 	Pointer get_primitive_base_type(Pointer tp);
 	void set_primitive_base_type(Pointer tp, Pointer base_tp);
 	Pointer get_none_type();
+	Pointer get_code_type();
 	Pointer get_unknown_type();
 	int is_atomic_type(Pointer tp);
 	int get_compound_n_members(Pointer tp);
 	Pointer get_compound_member(Pointer tp, int pos);
 	int get_compound_member_index(Pointer tp, Pointer member);
 	int is_compound_type(Pointer tp);
+	int is_code_type(Pointer tp);
 	int is_frame_type(Pointer tp);
 	int is_value_param_type(Pointer tp);
 	int is_lowered_type(Pointer tp);
@@ -999,7 +1003,7 @@ public interface binding_typerep extends Library {
 	void set_lowered_type(Pointer tp, Pointer lowered_type);
 	Pointer get_associated_type(Pointer tp);
 	Pointer frame_alloc_area(Pointer frame_type, int size, int alignment, int at_start);
-	NativeLong get_type_nr(Pointer tp);
+	com.sun.jna.NativeLong get_type_nr(Pointer tp);
 	int compare_names(Pointer tp1, Pointer tp2);
 	int compare_strict(Pointer tp1, Pointer tp2);
 	int firm_hash_name(Pointer tp);

@@ -62,5 +62,9 @@ public final class Bindings {
 	public final static binding_iroptimize getIrOptimizeBinding() {
 		return (binding_iroptimize) Native.loadLibrary("firm", binding_iroptimize.class);
 	}
+
+	public static binding_irop getIrOpBinding() {
+		return (binding_irop) Native.loadLibrary("firm", binding_irop.class);
+	}
 	
 }

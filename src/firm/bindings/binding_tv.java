@@ -1,7 +1,6 @@
 package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Library;
-import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 
@@ -94,8 +93,7 @@ public interface binding_tv extends Library {
 		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const(),
-		symconst_label();
+		symconst_enum_const();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -488,6 +486,7 @@ public interface binding_tv extends Library {
 		tpo_pointer(),
 		tpo_primitive(),
 		tpo_id(),
+		tpo_code(),
 		tpo_none(),
 		tpo_unknown(),
 		tpo_max();
@@ -870,48 +869,6 @@ public interface binding_tv extends Library {
 		
 		public static dump_reason_t getEnum(int val) {
 			for(dump_reason_t entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	public static enum ir_modecode {
-		irm_BB(),
-		irm_X(),
-		irm_F(),
-		irm_D(),
-		irm_E(),
-		irm_Bs(),
-		irm_Bu(),
-		irm_Hs(),
-		irm_Hu(),
-		irm_Is(),
-		irm_Iu(),
-		irm_Ls(),
-		irm_Lu(),
-		irm_LLs(),
-		irm_LLu(),
-		irm_P(),
-		irm_b(),
-		irm_M(),
-		irm_T(),
-		irm_ANY(),
-		irm_BAD(),
-		irm_max();
-		public final int val;
-		private static class C { static int next_val; }
-
-		ir_modecode(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		ir_modecode() {
-			this.val = C.next_val++;
-		}
-		
-		public static ir_modecode getEnum(int val) {
-			for(ir_modecode entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -1498,7 +1455,7 @@ public interface binding_tv extends Library {
 	float __builtin_nanf();
 	double __builtin_nanl();
 	void __builtin_va_end();
-	NativeLong __builtin_expect();
+	com.sun.jna.NativeLong __builtin_expect();
 	Pointer __builtin_return_address();
 	Pointer __builtin_frame_address();
 	int __builtin_ffs();
@@ -1565,6 +1522,8 @@ public interface binding_tv extends Library {
 	void set_entity_peculiarity(Pointer ent, /* ir_peculiarity */int pec);
 	int is_entity_final(Pointer ent);
 	void set_entity_final(Pointer ent, int _final);
+	void set_entity_label(Pointer ent, com.sun.jna.NativeLong label);
+	com.sun.jna.NativeLong get_entity_label(Pointer ent);
 	int is_entity_compiler_generated(Pointer ent);
 	void set_entity_compiler_generated(Pointer ent, int flag);
 	int is_entity_backend_marked(Pointer ent);
@@ -1631,9 +1590,9 @@ public interface binding_tv extends Library {
 	int is_compound_entity(Pointer ent);
 	int is_method_entity(Pointer ent);
 	int equal_entity(Pointer ent1, Pointer ent2);
-	NativeLong get_entity_nr(Pointer ent);
-	NativeLong get_entity_visited(Pointer ent);
-	void set_entity_visited(Pointer ent, NativeLong num);
+	com.sun.jna.NativeLong get_entity_nr(Pointer ent);
+	com.sun.jna.NativeLong get_entity_visited(Pointer ent);
+	void set_entity_visited(Pointer ent, com.sun.jna.NativeLong num);
 	void mark_entity_visited(Pointer ent);
 	int entity_visited(Pointer ent);
 	int entity_not_visited(Pointer ent);
@@ -1654,6 +1613,7 @@ public interface binding_tv extends Library {
 	Pointer get_tpop_pointer();
 	Pointer get_tpop_primitive();
 	Pointer get_tpop_id();
+	Pointer get_tpop_code_type();
 	Pointer get_tpop_none();
 	Pointer get_tpop_unknown();
 	int is_SubClass_of(Pointer low, Pointer high);
@@ -1707,15 +1667,15 @@ public interface binding_tv extends Library {
 	void set_type_size_bytes(Pointer tp, int size);
 	int get_type_alignment_bytes(Pointer tp);
 	void set_type_alignment_bytes(Pointer tp, int align);
-	NativeLong get_type_visited(Pointer tp);
-	void set_type_visited(Pointer tp, NativeLong num);
+	com.sun.jna.NativeLong get_type_visited(Pointer tp);
+	void set_type_visited(Pointer tp, com.sun.jna.NativeLong num);
 	void mark_type_visited(Pointer tp);
 	int type_visited(Pointer tp);
 	int type_not_visited(Pointer tp);
 	Pointer get_type_link(Pointer tp);
 	void set_type_link(Pointer tp, Pointer l);
-	void set_master_type_visited(NativeLong val);
-	NativeLong get_master_type_visited();
+	void set_master_type_visited(com.sun.jna.NativeLong val);
+	com.sun.jna.NativeLong get_master_type_visited();
 	void inc_master_type_visited();
 	void set_type_dbg_info(Pointer tp, Pointer db);
 	Pointer get_type_dbg_info(Pointer tp);
@@ -1820,10 +1780,10 @@ public interface binding_tv extends Library {
 	void set_array_upper_bound_int(Pointer array, int dimension, int upper_bound);
 	int has_array_lower_bound(Pointer array, int dimension);
 	Pointer get_array_lower_bound(Pointer array, int dimension);
-	NativeLong get_array_lower_bound_int(Pointer array, int dimension);
+	com.sun.jna.NativeLong get_array_lower_bound_int(Pointer array, int dimension);
 	int has_array_upper_bound(Pointer array, int dimension);
 	Pointer get_array_upper_bound(Pointer array, int dimension);
-	NativeLong get_array_upper_bound_int(Pointer array, int dimension);
+	com.sun.jna.NativeLong get_array_upper_bound_int(Pointer array, int dimension);
 	void set_array_order(Pointer array, int dimension, int order);
 	int get_array_order(Pointer array, int dimension);
 	int find_array_dimension(Pointer array, int order);
@@ -1856,12 +1816,14 @@ public interface binding_tv extends Library {
 	Pointer get_primitive_base_type(Pointer tp);
 	void set_primitive_base_type(Pointer tp, Pointer base_tp);
 	Pointer get_none_type();
+	Pointer get_code_type();
 	Pointer get_unknown_type();
 	int is_atomic_type(Pointer tp);
 	int get_compound_n_members(Pointer tp);
 	Pointer get_compound_member(Pointer tp, int pos);
 	int get_compound_member_index(Pointer tp, Pointer member);
 	int is_compound_type(Pointer tp);
+	int is_code_type(Pointer tp);
 	int is_frame_type(Pointer tp);
 	int is_value_param_type(Pointer tp);
 	int is_lowered_type(Pointer tp);
@@ -1871,7 +1833,7 @@ public interface binding_tv extends Library {
 	void set_lowered_type(Pointer tp, Pointer lowered_type);
 	Pointer get_associated_type(Pointer tp);
 	Pointer frame_alloc_area(Pointer frame_type, int size, int alignment, int at_start);
-	NativeLong get_type_nr(Pointer tp);
+	com.sun.jna.NativeLong get_type_nr(Pointer tp);
 	int compare_names(Pointer tp1, Pointer tp2);
 	int compare_strict(Pointer tp1, Pointer tp2);
 	int firm_hash_name(Pointer tp);
@@ -1975,13 +1937,12 @@ public interface binding_tv extends Library {
 	Pointer get_generic_function_ptr(Pointer op);
 	void set_generic_function_ptr(Pointer op, Pointer func);
 	/* irop_flags */int get_op_flags(Pointer op);
-	Pointer new_ir_op(int code, String name, /* op_pin_state */int p, int flags, /* op_arity */int opar, int op_index, NativeLong attr_size, Pointer ops);
+	Pointer new_ir_op(int code, String name, /* op_pin_state */int p, int flags, /* op_arity */int opar, int op_index, com.sun.jna.NativeLong attr_size, Pointer ops);
 	Pointer get_op_ops(Pointer op);
 	String get_mode_arithmetic_name(/* ir_mode_arithmetic */int ari);
 	Pointer new_ir_mode(String name, /* ir_mode_sort */int sort, int bit_size, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
 	Pointer new_ir_vector_mode(String name, /* ir_mode_sort */int sort, int bit_size, int num_of_elem, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
 	int is_mode(Pointer thing);
-	/* ir_modecode */int get_mode_modecode(Pointer mode);
 	Pointer get_mode_ident(Pointer mode);
 	String get_mode_name(Pointer mode);
 	/* ir_mode_sort */int get_mode_sort(Pointer mode);
@@ -2067,7 +2028,6 @@ public interface binding_tv extends Library {
 	void del_Sync_n(Pointer n, int i);
 	void set_irn_mode(Pointer node, Pointer mode);
 	Pointer get_irn_mode(Pointer node);
-	/* ir_modecode */int get_irn_modecode(Pointer node);
 	Pointer get_irn_modeident(Pointer node);
 	String get_irn_modename(Pointer node);
 	Pointer get_irn_op(Pointer node);
@@ -2076,15 +2036,15 @@ public interface binding_tv extends Library {
 	String get_irn_opname(Pointer node);
 	Pointer get_irn_opident(Pointer node);
 	int get_irn_pred_pos(Pointer node, Pointer arg);
-	NativeLong get_irn_visited(Pointer node);
-	void set_irn_visited(Pointer node, NativeLong visited);
+	com.sun.jna.NativeLong get_irn_visited(Pointer node);
+	void set_irn_visited(Pointer node, com.sun.jna.NativeLong visited);
 	void mark_irn_visited(Pointer node);
 	int irn_visited(Pointer node);
 	int irn_visited_else_mark(Pointer node);
 	void set_irn_link(Pointer node, Pointer link);
 	Pointer get_irn_link(Pointer node);
 	Pointer get_irn_irg(Pointer node);
-	NativeLong get_irn_node_nr(Pointer node);
+	com.sun.jna.NativeLong get_irn_node_nr(Pointer node);
 	/* op_pin_state */int get_irn_pinned(Pointer node);
 	void set_irn_pinned(Pointer node, /* op_pin_state */int state);
 	/* op_pin_state */int is_irn_pinned_in_irg(Pointer node);
@@ -2101,8 +2061,8 @@ public interface binding_tv extends Library {
 	Pointer get_Block_cfgpred_block(Pointer node, int pos);
 	int get_Block_matured(Pointer block);
 	void set_Block_matured(Pointer block, int matured);
-	NativeLong get_Block_block_visited(Pointer block);
-	void set_Block_block_visited(Pointer block, NativeLong visit);
+	com.sun.jna.NativeLong get_Block_block_visited(Pointer block);
+	void set_Block_block_visited(Pointer block, com.sun.jna.NativeLong visit);
 	Pointer set_Block_dead(Pointer block);
 	int is_Block_dead(Pointer block);
 	void mark_Block_block_visited(Pointer node);
@@ -2113,9 +2073,10 @@ public interface binding_tv extends Library {
 	void set_Block_MacroBlock(Pointer block, Pointer mbh);
 	Pointer get_irn_MacroBlock(Pointer n);
 	Pointer get_Block_irg(Pointer block);
-	int has_Block_label(Pointer block);
-	NativeLong get_Block_label(Pointer block);
-	void set_Block_label(Pointer block, NativeLong label);
+	int has_Block_entity(Pointer block);
+	Pointer get_Block_entity(Pointer block);
+	Pointer create_Block_entity(Pointer block);
+	void set_Block_entity(Pointer block, Pointer entity);
 	Pointer get_Block_phis(Pointer block);
 	void set_Block_phis(Pointer block, Pointer phi);
 	void add_Block_phi(Pointer block, Pointer phi);
@@ -2136,8 +2097,8 @@ public interface binding_tv extends Library {
 	void set_Cond_selector(Pointer node, Pointer selector);
 	/* cond_kind */int get_Cond_kind(Pointer node);
 	void set_Cond_kind(Pointer node, /* cond_kind */int kind);
-	NativeLong get_Cond_default_proj(Pointer node);
-	void set_Cond_default_proj(Pointer node, NativeLong defproj);
+	com.sun.jna.NativeLong get_Cond_default_proj(Pointer node);
+	void set_Cond_default_proj(Pointer node, com.sun.jna.NativeLong defproj);
 	Pointer get_Return_mem(Pointer node);
 	void set_Return_mem(Pointer node, Pointer mem);
 	Pointer[] get_Return_res_arr(Pointer node);
@@ -2161,8 +2122,6 @@ public interface binding_tv extends Library {
 	void set_SymConst_entity(Pointer node, Pointer ent);
 	Pointer get_SymConst_enum(Pointer node);
 	void set_SymConst_enum(Pointer node, Pointer ec);
-	NativeLong get_SymConst_label(Pointer node);
-	void set_SymConst_label(Pointer node, NativeLong label);
 	Pointer get_SymConst_value_type(Pointer node);
 	void set_SymConst_value_type(Pointer node, Pointer tp);
 	Pointer get_Sel_mem(Pointer node);
@@ -2291,8 +2250,8 @@ public interface binding_tv extends Library {
 	Pointer get_Not_op(Pointer node);
 	void set_Not_op(Pointer node, Pointer op);
 	String get_pnc_string(int pnc);
-	/* pn_Cmp */int get_negated_pnc(NativeLong pnc, Pointer mode);
-	/* pn_Cmp */int get_inversed_pnc(NativeLong pnc);
+	/* pn_Cmp */int get_negated_pnc(com.sun.jna.NativeLong pnc, Pointer mode);
+	/* pn_Cmp */int get_inversed_pnc(com.sun.jna.NativeLong pnc);
 	Pointer get_Cmp_left(Pointer node);
 	void set_Cmp_left(Pointer node, Pointer left);
 	Pointer get_Cmp_right(Pointer node);
@@ -2333,8 +2292,8 @@ public interface binding_tv extends Library {
 	void set_Phi_next(Pointer phi, Pointer next);
 	Pointer get_Filter_pred(Pointer node);
 	void set_Filter_pred(Pointer node, Pointer pred);
-	NativeLong get_Filter_proj(Pointer node);
-	void set_Filter_proj(Pointer node, NativeLong proj);
+	com.sun.jna.NativeLong get_Filter_proj(Pointer node);
+	void set_Filter_proj(Pointer node, com.sun.jna.NativeLong proj);
 	void set_Filter_cg_pred_arr(Pointer node, int arity, Pointer[] in);
 	void set_Filter_cg_pred(Pointer node, int pos, Pointer pred);
 	int get_Filter_n_cg_preds(Pointer node);
@@ -2390,8 +2349,8 @@ public interface binding_tv extends Library {
 	Pointer get_Proj_type(Pointer node);
 	Pointer get_Proj_pred(Pointer node);
 	void set_Proj_pred(Pointer node, Pointer pred);
-	NativeLong get_Proj_proj(Pointer node);
-	void set_Proj_proj(Pointer node, NativeLong proj);
+	com.sun.jna.NativeLong get_Proj_proj(Pointer node);
+	void set_Proj_proj(Pointer node, com.sun.jna.NativeLong proj);
 	int is_arg_Proj(Pointer node);
 	Pointer[] get_Tuple_preds_arr(Pointer node);
 	int get_Tuple_n_preds(Pointer node);
@@ -2518,6 +2477,7 @@ public interface binding_tv extends Library {
 	Pointer get_fragile_op_mem(Pointer node);
 	Pointer get_divop_resmod(Pointer node);
 	int is_irn_forking(Pointer node);
+	void copy_node_attr(Pointer old_node, Pointer new_node);
 	Pointer get_irn_type(Pointer n);
 	Pointer get_irn_type_attr(Pointer n);
 	Pointer get_irn_entity_attr(Pointer n);
@@ -2541,9 +2501,9 @@ public interface binding_tv extends Library {
 	Pointer get_irn_dbg_info(Pointer n);
 	int firm_default_hash(Pointer node);
 	String gdb_node_helper(Pointer firm_object);
-	Pointer new_tarval_from_str(String str, NativeLong len, Pointer mode);
-	Pointer new_tarval_from_long(NativeLong l, Pointer mode);
-	NativeLong get_tarval_long(Pointer tv);
+	Pointer new_tarval_from_str(String str, com.sun.jna.NativeLong len, Pointer mode);
+	Pointer new_tarval_from_long(com.sun.jna.NativeLong l, Pointer mode);
+	com.sun.jna.NativeLong get_tarval_long(Pointer tv);
 	int tarval_is_long(Pointer tv);
 	Pointer new_tarval_from_double(double d, Pointer mode);
 	double get_tarval_double(Pointer tv);
@@ -2597,7 +2557,7 @@ public interface binding_tv extends Library {
 	String get_tarval_bitpattern(Pointer tv);
 	byte get_tarval_sub_bits(Pointer tv, int byte_ofs);
 	int tarval_is_single_bit(Pointer tv);
-	int tarval_snprintf(String buf, NativeLong buflen, Pointer tv);
+	int tarval_snprintf(String buf, com.sun.jna.NativeLong buflen, Pointer tv);
 	int tarval_printf(Pointer tv);
 	int tarval_ieee754_zero_mantissa(Pointer tv);
 	int tarval_ieee754_get_exponent(Pointer tv);

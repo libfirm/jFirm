@@ -301,5 +301,4 @@ class NodeWrapperConstruction {
 				throw new IllegalStateException("Unkown node type: " + opcode);
 		}
 	}
-
 }

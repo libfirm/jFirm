@@ -1,7 +1,6 @@
 package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Library;
-import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 
@@ -94,8 +93,7 @@ public interface binding_irflag extends Library {
 		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const(),
-		symconst_label();
+		symconst_enum_const();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -240,7 +238,7 @@ public interface binding_irflag extends Library {
 	float __builtin_nanf();
 	double __builtin_nanl();
 	void __builtin_va_end();
-	NativeLong __builtin_expect();
+	com.sun.jna.NativeLong __builtin_expect();
 	Pointer __builtin_return_address();
 	Pointer __builtin_frame_address();
 	int __builtin_ffs();
@@ -277,6 +275,7 @@ public interface binding_irflag extends Library {
 	void set_opt_global_null_ptr_elimination(int value);
 	void set_opt_auto_create_sync(int value);
 	void set_opt_normalize(int value);
+	void set_opt_allow_conv_b(int value);
 	void set_opt_precise_exc_context(int value);
 	void set_opt_alias_analysis(int value);
 	void set_opt_closed_world(int value);

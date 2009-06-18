@@ -4,31 +4,7 @@ import com.sun.jna.Library;
 import com.sun.jna.Pointer;
 
 
-public interface binding_be extends Library {
-	public static enum __codecvt_result {
-		__codecvt_ok(),
-		__codecvt_partial(),
-		__codecvt_error(),
-		__codecvt_noconv();
-		public final int val;
-		private static class C { static int next_val; }
-
-		__codecvt_result(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		__codecvt_result() {
-			this.val = C.next_val++;
-		}
-		
-		public static __codecvt_result getEnum(int val) {
-			for(__codecvt_result entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
+public interface binding_irop extends Library {
 	public static enum ip_view_state {
 		ip_view_no(),
 		ip_view_valid(),
@@ -229,152 +205,216 @@ public interface binding_be extends Library {
 			return null;
 		}
 	}
-	public static enum insn_kind {
-		LEA(),
-		SHIFT(),
-		SUB(),
-		ADD(),
-		ZERO(),
-		MUL(),
-		ROOT();
+	public static enum __codecvt_result {
+		__codecvt_ok(),
+		__codecvt_partial(),
+		__codecvt_error(),
+		__codecvt_noconv();
 		public final int val;
 		private static class C { static int next_val; }
 
-		insn_kind(int val) {
+		__codecvt_result(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		insn_kind() {
+		__codecvt_result() {
 			this.val = C.next_val++;
 		}
 		
-		public static insn_kind getEnum(int val) {
-			for(insn_kind entry : values()) {
+		public static __codecvt_result getEnum(int val) {
+			for(__codecvt_result entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
 			return null;
 		}
 	}
-	public static enum arch_dep_opts_t {
-		arch_dep_none(0),
-		arch_dep_mul_to_shift(1),
-		arch_dep_div_by_const(2),
-		arch_dep_mod_by_const(4);
+	public static enum op_arity {
+		oparity_invalid(0),
+		oparity_unary(),
+		oparity_binary(),
+		oparity_trinary(),
+		oparity_zero(),
+		oparity_variable(),
+		oparity_dynamic(),
+		oparity_any();
 		public final int val;
 		private static class C { static int next_val; }
 
-		arch_dep_opts_t(int val) {
+		op_arity(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		arch_dep_opts_t() {
+		op_arity() {
 			this.val = C.next_val++;
 		}
 		
-		public static arch_dep_opts_t getEnum(int val) {
-			for(arch_dep_opts_t entry : values()) {
+		public static op_arity getEnum(int val) {
+			for(op_arity entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
 			return null;
 		}
 	}
-	public static enum add_hidden {
-		ADD_HIDDEN_ALWAYS_IN_FRONT(0),
-		ADD_HIDDEN_ALWAYS_LAST(1),
-		ADD_HIDDEN_SMART(2);
+	public static enum irop_flags {
+		irop_flag_none(0),
+		irop_flag_labeled(1),
+		irop_flag_commutative(2),
+		irop_flag_cfopcode(4),
+		irop_flag_ip_cfopcode(8),
+		irop_flag_fragile(16),
+		irop_flag_forking(32),
+		irop_flag_highlevel(64),
+		irop_flag_constlike(128),
+		irop_flag_always_opt(256),
+		irop_flag_keep(512),
+		irop_flag_start_block(1024),
+		irop_flag_uses_memory(2048),
+		irop_flag_dump_noblock(4096),
+		irop_flag_dump_noinput(8192),
+		irop_flag_machine(65536),
+		irop_flag_machine_op(131072),
+		irop_flag_user(262144);
 		public final int val;
 		private static class C { static int next_val; }
 
-		add_hidden(int val) {
+		irop_flags(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		add_hidden() {
+		irop_flags() {
 			this.val = C.next_val++;
 		}
 		
-		public static add_hidden getEnum(int val) {
-			for(add_hidden entry : values()) {
+		public static irop_flags getEnum(int val) {
+			for(irop_flags entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
 			return null;
 		}
 	}
-	public static enum lowering_flags {
-		LF_NONE(0),
-		LF_COMPOUND_PARAM(1),
-		LF_COMPOUND_RETURN(2),
-		LF_RETURN_HIDDEN(4),
-		LF_SMALL_CMP_IN_REGS(8);
+	public static enum ir_opcode {
+		iro_Block(),
+		iro_Start(),
+		iro_End(),
+		iro_Jmp(),
+		iro_IJmp(),
+		iro_Cond(),
+		iro_Return(),
+		iro_Const(),
+		iro_SymConst(),
+		iro_Sel(),
+		iro_Call(),
+		iro_Add(),
+		iro_Sub(),
+		iro_Minus(),
+		iro_Mul(),
+		iro_Mulh(),
+		iro_Quot(),
+		iro_DivMod(),
+		iro_Div(),
+		iro_Mod(),
+		iro_Abs(),
+		iro_And(),
+		iro_Or(),
+		iro_Eor(),
+		iro_Not(),
+		iro_Cmp(),
+		iro_Shl(),
+		iro_Shr(),
+		iro_Shrs(),
+		iro_Rotl(),
+		iro_Conv(),
+		iro_Cast(),
+		iro_Carry(),
+		iro_Borrow(),
+		iro_Phi(),
+		iro_Load(),
+		iro_Store(),
+		iro_Alloc(),
+		iro_Free(),
+		iro_Sync(),
+		iro_Proj(),
+		iro_Tuple(),
+		iro_Id(),
+		iro_Bad(),
+		iro_Confirm(),
+		iro_Unknown(),
+		iro_Filter(),
+		iro_Break(),
+		iro_CallBegin(),
+		iro_EndReg(),
+		iro_EndExcept(),
+		iro_NoMem(),
+		iro_Mux(),
+		iro_CopyB(),
+		iro_InstOf(),
+		iro_Raise(),
+		iro_Bound(),
+		iro_Pin(),
+		iro_ASM(),
+		iro_Builtin(),
+		iro_Dummy(),
+		iro_Anchor(),
+		iro_Last(ir_opcode.iro_Anchor.val),
+		beo_First(),
+		beo_Spill(ir_opcode.beo_First.val),
+		beo_Reload(),
+		beo_Perm(),
+		beo_MemPerm(),
+		beo_Copy(),
+		beo_Keep(),
+		beo_CopyKeep(),
+		beo_Call(),
+		beo_Return(),
+		beo_AddSP(),
+		beo_SubSP(),
+		beo_IncSP(),
+		beo_RegParams(),
+		beo_FrameAddr(),
+		beo_Barrier(),
+		beo_Unwind(),
+		beo_Last(ir_opcode.beo_Unwind.val),
+		iro_MaxOpcode();
 		public final int val;
 		private static class C { static int next_val; }
 
-		lowering_flags(int val) {
+		ir_opcode(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		lowering_flags() {
+		ir_opcode() {
 			this.val = C.next_val++;
 		}
 		
-		public static lowering_flags getEnum(int val) {
-			for(lowering_flags entry : values()) {
+		public static ir_opcode getEnum(int val) {
+			for(ir_opcode entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
 			return null;
 		}
 	}
-	public static enum ikind {
-		INTRINSIC_CALL(0),
-		INTRINSIC_INSTR();
+	public static enum dump_reason_t {
+		dump_node_opcode_txt(),
+		dump_node_mode_txt(),
+		dump_node_nodeattr_txt(),
+		dump_node_info_txt();
 		public final int val;
 		private static class C { static int next_val; }
 
-		ikind(int val) {
+		dump_reason_t(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		ikind() {
+		dump_reason_t() {
 			this.val = C.next_val++;
 		}
 		
-		public static ikind getEnum(int val) {
-			for(ikind entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	public static enum asm_constraint_flags_t {
-		ASM_CONSTRAINT_FLAG_SUPPORTS_REGISTER(1),
-		ASM_CONSTRAINT_FLAG_SUPPORTS_MEMOP(2),
-		ASM_CONSTRAINT_FLAG_SUPPORTS_IMMEDIATE(4),
-		ASM_CONSTRAINT_FLAG_NO_SUPPORT(8),
-		ASM_CONSTRAINT_FLAG_MODIFIER_WRITE(16),
-		ASM_CONSTRAINT_FLAG_MODIFIER_NO_WRITE(32),
-		ASM_CONSTRAINT_FLAG_MODIFIER_READ(64),
-		ASM_CONSTRAINT_FLAG_MODIFIER_NO_READ(128),
-		ASM_CONSTRAINT_FLAG_MODIFIER_EARLYCLOBBER(256),
-		ASM_CONSTRAINT_FLAG_MODIFIER_COMMUTATIVE(512),
-		ASM_CONSTRAINT_FLAG_INVALID(32768);
-		public final int val;
-		private static class C { static int next_val; }
-
-		asm_constraint_flags_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		asm_constraint_flags_t() {
-			this.val = C.next_val++;
-		}
-		
-		public static asm_constraint_flags_t getEnum(int val) {
-			for(asm_constraint_flags_t entry : values()) {
+		public static dump_reason_t getEnum(int val) {
+			for(dump_reason_t entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -400,54 +440,94 @@ public interface binding_be extends Library {
 	int __builtin_parity();
 	float __builtin_prefetch(Object ... args);
 	void __builtin_trap();
-	Pointer arch_dep_default_factory();
-	void arch_dep_init(Pointer factory);
-	void arch_dep_set_opts(/* arch_dep_opts_t */int opts);
-	Pointer arch_dep_replace_mul_with_shifts(Pointer irn);
-	Pointer arch_dep_replace_div_by_const(Pointer irn);
-	Pointer arch_dep_replace_mod_by_const(Pointer irn);
-	void arch_dep_replace_divmod_by_const(Pointer[] div, Pointer[] mod, Pointer irn);
-	void lower_calls_with_compounds(Pointer params);
-	void lower_CopyB(Pointer irg, int max_size, int native_mode_bytes);
-	void lower_switch(Pointer irg, int spare_size);
-	void lower_dw_ops(Pointer param);
-	Pointer def_create_intrinsic_fkt(Pointer method, Pointer op, Pointer imode, Pointer omode, Pointer context);
-	void lower_highlevel_graph(Pointer irg, int lower_bitfields);
-	void lower_highlevel(int lower_bitfields);
-	void lower_const_code();
-	void ir_lower_mode_b(Pointer irg, Pointer config);
-	int lower_intrinsics(Pointer list, int length, int part_block_used);
-	int i_mapper_abs(Pointer call, Pointer ctx);
-	int i_mapper_bswap(Pointer call, Pointer ctx);
-	int i_mapper_sqrt(Pointer call, Pointer ctx);
-	int i_mapper_cbrt(Pointer call, Pointer ctx);
-	int i_mapper_pow(Pointer call, Pointer ctx);
-	int i_mapper_exp(Pointer call, Pointer ctx);
-	int i_mapper_log(Pointer call, Pointer ctx);
-	int i_mapper_sin(Pointer call, Pointer ctx);
-	int i_mapper_cos(Pointer call, Pointer ctx);
-	int i_mapper_tan(Pointer call, Pointer ctx);
-	int i_mapper_asin(Pointer call, Pointer ctx);
-	int i_mapper_acos(Pointer call, Pointer ctx);
-	int i_mapper_atan(Pointer call, Pointer ctx);
-	int i_mapper_sinh(Pointer call, Pointer ctx);
-	int i_mapper_cosh(Pointer call, Pointer ctx);
-	int i_mapper_tanh(Pointer call, Pointer ctx);
-	int i_mapper_strcmp(Pointer call, Pointer ctx);
-	int i_mapper_strncmp(Pointer call, Pointer ctx);
-	int i_mapper_strcpy(Pointer call, Pointer ctx);
-	int i_mapper_strlen(Pointer call, Pointer ctx);
-	int i_mapper_memcpy(Pointer call, Pointer ctx);
-	int i_mapper_mempcpy(Pointer call, Pointer ctx);
-	int i_mapper_memmove(Pointer call, Pointer ctx);
-	int i_mapper_memset(Pointer call, Pointer ctx);
-	int i_mapper_memcmp(Pointer call, Pointer ctx);
-	int i_mapper_alloca(Pointer call, Pointer ctx);
-	int i_mapper_RuntimeCall(Pointer node, Pointer rt);
-	void be_opt_register();
-	int be_parse_arg(String arg);
-	Pointer be_get_backend_param();
-	void be_main(Pointer output, String compilation_unit_name);
-	/* asm_constraint_flags_t */int be_parse_asm_constraints(String constraints);
-	int be_is_valid_clobber(String clobber);
+	Pointer new_id_from_str(String str);
+	Pointer new_id_from_chars(String str, int len);
+	String get_id_str(Pointer id);
+	int get_id_strlen(Pointer id);
+	int id_is_prefix(Pointer prefix, Pointer id);
+	int id_is_suffix(Pointer suffix, Pointer id);
+	int id_contains_char(Pointer id, byte c);
+	Pointer id_unique(String tag);
+	void firm_init_mangle();
+	Pointer id_mangle_entity(Pointer ent);
+	Pointer id_mangle_u(Pointer first, Pointer scnd);
+	Pointer id_mangle_dot(Pointer first, Pointer scnd);
+	Pointer id_mangle(Pointer first, Pointer scnd);
+	Pointer id_mangle3(String prefix, Pointer middle, String suffix);
+	Pointer id_decorate_win32_c_fkt(Pointer ent, Pointer id);
+	Pointer get_op_Block();
+	Pointer get_op_Start();
+	Pointer get_op_End();
+	Pointer get_op_Jmp();
+	Pointer get_op_IJmp();
+	Pointer get_op_Cond();
+	Pointer get_op_Return();
+	Pointer get_op_Sel();
+	Pointer get_op_Const();
+	Pointer get_op_SymConst();
+	Pointer get_op_Call();
+	Pointer get_op_Add();
+	Pointer get_op_Sub();
+	Pointer get_op_Minus();
+	Pointer get_op_Mul();
+	Pointer get_op_Mulh();
+	Pointer get_op_Quot();
+	Pointer get_op_DivMod();
+	Pointer get_op_Div();
+	Pointer get_op_Mod();
+	Pointer get_op_Abs();
+	Pointer get_op_And();
+	Pointer get_op_Or();
+	Pointer get_op_Eor();
+	Pointer get_op_Not();
+	Pointer get_op_Cmp();
+	Pointer get_op_Shl();
+	Pointer get_op_Shr();
+	Pointer get_op_Shrs();
+	Pointer get_op_Rotl();
+	Pointer get_op_Conv();
+	Pointer get_op_Cast();
+	Pointer get_op_Carry();
+	Pointer get_op_Borrow();
+	Pointer get_op_Phi();
+	Pointer get_op_Load();
+	Pointer get_op_Store();
+	Pointer get_op_Alloc();
+	Pointer get_op_Free();
+	Pointer get_op_Sync();
+	Pointer get_op_Tuple();
+	Pointer get_op_Proj();
+	Pointer get_op_Id();
+	Pointer get_op_Bad();
+	Pointer get_op_Confirm();
+	Pointer get_op_Unknown();
+	Pointer get_op_Filter();
+	Pointer get_op_Break();
+	Pointer get_op_CallBegin();
+	Pointer get_op_EndReg();
+	Pointer get_op_EndExcept();
+	Pointer get_op_NoMem();
+	Pointer get_op_Mux();
+	Pointer get_op_CopyB();
+	Pointer get_op_InstOf();
+	Pointer get_op_Raise();
+	Pointer get_op_Bound();
+	Pointer get_op_Pin();
+	Pointer get_op_ASM();
+	Pointer get_op_Builtin();
+	Pointer get_op_Dummy();
+	Pointer get_op_Anchor();
+	Pointer get_op_ident(Pointer op);
+	String get_op_name(Pointer op);
+	int get_op_code(Pointer op);
+	String get_op_pin_state_name(/* op_pin_state */int s);
+	/* op_pin_state */int get_op_pinned(Pointer op);
+	void set_op_pinned(Pointer op, /* op_pin_state */int pinned);
+	int get_next_ir_opcode();
+	int get_next_ir_opcodes(int num);
+	Pointer get_generic_function_ptr(Pointer op);
+	void set_generic_function_ptr(Pointer op, Pointer func);
+	/* irop_flags */int get_op_flags(Pointer op);
+	Pointer new_ir_op(int code, String name, /* op_pin_state */int p, int flags, /* op_arity */int opar, int op_index, com.sun.jna.NativeLong attr_size, Pointer ops);
+	Pointer get_op_ops(Pointer op);
 }
