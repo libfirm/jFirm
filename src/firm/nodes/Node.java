@@ -13,6 +13,7 @@ import firm.Mode;
 import firm.bindings.Bindings;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irnode;
+import firm.bindings.binding_irnode.ir_opcode;
 
 public abstract class Node extends JNAWrapper {
 	protected static final binding_irnode binding = Bindings.getIrNodeBinding();
@@ -113,7 +114,13 @@ public abstract class Node extends JNAWrapper {
 	
 	public Node getBlock() {
 		return createWrapper(binding.get_nodes_block(ptr));
-	} 
+	}
+	
+	public void setBlock(Node block) {
+		assert block.getOpCode() == ir_opcode.iro_Block || block.getOpCode() == ir_opcode.iro_Bad;
+		assert this.getOpCode() != ir_opcode.iro_Block;
+		binding.set_nodes_block(ptr, block.ptr);
+	}
 	
 	public abstract void accept(NodeVisitor visitor);
 }

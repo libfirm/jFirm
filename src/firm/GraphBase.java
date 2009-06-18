@@ -364,7 +364,15 @@ public abstract class GraphBase extends JNAWrapper {
 	
 	@Override
 	public String toString() {
-		return "Graph " + getEntity().getName();
+		String name;
+		/* special handling for const code graph as it has no entity... */
+		if (equals(Program.getConstCodeGraph())) {
+			name = "$ConstCode$";
+		} else {
+			name = getEntity().getName();
+		}
+		
+		return "Graph " + name;
 	}
 
 	/**
@@ -415,31 +423,33 @@ public abstract class GraphBase extends JNAWrapper {
 		Util.binding_mod.exchange(oldNode.ptr, newNode.ptr);
 	}
 	
-	private static class IrOpOps extends Structure {
+	public static class IrOpOps extends Structure {
 		public IrOpOps(Pointer ptr) {
 			super(ptr);
+			read();
 		}
 		
-		Pointer    hash_func;
-		Pointer    computed_value;
-		Pointer    computed_value_Proj;
-		Pointer    equivalent_node;
-		Pointer    transform_node;
-		Pointer    transform_node_Proj;
-		Pointer    node_cmp_attr;
-		Pointer    reassociate;
+		public Pointer    hash_func;
+		public Pointer    computed_value;
+		public Pointer    computed_value_Proj;
+		public Pointer    equivalent_node;
+		public Pointer    equivalent_node_Proj;
+		public Pointer    transform_node;
+		public Pointer    transform_node_Proj;
+		public Pointer    node_cmp_attr;
+		public Pointer    reassociate;
 		private static interface CopyAttrCallback extends Callback {
 			void invoke(Pointer old_node, Pointer new_node);
 		}
-		CopyAttrCallback copy_attr;
-		Pointer    get_type;
-		Pointer    get_type_attr;
-		Pointer    get_entity_attr;
-		Pointer    verify_node;
-		Pointer    verify_proj_node;
-		Pointer    dump_node;
-		Pointer    generic;
-		Pointer    be_ops;
+		public CopyAttrCallback copy_attr;
+		public Pointer    get_type;
+		public Pointer    get_type_attr;
+		public Pointer    get_entity_attr;
+		public Pointer    verify_node;
+		public Pointer    verify_proj_node;
+		public Pointer    dump_node;
+		public Pointer    generic;
+		public Pointer    be_ops;
 	}
 	
 	private void copyNodeAttr(Pointer old_node, Pointer new_node) {
@@ -454,6 +464,9 @@ public abstract class GraphBase extends JNAWrapper {
 	 * Note that the predecessors might still point to nodes on the other
 	 * graph after the copy operation which is not valid until you have
 	 * exchanged the predecessors.
+	 * (Note: node.getGraph() uses the block to detect the graph! So as long as
+	 *  you haven't exchanged the block yet, you will get invalid answers when
+	 *  calling getGraph() on the copied node)
 	 */
 	public Node copyNode(Node node) {
 		Pointer dbgi = binding_node.get_irn_dbg_info(node.ptr);

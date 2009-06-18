@@ -15,6 +15,10 @@ public class Program {
 		return (ClassType) type;
 	}
 	
+	public static Graph getConstCodeGraph() {
+		return new Graph(binding.get_const_code_irg());
+	}
+	
 	public static int getNGraphs() {
 		return binding.get_irp_n_irgs();
 	}
