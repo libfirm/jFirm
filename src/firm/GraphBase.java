@@ -492,4 +492,15 @@ public abstract class GraphBase extends JNAWrapper {
 		
 		return Node.createWrapper(new_node);
 	}
+	
+	/**
+	 * Notify the graph that control flow has changed, so dominance and other
+	 * information gets invalidated.
+	 */
+	public void notifyControlFlowChange() {
+		binding.set_irg_loopinfo_inconsistent(ptr);
+		binding.set_irg_doms_inconsistent(ptr);
+		binding.set_irg_extblk_inconsistent(ptr);
+		binding.set_irg_outs_inconsistent(ptr);
+	}
 }

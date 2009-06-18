@@ -5,7 +5,7 @@
 
   <!-- set global properties for this build -->
   <property name="projectname" value="jfirm" />
-  <property name="version" value="0.2.2" />
+  <property name="version" value="0.2.3" />
   <property name="srcdir" location="src"/>
   <property name="workdir" location="release"/>
   <property name="releasename" value="${projectname}-${version}"/>

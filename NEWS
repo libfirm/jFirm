@@ -1,3 +1,7 @@
+========= jFirm 0.2.3 (2009-06-18) =========
+* Add Graph.notifyControlFlowChange so things don't fail when optimisations
+  change the controlflow
+
 ========= jFirm 0.2.2 (2009-06-18) =========
 * Graph.newXXX takes a Node instead of a Block for the block input now (using
    Bad is allowed and this is more consistent with Node.getBlock())
