@@ -1,20 +1,21 @@
 #!/usr/bin/python
 from jinja2 import Environment, Template
-from ir_spec import nodes
-from spec_util import verify_node, is_dynamic_pinned
+from spec_util import verify_node, is_dynamic_pinned, setdefault, isAbstract, setldefault
+import ir_spec
 
 java_keywords = [ "public", "private", "protected", "true", "false" ]
 
-# Filter out some special nodes we don't really need/want here
-del nodes["ASM"]
-del nodes["CallBegin"]
-del nodes["Borrow"]
-del nodes["Carry"]
-del nodes["EndExcept"]
-del nodes["EndReg"]
-# Some nodes need special constructors for now...
-for n in ["SymConst", "End", "Start", "Dummy", "Anchor"]:
-	nodes[n]["noconstr"] = True
+nodes = []
+for node in ir_spec.nodes:
+	# Filter out some special nodes we don't really need/want here
+	if node.name in ["ASM", "CallBegin", "Borrow", "Carry", "EndExcept",
+	                 "EndReg", "Op" ]:
+		continue
+
+	# Some nodes need special constructors for now...
+	if node.name in ["SymConst", "End", "Start", "Dummy", "Anchor"]:
+		node.noconstr = True
+	nodes.append(node)
 
 def format_filter_keywords(arg):
 	if arg in java_keywords:
@@ -33,7 +34,6 @@ def format_binding_args(arglist, need_graph = False):
 	first = True
 	res   = ""
 	if need_graph:
-#		res = "firm.Graph.getCurrent().ptr"
 		res = "this.ptr"
 		first = False
 
@@ -76,13 +76,23 @@ def format_camel_case_big(string):
 	return format_camel_case_helper(string, True)
 
 def format_ifset(string, node, key):
-	if key in node:
+	if hasattr(node, key):
+		return string
+	return ""
+
+def format_if(string, cond):
+	if cond:
+		return string
+	return ""
+
+def format_ifabstract(string, node):
+	if isAbstract(node):
 		return string
 	return ""
 
 def format_key(node, key, default=""):
-	if key in node:
-		return node[key]
+	if hasattr(node, key):
+		return getattr(node, key)
 	return default
 
 env = Environment()
@@ -92,6 +102,8 @@ env.filters['bindingargs'] = format_binding_args
 env.filters['camelCase']   = format_camel_case
 env.filters['CamelCase']   = format_camel_case_big
 env.filters['ifset']       = format_ifset
+env.filters['if']          = format_if
+env.filters['ifabstract']  = format_ifabstract
 env.filters['key']         = format_key
 env.filters['filterkeywords'] = format_filter_keywords
 
@@ -200,97 +212,82 @@ def prepare_attr(attr):
 	if "java_name" not in attr:
 		attr["java_name"] = attr["name"]
 
-def preprocess_node(nodename, node):
-	node["classname"] = format_camel_case_big(nodename)
-
-	if "is_a" in node:
-		parent = nodes[node["is_a"]]
-		node["ins"] = parent["ins"]
-		if "outs" in parent:
-			node["outs"] = parent["outs"]
-	if "ins" not in node:
-		node["ins"] = []
-	if "outs" in node:
-		node["mode"] = "mode_T"
-	if "java_add" not in node:
-		node["java_add"] = ""
-	if "arity" not in node:
-		node["arity"] = len(node["ins"])
-	if "attrs" not in node:
-		node["attrs"] = []
-	if "constructor_args" not in node:
-		node["constructor_args"] = []
-	if "pinned" not in node:
-		node["pinned"] = "no"
-
-	verify_node(node)
+def preprocess_node(node):
+	if not isAbstract(node):
+		setdefault(node, "java_add", "")
+		setldefault(node, "parent", node.__base__)
+		verify_node(node)
+	else:
+		setldefault(node, "parent", ir_spec.Op)
+		ir_spec.Op.classname = "Node"
+	setldefault(node, "attrs", [])
+	setldefault(node, "constructor_args", [])
+	node.classname = format_camel_case_big(node.name)
 
 	# dynamic pin node?
-	if is_dynamic_pinned(node) and "pinned_init" not in node:
-		node["constructor_args"].append(dict(
+	if is_dynamic_pinned(node) and not hasattr(node, "pinned_init"):
+		node.constructor_args.append(dict(
 			name = "pin_state",
 			type = "op_pin_state"
 		))
 
 	# construct node arguments
-	arguments = [ ]
-	for input in node["ins"]:
-		arguments.append(dict(
-			name = input,
-			type = "Node"
-		))
-	if node["arity"] == "variable" or node["arity"] == "dynamic":
-		arguments.append(dict(
-			name = "ins",
-			type = "Node[]"
-		))
-	if "mode" not in node:
-		arguments.append(dict(
-			name = "mode",
-			type = "firm.Mode"
-		))
-	for attr in node["attrs"]:
-		prepare_attr(attr)
-		if "init" in attr:
-			continue
-		
-		arguments.append(dict(
-			name = attr["java_name"],
-			type = attr["java_type"],
-			to_wrapper = attr["to_wrapper"]
-		))
-	for arg in node["constructor_args"]:
-		old_type = arg["type"]
-		(java_type,wrap_type,to_wrapper,from_wrapper) = get_java_type(old_type)
+	if not isAbstract(node):
+		arguments = [ ]
+		for input in node.ins:
+			arguments.append(dict(
+				name = input,
+				type = "Node"
+			))
+		if node.arity == "variable" or node.arity == "dynamic":
+			arguments.append(dict(
+				name = "ins",
+				type = "Node[]"
+			))
+		if not hasattr(node, "mode"):
+			arguments.append(dict(
+				name = "mode",
+				type = "firm.Mode"
+			))
+		for attr in node.attrs:
+			prepare_attr(attr)
+			if "init" in attr:
+				continue
+			
+			arguments.append(dict(
+				name = attr["java_name"],
+				type = attr["java_type"],
+				to_wrapper = attr["to_wrapper"]
+			))
+		for arg in node.constructor_args:
+			old_type = arg["type"]
+			(java_type,wrap_type,to_wrapper,from_wrapper) = get_java_type(old_type)
 
-		arguments.append(dict(
-			name = arg["name"],
-			type = java_type,
-			to_wrapper = to_wrapper
-		))
-		
-	node["arguments"] = arguments
+			arguments.append(dict(
+				name = arg["name"],
+				type = java_type,
+				to_wrapper = to_wrapper
+			))
+			
+		node.arguments = arguments
 
-	#if "block" not in node:
-	ext_arguments = [ ]
-	if not "knownBlock" in node:
-		ext_arguments.append(dict(
-			name       = "block",
-			type       = "Node",
-			to_wrapper = "%s.ptr"
-		))
-	for a in arguments:
-		ext_arguments.append(a)
-	node["ext_arguments"] = ext_arguments
-		
+		#if "block" not in node:
+		ext_arguments = [ ]
+		if not hasattr(node, "knownBlock"):
+			ext_arguments.append(dict(
+				name       = "block",
+				type       = "Node",
+				to_wrapper = "%s.ptr"
+			))
+		for a in arguments:
+			ext_arguments.append(a)
+		node.ext_arguments = ext_arguments	
 
-for nodename, node in nodes.iteritems():
-	preprocess_node(nodename, node)
-	classname = node["classname"]
-	arguments = node["arguments"]
-	ext_arguments = node["ext_arguments"]
+for node in nodes:
+	preprocess_node(node)
 
-	filename = "%s.java" % classname
+for node in nodes:
+	filename = "%s.java" % node.classname
 	print "Create: %s" % filename
 	file = open(filename, "w");
 	
@@ -299,51 +296,50 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
-public {{"abstract "|ifset(node,"abstract")}}class {{node["classname"]}} extends {{node|key("is_a", "node")|CamelCase}} {
+public {{"abstract "|ifabstract(node)}}class {{node.classname}} extends {{node.parent.classname}} {
 
-	public {{node["classname"]}}(Pointer ptr) {
+	public {{node.classname}}(Pointer ptr) {
 		super(ptr);
 	}
 
 	{% for input in node.ins %}
-	{{"@Override"|ifset(node,"is_a")}}
+	{{"@Override"|if(node.parent.name != "Op")}}
 	public Node get{{input|CamelCase}}() {
-		return createWrapper(binding.get_{{nodename}}_{{input}}(ptr));
+		return createWrapper(binding.get_{{node.name}}_{{input}}(ptr));
 	}
 
-	{{"@Override"|ifset(node,"is_a")}}
+	{{"@Override"|if(node.parent.name != "Op")}}
 	public void set{{input|CamelCase}}(Node {{input|filterkeywords}}) {
-		binding.set_{{nodename}}_{{input}}(this.ptr, {{input|filterkeywords}}.ptr);
+		binding.set_{{node.name}}_{{input}}(this.ptr, {{input|filterkeywords}}.ptr);
 	}
 	{% endfor %}
 
 	{% for attr in node.attrs %}
 	public {{attr.java_type}} get{{attr.java_name|CamelCase}}() {
-		{{attr.wrap_type}} _res = binding.get_{{nodename}}_{{attr.name}}(ptr);
+		{{attr.wrap_type}} _res = binding.get_{{node.name}}_{{attr.name}}(ptr);
 		return {{attr.from_wrapper % "_res"}};
 	}
 
 	public void set{{attr.java_name|CamelCase}}({{attr.java_type}} _val) {
-		binding.set_{{nodename}}_{{attr.name}}(this.ptr, {{attr.to_wrapper % "_val"}});
+		binding.set_{{node.name}}_{{attr.name}}(this.ptr, {{attr.to_wrapper % "_val"}});
 	}
 	{% endfor %}
 
 	{{ node.java_add }}
 
-	{% for out in node.outs %}
+	{% for out in node.outs -%}
 	public static final int pn{{out|CamelCase}} = {{loop.index0}};
-	{% endfor %}
+	{% endfor -%}
 	public static final int pnMax = {{len(node.outs)}};
 
-	{% if not node.abstract %}
+	{% if not isAbstract(node) %}
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	} 
 	{% endif %}
 }
 ''')
-
-	file.write(template.render(vars(), len=len))
+	file.write(template.render(node = node, isAbstract = isAbstract, len=len))
 	file.close()
 
 template = env.from_string('''/* Warning: Automatically generated file */
@@ -364,10 +360,10 @@ class ConstructionBase {
 	protected ConstructionBase() {
 	}
 
-	{% for nodename, node in nodes.iteritems() %}
-	{% if not node.abstract and not node.noconstr %}
-	public Node new{{node["classname"]}}({{node["arguments"]|argdecls}}) {
-		Pointer result_ptr = binding_cons.new_{{nodename}}({{node["arguments"]|bindingargs}});
+	{% for node in nodes %}
+	{% if not isAbstract(node) and not node.noconstr %}
+	public Node new{{node.classname}}({{node.arguments|argdecls}}) {
+		Pointer result_ptr = binding_cons.new_{{node.name}}({{node.arguments|bindingargs}});
 		return Node.createWrapper(result_ptr);
 	}
 	{% endif %}
@@ -375,7 +371,7 @@ class ConstructionBase {
 }''')
 
 file = open("ConstructionBase.java", "w")
-file.write(template.render(nodes = nodes))
+file.write(template.render(nodes = nodes, isAbstract = isAbstract))
 file.close()
 
 template = env.from_string('''/* Warning: automatically generated file */
@@ -392,10 +388,10 @@ class NodeWrapperConstruction {
 			binding_irnode.ir_opcode.getEnum(Node.binding.get_irn_opcode(ptr));
 
 		switch (opcode) {
-		{% for nodename, node in nodes.iteritems() %}
-		{% if not node.abstract %}
-			case iro_{{nodename}}:
-				return new {{node["classname"]}}(ptr);
+		{% for node in nodes %}
+		{% if not isAbstract(node) %}
+			case iro_{{node.name}}:
+				return new {{node.classname}}(ptr);
 		{% endif %}
 		{% endfor %}
 			default:
@@ -404,7 +400,7 @@ class NodeWrapperConstruction {
 	}
 }''')
 file = open("NodeWrapperConstruction.java", "w")
-file.write(template.render(nodes = nodes))
+file.write(template.render(nodes = nodes, isAbstract = isAbstract))
 file.close()
 
 template = env.from_string('''/* Warning: automatically generated file */
@@ -415,10 +411,10 @@ package firm.nodes;
  */
 public interface NodeVisitor {
 
-	{% for nodename, node in nodes.iteritems() -%}
-	{% if not node.abstract -%}
-	/** called when accept is called on a {{node["classname"]}} node */
-	void visit({{node["classname"]}} node);
+	{% for node in nodes -%}
+	{% if not isAbstract(node) -%}
+	/** called when accept is called on a {{node.classname}} node */
+	void visit({{node.classname}} node);
 	{% endif %}
 	{%- endfor %}
 
@@ -432,10 +428,10 @@ public interface NodeVisitor {
 
 		public void defaultVisit(Node n) {}
 		
-	{% for nodename, node in nodes.iteritems() -%}
-	{% if not node.abstract %}
+	{% for node in nodes -%}
+	{% if not isAbstract(node) %}
 		@Override
-		public void visit({{node["classname"]}} node) {
+		public void visit({{node.classname}} node) {
 			defaultVisit(node);
 		}
 	{% endif %}
@@ -444,7 +440,7 @@ public interface NodeVisitor {
 
 }''')
 file = open("NodeVisitor.java", "w")
-file.write(template.render(nodes = nodes))
+file.write(template.render(nodes = nodes, isAbstract = isAbstract))
 file.close()
 
 
@@ -480,15 +476,15 @@ public class Graph extends GraphBase {
 		this(binding.new_ir_graph(entity.ptr, nLocalVars));
 	}
 
-	{% for nodename, node in nodes.iteritems() -%}
-	{% if not node.abstract and not node.noconstr %}
-	/** Create a new {{nodename}} node */
-	public final Node new{{node["classname"]}}({{node.ext_arguments|argdecls}}) {
-		return Node.createWrapper(binding_cons.new_r_{{nodename}}({{node.ext_arguments|bindingargs(True)}}));
+	{% for node in nodes -%}
+	{% if not isAbstract(node) and not node.noconstr %}
+	/** Create a new {{node.name}} node */
+	public final Node new{{node.classname}}({{node.ext_arguments|argdecls}}) {
+		return Node.createWrapper(binding_cons.new_r_{{node.name}}({{node.ext_arguments|bindingargs(True)}}));
 	}
 	{% endif %}
 	{%- endfor %}
 }''')
 file = open("Graph.java", "w")
-file.write(template.render(nodes = nodes))
+file.write(template.render(nodes = nodes, isAbstract = isAbstract))
 file.close()

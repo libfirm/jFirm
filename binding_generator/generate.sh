@@ -4,7 +4,7 @@
 
 # grab latest ir_spec
 cp -puv ${FIRM_HOME}/libfirm/scripts/ir_spec.py .
-cp -puv ${FIRM_HOME}/libfirm/scripts/ir_util.py .
+cp -puv ${FIRM_HOME}/libfirm/scripts/spec_util.py .
 
 rm -f *.java || exit $?
 python generator.py || exit $?
