@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 import firm.Graph;
@@ -48,11 +49,12 @@ public abstract class Node extends JNAWrapper {
 	}
 	
 	public void markVisited() {
-		binding.mark_irn_visited(ptr);
+		binding.set_irn_visited(ptr, new NativeLong(getGraph().getVisited()));
 	}
 	
 	public boolean visited() {
-		return 0 != binding.irn_visited(ptr);
+		int node_visited = binding.get_irn_visited(ptr).intValue();
+		return node_visited >= getGraph().getVisited();
 	}
 	
 	public Node getPred(int n) {

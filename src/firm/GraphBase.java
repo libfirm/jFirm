@@ -273,6 +273,11 @@ public abstract class GraphBase extends JNAWrapper {
 		node.accept(walker);
 	}
 	
+	/**
+	 * variation of the postorder walker, breaking loops at phi/jump nodes.
+	 * This ensures that all nodes inside a basic block are visited in a
+	 * topological order.
+	 */
 	private void walkTopologicalHelper(NodeVisitor walker, Node node) {
 		/* only break loops at phi/block nodes */
 		boolean isLoopBreaker =
@@ -357,9 +362,8 @@ public abstract class GraphBase extends JNAWrapper {
 	
 	/**
 	 * walks all graph nodes, ensuring that nodes inside a basic block are visited in
-	 * toplogical order.
-	 * (This is a variation of a postorder walker, ensuring that loops
-	 *  are always broken at phi/block nodes)
+	 * toplogical order. Nodes in different blocks might still get visited in an
+	 * interleaved order.
 	 */
 	public void walkTopological(NodeVisitor visitor) {
 		incrementNodeVisited();
