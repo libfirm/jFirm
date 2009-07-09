@@ -401,7 +401,10 @@ public class TargetValue extends JNAWrapper {
 		if (getMode().isInt()) {
 			long val = b.get_tarval_long(ptr).longValue();
 			return Long.toString(val);
+		} else if (getMode().equals(Mode.getb())) {
+			return (isNull() ? "false" : "true");
 		}
+		
 		return super.toString();
 	}
 }
