@@ -15,7 +15,6 @@ public class Break extends Node {
 
 	
 
-	
 	public static final int pnMax = 0;
 
 	

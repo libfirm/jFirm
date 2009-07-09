@@ -44,7 +44,6 @@ public class Confirm extends Node {
 
 	
 
-	
 	public static final int pnMax = 0;
 
 	

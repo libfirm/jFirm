@@ -24,7 +24,6 @@ public class Const extends Node {
 
 	
 
-	
 	public static final int pnMax = 0;
 
 	

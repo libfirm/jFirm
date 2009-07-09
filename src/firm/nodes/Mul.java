@@ -35,7 +35,6 @@ public class Mul extends Binop {
 
 	
 
-	
 	public static final int pnMax = 0;
 
 	

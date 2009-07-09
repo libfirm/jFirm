@@ -25,7 +25,6 @@ public class Id extends Node {
 
 	
 
-	
 	public static final int pnMax = 0;
 
 	

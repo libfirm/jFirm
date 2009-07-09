@@ -53,15 +53,10 @@ public class Alloc extends Node {
 
 	
 
-	
 	public static final int pnM = 0;
-	
 	public static final int pnXRegular = 1;
-	
 	public static final int pnXExcept = 2;
-	
 	public static final int pnRes = 3;
-	
 	public static final int pnMax = 4;
 
 	

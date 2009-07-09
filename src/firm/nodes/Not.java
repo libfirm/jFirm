@@ -25,7 +25,6 @@ public class Not extends Unop {
 
 	
 
-	
 	public static final int pnMax = 0;
 
 	

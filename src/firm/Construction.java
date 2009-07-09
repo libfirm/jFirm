@@ -38,7 +38,6 @@ public class Construction extends ConstructionBase {
 		return graph.newSymConst(entity);
 	}
 	
-	@Override
 	public Node newConst(TargetValue tarval) {
 		return graph.newConst(tarval);
 	}

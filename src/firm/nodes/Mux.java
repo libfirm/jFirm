@@ -45,7 +45,6 @@ public class Mux extends Node {
 
 	
 
-	
 	public static final int pnMax = 0;
 
 	

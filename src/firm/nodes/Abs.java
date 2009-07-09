@@ -25,7 +25,6 @@ public class Abs extends Unop {
 
 	
 
-	
 	public static final int pnMax = 0;
 
 	

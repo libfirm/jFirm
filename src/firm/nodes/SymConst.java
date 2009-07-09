@@ -24,7 +24,6 @@ public class SymConst extends Node {
 
 	
 
-	
 	public static final int pnMax = 0;
 
 	

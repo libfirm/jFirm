@@ -44,19 +44,12 @@ public class Call extends Node {
 
 	
 
-	
 	public static final int pnMRegular = 0;
-	
 	public static final int pnXRegular = 1;
-	
 	public static final int pnXExcept = 2;
-	
 	public static final int pnTResult = 3;
-	
 	public static final int pnMExcept = 4;
-	
 	public static final int pnPValueResBase = 5;
-	
 	public static final int pnMax = 6;
 
 	

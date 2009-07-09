@@ -35,7 +35,6 @@ public class Add extends Binop {
 
 	
 
-	
 	public static final int pnMax = 0;
 
 	

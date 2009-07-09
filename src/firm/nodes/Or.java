@@ -35,7 +35,6 @@ public class Or extends Binop {
 
 	
 
-	
 	public static final int pnMax = 0;
 
 	

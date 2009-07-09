@@ -35,11 +35,8 @@ public class Raise extends Node {
 
 	
 
-	
 	public static final int pnM = 0;
-	
 	public static final int pnX = 1;
-	
 	public static final int pnMax = 2;
 
 	
