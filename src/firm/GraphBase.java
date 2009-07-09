@@ -18,6 +18,7 @@ import firm.nodes.End;
 import firm.nodes.NoMem;
 import firm.nodes.Node;
 import firm.nodes.NodeVisitor;
+import firm.nodes.Phi;
 import firm.nodes.Proj;
 import firm.nodes.Start;
 
@@ -272,9 +273,31 @@ public abstract class GraphBase extends JNAWrapper {
 		node.accept(walker);
 	}
 	
+	private void walkTopologicalHelper(NodeVisitor walker, Node node) {
+		/* only break loops at phi/block nodes */
+		boolean isLoopBreaker =
+			node.getClass() == Phi.class || node.getMode().equals(Mode.getX());
+		if (isLoopBreaker) {
+			if (node.visited())
+				return;
+			node.markVisited();
+		}
+
+		if (node.getBlock() != null) {
+			walkTopologicalHelper(walker, node.getBlock());
+		}
+		for (Node pred : node.getPreds()) {
+			walkTopologicalHelper(walker, pred);
+		}
+		
+		if (isLoopBreaker || !node.visited())
+			node.accept(walker);
+		node.markVisited();
+	}	
+	
 	private void blockWalkHelper(BlockWalker walker, Node node) {
 		Node nodeBlock = node.getBlock();
-		if (nodeBlock instanceof Bad)
+		if (nodeBlock.getClass() == Bad.class)
 			return;
 		
 		Block block = (Block) nodeBlock;
@@ -290,7 +313,7 @@ public abstract class GraphBase extends JNAWrapper {
 	
 	private void blockWalkHelperPostorder(BlockWalker walker, Node node) {
 		Node nodeBlock = node.getBlock();
-		if (nodeBlock instanceof Bad)
+		if (nodeBlock.getClass() == Bad.class)
 			return;
 		
 		Block block = (Block) nodeBlock;
@@ -317,7 +340,6 @@ public abstract class GraphBase extends JNAWrapper {
 	 * @param walker
 	 */
 	public void walk(NodeVisitor walker) {
-		Graph.setCurrent(this);
 		incrementNodeVisited();
 		walkHelper(walker, getEnd());
 	}
@@ -329,27 +351,33 @@ public abstract class GraphBase extends JNAWrapper {
 	 * @param walker
 	 */
 	public void walkPostorder(NodeVisitor walker) {
-		Graph.setCurrent(this);
 		incrementNodeVisited();
 		walkHelperPostorder(walker, getEnd());
 	}
 	
 	/**
+	 * walks all graph nodes, ensuring that nodes inside a basic block are visited in
+	 * toplogical order.
+	 * (This is a variation of a postorder walker, ensuring that loops
+	 *  are always broken at phi/block nodes)
+	 */
+	public void walkTopological(NodeVisitor visitor) {
+		incrementNodeVisited();
+		walkTopologicalHelper(visitor, getEnd());
+	}	
+	
+	/**
 	 * Visits all block nodes in a graph
-	 * @param walker
 	 */
 	public void walkBlocks(BlockWalker walker) {
-		Graph.setCurrent(this);
 		incrementBlockVisited();
 		blockWalkHelper(walker, getEnd());
 	}
 	
 	/**
 	 * Visits all block nodes in a graph in postorder
-	 * @param walker
 	 */
 	public void walkBlocksPostorder(BlockWalker walker) {
-		Graph.setCurrent(this);
 		incrementBlockVisited();
 		blockWalkHelperPostorder(walker, getEnd());
 	}
