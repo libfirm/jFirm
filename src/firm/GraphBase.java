@@ -279,12 +279,13 @@ public abstract class GraphBase extends JNAWrapper {
 	 * topological order.
 	 */
 	private void walkTopologicalHelper(NodeVisitor walker, Node node) {
+		if (node.visited())
+			return;
+		
 		/* only break loops at phi/block nodes */
 		boolean isLoopBreaker =
 			node.getClass() == Phi.class || node.getMode().equals(Mode.getX());
 		if (isLoopBreaker) {
-			if (node.visited())
-				return;
 			node.markVisited();
 		}
 
