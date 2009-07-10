@@ -139,8 +139,8 @@ class ConstructionBase {
 	
 	
 	
-	public Node newDiv(Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
-		Pointer result_ptr = binding_cons.new_Div(mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val);
+	public Node newDiv(Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.ir_cons_flags flags) {
+		Pointer result_ptr = binding_cons.new_Div(mem.ptr, left.ptr, right.ptr, resmode.ptr, flags.val);
 		return Node.createWrapper(result_ptr);
 	}
 	

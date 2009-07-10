@@ -42,6 +42,24 @@ public class Store extends Node {
 	
 
 	
+	public firm.bindings.binding_irnode.ir_volatility getVolatility() {
+		int _res = binding.get_Store_volatility(ptr);
+		return firm.bindings.binding_irnode.ir_volatility.getEnum(_res);
+	}
+
+	public void setVolatility(firm.bindings.binding_irnode.ir_volatility _val) {
+		binding.set_Store_volatility(this.ptr, _val.val);
+	}
+	
+	public firm.bindings.binding_irnode.ir_align getAlign() {
+		int _res = binding.get_Store_align(ptr);
+		return firm.bindings.binding_irnode.ir_align.getEnum(_res);
+	}
+
+	public void setAlign(firm.bindings.binding_irnode.ir_align _val) {
+		binding.set_Store_align(this.ptr, _val.val);
+	}
+	
 
 	
 

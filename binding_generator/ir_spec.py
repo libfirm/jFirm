@@ -43,9 +43,7 @@ class Alloc(Op):
 	pinned      = "yes"
 	attr_struct = "alloc_attr"
 	d_post = '''
-	#if PRECISE_EXC_CONTEXT
 	firm_alloc_frag_arr(res, op_Alloc, &res->attr.alloc.exc.frag_arr);
-	#endif
 	'''
 
 class Anchor(Op):
@@ -95,11 +93,12 @@ class ASM(Op):
 	java_noconstr = True
 
 class Bad(Op):
-	mode       = "mode_Bad"
-	flags      = [ "cfopcode", "fragile", "start_block", "dump_noblock" ]
-	pinned     = "yes"
-	knownBlock = True
-	singleton  = True
+	mode        = "mode_Bad"
+	flags       = [ "cfopcode", "fragile", "start_block", "dump_noblock" ]
+	pinned      = "yes"
+	knownBlock  = True
+	singleton   = True
+	attr_struct = "irg_attr"
 	init = '''
 	res->attr.irg.irg = irg;
 	'''
@@ -172,14 +171,16 @@ class Block(Op):
 	public Block getBlock() {
 		return null;
 	}
-	
+
 	public boolean blockVisited() {
-		return 0 != binding.Block_block_visited(ptr);
+		int visited = getGraph().getBlockVisited();
+		return binding.get_Block_block_visited(ptr).intValue() >= visited;
 	}
 	
 	public void markBlockVisited() {
-		binding.mark_Block_block_visited(ptr);
-	}
+		int visited = getGraph().getBlockVisited();		
+		binding.set_Block_block_visited(ptr, new com.sun.jna.NativeLong(visited));
+	}	
 
 	public boolean isBad() {	
 		return binding.is_Bad(ptr) != 0;
@@ -197,9 +198,7 @@ class Bound(Op):
 	pinned_init = "op_pin_state_pinned"
 	attr_struct = "bound_attr"
 	d_post = '''
-	#if PRECISE_EXC_CONTEXT
 	firm_alloc_frag_arr(res, op_Bound, &res->attr.bound.exc.frag_arr);
-	#endif
 	'''
 
 class Break(Op):
@@ -247,9 +246,7 @@ class Call(Op):
 	assert((get_unknown_type() == type) || is_Method_type(type));
 	'''
 	d_post = '''
-	#if PRECISE_EXC_CONTEXT
 	firm_alloc_frag_arr(res, op_Call, &res->attr.call.exc.frag_arr);
-	#endif
 	'''
 
 class CallBegin(Op):
@@ -295,11 +292,6 @@ class Cond(Op):
 	pinned   = "yes"
 	attrs    = [
 		dict(
-			name = "kind",
-			type = "cond_kind",
-			init = "dense"
-		),
-		dict(
 			name = "default_proj",
 			type = "long",
 			init = "0"
@@ -330,13 +322,13 @@ class Const(Op):
 	flags      = [ "constlike", "start_block" ]
 	knownBlock = True
 	pinned     = "no"
-	attrs_name = "con"
 	attrs      = [
 		dict(
 			type = "tarval*",
 			name = "tarval",
 		)
 	]
+	attrs_name = "con"
 	attr_struct = "const_attr"
 
 class Conv(Unop):
@@ -356,7 +348,7 @@ class Conv(Unop):
 
 class CopyB(Op):
 	ins   = [ "mem", "dst", "src" ]
-	outs  = [ "M", "X_regular", "X_except" ]
+	outs  = [ "M", "X_regular", "X_except", "M_except" ]
 	flags = [ "fragile", "highlevel", "uses_memory" ]
 	attrs = [
 		dict(
@@ -368,16 +360,20 @@ class CopyB(Op):
 	pinned      = "memory"
 	pinned_init = "op_pin_state_pinned"
 	d_post = '''
-	#if PRECISE_EXC_CONTEXT
 	firm_alloc_frag_arr(res, op_CopyB, &res->attr.copyb.exc.frag_arr);
-	#endif
 	'''
 
 class Div(Op):
 	ins   = [ "mem", "left", "right" ]
 	outs  = [ "M", "X_regular", "X_except", "res" ]
 	flags = [ "fragile", "uses_memory" ]
-	attrs_name = "divmod"
+	pinned_init = "flags & cons_floats ? op_pin_state_floats : op_pin_state_pinned"
+	constructor_args = [
+		dict(
+			type = "ir_cons_flags",
+			name = "flags"
+		)
+	]
 	attrs = [
 		dict(
 			type = "ir_mode*",
@@ -386,42 +382,35 @@ class Div(Op):
 		dict(
 			name = "no_remainder",
 			type = "int",
-			init = "0",
-			special = dict(
-				suffix = "RL",
-				init = "1"
-			)
+			init = "flags & cons_remainderless",
 		)
 	]
+	attrs_name = "divmod"
 	attr_struct = "divmod_attr"
 	pinned      = "exception"
 	op_index    = 1
 	arity_override = "oparity_binary"
 	d_post = '''
-	#if PRECISE_EXC_CONTEXT
 	firm_alloc_frag_arr(res, op_Div, &res->attr.except.frag_arr);
-	#endif
 	'''
 
 class DivMod(Op):
 	ins   = [ "mem", "left", "right" ]
 	outs  = [ "M", "X_regular", "X_except", "res_div", "res_mod" ]
 	flags = [ "fragile", "uses_memory" ]
-	attrs_name = "divmod"
 	attrs = [
 		dict(
 			type = "ir_mode*",
 			name = "resmode"
 		),
 	]
+	attrs_name = "divmod"
 	attr_struct = "divmod_attr"
 	pinned      = "exception"
 	op_index    = 1
 	arity_override = "oparity_binary"
 	d_post = '''
-	#if PRECISE_EXC_CONTEXT
 	firm_alloc_frag_arr(res, op_DivMod, &res->attr.except.frag_arr);
-	#endif
 	'''
 
 class Dummy(Op):
@@ -523,24 +512,32 @@ class Load(Op):
 	flags    = [ "fragile", "uses_memory" ]
 	pinned   = "exception"
 	pinned_init = "flags & cons_floats ? op_pin_state_floats : op_pin_state_pinned"
-	attrs    = [
+	attrs = [
 		dict(
 			type = "ir_mode*",
 			name = "mode",
 			java_name = "load_mode"
 		),
+		dict(
+			type = "ir_volatility",
+			name = "volatility",
+			init = "flags & cons_volatile ? volatility_is_volatile : volatility_non_volatile"
+		),
+		dict(
+			type  = "ir_align",
+			name  = "align",
+			init  = "flags & cons_unaligned ? align_non_aligned : align_is_aligned"
+		)
 	]
 	attr_struct = "load_attr"
 	constructor_args = [
 		dict(
 			type = "ir_cons_flags",
 			name = "flags",
-		),
+		)
 	]
 	d_post = '''
-#if PRECISE_EXC_CONTEXT
 	firm_alloc_frag_arr(res, op_Load, &res->attr.load.exc.frag_arr);
-#endif
 	'''	
 
 class Minus(Unop):
@@ -550,21 +547,19 @@ class Mod(Op):
 	ins   = [ "mem", "left", "right" ]
 	outs  = [ "M", "X_regular", "X_except", "res" ]
 	flags = [ "fragile", "uses_memory" ]
-	attrs_name = "divmod"
 	attrs = [
 		dict(
 			type = "ir_mode*",
 			name = "resmode"
 		),
 	]
+	attrs_name = "divmod"
 	attr_struct = "divmod_attr"
 	pinned      = "exception"
 	op_index    = 1
 	arity_override = "oparity_binary"
 	d_post = '''
-	#if PRECISE_EXC_CONTEXT
 	firm_alloc_frag_arr(res, op_Mod, &res->attr.except.frag_arr);
-	#endif
 	'''
 
 class Mul(Binop):
@@ -619,31 +614,28 @@ class Proj(Op):
 		dict(
 			type = "long",
 			name = "proj",
-			initname = ""			
 		)
 	]
-	attr_struct = "long"
+	attr_struct = "proj_attr"
 	custom_is   = True
 
 class Quot(Op):
 	ins   = [ "mem", "left", "right" ]
 	outs  = [ "M", "X_regular", "X_except", "res" ]
 	flags = [ "fragile", "uses_memory" ]
-	attrs_name = "divmod"
 	attrs = [
 		dict(
 			type = "ir_mode*",
 			name = "resmode"
 		),
 	]
+	attrs_name = "divmod"
 	attr_struct = "divmod_attr"
 	pinned      = "exception"
 	op_index    = 1
 	arity_override = "oparity_binary"
 	d_post = '''
-	#if PRECISE_EXC_CONTEXT
 	firm_alloc_frag_arr(res, op_Quot, &res->attr.except.frag_arr);
-	#endif
 	'''
 
 class Raise(Op):
@@ -686,6 +678,7 @@ class Shrs(Binop):
 	flags = []
 
 class Start(Op):
+	outs       = [ "X_initial_exec", "M", "P_frame_base", "P_tls", "T_args" ]
 	mode       = "mode_T"
 	pinned     = "yes"
 	flags      = [ "cfopcode" ]
@@ -702,12 +695,22 @@ class Store(Op):
 		dict(
 			type = "ir_cons_flags",
 			name = "flags",
+		)
+	]
+	attrs = [
+		dict(
+			type = "ir_volatility",
+			name = "volatility",
+			init = "flags & cons_volatile ? volatility_is_volatile : volatility_non_volatile"
 		),
+		dict(
+			type = "ir_align",
+			name = "align",
+			init = "flags & cons_unaligned ? align_non_aligned : align_is_aligned"
+		)
 	]
 	d_post = '''
-#if PRECISE_EXC_CONTEXT
 	firm_alloc_frag_arr(res, op_Store, &res->attr.store.exc.frag_arr);
-#endif
 	'''
 
 class Sub(Binop):

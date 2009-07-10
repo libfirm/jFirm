@@ -178,6 +178,16 @@ def get_java_type(type):
 		wrap_type    = "int"
 		to_wrapper   = "%s.val"
 		from_wrapper = "firm.bindings.binding_ircons.ir_cons_flags.getEnum(%s)"
+	elif type == "ir_volatility":
+		java_type    = "firm.bindings.binding_irnode.ir_volatility"
+		wrap_type    = "int"
+		to_wrapper   = "%s.val"
+		from_wrapper = "firm.bindings.binding_irnode.ir_volatility.getEnum(%s)"
+	elif type == "ir_align":
+		java_type    = "firm.bindings.binding_irnode.ir_align"
+		wrap_type    = "int"
+		to_wrapper   = "%s.val"
+		from_wrapper = "firm.bindings.binding_irnode.ir_align.getEnum(%s)"
 	elif type == "cond_kind":
 		java_type    = "int"
 		wrap_type    = "int"

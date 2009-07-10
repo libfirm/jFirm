@@ -117,8 +117,8 @@ public class Graph extends GraphBase {
 	}
 	
 	/** Create a new Div node */
-	public final Node newDiv(Node block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
-		return Node.createWrapper(binding_cons.new_r_Div(this.ptr, block.ptr, mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val));
+	public final Node newDiv(Node block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.ir_cons_flags flags) {
+		return Node.createWrapper(binding_cons.new_r_Div(this.ptr, block.ptr, mem.ptr, left.ptr, right.ptr, resmode.ptr, flags.val));
 	}
 	
 	/** Create a new DivMod node */

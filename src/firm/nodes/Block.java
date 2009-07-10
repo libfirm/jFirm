@@ -26,14 +26,16 @@ public class Block extends Node {
 	public Block getBlock() {
 		return null;
 	}
-	
+
 	public boolean blockVisited() {
-		return 0 != binding.Block_block_visited(ptr);
+		int visited = getGraph().getBlockVisited();
+		return binding.get_Block_block_visited(ptr).intValue() >= visited;
 	}
 	
 	public void markBlockVisited() {
-		binding.mark_Block_block_visited(ptr);
-	}
+		int visited = getGraph().getBlockVisited();		
+		binding.set_Block_block_visited(ptr, new com.sun.jna.NativeLong(visited));
+	}	
 
 	public boolean isBad() {	
 		return binding.is_Bad(ptr) != 0;

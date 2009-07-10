@@ -22,15 +22,6 @@ public class Cond extends Node {
 	
 
 	
-	public int getKind() {
-		int _res = binding.get_Cond_kind(ptr);
-		return _res;
-	}
-
-	public void setKind(int _val) {
-		binding.set_Cond_kind(this.ptr, _val);
-	}
-	
 	public int getDefaultProj() {
 		com.sun.jna.NativeLong _res = binding.get_Cond_default_proj(ptr);
 		return _res.intValue();

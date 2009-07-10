@@ -41,6 +41,24 @@ public class Load extends Node {
 		binding.set_Load_mode(this.ptr, _val.ptr);
 	}
 	
+	public firm.bindings.binding_irnode.ir_volatility getVolatility() {
+		int _res = binding.get_Load_volatility(ptr);
+		return firm.bindings.binding_irnode.ir_volatility.getEnum(_res);
+	}
+
+	public void setVolatility(firm.bindings.binding_irnode.ir_volatility _val) {
+		binding.set_Load_volatility(this.ptr, _val.val);
+	}
+	
+	public firm.bindings.binding_irnode.ir_align getAlign() {
+		int _res = binding.get_Load_align(ptr);
+		return firm.bindings.binding_irnode.ir_align.getEnum(_res);
+	}
+
+	public void setAlign(firm.bindings.binding_irnode.ir_align _val) {
+		binding.set_Load_align(this.ptr, _val.val);
+	}
+	
 
 	
 
