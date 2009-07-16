@@ -117,7 +117,8 @@ public interface binding_be extends Library {
 		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const();
+		symconst_enum_const(),
+		symconst_label();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -418,7 +419,6 @@ public interface binding_be extends Library {
 	void ir_lower_mode_b(Pointer irg, Pointer config);
 	int lower_intrinsics(Pointer list, int length, int part_block_used);
 	int i_mapper_abs(Pointer call, Pointer ctx);
-	int i_mapper_bswap(Pointer call, Pointer ctx);
 	int i_mapper_sqrt(Pointer call, Pointer ctx);
 	int i_mapper_cbrt(Pointer call, Pointer ctx);
 	int i_mapper_pow(Pointer call, Pointer ctx);

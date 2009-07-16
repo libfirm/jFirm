@@ -93,7 +93,8 @@ public interface binding_irnode extends Library {
 		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const();
+		symconst_enum_const(),
+		symconst_label();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -486,7 +487,6 @@ public interface binding_irnode extends Library {
 		tpo_pointer(),
 		tpo_primitive(),
 		tpo_id(),
-		tpo_code(),
 		tpo_none(),
 		tpo_unknown(),
 		tpo_max();
@@ -869,6 +869,48 @@ public interface binding_irnode extends Library {
 		
 		public static dump_reason_t getEnum(int val) {
 			for(dump_reason_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum ir_modecode {
+		irm_BB(),
+		irm_X(),
+		irm_F(),
+		irm_D(),
+		irm_E(),
+		irm_Bs(),
+		irm_Bu(),
+		irm_Hs(),
+		irm_Hu(),
+		irm_Is(),
+		irm_Iu(),
+		irm_Ls(),
+		irm_Lu(),
+		irm_LLs(),
+		irm_LLu(),
+		irm_P(),
+		irm_b(),
+		irm_M(),
+		irm_T(),
+		irm_ANY(),
+		irm_BAD(),
+		irm_max();
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_modecode(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_modecode() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_modecode getEnum(int val) {
+			for(ir_modecode entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -1472,8 +1514,6 @@ public interface binding_irnode extends Library {
 	void set_entity_peculiarity(Pointer ent, /* ir_peculiarity */int pec);
 	int is_entity_final(Pointer ent);
 	void set_entity_final(Pointer ent, int _final);
-	void set_entity_label(Pointer ent, com.sun.jna.NativeLong label);
-	com.sun.jna.NativeLong get_entity_label(Pointer ent);
 	int is_entity_compiler_generated(Pointer ent);
 	void set_entity_compiler_generated(Pointer ent, int flag);
 	int is_entity_backend_marked(Pointer ent);
@@ -1563,7 +1603,6 @@ public interface binding_irnode extends Library {
 	Pointer get_tpop_pointer();
 	Pointer get_tpop_primitive();
 	Pointer get_tpop_id();
-	Pointer get_tpop_code_type();
 	Pointer get_tpop_none();
 	Pointer get_tpop_unknown();
 	int is_SubClass_of(Pointer low, Pointer high);
@@ -1766,14 +1805,12 @@ public interface binding_irnode extends Library {
 	Pointer get_primitive_base_type(Pointer tp);
 	void set_primitive_base_type(Pointer tp, Pointer base_tp);
 	Pointer get_none_type();
-	Pointer get_code_type();
 	Pointer get_unknown_type();
 	int is_atomic_type(Pointer tp);
 	int get_compound_n_members(Pointer tp);
 	Pointer get_compound_member(Pointer tp, int pos);
 	int get_compound_member_index(Pointer tp, Pointer member);
 	int is_compound_type(Pointer tp);
-	int is_code_type(Pointer tp);
 	int is_frame_type(Pointer tp);
 	int is_value_param_type(Pointer tp);
 	int is_lowered_type(Pointer tp);
@@ -1893,6 +1930,7 @@ public interface binding_irnode extends Library {
 	Pointer new_ir_mode(String name, /* ir_mode_sort */int sort, int bit_size, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
 	Pointer new_ir_vector_mode(String name, /* ir_mode_sort */int sort, int bit_size, int num_of_elem, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
 	int is_mode(Pointer thing);
+	/* ir_modecode */int get_mode_modecode(Pointer mode);
 	Pointer get_mode_ident(Pointer mode);
 	String get_mode_name(Pointer mode);
 	/* ir_mode_sort */int get_mode_sort(Pointer mode);
@@ -1978,6 +2016,7 @@ public interface binding_irnode extends Library {
 	void del_Sync_n(Pointer n, int i);
 	void set_irn_mode(Pointer node, Pointer mode);
 	Pointer get_irn_mode(Pointer node);
+	/* ir_modecode */int get_irn_modecode(Pointer node);
 	Pointer get_irn_modeident(Pointer node);
 	String get_irn_modename(Pointer node);
 	Pointer get_irn_op(Pointer node);
@@ -2023,10 +2062,9 @@ public interface binding_irnode extends Library {
 	void set_Block_MacroBlock(Pointer block, Pointer mbh);
 	Pointer get_irn_MacroBlock(Pointer n);
 	Pointer get_Block_irg(Pointer block);
-	int has_Block_entity(Pointer block);
-	Pointer get_Block_entity(Pointer block);
-	Pointer create_Block_entity(Pointer block);
-	void set_Block_entity(Pointer block, Pointer entity);
+	int has_Block_label(Pointer block);
+	com.sun.jna.NativeLong get_Block_label(Pointer block);
+	void set_Block_label(Pointer block, com.sun.jna.NativeLong label);
 	Pointer get_Block_phis(Pointer block);
 	void set_Block_phis(Pointer block, Pointer phi);
 	void add_Block_phi(Pointer block, Pointer phi);
@@ -2072,6 +2110,8 @@ public interface binding_irnode extends Library {
 	void set_SymConst_entity(Pointer node, Pointer ent);
 	Pointer get_SymConst_enum(Pointer node);
 	void set_SymConst_enum(Pointer node, Pointer ec);
+	com.sun.jna.NativeLong get_SymConst_label(Pointer node);
+	void set_SymConst_label(Pointer node, com.sun.jna.NativeLong label);
 	Pointer get_SymConst_value_type(Pointer node);
 	void set_SymConst_value_type(Pointer node, Pointer tp);
 	Pointer get_Sel_mem(Pointer node);
@@ -2427,7 +2467,6 @@ public interface binding_irnode extends Library {
 	Pointer get_fragile_op_mem(Pointer node);
 	Pointer get_divop_resmod(Pointer node);
 	int is_irn_forking(Pointer node);
-	void copy_node_attr(Pointer old_node, Pointer new_node);
 	Pointer get_irn_type(Pointer n);
 	Pointer get_irn_type_attr(Pointer n);
 	Pointer get_irn_entity_attr(Pointer n);

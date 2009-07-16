@@ -93,7 +93,8 @@ public interface binding_iredges extends Library {
 		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const();
+		symconst_enum_const(),
+		symconst_label();
 		public final int val;
 		private static class C { static int next_val; }
 

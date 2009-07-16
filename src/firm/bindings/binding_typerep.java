@@ -93,7 +93,8 @@ public interface binding_typerep extends Library {
 		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const();
+		symconst_enum_const(),
+		symconst_label();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -452,7 +453,6 @@ public interface binding_typerep extends Library {
 		tpo_pointer(),
 		tpo_primitive(),
 		tpo_id(),
-		tpo_code(),
 		tpo_none(),
 		tpo_unknown(),
 		tpo_max();
@@ -692,8 +692,6 @@ public interface binding_typerep extends Library {
 	void set_entity_peculiarity(Pointer ent, /* ir_peculiarity */int pec);
 	int is_entity_final(Pointer ent);
 	void set_entity_final(Pointer ent, int _final);
-	void set_entity_label(Pointer ent, com.sun.jna.NativeLong label);
-	com.sun.jna.NativeLong get_entity_label(Pointer ent);
 	int is_entity_compiler_generated(Pointer ent);
 	void set_entity_compiler_generated(Pointer ent, int flag);
 	int is_entity_backend_marked(Pointer ent);
@@ -783,7 +781,6 @@ public interface binding_typerep extends Library {
 	Pointer get_tpop_pointer();
 	Pointer get_tpop_primitive();
 	Pointer get_tpop_id();
-	Pointer get_tpop_code_type();
 	Pointer get_tpop_none();
 	Pointer get_tpop_unknown();
 	int is_SubClass_of(Pointer low, Pointer high);
@@ -986,14 +983,12 @@ public interface binding_typerep extends Library {
 	Pointer get_primitive_base_type(Pointer tp);
 	void set_primitive_base_type(Pointer tp, Pointer base_tp);
 	Pointer get_none_type();
-	Pointer get_code_type();
 	Pointer get_unknown_type();
 	int is_atomic_type(Pointer tp);
 	int get_compound_n_members(Pointer tp);
 	Pointer get_compound_member(Pointer tp, int pos);
 	int get_compound_member_index(Pointer tp, Pointer member);
 	int is_compound_type(Pointer tp);
-	int is_code_type(Pointer tp);
 	int is_frame_type(Pointer tp);
 	int is_value_param_type(Pointer tp);
 	int is_lowered_type(Pointer tp);
