@@ -20,6 +20,10 @@ public class BackEdges {
 		binding.edges_deactivate(graph.ptr);
 	}
 	
+	public static boolean enabled(Graph graph) {
+		return binding.edges_activated_kind(graph.ptr, ir_edge_kind_t.EDGE_KIND_NORMAL.val) != 0;
+	}
+	
 	public static class Edge {
 		public Node node;
 		public int pos;

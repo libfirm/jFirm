@@ -284,7 +284,7 @@ public abstract class GraphBase extends JNAWrapper {
 		
 		/* only break loops at phi/block nodes */
 		boolean isLoopBreaker =
-			node.getClass() == Phi.class || node.getMode().equals(Mode.getX());
+			node.getClass() == Phi.class || node.getClass() == Block.class;
 		if (isLoopBreaker) {
 			node.markVisited();
 		}

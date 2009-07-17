@@ -31,6 +31,11 @@ public class Construction extends ConstructionBase {
 
 		constructionActive = true;
 		
+		/* backedges interfere with construction somehow... */
+		if (BackEdges.enabled(graph)) {
+			throw new IllegalStateException("Backedges must not be enabled while building the graph");
+		}
+		
 		this.graph = graph;
 		Graph.setCurrent(graph);
 	}
@@ -139,6 +144,10 @@ public class Construction extends ConstructionBase {
 		if (!constructionActive) {
 			throw new IllegalStateException("Construciton is not active.");
 		}
+		/* backedges interfere with construction somehow... */
+		if (BackEdges.enabled(graph)) {
+			throw new IllegalStateException("Backedges must not be enabled while building the graph");
+		}
 		
 		constructionActive = false;
 		
@@ -155,7 +164,7 @@ public class Construction extends ConstructionBase {
 		frameType.setAlignmentBytes(4);
 		frameType.setTypeState(ir_type_state.layout_fixed);
 		
-		/* set graph to state hight */
+		/* set graph to state high */
 		graph.setPhaseState(irg_phase_state.phase_high);
 	}
 }
