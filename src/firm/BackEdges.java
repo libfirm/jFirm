@@ -2,8 +2,6 @@ package firm;
 
 import java.util.Iterator;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
@@ -54,7 +52,7 @@ public class BackEdges {
 
 		@Override
 		public void remove() {
-			throw new NotImplementedException();
+			throw new UnsupportedOperationException();
 		}
 	}
 	

@@ -2,8 +2,6 @@ package firm;
 
 import java.util.Iterator;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import com.sun.jna.Pointer;
 
 public class ClassType extends Type {
@@ -50,7 +48,7 @@ public class ClassType extends Type {
 
 					@Override
 					public void remove() {
-						throw new NotImplementedException();
+						throw new UnsupportedOperationException();
 					}
 				};
 			}
@@ -99,7 +97,7 @@ public class ClassType extends Type {
 
 					@Override
 					public void remove() {
-						throw new NotImplementedException();
+						throw new UnsupportedOperationException();
 					}
 				};
 			}
@@ -135,13 +133,12 @@ public class ClassType extends Type {
 
 					@Override
 					public Type next() {
-						// TODO Auto-generated method stub
 						return getSuperType(n++);
 					}
 
 					@Override
 					public void remove() {
-						throw new NotImplementedException();
+						throw new UnsupportedOperationException();
 					}	
 				};
 			}

@@ -35,9 +35,6 @@ public class BrainFuck {
 	private Node putcharSymConst;
 	private Node getcharSymConst;
 	
-	public BrainFuck() {
-	}
-	
 	private static String makeLdIdent(String str) {
 		if (Platform.isMac() || Platform.isWindows()) {
 			str = "_" + str;
@@ -97,14 +94,12 @@ public class BrainFuck {
 		getcharEntity.setLdIdent(makeLdIdent("getchar"));
 		getcharSymConst = construction.newSymConst(getcharEntity); 
 				
-		while (true) {
+		while (input.available() > 0) {
 			parse();
 			if (input.available() > 0) {
 				System.err.println("warning: unexpected ']' - ignoring");
-				continue;
 			}
-			break;
-		}
+		}	
 		input.close();
 		
 		/* create return statement */
@@ -214,10 +209,11 @@ public class BrainFuck {
 		
 		Node delta = construction.newConst(Math.abs(delta_int), Mode.getBu());
 		Node op;
-		if (delta_int < 0)
+		if (delta_int < 0) {
 			op = construction.newSub(result, delta, Mode.getBu());
-		else
+		} else {
 			op = construction.newAdd(result, delta, Mode.getBu());
+		}
 		
 		Node store = construction.newStore(loadMem, pointer, op);
 		Node storeMem = construction.newProj(store, Mode.getM(), Store.pnM);

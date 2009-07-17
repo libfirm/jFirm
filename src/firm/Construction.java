@@ -22,8 +22,13 @@ public class Construction extends ConstructionBase {
 		/* well firm can only support 1 active graph construction.
 		 * you have to call Construction.finish() to start
 		 * another one.
+		 * TODO: private constructor + factory...
 		 */
-		assert constructionActive == false;
+		if (constructionActive) {
+			throw new IllegalStateException("Another construction is currently in progress."
+					+ " Don't forget to call Constuction.finish() when done...");
+		}
+
 		constructionActive = true;
 		
 		this.graph = graph;
@@ -131,7 +136,10 @@ public class Construction extends ConstructionBase {
 	 *  be well formed). 
 	 */
 	public void finish() {
-		assert constructionActive == true;
+		if (!constructionActive) {
+			throw new IllegalStateException("Construciton is not active.");
+		}
+		
 		constructionActive = false;
 		
 		/* mature blocks */

@@ -15,7 +15,7 @@ public class Util {
 	protected static binding_lowering binding_lower = (binding_lowering) Native.loadLibrary("firm", binding_lowering.class);
 	
 	/**
-	 * This calss only contains static utility functions,
+	 * This class only contains static utility functions,
 	 * creating an instance makes no sense
 	 */
 	private Util() {

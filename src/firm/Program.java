@@ -41,7 +41,7 @@ public class Program {
 
 					@Override
 					public void remove() {
-						throw new RuntimeException("Graphs remove not implemented");
+						throw new UnsupportedOperationException("Graphs remove not implemented");
 					}					
 				};
 			}			
@@ -78,7 +78,7 @@ public class Program {
 
 					@Override
 					public void remove() {
-						throw new RuntimeException("Type remove not implemented");
+						throw new UnsupportedOperationException("Type remove not implemented");
 					}					
 				};
 			}			
@@ -112,7 +112,7 @@ public class Program {
 
 					@Override
 					public void remove() {
-						throw new RuntimeException("mode remove not available");
+						throw new UnsupportedOperationException("mode remove not available");
 					}					
 				};
 			}			
