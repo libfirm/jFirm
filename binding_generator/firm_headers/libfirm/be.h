@@ -21,14 +21,10 @@
  * @file
  * @brief       Generic backend types and interfaces.
  * @author      Sebastian Hack
- * @version     $Id: be.h 25054 2009-01-02 16:47:18Z beck $
+ * @version     $Id: be.h 27143 2010-02-13 11:17:42Z mallon $
  */
 #ifndef FIRM_BE_MAIN_H
 #define FIRM_BE_MAIN_H
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #include <stdio.h>
 #include "irarch.h"
@@ -48,7 +44,7 @@ typedef enum {
 	ASM_CONSTRAINT_FLAG_INVALID               = 0x8000
 } asm_constraint_flags_t;
 
-/** 
+/**
  * Build a Trampoline for the closure.
  * @param block       the block where to build the trampoline
  * @param mem         memory
@@ -137,9 +133,5 @@ int be_is_valid_clobber(const char *clobber);
 
 typedef struct be_main_env_t be_main_env_t;
 typedef struct be_options_t  be_options_t;
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

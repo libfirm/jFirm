@@ -21,7 +21,7 @@
  * @file
  * @brief    common firm declarations
  * @author   Martin Trapp, Christian Schaefer, Goetz Lindenmaier
- * @version  $Id: firm_common.h 24498 2008-12-10 19:05:14Z matze $
+ * @version  $Id: firm_common.h 26909 2010-01-05 15:56:54Z matze $
  */
 #ifndef FIRM_COMMON_FIRM_COMMON_H
 #define FIRM_COMMON_FIRM_COMMON_H
@@ -32,49 +32,49 @@
  * libFirm initialization parameters.
  */
 struct _firm_parameter_t {
-  /**
-   * The size of this structure. init_firm() will only initialize
-   * this amount of data. This allows to add more fields to this structure
-   * without breaking compatibility to older source.
-   */
-  unsigned int size;
+	/**
+	 * The size of this structure. init_firm() will only initialize
+	 * this amount of data. This allows to add more fields to this structure
+	 * without breaking compatibility to older source.
+	 */
+	unsigned int size;
 
-  /**
-   * Statistic options. If statistic function where enabled, these
-   * flags configure it, see enum firmstat_options_t.
-   */
-  unsigned enable_statistics;
+	/**
+	 * Statistic options. If statistic function where enabled, these
+	 * flags configure it, see enum firmstat_options_t.
+	 */
+	unsigned enable_statistics;
 
-  /**
-   * This function is called, whenever a local variable is
-   * used before definition. The function should insert a default value,
-   * and/or raise a compiler error/warning. Note that returning
-   * an Unknown is allowed here.
-   */
-  uninitialized_local_variable_func_t *initialize_local_func;
+	/**
+	 * This function is called, whenever a local variable is
+	 * used before definition. The function should insert a default value,
+	 * and/or raise a compiler error/warning. Note that returning
+	 * an Unknown is allowed here.
+	 */
+	uninitialized_local_variable_func_t *initialize_local_func;
 
-  /**
-   * The interface functions for the type identification module.
-   * If not set, the default implementation with compare_strict() and
-   * firm_hash_name() will be used.
-   */
-  type_identify_if_t *ti_if;
+	/**
+	 * The interface functions for the type identification module.
+	 * If not set, the default implementation with compare_strict() and
+	 * firm_hash_name() will be used.
+	 */
+	type_identify_if_t *ti_if;
 
-  /**
-   * The interface for the ident module.
-   * If not set, the default libFirm ident module (using hash sets).
-   */
-  ident_if_t *id_if;
+	/**
+	 * The interface for the ident module.
+	 * If not set, the default libFirm ident module (using hash sets).
+	 */
+	ident_if_t *id_if;
 
-  /**
-   * The default calling convention.
-   */
-  unsigned cc_mask;
+	/**
+	 * The default calling convention.
+	 */
+	unsigned cc_mask;
 
-  /**
-   * The debug info that should be used for "builtin" objects.
-   */
-  dbg_info *builtin_dbg;
+	/**
+	 * dummy (here was dbg_info *builtin_dbg before)
+	 */
+	void *dummy;
 };
 
 typedef struct _firm_parameter_t firm_parameter_t;
@@ -124,6 +124,10 @@ typedef enum {
 	k_ir_extblk,              /**< An extended basic block. */
 	k_ir_prog,                /**< A program representation (irp). */
 	k_ir_region,              /**< A region. */
+	k_ir_graph_pass,          /**< An ir_graph pass. */
+	k_ir_prog_pass,           /**< An ir_prog pass. */
+	k_ir_graph_pass_mgr,      /**< An ir_graph pass manager. */
+	k_ir_prog_pass_mgr,       /**< An ir_prog pass manager. */
 	k_ir_max                  /**< maximum value -- illegal for firm nodes. */
 } firm_kind;
 

@@ -53,19 +53,18 @@ public interface binding_iroptimize extends Library {
 		}
 	}
 	public static enum mtp_additional_property {
-		mtp_no_property(0),
-		mtp_property_const(1),
-		mtp_property_pure(2),
-		mtp_property_noreturn(4),
-		mtp_property_nothrow(8),
-		mtp_property_naked(16),
-		mtp_property_malloc(32),
-		mtp_property_weak(64),
-		mtp_property_returns_twice(128),
-		mtp_property_intrinsic(256),
-		mtp_property_runtime(512),
-		mtp_property_private(1024),
-		mtp_property_has_loop(2048),
+		mtp_no_property(0x00000000),
+		mtp_property_const(0x00000001),
+		mtp_property_pure(0x00000002),
+		mtp_property_noreturn(0x00000004),
+		mtp_property_nothrow(0x00000008),
+		mtp_property_naked(0x00000010),
+		mtp_property_malloc(0x00000020),
+		mtp_property_returns_twice(0x00000040),
+		mtp_property_intrinsic(0x00000080),
+		mtp_property_runtime(0x00000100),
+		mtp_property_private(0x00000200),
+		mtp_property_has_loop(0x00000400),
 		mtp_property_inherited((1<<31));
 		public final int val;
 		private static class C { static int next_val; }
@@ -90,11 +89,9 @@ public interface binding_iroptimize extends Library {
 		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
-		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const(),
-		symconst_label();
+		symconst_enum_const();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -232,6 +229,8 @@ public interface binding_iroptimize extends Library {
 	}
 	Pointer __builtin_alloca();
 	double __builtin_huge_val();
+	float __builtin_huge_valf();
+	double __builtin_huge_vall();
 	double __builtin_inf();
 	float __builtin_inff();
 	double __builtin_infl();
@@ -249,37 +248,96 @@ public interface binding_iroptimize extends Library {
 	int __builtin_parity();
 	float __builtin_prefetch(Object ... args);
 	void __builtin_trap();
+	com.sun.jna.NativeLong __builtin_object_size();
+	void __builtin_abort();
+	int __builtin_abs();
+	com.sun.jna.NativeLong __builtin_labs();
+	long __builtin_llabs();
+	Pointer __builtin_memcpy();
+	Pointer __builtin___memcpy_chk();
+	void __builtin_exit();
+	Pointer __builtin_malloc();
+	int __builtin_memcmp();
+	Pointer __builtin_memset();
+	com.sun.jna.NativeLong __builtin_strlen();
+	int __builtin_strcmp();
+	String __builtin_strcpy();
 	void optimize_cf(Pointer irg);
-	void opt_cond_eval(Pointer irg);
+	Pointer optimize_cf_pass(String name);
+	void opt_jumpthreading(Pointer irg);
+	Pointer opt_jumpthreading_pass(String name);
+	Pointer opt_loopunroll_pass(String name);
 	void opt_bool(Pointer irg);
+	Pointer opt_bool_pass(String name);
 	int conv_opt(Pointer irg);
+	Pointer conv_opt_pass(String name);
 	void data_flow_scalar_replacement_opt(Pointer irg);
 	void escape_enalysis_irg(Pointer irg, Pointer callback);
 	void escape_analysis(int run_scalar_replace, Pointer callback);
 	void optimize_funccalls(int force_run, Pointer callback);
+	Pointer optimize_funccalls_pass(String name, int force_run, Pointer callback);
 	void do_gvn_pre(Pointer irg);
+	Pointer do_gvn_pre_pass(String name);
 	void opt_if_conv(Pointer irg, Pointer params);
-	void opt_sync(Pointer irg);
+	Pointer opt_if_conv_pass(String name, Pointer params);
+	void opt_parallelize_mem(Pointer irg);
+	Pointer opt_parallelize_mem_pass(String name);
 	Pointer can_replace_load_by_const(Pointer load, Pointer c);
 	int optimize_load_store(Pointer irg);
-	void optimize_loop_unrolling(Pointer irg);
+	Pointer optimize_load_store_pass(String name);
+	int opt_ldst(Pointer irg);
+	Pointer opt_ldst_pass(String name);
+	void loop_optimization(Pointer irg);
 	void opt_frame_irg(Pointer irg);
+	Pointer opt_frame_irg_pass(String name);
 	void opt_osr(Pointer irg, int flags);
+	Pointer opt_osr_pass(String name, int flags);
 	void remove_phi_cycles(Pointer irg);
+	Pointer remove_phi_cycles_pass(String name);
 	void proc_cloning(float threshold);
+	Pointer proc_cloning_pass(String name, float threshold);
 	int optimize_reassociation(Pointer irg);
+	Pointer optimize_reassociation_pass(String name);
 	void normalize_one_return(Pointer irg);
+	Pointer normalize_one_return_pass(String name);
 	void normalize_n_returns(Pointer irg);
+	Pointer normalize_n_returns_pass(String name);
 	int scalar_replacement_opt(Pointer irg);
+	Pointer scalar_replacement_opt_pass(String name);
 	void reduce_strength(Pointer irg);
 	int opt_tail_rec_irg(Pointer irg);
+	Pointer opt_tail_rec_irg_pass(String name);
 	void opt_tail_recursion();
+	Pointer opt_tail_recursion_pass(String name);
 	void normalize_irp_class_casts(Pointer gppt_fct);
 	void normalize_irg_class_casts(Pointer irg, Pointer gppt_fct);
 	void optimize_class_casts();
 	void combo(Pointer irg);
+	Pointer combo_pass(String name);
 	void inline_small_irgs(Pointer irg, int size);
+	Pointer inline_small_irgs_pass(String name, int size);
 	void inline_leave_functions(int maxsize, int leavesize, int size, int ignore_runtime);
-	void inline_functions(int maxsize, int inline_threshold);
+	Pointer inline_leave_functions_pass(String name, int maxsize, int leavesize, int size, int ignore_runtime);
+	void inline_functions(int maxsize, int inline_threshold, Pointer after_inline_opt);
+	Pointer inline_functions_pass(String name, int maxsize, int inline_threshold, Pointer after_inline_opt);
 	int shape_blocks(Pointer irg);
+	Pointer shape_blocks_pass(String name);
+	void do_loop_inversion(Pointer irg);
+	void do_loop_unrolling(Pointer irg);
+	void do_loop_peeling(Pointer irg);
+	Pointer loop_inversion_pass(String name);
+	Pointer loop_unroll_pass(String name);
+	Pointer loop_peeling_pass(String name);
+	Pointer firm_set_Alloc_func(Pointer newf);
+	void set_vrp_data(Pointer irg);
+	Pointer set_vrp_pass(String name);
+	void garbage_collect_entities();
+	Pointer garbage_collect_entities_pass(String name);
+	void dead_node_elimination(Pointer irg);
+	Pointer dead_node_elimination_pass(String name);
+	int inline_method(Pointer call, Pointer called_graph);
+	void place_code(Pointer irg);
+	Pointer place_code_pass(String name);
+	void fixpoint_vrp(Pointer _0);
+	Pointer fixpoint_vrp_irg_pass(String name);
 }

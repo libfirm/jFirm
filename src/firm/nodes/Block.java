@@ -17,7 +17,7 @@ public class Block extends Node {
 	public void addPred(Node node) {
 		binding_cons.add_immBlock_pred(ptr, node.ptr);
 	}
-	
+
 	public void mature() {
 		binding_cons.mature_immBlock(ptr);
 	}
@@ -28,16 +28,14 @@ public class Block extends Node {
 	}
 
 	public boolean blockVisited() {
-		int visited = getGraph().getBlockVisited();
-		return binding.get_Block_block_visited(ptr).intValue() >= visited;
+		return 0 != binding.Block_block_visited(ptr);
 	}
-	
-	public void markBlockVisited() {
-		int visited = getGraph().getBlockVisited();		
-		binding.set_Block_block_visited(ptr, new com.sun.jna.NativeLong(visited));
-	}	
 
-	public boolean isBad() {	
+	public void markBlockVisited() {
+		binding.mark_Block_block_visited(ptr);
+	}
+
+	public boolean isBad() {
 		return binding.is_Bad(ptr) != 0;
 	}
 	

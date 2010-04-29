@@ -20,7 +20,7 @@
 /**
  * @file
  * @brief   Available Optimisations of libFirm.
- * @version $Id: iroptimize.h 23487 2008-11-06 15:03:13Z beck $
+ * @version $Id: iroptimize.h 27381 2010-04-12 19:00:58Z beck $
  */
 #ifndef FIRM_IROPTIMIZE_H
 #define FIRM_IROPTIMIZE_H
@@ -45,11 +45,39 @@
 void optimize_cf(ir_graph *irg);
 
 /**
- * Perform partial conditional evaluation on the given graph.
+ * Creates an ir_graph pass for optimize_cf().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *optimize_cf_pass(const char *name);
+
+/**
+ * Perform path-sensitive jump threading on the given graph.
  *
  * @param irg  the graph
  */
-void opt_cond_eval(ir_graph* irg);
+void opt_jumpthreading(ir_graph* irg);
+
+/**
+ * Creates an ir_graph pass for opt_jumpthreading().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *opt_jumpthreading_pass(const char *name);
+
+/**
+ * Creates an ir_graph pass for opt_loopunroll().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *opt_loopunroll_pass(const char *name);
+
 
 /**
  * Try to simplify boolean expression in the given ir graph.
@@ -60,6 +88,15 @@ void opt_cond_eval(ir_graph* irg);
 void opt_bool(ir_graph *irg);
 
 /**
+ * Creates an ir_graph pass for opt_bool().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *opt_bool_pass(const char *name);
+
+/**
  * Try to reduce the number of conv nodes in the given ir graph.
  *
  * @param irg  the graph
@@ -67,6 +104,15 @@ void opt_bool(ir_graph *irg);
  * @return non-zero if the optimization could be applied, 0 else
  */
 int conv_opt(ir_graph *irg);
+
+/**
+ * Creates an ir_graph pass for conv_opt().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *conv_opt_pass(const char *name);
 
 /**
  * Do the scalar replacement optimization.
@@ -154,6 +200,23 @@ void escape_analysis(int run_scalar_replace, check_alloc_entity_func callback);
 void optimize_funccalls(int force_run, check_alloc_entity_func callback);
 
 /**
+ * Creates an ir_prog pass for optimize_funccalls().
+ *
+ * @param name       the name of this pass or NULL
+ * @param force_run  if non-zero, an optimization run is started even
+ *                   if no const function graph was detected.
+ *                   Else calls are only optimized if at least one
+ *                   const function graph was detected.
+ * @param callback   a callback function to check whether a
+ *                   given entity is a allocation call
+ *
+ * @return  the newly created ir_prog pass
+ */
+ir_prog_pass_t *optimize_funccalls_pass(
+	const char *name,
+	int force_run, check_alloc_entity_func callback);
+
+/**
  * Does Partial Redundancy Elimination combined with
  * Global Value Numbering.
  * Can be used to replace place_code() completely.
@@ -165,16 +228,27 @@ void optimize_funccalls(int force_run, check_alloc_entity_func callback);
 void do_gvn_pre(ir_graph *irg);
 
 /**
- * This function is called to evaluate, if a mux can build
- * of the current architecture.
+ * Creates an ir_graph pass for do_gvn_pre().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *do_gvn_pre_pass(const char *name);
+
+/**
+ * This function is called to evaluate, if a
+ * mux(@p sel, @p mux_false, @p mux_true) should be built for the current
+ * architecture.
  * If it returns non-zero, a mux is created, else the code
  * is not modified.
  * @param sel        A selector of a Cond.
- * @param phi_list   List of Phi nodes about to be converted (linked via get_Phi_next() field)
+ * @param phi_list   phi node to be converted
  * @param i          First data predecessor involved in if conversion
  * @param j          Second data predecessor involved in if conversion
  */
-typedef int (*arch_allow_ifconv_func)(ir_node *sel, ir_node* phi_list, int i, int j);
+typedef int (*arch_allow_ifconv_func)(ir_node *sel, ir_node *mux_false,
+                                      ir_node *mux_true);
 
 /**
  * The parameters structure.
@@ -198,7 +272,32 @@ struct ir_settings_if_conv_t {
  */
 void opt_if_conv(ir_graph *irg, const ir_settings_if_conv_t *params);
 
-void opt_sync(ir_graph *irg);
+/**
+ * Creates an ir_graph pass for opt_if_conv().
+ *
+ * @param name     the name of this pass or NULL
+ * @param params   The parameters for the if conversion.
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *opt_if_conv_pass(
+	const char *name, const ir_settings_if_conv_t *params);
+
+/**
+ * Tries to reduce dependencies for memory nodes where possible by parllelizing
+ * them and synchronising with Sync nodes
+ * @param irg   the graph where memory operations should be parallelised
+ */
+void opt_parallelize_mem(ir_graph *irg);
+
+/**
+ * Creates an ir_graph pass for opt_sync().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *opt_parallelize_mem_pass(const char *name);
 
 /*
  * Check if we can replace the load by a given const from
@@ -243,9 +342,40 @@ ir_node *can_replace_load_by_const(const ir_node *load, ir_node *c);
 int optimize_load_store(ir_graph *irg);
 
 /**
- * Do Loop unrolling in the given graph.
+ * Creates an ir_graph pass for optimize_load_store().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
  */
-void optimize_loop_unrolling(ir_graph *irg);
+ir_graph_pass_t *optimize_load_store_pass(const char *name);
+
+/**
+ * New experimental alternative to optimize_load_store.
+ * Based on a dataflow analysis, so load/stores are moved out of loops
+ * where possible
+ */
+int opt_ldst(ir_graph *irg);
+
+/**
+ * Creates an ir_graph pass for opt_ldst().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *opt_ldst_pass(const char *name);
+
+/**
+ * Optimize loops by peeling or unrolling them if beneficial.
+ *
+ * @param irg  The graph whose loops will be processed
+ *
+ * This function did not change the graph, only it's frame type.
+ * The layout state of the frame type will be set to layout_undefined
+ * if entities were removed.
+ */
+void loop_optimization(ir_graph *irg);
 
 /**
  * Optimize the frame type of an irg by removing
@@ -258,6 +388,15 @@ void optimize_loop_unrolling(ir_graph *irg);
  * if entities were removed.
  */
 void opt_frame_irg(ir_graph *irg);
+
+/**
+ * Creates an ir_graph pass for opt_frame_irg().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *opt_frame_irg_pass(const char *name);
 
 /** Possible flags for the Operator Scalar Replacement. */
 typedef enum osr_flags {
@@ -335,6 +474,16 @@ typedef enum osr_flags {
 void opt_osr(ir_graph *irg, unsigned flags);
 
 /**
+ * Creates an ir_graph pass for remove_phi_cycles().
+ *
+ * @param name     the name of this pass or NULL
+ * @param flags    set of osr_flags
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *opt_osr_pass(const char *name, unsigned flags);
+
+/**
  * Removes useless Phi cycles, i.e cycles of Phi nodes with only one
  * non-Phi node.
  * This is automatically done in opt_osr(), so there is no need to call it
@@ -346,8 +495,18 @@ void opt_osr(ir_graph *irg, unsigned flags);
  */
 void remove_phi_cycles(ir_graph *irg);
 
+/**
+ * Creates an ir_graph pass for remove_phi_cycles().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *remove_phi_cycles_pass(const char *name);
+
+
 /** A default threshold. */
-#define DEFAULT_CLONE_THRESHOLD 300
+#define DEFAULT_CLONE_THRESHOLD 20
 
 /**
  * Do procedure cloning. Evaluate a heuristic weight for every
@@ -361,6 +520,16 @@ void remove_phi_cycles(ir_graph *irg);
  * call is cloned.
  */
 void proc_cloning(float threshold);
+
+/**
+ * Creates an ir_prog pass for proc_cloning().
+ *
+ * @param name        the name of this pass or NULL
+ * @param threshold   the threshold for cloning
+ *
+ * @return  the newly created ir_prog pass
+ */
+ir_prog_pass_t *proc_cloning_pass(const char *name, float threshold);
 
 /**
  * Reassociation.
@@ -379,6 +548,15 @@ void proc_cloning(float threshold);
  * @return non-zero if the optimization could be applied, 0 else
  */
 int optimize_reassociation(ir_graph *irg);
+
+/**
+ * Creates an ir_graph pass for optimize_reassociation().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *optimize_reassociation_pass(const char *name);
 
 /**
  * Normalize the Returns of a graph by creating a new End block
@@ -403,6 +581,15 @@ int optimize_reassociation(ir_graph *irg);
 void normalize_one_return(ir_graph *irg);
 
 /**
+ * Creates an ir_graph pass for normalize_one_return().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *normalize_one_return_pass(const char *name);
+
+/**
  * Normalize the Returns of a graph by moving
  * the Returns upwards as much as possible.
  * This might be preferred for code generation.
@@ -425,6 +612,15 @@ void normalize_one_return(ir_graph *irg);
 void normalize_n_returns(ir_graph *irg);
 
 /**
+ * Creates an ir_graph pass for normalize_n_returns().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *normalize_n_returns_pass(const char *name);
+
+/**
  * Do the scalar replacement optimization.
  * Replace local compound entities (like structures and arrays)
  * with atomic values if possible. Does not handle classes yet.
@@ -435,11 +631,20 @@ void normalize_n_returns(ir_graph *irg);
  */
 int scalar_replacement_opt(ir_graph *irg);
 
+/**
+ * Creates an ir_graph pass for scalar_replacement_opt().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *scalar_replacement_opt_pass(const char *name);
+
 /** Performs strength reduction for the passed graph. */
 void reduce_strength(ir_graph *irg);
 
 /**
- * Optimizes tail-recursion calls by converting them into loops. 
+ * Optimizes tail-recursion calls by converting them into loops.
  * Depends on the flag opt_tail_recursion.
  * Currently supports the following forms:
  *  - return func();
@@ -457,6 +662,15 @@ void reduce_strength(ir_graph *irg);
 int opt_tail_rec_irg(ir_graph *irg);
 
 /**
+ * Creates an ir_graph pass for opt_tail_rec_irg().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *opt_tail_rec_irg_pass(const char *name);
+
+/**
  * Optimize tail-recursion calls for all IR-Graphs.
  * Can currently handle:
  * - direct return value, i.e. return func().
@@ -468,6 +682,15 @@ int opt_tail_rec_irg(ir_graph *irg);
  * removed by optimize_funccalls().
  */
 void opt_tail_recursion(void);
+
+/**
+ * Creates an ir_prog pass for opt_tail_recursion().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_prog pass
+ */
+ir_prog_pass_t *opt_tail_recursion_pass(const char *name);
 
 /** This is the type for a method, that returns a pointer type to
  *  tp.  This is needed in the normalization. */
@@ -500,7 +723,6 @@ typedef ir_type *(*gen_pointer_type_to_func)(ir_type *tp);
  */
 void normalize_irp_class_casts(gen_pointer_type_to_func gppt_fct);
 
-
 /**  Insert Casts so that class type casts conform exactly with the type hierarchy
  *   in given graph.
  *
@@ -509,7 +731,6 @@ void normalize_irp_class_casts(gen_pointer_type_to_func gppt_fct);
  *  This transformation requires that type information is computed. @see irtypeinfo.h.
  */
 void normalize_irg_class_casts(ir_graph *irg, gen_pointer_type_to_func gppt_fct);
-
 
 /** Optimize casting between class types.
  *
@@ -534,68 +755,135 @@ void normalize_irg_class_casts(ir_graph *irg, gen_pointer_type_to_func gppt_fct)
 void optimize_class_casts(void);
 
 /**
- * CLiff Click's combo algorithm from "Combining Analyses, combining Optimizations".
+ * CLiff Click's combo algorithm from
+ *   "Combining Analyses, combining Optimizations".
  *
- * Does conditional constant propagation, unreachable code elimination and optimistic 
- * global value numbering at once.
+ * Does conditional constant propagation, unreachable code elimination and
+ * optimistic global value numbering at once.
  *
  * @param irg  the graph to run on
  */
 void combo(ir_graph *irg);
 
-/** Inlines all small methods at call sites where the called address comes
- *  from a SymConst node that references the entity representing the called
- *  method.
+/**
+ * Creates an ir_graph pass for combo.
  *
- *  The size argument is a rough measure for the code size of the method:
- *  Methods where the obstack containing the firm graph is smaller than
- *  size are inlined.  Further only a limited number of calls are inlined.
- *  If the method contains more than 1024 inlineable calls none will be
- *  inlined.
- *  Inlining is only performed if flags `optimize' and `inlineing' are set.
- *  The graph may not be in state phase_building.
- *  It is recommended to call local_optimize_graph() after inlining as this
- *  function leaves a set of obscure Tuple nodes, e.g. a Proj-Tuple-Jmp
- *  combination as control flow operation.
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *combo_pass(const char *name);
+
+/**
+ * Inlines all small methods at call sites where the called address comes
+ * from a SymConst node that references the entity representing the called
+ * method.
+ *
+ * @param irg  the graph
+ * @param size maximum function size
+ *
+ * The size argument is a rough measure for the code size of the method:
+ * Methods where the obstack containing the firm graph is smaller than
+ * size are inlined.  Further only a limited number of calls are inlined.
+ * If the method contains more than 1024 inlineable calls none will be
+ * inlined.
+ * Inlining is only performed if flags `optimize' and `inlineing' are set.
+ * The graph may not be in state phase_building.
+ * It is recommended to call local_optimize_graph() after inlining as this
+ * function leaves a set of obscure Tuple nodes, e.g. a Proj-Tuple-Jmp
+ * combination as control flow operation.
  */
 void inline_small_irgs(ir_graph *irg, int size);
 
+/**
+ * Creates an ir_graph pass for inline_small_irgs().
+ *
+ * @param name   the name of this pass or NULL
+ * @param size   maximum function size
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *inline_small_irgs_pass(const char *name, int size);
 
-/** Inlineing with a different heuristic than inline_small_irgs().
+/**
+ * Inlineing with a different heuristic than inline_small_irgs().
  *
- *  Inlines leave functions.  If inlinening creates new leave
- *  function inlines these, too. (If g calls f, and f calls leave h,
- *  h is first inlined in f and then f in g.)
+ * Inlines leave functions.  If inlinening creates new leave
+ * function inlines these, too. (If g calls f, and f calls leave h,
+ * h is first inlined in f and then f in g.)
  *
- *  Then inlines all small functions (this is not recursive).
+ * Then inlines all small functions (this is not recursive).
  *
- *  For a heuristic this inlineing uses firm node counts.  It does
- *  not count auxiliary nodes as Proj, Tuple, End, Start, Id, Sync.
- *  If the ignore_runtime flag is set, calls to functions marked with the
- *  mtp_property_runtime property are ignored.
+ * For a heuristic this inlineing uses firm node counts.  It does
+ * not count auxiliary nodes as Proj, Tuple, End, Start, Id, Sync.
+ * If the ignore_runtime flag is set, calls to functions marked with the
+ * mtp_property_runtime property are ignored.
  *
- *  @param maxsize         Do not inline any calls if a method has more than
- *                         maxsize firm nodes.  It may reach this limit by
- *                         inlineing.
- *  @param leavesize       Inline leave functions if they have less than leavesize
- *                         nodes.
- *  @param size            Inline all function smaller than size.
- *  @param ignore_runtime  count a function only calling runtime functions as
- *                         leave
+ * @param maxsize         Do not inline any calls if a method has more than
+ *                        maxsize firm nodes.  It may reach this limit by
+ *                        inlineing.
+ * @param leavesize       Inline leave functions if they have less than leavesize
+ *                        nodes.
+ * @param size            Inline all function smaller than size.
+ * @param ignore_runtime  count a function only calling runtime functions as
+ *                        leave
  */
 void inline_leave_functions(unsigned maxsize, unsigned leavesize,
 		unsigned size, int ignore_runtime);
 
 /**
+ * Creates an ir_prog pass for inline_leave_functions().
+ *
+ * @param name            the name of this pass or NULL
+ * @param maxsize         Do not inline any calls if a method has more than
+ *                        maxsize firm nodes.  It may reach this limit by
+ *                        inlineing.
+ * @param leavesize       Inline leave functions if they have less than leavesize
+ *                        nodes.
+ * @param size            Inline all function smaller than size.
+ * @param ignore_runtime  count a function only calling runtime functions as
+ *                        leave
+ *
+ * @return  the newly created ir_prog pass
+ */
+ir_prog_pass_t *inline_leave_functions_pass(
+	const char *name, unsigned maxsize, unsigned leavesize,
+	unsigned size, int ignore_runtime);
+
+typedef void (*opt_ptr)(ir_graph *irg);
+
+/**
  * Heuristic inliner. Calculates a benefice value for every call and inlines
  * those calls with a value higher than the threshold.
  *
- * @param maxsize      Do not inline any calls if a method has more than
- *                     maxsize firm nodes.  It may reach this limit by
- *                     inlineing.
- * @param threshold    inlining threshold
+ * @param maxsize             Do not inline any calls if a method has more than
+ *                            maxsize firm nodes.  It may reach this limit by
+ *                            inlining.
+ * @param inline_threshold    inlining threshold
+ * @param after_inline_opt    optimizations performed immediately after inlining
+ *                            some calls
  */
-void inline_functions(unsigned maxsize, int inline_threshold);
+void inline_functions(unsigned maxsize, int inline_threshold,
+                      opt_ptr after_inline_opt);
+
+/**
+ * Creates an ir_prog pass for inline_functions().
+ *
+ * @param name               the name of this pass or NULL
+ * @param maxsize            Do not inline any calls if a method has more than
+ *                           maxsize firm nodes.  It may reach this limit by
+ *                           inlineing.
+ * @param inline_threshold   inlining threshold
+ * @param after_inline_opt   a function that is called after inlining a
+ *                           procedure. You should run fast local optimisations
+ *                           here which cleanup the graph before further
+ *                           inlining
+ *
+ * @return  the newly created ir_prog pass
+ */
+ir_prog_pass_t *inline_functions_pass(
+	const char *name, unsigned maxsize, int inline_threshold,
+	opt_ptr after_inline_opt);
 
 /**
  * Combines congruent blocks into one.
@@ -605,5 +893,207 @@ void inline_functions(unsigned maxsize, int inline_threshold);
  * @return non-zero if the graph was transformed
  */
 int shape_blocks(ir_graph *irg);
+
+/**
+ * Creates an ir_graph pass for shape_blocks().
+ *
+ * @param name   the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *shape_blocks_pass(const char *name);
+
+/**
+ * Perform loop inversion on a given graph.
+ * Loop inversion transforms a head controlled loop (like while(...) {} and
+ * for(...) {}) into a foot controlled loop (do {} while(...)).
+ */
+void do_loop_inversion(ir_graph *irg);
+
+/**
+ * Perform loop unrolling on a given graph.
+ * Loop unrolling multiplies the number loop completely by a number found
+ * through a heuristic.
+ */
+void do_loop_unrolling(ir_graph *irg);
+
+/**
+ * Perform loop peeling on a given graph.
+ */
+void do_loop_peeling(ir_graph *irg);
+
+/**
+ * Creates an ir_graph pass for loop inversion.
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *loop_inversion_pass(const char *name);
+
+/**
+ * Creates an ir_graph pass for loop unrolling.
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *loop_unroll_pass(const char *name);
+
+/**
+ * Creates an ir_graph pass for loop peeling.
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *loop_peeling_pass(const char *name);
+
+typedef ir_type *(*get_Alloc_func)(ir_node *n);
+/** Set a new get_Alloc_func and returns the old one. */
+get_Alloc_func firm_set_Alloc_func(get_Alloc_func newf);
+
+/**
+ * sets value ranges through value range propagation
+ * @param irg	The IR-graph on which to work
+ *
+ */
+void set_vrp_data(ir_graph *irg);
+
+/**
+ * Creates an ir_graph pass for set_vrp_data()
+ *
+ * @param name The name of this pass or NULL
+ *
+ * @return the newly created ir_graph pass
+ */
+ir_graph_pass_t *set_vrp_pass(const char *name);
+
+/**
+ * Removes all entities which are unused.
+ *
+ * Unused entities have ir_visibility_local and are not used directly or
+ * indirectly through entities/code visible outside the compilation unit.
+ * This is usually conservative than gc_irgs, but does not respect properties
+ * of object-oriented programs.
+ */
+void garbage_collect_entities(void);
+
+/** Pass for garbage_collect_entities */
+ir_prog_pass_t *garbage_collect_entities_pass(const char *name);
+
+/** Performs dead node elimination by copying the ir graph to a new obstack.
+ *
+ *  The major intention of this pass is to free memory occupied by
+ *  dead nodes and outdated analyzes information.  Further this
+ *  function removes Bad predecessors from Blocks and the corresponding
+ *  inputs to Phi nodes.  This opens optimization potential for other
+ *  optimizations.  Further this phase reduces dead Block<->Jmp
+ *  self-cycles to Bad nodes.
+ *
+ *  Dead_node_elimination is only performed if options `optimize' and
+ *  `opt_dead_node_elimination' are set.  The graph may
+ *  not be in state phase_building.  The outs datasturcture is freed,
+ *  the outs state set to outs_none.  Backedge information is conserved.
+ *  Removes old attributes of nodes.  Sets link field to NULL.
+ *  Callee information must be freed (irg_callee_info_none).
+ *
+ * @param irg  The graph to be optimized.
+ */
+void dead_node_elimination(ir_graph *irg);
+
+/**
+ * Creates an ir_graph pass for dead_node_elimination().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *dead_node_elimination_pass(const char *name);
+
+/** Inlines a method at the given call site.
+ *
+ *  Removes the call node and splits the basic block the call node
+ *  belongs to.  Inserts a copy of the called graph between these nodes.
+ *  Assumes that call is a Call node in current_ir_graph and that
+ *  the type in the Call nodes type attribute is the same as the
+ *  type of the called graph.
+ *  Further it assumes that all Phi nodes in a block of current_ir_graph
+ *  are assembled in a "link" list in the link field of the corresponding
+ *  block nodes.  Further assumes that all Proj nodes are in a "link" list
+ *  in the nodes producing the tuple.  (This is only an optical feature
+ *  for the graph.)  Conserves this feature for the old
+ *  nodes of the graph.  This precondition can be established by a call to
+ *  collect_phisprojs(), see irgmod.h.
+ *  As dead_node_elimination this function reduces dead Block<->Jmp
+ *  self-cycles to Bad nodes.
+ *
+ *  Called_graph must be unequal to current_ir_graph.   Will not inline
+ *  if they are equal.
+ *  Sets visited masterflag in current_ir_graph to the max of the flag in
+ *  current and called graph.
+ *  Assumes that both, the called and the calling graph are in state
+ *  "op_pin_state_pinned".
+ *  It is recommended to call local_optimize_graph() after inlining as this
+ *  function leaves a set of obscure Tuple nodes, e.g. a Proj-Tuple-Jmp
+ *  combination as control flow operation.
+ *
+ *  @param call          the call node that should be inlined
+ *  @param called_graph  the IR-graph that is called at call
+ *
+ *  @return zero if method could not be inlined (recursion for instance),
+ *          non-zero if all went ok
+ */
+int inline_method(ir_node *call, ir_graph *called_graph);
+
+/** Code Placement.
+ *
+ * Pins all floating nodes to a block where they
+ * will be executed only if needed.   Depends on the flag opt_global_cse.
+ * Graph may not be in phase_building.  Does not schedule control dead
+ * code.  Uses dominator information which it computes if the irg is not
+ * in state dom_consistent.  Destroys the out information as it moves nodes
+ * to other blocks.  Optimizes Tuples in Control edges.
+ * @todo This is not tested!
+ *
+ * Call remove_critical_cf_edges() before place_code().  This normalizes
+ * the control flow graph so that for all operations a basic block exists
+ * where they can be optimally placed.
+ *
+ * @todo A more powerful code placement would move operations past Phi nodes
+ * out of loops.
+ */
+void place_code(ir_graph *irg);
+
+/**
+ * Creates an ir_graph pass for place_code().
+ * This pass enables GCSE, runs optimize_graph_df() and finally
+ * place_code();
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *place_code_pass(const char *name);
+
+/**
+ * Determine information about the values of nodes and perform simplications
+ * using this information.  This optimization performs a data-flow analysis to
+ * find the minimal fixpoint.
+ */
+void fixpoint_vrp(ir_graph*);
+
+/**
+ * Creates an ir_graph pass for fixpoint_vrp().
+ * This pass dDetermines information about the values of nodes
+ * and perform simplications using this information.
+ * This optimization performs a data-flow analysis to
+ * find the minimal fixpoint.
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *fixpoint_vrp_irg_pass(const char *name);
 
 #endif

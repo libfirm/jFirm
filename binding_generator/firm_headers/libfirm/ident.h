@@ -21,8 +21,8 @@
  * @file
  * @brief    Data type for unique names.
  * @author   Goetz Lindenmaier
- * @version  $Id: ident.h 24498 2008-12-10 19:05:14Z matze $
- * @summary
+ * @version  $Id: ident.h 27143 2010-02-13 11:17:42Z mallon $
+ * @brief
  *  Declarations for identifiers in the firm library
  *
  *  Identifiers are used in the firm library. This is the interface to it.
@@ -46,15 +46,15 @@ struct ident_if_t {
    * This function may be NULL, new_id_from_chars()
    * is then used to emulate its behavior.
    *
-   * @param str - the string which shall be stored
+   * @param str   the string which shall be stored
    */
   ident *(*new_id_from_str)(void *handle, const char *str);
 
   /**
    * Store a string and create an ident.
    *
-   * @param str - the string (or whatever) which shall be stored
-   * @param len - the length of the data in bytes
+   * @param str   the string (or whatever) which shall be stored
+   * @param len   the length of the data in bytes
    */
   ident *(*new_id_from_chars)(void *handle, const char *str, int len);
 
@@ -68,7 +68,7 @@ struct ident_if_t {
    * This function may be NULL, get_id_str() is then used
    * to emulate its behavior.
    *
-   * @param id - the ident
+   * @param id   the ident
    */
   int  (*get_id_strlen)(void *handle, ident *id);
 
@@ -85,9 +85,9 @@ struct ident_if_t {
  *
  *  Copies the string. @p str must be zero terminated
  *
- * @param str - the string which shall be stored
+ * @param str   the string which shall be stored
  *
- * @return id - a handle for the generated ident
+ * @return id   a handle for the generated ident
  *
  * @see get_id_str(), get_id_strlen()
  */
@@ -98,10 +98,10 @@ ident *new_id_from_str (const char *str);
  * Stores a string in the ident module and returns a handle for the string.
  * Copies the string. This version takes non-zero-terminated strings.
  *
- * @param str - the string (or whatever) which shall be stored
- * @param len - the length of the data in bytes
+ * @param str   the string (or whatever) which shall be stored
+ * @param len   the length of the data in bytes
  *
- * @return id - a handle for the generated ident
+ * @return id   a handle for the generated ident
  *
  * @see new_id_from_str(), get_id_strlen()
  */
@@ -113,9 +113,9 @@ ident *new_id_from_chars (const char *str, int len);
  * Returns the string represented by id. This string is
  * NULL terminated. The string may not be changed.
  *
- * @param id - the ident
+ * @param id   the ident
  *
- * @return cp - a string
+ * @return cp   a string
  *
  * @see new_id_from_str(), new_id_from_chars(), get_id_strlen()
  */
@@ -124,9 +124,9 @@ const char *get_id_str  (ident *id);
 /**
  * Returns the length of the string represented by an ident.
  *
- * @param id - the ident
+ * @param id   the ident
  *
- * @return len - the length of the string
+ * @return len   the length of the string
  *
  * @see new_id_from_str(), new_id_from_chars(), get_id_str()
  */
@@ -135,8 +135,8 @@ int  get_id_strlen(ident *id);
 /**
  * Returns true if prefix is a prefix of an ident.
  *
- * @param prefix - the prefix
- * @param id     - the ident
+ * @param prefix   the prefix
+ * @param id       the ident
  *
  * @see new_id_from_str(), new_id_from_chars(), get_id_str(), id_is_prefix()
  */
@@ -145,35 +145,25 @@ int id_is_prefix (ident *prefix, ident *id);
 /**
  * Returns true if suffix is a suffix of an ident.
  *
- * @param suffix - the suffix
- * @param id     - the ident
+ * @param suffix   the suffix
+ * @param id       the ident
  *
  * @see new_id_from_str(), new_id_from_chars(), get_id_str(), id_is_prefix()
  */
 int id_is_suffix (ident *suffix, ident *id);
 
 /**
- * Returns true if infix is contained in id.  (Can be suffix or prefix)
- *
- * @param infix  - the infix
- * @param id     - the ident to search in
- *
- * @see new_id_from_str(), new_id_from_chars(), get_id_str(), id_is_prefix()
- */
-/* int id_contains(ident *infix, ident *id); */
-
-/**
  * Return true if an ident contains a given character.
  *
- * @param id     - the ident
- * @param c      - the character
+ * @param id    the ident
+ * @param c     the character
  *
  * @see new_id_from_str(), new_id_from_chars(), get_id_str()
  */
 int id_contains_char (ident *id, char c);
 
 /**
- * helper function for creating unique idents. It contains an internal counter 
+ * helper function for creating unique idents. It contains an internal counter
  * and replaces a "%u" inside the tag with the counter.
  */
 ident *id_unique(const char *tag);

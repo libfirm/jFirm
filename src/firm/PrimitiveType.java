@@ -8,12 +8,8 @@ public class PrimitiveType extends Type {
 		super(ptr);
 	}
 	
-	public PrimitiveType(Ident name, Mode mode) {
-		super(binding.new_type_primitive(name.ptr, mode.ptr));
-	}
-	
-	public PrimitiveType(String name, Mode mode) {
-		this(new Ident(name), mode);
+	public PrimitiveType(Mode mode) {
+		super(binding.new_type_primitive(mode.ptr));
 	}
 	
 	Type getBaseType() {
@@ -29,6 +25,6 @@ public class PrimitiveType extends Type {
 	}
 	
 	@Override
-	public void fixed() {
+	public void finishLayout() {
 	}
 }

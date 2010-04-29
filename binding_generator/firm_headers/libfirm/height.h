@@ -22,10 +22,12 @@
  * @brief   Compute heights of nodes inside basic blocks
  * @author  Sebastian Hack
  * @date    19.04.2006
- * @version $Id: height.h 17143 2008-01-02 20:56:33Z beck $
+ * @version $Id: height.h 27274 2010-03-09 15:38:51Z matze $
  */
 #ifndef FIRM_ANA_HEIGHTS_H
 #define FIRM_ANA_HEIGHTS_H
+
+#include "firm_types.h"
 
 typedef struct _heights_t heights_t;
 

@@ -77,19 +77,18 @@ public interface binding_irdump extends Library {
 		}
 	}
 	public static enum mtp_additional_property {
-		mtp_no_property(0),
-		mtp_property_const(1),
-		mtp_property_pure(2),
-		mtp_property_noreturn(4),
-		mtp_property_nothrow(8),
-		mtp_property_naked(16),
-		mtp_property_malloc(32),
-		mtp_property_weak(64),
-		mtp_property_returns_twice(128),
-		mtp_property_intrinsic(256),
-		mtp_property_runtime(512),
-		mtp_property_private(1024),
-		mtp_property_has_loop(2048),
+		mtp_no_property(0x00000000),
+		mtp_property_const(0x00000001),
+		mtp_property_pure(0x00000002),
+		mtp_property_noreturn(0x00000004),
+		mtp_property_nothrow(0x00000008),
+		mtp_property_naked(0x00000010),
+		mtp_property_malloc(0x00000020),
+		mtp_property_returns_twice(0x00000040),
+		mtp_property_intrinsic(0x00000080),
+		mtp_property_runtime(0x00000100),
+		mtp_property_private(0x00000200),
+		mtp_property_has_loop(0x00000400),
 		mtp_property_inherited((1<<31));
 		public final int val;
 		private static class C { static int next_val; }
@@ -114,11 +113,9 @@ public interface binding_irdump extends Library {
 		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
-		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const(),
-		symconst_label();
+		symconst_enum_const();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -266,29 +263,29 @@ public interface binding_irdump extends Library {
 		}
 	}
 	public static enum edge_kind {
-		data_edge(1),
-		block_edge(2),
-		cf_edge(3),
-		exc_cf_edge(4),
-		mem_edge(5),
-		dominator_edge(6),
-		node2type_edge(7),
-		ent_type_edge(17),
-		ent_own_edge(18),
-		ent_overwrites_edge(19),
-		ent_value_edge(20),
-		ent_corr_edge(21),
-		meth_par_edge(33),
-		meth_res_edge(34),
-		type_super_edge(35),
-		union_edge(36),
-		ptr_pts_to_edge(37),
-		arr_elt_type_edge(38),
-		arr_ent_edge(39),
-		type_member_edge(40),
+		data_edge(0x01),
+		block_edge(0x02),
+		cf_edge(0x03),
+		exc_cf_edge(0x04),
+		mem_edge(0x05),
+		dominator_edge(0x06),
+		node2type_edge(0x07),
+		ent_type_edge(0x11),
+		ent_own_edge(0x12),
+		ent_overwrites_edge(0x13),
+		ent_value_edge(0x14),
+		ent_corr_edge(0x15),
+		meth_par_edge(0x21),
+		meth_res_edge(0x22),
+		type_super_edge(0x23),
+		union_edge(0x24),
+		ptr_pts_to_edge(0x25),
+		arr_elt_type_edge(0x26),
+		arr_ent_edge(0x27),
+		type_member_edge(0x28),
 		intra_edge(0),
-		inter_edge(64),
-		back_edge(128);
+		inter_edge(0x40),
+		back_edge(0x80);
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -309,32 +306,31 @@ public interface binding_irdump extends Library {
 		}
 	}
 	public static enum dump_verbosity {
-		dump_verbosity_onlynames(1),
-		dump_verbosity_fields(2),
-		dump_verbosity_methods(4),
-		dump_verbosity_nostatic(64),
-		dump_verbosity_typeattrs(8),
-		dump_verbosity_entattrs(16),
-		dump_verbosity_entconsts(32),
-		dump_verbosity_accessStats(256),
-		dump_verbosity_csv(512),
-		dump_verbosity_noClassTypes(4096),
-		dump_verbosity_noStructTypes(8192),
-		dump_verbosity_noUnionTypes(16384),
-		dump_verbosity_noArrayTypes(32768),
-		dump_verbosity_noPointerTypes(65536),
-		dump_verbosity_noMethodTypes(131072),
-		dump_verbosity_noPrimitiveTypes(262144),
-		dump_verbosity_noEnumerationTypes(524288),
-		dump_verbosity_onlyClassTypes(1040384),
-		dump_verbosity_onlyStructTypes(1036288),
-		dump_verbosity_onlyUnionTypes(1028096),
-		dump_verbosity_onlyArrayTypes(1011712),
-		dump_verbosity_onlyPointerTypes(978944),
-		dump_verbosity_onlyMethodTypes(913408),
-		dump_verbosity_onlyPrimitiveTypes(782336),
-		dump_verbosity_onlyEnumerationTypes(520192),
-		dump_verbosity_max(1341132734);
+		dump_verbosity_onlynames(0x00000001),
+		dump_verbosity_fields(0x00000002),
+		dump_verbosity_methods(0x00000004),
+		dump_verbosity_nostatic(0x00000040),
+		dump_verbosity_typeattrs(0x00000008),
+		dump_verbosity_entattrs(0x00000010),
+		dump_verbosity_entconsts(0x00000020),
+		dump_verbosity_accessStats(0x00000100),
+		dump_verbosity_noClassTypes(0x00001000),
+		dump_verbosity_noStructTypes(0x00002000),
+		dump_verbosity_noUnionTypes(0x00004000),
+		dump_verbosity_noArrayTypes(0x00008000),
+		dump_verbosity_noPointerTypes(0x00010000),
+		dump_verbosity_noMethodTypes(0x00020000),
+		dump_verbosity_noPrimitiveTypes(0x00040000),
+		dump_verbosity_noEnumerationTypes(0x00080000),
+		dump_verbosity_onlyClassTypes(0x000FE000),
+		dump_verbosity_onlyStructTypes(0x000FD000),
+		dump_verbosity_onlyUnionTypes(0x000FB000),
+		dump_verbosity_onlyArrayTypes(0x000F7000),
+		dump_verbosity_onlyPointerTypes(0x000EF000),
+		dump_verbosity_onlyMethodTypes(0x000DF000),
+		dump_verbosity_onlyPrimitiveTypes(0x000BF000),
+		dump_verbosity_onlyEnumerationTypes(0x0007F000),
+		dump_verbosity_max(0x4FF00FBE);
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -356,6 +352,8 @@ public interface binding_irdump extends Library {
 	}
 	Pointer __builtin_alloca();
 	double __builtin_huge_val();
+	float __builtin_huge_valf();
+	double __builtin_huge_vall();
 	double __builtin_inf();
 	float __builtin_inff();
 	double __builtin_infl();
@@ -373,6 +371,20 @@ public interface binding_irdump extends Library {
 	int __builtin_parity();
 	float __builtin_prefetch(Object ... args);
 	void __builtin_trap();
+	com.sun.jna.NativeLong __builtin_object_size();
+	void __builtin_abort();
+	int __builtin_abs();
+	com.sun.jna.NativeLong __builtin_labs();
+	long __builtin_llabs();
+	Pointer __builtin_memcpy();
+	Pointer __builtin___memcpy_chk();
+	void __builtin_exit();
+	Pointer __builtin_malloc();
+	int __builtin_memcmp();
+	Pointer __builtin_memset();
+	com.sun.jna.NativeLong __builtin_strlen();
+	int __builtin_strcmp();
+	String __builtin_strcpy();
 	void set_dump_ir_graph_hook(Pointer hook);
 	void set_dump_node_vcgattr_hook(Pointer hook);
 	void set_dump_edge_vcgattr_hook(Pointer hook);
@@ -390,7 +402,9 @@ public interface binding_irdump extends Library {
 	void dump_ir_graph_w_types(Pointer irg, String suffix);
 	void dump_ir_graph_w_types_file(Pointer irg, Pointer out);
 	void dump_ir_block_graph_w_types(Pointer irg, String suffix);
+	void dump_ir_block_graph_w_types_file(Pointer irg, Pointer out);
 	void dump_all_ir_graphs(Pointer dump_graph, String suffix);
+	Pointer dump_all_ir_graph_pass(String name, Pointer dump_graph, String suffix);
 	void dump_cfg(Pointer irg, String suffix);
 	void dump_subgraph(Pointer root, int depth, String suffix);
 	void dump_callgraph(String suffix);
@@ -425,6 +439,7 @@ public interface binding_irdump extends Library {
 	void dump_loop_information(int flag);
 	void dump_backedge_information(int flag);
 	void set_opt_dump_analysed_type_info(int flag);
+	void dump_new_edges(int flag);
 	void dump_pointer_values_to_info(int flag);
 	void dump_ld_names(int flag);
 	void dump_all_anchors(int flag);

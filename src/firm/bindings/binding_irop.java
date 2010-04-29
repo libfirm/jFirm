@@ -53,19 +53,18 @@ public interface binding_irop extends Library {
 		}
 	}
 	public static enum mtp_additional_property {
-		mtp_no_property(0),
-		mtp_property_const(1),
-		mtp_property_pure(2),
-		mtp_property_noreturn(4),
-		mtp_property_nothrow(8),
-		mtp_property_naked(16),
-		mtp_property_malloc(32),
-		mtp_property_weak(64),
-		mtp_property_returns_twice(128),
-		mtp_property_intrinsic(256),
-		mtp_property_runtime(512),
-		mtp_property_private(1024),
-		mtp_property_has_loop(2048),
+		mtp_no_property(0x00000000),
+		mtp_property_const(0x00000001),
+		mtp_property_pure(0x00000002),
+		mtp_property_noreturn(0x00000004),
+		mtp_property_nothrow(0x00000008),
+		mtp_property_naked(0x00000010),
+		mtp_property_malloc(0x00000020),
+		mtp_property_returns_twice(0x00000040),
+		mtp_property_intrinsic(0x00000080),
+		mtp_property_runtime(0x00000100),
+		mtp_property_private(0x00000200),
+		mtp_property_has_loop(0x00000400),
 		mtp_property_inherited((1<<31));
 		public final int val;
 		private static class C { static int next_val; }
@@ -90,11 +89,9 @@ public interface binding_irop extends Library {
 		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
-		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const(),
-		symconst_label();
+		symconst_enum_const();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -259,24 +256,25 @@ public interface binding_irop extends Library {
 		}
 	}
 	public static enum irop_flags {
-		irop_flag_none(0),
-		irop_flag_labeled(1),
-		irop_flag_commutative(2),
-		irop_flag_cfopcode(4),
-		irop_flag_ip_cfopcode(8),
-		irop_flag_fragile(16),
-		irop_flag_forking(32),
-		irop_flag_highlevel(64),
-		irop_flag_constlike(128),
-		irop_flag_always_opt(256),
-		irop_flag_keep(512),
-		irop_flag_start_block(1024),
-		irop_flag_uses_memory(2048),
-		irop_flag_dump_noblock(4096),
-		irop_flag_dump_noinput(8192),
-		irop_flag_machine(65536),
-		irop_flag_machine_op(131072),
-		irop_flag_user(262144);
+		irop_flag_none(0x00000000),
+		irop_flag_labeled(0x00000001),
+		irop_flag_commutative(0x00000002),
+		irop_flag_cfopcode(0x00000004),
+		irop_flag_ip_cfopcode(0x00000008),
+		irop_flag_fragile(0x00000010),
+		irop_flag_forking(0x00000020),
+		irop_flag_highlevel(0x00000040),
+		irop_flag_constlike(0x00000080),
+		irop_flag_always_opt(0x00000100),
+		irop_flag_keep(0x00000200),
+		irop_flag_start_block(0x00000400),
+		irop_flag_uses_memory(0x00000800),
+		irop_flag_dump_noblock(0x00001000),
+		irop_flag_dump_noinput(0x00002000),
+		irop_flag_machine(0x00010000),
+		irop_flag_machine_op(0x00020000),
+		irop_flag_cse_neutral(0x00040000),
+		irop_flag_user(0x00080000);
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -298,6 +296,7 @@ public interface binding_irop extends Library {
 	}
 	public static enum ir_opcode {
 		iro_Block(),
+		iro_First(ir_opcode.iro_Block.val),
 		iro_Start(),
 		iro_End(),
 		iro_Jmp(),
@@ -373,11 +372,10 @@ public interface binding_irop extends Library {
 		beo_AddSP(),
 		beo_SubSP(),
 		beo_IncSP(),
-		beo_RegParams(),
+		beo_Start(),
 		beo_FrameAddr(),
 		beo_Barrier(),
-		beo_Unwind(),
-		beo_Last(ir_opcode.beo_Unwind.val),
+		beo_Last(ir_opcode.beo_Barrier.val),
 		iro_MaxOpcode();
 		public final int val;
 		private static class C { static int next_val; }
@@ -424,6 +422,8 @@ public interface binding_irop extends Library {
 	}
 	Pointer __builtin_alloca();
 	double __builtin_huge_val();
+	float __builtin_huge_valf();
+	double __builtin_huge_vall();
 	double __builtin_inf();
 	float __builtin_inff();
 	double __builtin_infl();
@@ -441,6 +441,20 @@ public interface binding_irop extends Library {
 	int __builtin_parity();
 	float __builtin_prefetch(Object ... args);
 	void __builtin_trap();
+	com.sun.jna.NativeLong __builtin_object_size();
+	void __builtin_abort();
+	int __builtin_abs();
+	com.sun.jna.NativeLong __builtin_labs();
+	long __builtin_llabs();
+	Pointer __builtin_memcpy();
+	Pointer __builtin___memcpy_chk();
+	void __builtin_exit();
+	Pointer __builtin_malloc();
+	int __builtin_memcmp();
+	Pointer __builtin_memset();
+	com.sun.jna.NativeLong __builtin_strlen();
+	int __builtin_strcmp();
+	String __builtin_strcpy();
 	Pointer new_id_from_str(String str);
 	Pointer new_id_from_chars(String str, int len);
 	String get_id_str(Pointer id);

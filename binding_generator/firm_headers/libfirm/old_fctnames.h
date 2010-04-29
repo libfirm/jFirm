@@ -21,7 +21,7 @@
  * @file
  * @brief     Some makros supporting old function names.
  * @author    Goetz Lindenmaier
- * @version   $Id: old_fctnames.h 25592 2009-03-02 14:33:44Z moritz $
+ * @version   $Id: old_fctnames.h 27277 2010-03-09 21:14:15Z matze $
  */
 #ifndef FIRM_COMMON_OLD_FCTNAMES_H
 #define FIRM_COMMON_OLD_FCTNAMES_H
@@ -40,19 +40,16 @@
 #define get_irg_params        get_irg_n_locs
 #define get_irg_n_loc         get_irg_n_locs
 #define set_irg_ent(X, Y)     set_irg_entity(X, Y)
-#define set_irg_params        set_irg_n_loc
 #define no_dom                dom_none
 #define no_outs               outs_none
 
 /* irnode.h */
 #define get_Return_n_res      get_Return_n_ress
 #define get_Sel_n_index       get_Sel_n_indexs
-#define get_SymConst_ptrinfo  get_SymConst_name
-#define set_SymConst_ptrinfo  set_SymConst_name
 #define type_tag              symconst_type_tag
-#define size                  symconst_type_size
+/* don't do this -- too many use this name elswhere */
+/* #define size                  symconst_type_size */
 #define symconst_size         symconst_type_size
-#define linkage_ptr_info      symconst_addr_name
 
 #define get_nodes_Block(X)    get_nodes_block(X)
 #define set_nodes_Block(X, Y) set_nodes_block(X, Y)
@@ -144,8 +141,8 @@ typedef ir_type type;
 #define tarval_get_mode_output_option(X) get_tarval_mode_output_option(X)
 #define tarval_bitpattern(X) get_tarval_bitpattern(X)
 #define tarval_sub_bits(X, Y) get_tarval_sub_bits(X, Y)
-#define get_tarval_P_void() get_tarval_null(mode_P)
-#define tarval_P_void       get_tarval_null(mode_P)
+#define get_tarval_P_void() get_mode_null(mode_P)
+#define tarval_P_void       get_mode_null(mode_P)
 
 #define tarval_is_entity(X) 0
 #define get_tarval_entity(X) ((ir_entity *)NULL)

@@ -53,19 +53,18 @@ public interface binding_irflag extends Library {
 		}
 	}
 	public static enum mtp_additional_property {
-		mtp_no_property(0),
-		mtp_property_const(1),
-		mtp_property_pure(2),
-		mtp_property_noreturn(4),
-		mtp_property_nothrow(8),
-		mtp_property_naked(16),
-		mtp_property_malloc(32),
-		mtp_property_weak(64),
-		mtp_property_returns_twice(128),
-		mtp_property_intrinsic(256),
-		mtp_property_runtime(512),
-		mtp_property_private(1024),
-		mtp_property_has_loop(2048),
+		mtp_no_property(0x00000000),
+		mtp_property_const(0x00000001),
+		mtp_property_pure(0x00000002),
+		mtp_property_noreturn(0x00000004),
+		mtp_property_nothrow(0x00000008),
+		mtp_property_naked(0x00000010),
+		mtp_property_malloc(0x00000020),
+		mtp_property_returns_twice(0x00000040),
+		mtp_property_intrinsic(0x00000080),
+		mtp_property_runtime(0x00000100),
+		mtp_property_private(0x00000200),
+		mtp_property_has_loop(0x00000400),
 		mtp_property_inherited((1<<31));
 		public final int val;
 		private static class C { static int next_val; }
@@ -90,11 +89,9 @@ public interface binding_irflag extends Library {
 		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
-		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const(),
-		symconst_label();
+		symconst_enum_const();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -232,6 +229,8 @@ public interface binding_irflag extends Library {
 	}
 	Pointer __builtin_alloca();
 	double __builtin_huge_val();
+	float __builtin_huge_valf();
+	double __builtin_huge_vall();
 	double __builtin_inf();
 	float __builtin_inff();
 	double __builtin_infl();
@@ -249,6 +248,20 @@ public interface binding_irflag extends Library {
 	int __builtin_parity();
 	float __builtin_prefetch(Object ... args);
 	void __builtin_trap();
+	com.sun.jna.NativeLong __builtin_object_size();
+	void __builtin_abort();
+	int __builtin_abs();
+	com.sun.jna.NativeLong __builtin_labs();
+	long __builtin_llabs();
+	Pointer __builtin_memcpy();
+	Pointer __builtin___memcpy_chk();
+	void __builtin_exit();
+	Pointer __builtin_malloc();
+	int __builtin_memcmp();
+	Pointer __builtin_memset();
+	com.sun.jna.NativeLong __builtin_strlen();
+	int __builtin_strcmp();
+	String __builtin_strcpy();
 	void set_optimize(int value);
 	int get_optimize();
 	void set_opt_constant_folding(int value);
@@ -256,8 +269,6 @@ public interface binding_irflag extends Library {
 	void set_opt_cse(int value);
 	int get_opt_cse();
 	void set_opt_global_cse(int value);
-	void set_opt_combo(int value);
-	void set_opt_strength_red(int value);
 	void set_opt_unreachable_code(int value);
 	void set_opt_control_flow(int value);
 	void set_opt_control_flow_straightening(int value);
@@ -270,7 +281,6 @@ public interface binding_irflag extends Library {
 	int get_opt_suppress_downcast_optimization();
 	void set_opt_fragile_ops(int value);
 	void set_opt_remove_confirm(int value);
-	void set_opt_scalar_replacement(int value);
 	void set_opt_ldst_only_null_ptr_exceptions(int value);
 	void set_opt_sel_based_null_check_elim(int value);
 	void set_opt_global_null_ptr_elimination(int value);

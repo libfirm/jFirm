@@ -22,7 +22,7 @@
  * @brief      optimized version of set for sets containing only pointers
  *             (deprecated)
  * @author     Markus Armbruster
- * @version    $Id: pset.h 17143 2008-01-02 20:56:33Z beck $
+ * @version    $Id: pset.h 26419 2009-08-24 19:17:56Z buchwald $
  * @note       This code has been deprecated. Use pset_new or cpset for new
  *             code.
  */
@@ -83,7 +83,7 @@ typedef int (*pset_cmp_fun) (const void *elt, const void *key);
  * Creates a new pset.
  *
  * @param func    The compare function of this pset.
- * @param slots   Initial number of collision chains.  I.e., #slots
+ * @param slots   Initial number of collision chains.  I.e., \#slots
  *                different keys can be hashed without collisions.
  *
  * @returns

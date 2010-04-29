@@ -21,7 +21,7 @@
  * @file
  * @brief      Definition of opaque firm types
  * @author     Michael Beck
- * @version    $Id: firm_types.h 25888 2009-05-07 14:13:36Z matze $
+ * @version    $Id: firm_types.h 27362 2010-04-09 12:38:55Z beck $
  */
 #ifndef FIRM_COMMON_FIRM_TYPES_H
 #define FIRM_COMMON_FIRM_TYPES_H
@@ -31,6 +31,7 @@ typedef unsigned long ir_exc_region_t;
 typedef unsigned long ir_label_t;
 
 typedef struct dbg_info             dbg_info,            *dbg_info_ptr;
+typedef struct type_dbg_info        type_dbg_info,       *type_dbg_info_ptr;
 typedef const struct _ident         ident,               *ir_ident_ptr;
 typedef struct ir_node              ir_node,             *ir_node_ptr;
 typedef struct ir_op                ir_op,               *ir_op_ptr;
@@ -40,12 +41,11 @@ typedef struct tarval               tarval,              *ir_tarval_ptr;
 typedef struct ir_enum_const        ir_enum_const,       *ir_enum_const_ptr;
 typedef struct ir_type              ir_type,             *ir_type_ptr;
 typedef struct ir_graph             ir_graph,            *ir_graph_ptr;
+typedef struct ir_prog              ir_prog,             *ir_prog_ptr;
 typedef struct ir_loop              ir_loop,             *ir_loop_ptr;
 typedef struct ir_region            ir_region,           *ir_region_ptr;
 typedef struct ir_reg_tree          ir_reg_tree,         *ir_reg_tree_ptr;
 typedef struct ir_entity            ir_entity,           *ir_entity_ptr;
-typedef struct compound_graph_path  compound_graph_path, *ir_compound_graph_path_ptr;
-typedef struct _ir_phase            ir_phase,            *ir_phase_ptr;
 typedef struct _ir_extblk           ir_extblk,           *ir_extblk_ptr;
 typedef struct ir_exec_freq         ir_exec_freq,        *ir_exec_freq_ptr;
 typedef struct ir_cdep              ir_cdep,             *ir_cdep_ptr;
@@ -53,6 +53,11 @@ typedef struct sn_entry             *seqno_t;
 typedef struct arch_irn_ops_t       arch_irn_ops_t;
 typedef struct ident_if_t           ident_if_t;
 typedef struct type_identify_if_t   type_identify_if_t;
+typedef struct ir_graph_pass_t      ir_graph_pass_t;
+typedef struct ir_prog_pass_t       ir_prog_pass_t;
+
+typedef struct ir_graph_pass_manager_t      ir_graph_pass_manager_t;
+typedef struct ir_prog_pass_manager_t       ir_prog_pass_manager_t;
 
 typedef union  ir_initializer_t     ir_initializer_t,    *ir_initializer_ptr;
 
@@ -127,42 +132,35 @@ typedef enum {
 	                                              GCC: __attribute__((naked)). */
 	mtp_property_malloc        = 0x00000020, /**< This method returns newly allocate memory.
 	                                              GCC: __attribute__((malloc)). */
-	mtp_property_weak          = 0x00000040, /**< This method is weak. It is expected that
-	                                              GCC: __attribute__((weak)). */
-	mtp_property_returns_twice = 0x00000080, /**< This method can return more than one (typically setjmp).
+	mtp_property_returns_twice = 0x00000040, /**< This method can return more than one (typically setjmp).
                                                   GCC: __attribute__((returns_twice)). */
-	mtp_property_intrinsic     = 0x00000100, /**< This method is intrinsic. It is expected that
+	mtp_property_intrinsic     = 0x00000080, /**< This method is intrinsic. It is expected that
 	                                              a lowering phase will remove all calls to it. */
-	mtp_property_runtime       = 0x00000200, /**< This method represents a runtime routine. */
-	mtp_property_private       = 0x00000400, /**< All method invocations are known, the backend is free to
+	mtp_property_runtime       = 0x00000100, /**< This method represents a runtime routine. */
+	mtp_property_private       = 0x00000200, /**< All method invocations are known, the backend is free to
 	                                              optimize the call in any possible way. */
-	mtp_property_has_loop      = 0x00000800, /**< Set, if this method contains one possible endless loop. */
+	mtp_property_has_loop      = 0x00000400, /**< Set, if this method contains one possible endless loop. */
 	mtp_property_inherited     = (1<<31)     /**< Internal. Used only in irg's, means property is
 	                                              inherited from type. */
 } mtp_additional_property;
 
-/**  This enum names the three different kinds of symbolic Constants
-     represented by SymConst.  The content of the attribute type_or_id
-     depends on this tag.  Use the proper access routine after testing
-     this flag. */
-typedef enum {
+/**  This enum names the different kinds of symbolic Constants represented by
+ * SymConst.  The content of the attribute symconst_symbol depends on this tag.
+ * Use the proper access routine after testing this flag. */
+typedef enum symconst_kind {
 	symconst_type_tag,    /**< The SymConst is a type tag for the given type.
 	                           symconst_symbol is type *. */
 	symconst_type_size,   /**< The SymConst is the size of the given type.
 	                           symconst_symbol is type *. */
 	symconst_type_align,  /**< The SymConst is the alignment of the given type.
 	                           symconst_symbol is type *. */
-	symconst_addr_name,   /**< The SymConst is a symbolic pointer to be filled in
-	                           by the linker.  The pointer is represented by a string.
-	                           symconst_symbol is ident *. */
 	symconst_addr_ent,    /**< The SymConst is a symbolic pointer to be filled in
 	                           by the linker.  The pointer is represented by an entity.
 	                           symconst_symbol is entity *. */
 	symconst_ofs_ent,     /**< The SymConst is the offset of its entity in the entities
 	                           owner type. */
-	symconst_enum_const,  /**< The SymConst is a enumeration constant of an
+	symconst_enum_const   /**< The SymConst is a enumeration constant of an
 	                           enumeration type. */
-	symconst_label        /**< The SymConst is a label address. */
 } symconst_kind;
 
 /** SymConst attribute.
@@ -171,10 +169,8 @@ typedef enum {
  */
 typedef union symconst_symbol {
 	ir_type       *type_p;    /**< The type of a SymConst. */
-	ident         *ident_p;   /**< The ident of a SymConst. */
 	ir_entity     *entity_p;  /**< The entity of a SymConst. */
 	ir_enum_const *enum_p;    /**< The enumeration constant of a SymConst. */
-	ir_label_t    label;      /**< The label of a SymConst. */
 } symconst_symbol;
 
 /**

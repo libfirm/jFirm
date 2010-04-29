@@ -22,8 +22,8 @@
  * @brief     Construct and access dominator tree.
  * @author    Goetz Lindenmaier
  * @date      2.2002
- * @version   $Id: irdom.h 17143 2008-01-02 20:56:33Z beck $
- * @summary
+ * @version   $Id: irdom.h 27274 2010-03-09 15:38:51Z matze $
+ * @brief
  *   This file contains routines to construct and access dominator information.
  *
  *   The dominator information is stored in three fields of block nodes:
@@ -79,6 +79,7 @@ void set_Block_postdom_pre_num(ir_node *bl, int num);
  * @return The pre-order number.
  */
 unsigned get_Block_dom_tree_pre_num(const ir_node *bl);
+unsigned get_Block_pdom_tree_pre_num(const ir_node *bl);
 
 /**
  * Get the largest pre-order number found in the subtree of the
@@ -87,6 +88,7 @@ unsigned get_Block_dom_tree_pre_num(const ir_node *bl);
  * @return The largest pre-order number of block's dominator subtree.
  */
 unsigned get_Block_dom_max_subtree_pre_num(const ir_node *bl);
+unsigned get_Block_pdom_max_subtree_pre_num(const ir_node *bl);
 
 /**
  * Get the first node in the list of nodes dominated by a given block.
@@ -100,6 +102,7 @@ unsigned get_Block_dom_max_subtree_pre_num(const ir_node *bl);
  * @return The first node dominated by @p bl.
  */
 ir_node *get_Block_dominated_first(const ir_node *bl);
+ir_node *get_Block_postdominated_first(const ir_node *bl);
 
 /**
  * Get the next node in a list of nodes which are dominated by some
@@ -109,6 +112,7 @@ ir_node *get_Block_dominated_first(const ir_node *bl);
  * @return The next node in this list or NULL if it was the last.
  */
 ir_node *get_Block_dominated_next(const ir_node *dom);
+ir_node *get_Block_postdominated_next(const ir_node *dom);
 
 /**
  * Iterate over all nodes which are immediately dominated by a given
@@ -168,7 +172,7 @@ ir_node *node_smallest_common_dominator(ir_node *a, ir_node *b);
  *
  * @param irn        A node.
  * @param handle_phi 1 if Phis should be handled different
- * @return The first block dominating all users of @irn
+ * @return The first block dominating all users of @p irn
  */
 ir_node *node_users_smallest_common_dominator(ir_node *irn, int handle_phi);
 

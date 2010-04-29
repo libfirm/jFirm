@@ -22,8 +22,8 @@
  * @brief    Loop datastructure and access functions.
  * @author   Goetz Lindenmaier
  * @date     7.2002
- * @version  $Id: irloop.h 25792 2009-04-06 10:58:34Z beck $
- * @summary
+ * @version  $Id: irloop.h 27143 2010-02-13 11:17:42Z mallon $
+ * @brief
  *  Computes backedges in the control and data flow.
  *
  * @note
@@ -49,7 +49,7 @@
 /* ------------------------------------------------------------------- */
 
 #ifdef INTERPROCEDURAL_VIEW
-/** Returns true if the predecessor pos is a backedge in the interprozeduralem view. */
+/** Returns true if the predecessor pos is a backedge in the interprocedural view. */
 int  is_inter_backedge(ir_node *n, int pos);
 /** Returns true if the predecessor pos is a backedge in the intraprocedural view. */
 int  is_intra_backedge(ir_node *n, int pos);
@@ -186,14 +186,14 @@ int construct_ip_backedges(void);
 int construct_cf_backedges(ir_graph *irg);
 
 /**
- * Computes Intra-procedural control flow loop tree on demand. 
+ * Computes Intra-procedural control flow loop tree on demand.
  *
  * @param irg  the graph
  */
 void assure_cf_loop(ir_graph *irg);
 
 #ifdef INTERPROCEDURAL_VIEW
-/** 
+/**
  * Construct Inter-procedural control flow loop tree.
  *
  * @see construct_cf_backedges() and construct_ip_backedges().
@@ -201,7 +201,7 @@ void assure_cf_loop(ir_graph *irg);
 int construct_ip_cf_backedges(void);
 #endif
 
-/** 
+/**
  * Removes all loop information.
  * Resets all backedges.  Works for any construction algorithm.
  */
@@ -221,5 +221,5 @@ void free_all_loop_information (void);
  * Returns non-zero, if the node n is not changed in the loop block
  * belongs to or in inner loops of this block. */
 int is_loop_invariant(const ir_node *n, const ir_node *block);
- 
+
 #endif

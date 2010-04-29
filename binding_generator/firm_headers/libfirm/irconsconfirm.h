@@ -22,7 +22,7 @@
  * @brief    Construction of Confirm nodes
  * @author   Michael Beck
  * @date     6.2005
- * @version  $Id: irconsconfirm.h 17143 2008-01-02 20:56:33Z beck $
+ * @version  $Id: irconsconfirm.h 26374 2009-08-17 21:53:48Z beck $
  */
 #ifndef FIRM_ANA_IRCONSCONFIRM_H
 #define FIRM_ANA_IRCONSCONFIRM_H
@@ -52,11 +52,29 @@
 void construct_confirms(ir_graph *irg);
 
 /**
+ * Creates an ir_graph pass for construct_confirms().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *construct_confirms_pass(const char *name);
+
+/**
  * Remove all Confirm nodes from a graph.
  *
  * Note that local_optimize() can handle this if
  * the remove Confirm node setting is on (set_opt_remove_Confirm(1)).
  */
 void remove_confirms(ir_graph *irg);
+
+/**
+ * Creates an ir_graph pass for remove_confirms().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *remove_confirms_pass(const char *name);
 
 #endif

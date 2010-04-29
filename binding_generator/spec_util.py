@@ -13,7 +13,7 @@ def verify_node(node):
 		print "%s: NO PINNED SET" % node.__name__
 	elif node.pinned not in ["yes", "no", "memory", "exception"]:
 		print "%s: UNKNOWN PINNED MODE: %s" % (node.__name__, node.pinned)
-	
+
 	if not hasattr(node, "flags") and not isAbstract(node):
 		print "WARNING: no flags specified for %s\n" % node.__name__
 	elif type(node.flags) != list:

@@ -21,8 +21,8 @@
  * @file
  * @brief   Representation of opcode of intermediate operation.
  * @author  Christian Schaefer, Goetz Lindenmaier, Michael Beck
- * @version $Id: irop.h 25322 2009-01-21 17:40:25Z moritz $
- * @summary
+ * @version $Id: irop.h 27456 2010-04-29 11:46:30Z matze $
+ * @brief
  *  Operators of firm nodes.
  *
  *  This module specifies the opcodes possible for ir nodes.  Their
@@ -55,32 +55,34 @@ typedef enum {
 
 /** The irop flags */
 typedef enum {
-	irop_flag_none        = 0x00000000, /**< Nothing. */
-	irop_flag_labeled     = 0x00000001, /**< If set, output edge labels on in-edges in vcg graph. */
-	irop_flag_commutative = 0x00000002, /**< This operation is commutative. */
-	irop_flag_cfopcode    = 0x00000004, /**< This operation is a control flow operation. */
-	irop_flag_ip_cfopcode = 0x00000008, /**< This operation manipulates the interprocedural control flow. */
-	irop_flag_fragile     = 0x00000010, /**< Set if the operation can change the control flow because
-	                                         of an exception. */
-	irop_flag_forking     = 0x00000020, /**< Forking control flow at this operation. */
-	irop_flag_highlevel   = 0x00000040, /**< This operation is a pure high-level one and can be
-	                                         skipped in low-level optimizations. */
-	irop_flag_constlike   = 0x00000080, /**< This operation has no arguments and is some
-	                                         kind of a constant. */
-	irop_flag_always_opt  = 0x00000100, /**< This operation must always be optimized .*/
-	irop_flag_keep        = 0x00000200, /**< This operation can be kept in End's keep-alive list. */
-	irop_flag_start_block = 0x00000400, /**< This operation is always placed in the Start block. */
-	irop_flag_uses_memory = 0x00000800, /**< This operation has a memory input and may change the memory state. */
+	irop_flag_none         = 0x00000000, /**< Nothing. */
+	irop_flag_labeled      = 0x00000001, /**< If set, output edge labels on in-edges in vcg graph. */
+	irop_flag_commutative  = 0x00000002, /**< This operation is commutative. */
+	irop_flag_cfopcode     = 0x00000004, /**< This operation is a control flow operation. */
+	irop_flag_ip_cfopcode  = 0x00000008, /**< This operation manipulates the interprocedural control flow. */
+	irop_flag_fragile      = 0x00000010, /**< Set if the operation can change the control flow because
+	                                          of an exception. */
+	irop_flag_forking      = 0x00000020, /**< Forking control flow at this operation. */
+	irop_flag_highlevel    = 0x00000040, /**< This operation is a pure high-level one and can be
+	                                          skipped in low-level optimizations. */
+	irop_flag_constlike    = 0x00000080, /**< This operation has no arguments and is some
+	                                          kind of a constant. */
+	irop_flag_always_opt   = 0x00000100, /**< This operation must always be optimized .*/
+	irop_flag_keep         = 0x00000200, /**< This operation can be kept in End's keep-alive list. */
+	irop_flag_start_block  = 0x00000400, /**< This operation is always placed in the Start block. */
+	irop_flag_uses_memory  = 0x00000800, /**< This operation has a memory input and may change the memory state. */
 	irop_flag_dump_noblock = 0x00001000, /**< node should be dumped outside any blocks */
 	irop_flag_dump_noinput = 0x00002000, /**< node is a placeholder for "no input" */
-	irop_flag_machine     = 0x00010000, /**< This operation is a machine operation. */
-	irop_flag_machine_op  = 0x00020000, /**< This operation is a machine operand. */
-	irop_flag_user        = 0x00040000  /**< This flag and all higher ones are free for machine user. */
+	irop_flag_machine      = 0x00010000, /**< This operation is a machine operation. */
+	irop_flag_machine_op   = 0x00020000, /**< This operation is a machine operand. */
+	irop_flag_cse_neutral  = 0x00040000, /**< This operation is CSE neutral to its users. */
+	irop_flag_user         = 0x00080000  /**< This flag and all higher ones are free for machine user. */
 } irop_flags;
 
 /** The opcodes of the libFirm predefined operations. */
 typedef enum {
 	iro_Block,
+	iro_First = iro_Block,
 	iro_Start, iro_End, iro_Jmp, iro_IJmp, iro_Cond, iro_Return,
 	iro_Const, iro_SymConst,
 	iro_Sel,
@@ -115,12 +117,11 @@ typedef enum {
 	beo_AddSP,
 	beo_SubSP,
 	beo_IncSP,
-	beo_RegParams,
+	beo_Start,
 	beo_FrameAddr,
 	beo_Barrier,
-	beo_Unwind,
 	/* last backend node number */
-	beo_Last = beo_Unwind,
+	beo_Last = beo_Barrier,
 	/* first unfixed number. Dynamic node numbers start here */
 	iro_MaxOpcode
 } ir_opcode;
@@ -303,27 +304,27 @@ typedef int (*reassociate_func)(ir_node **n);
  * The copy attribute operation.
  * Copy the node attributes from an 'old' node to a 'new' one.
  */
-typedef void (*copy_attr_func)(const ir_node *old_node, ir_node *new_node);
+typedef void (*copy_attr_func)(ir_graph *irg, const ir_node *old_node, ir_node *new_node);
 
 /**
  * The get_type operation.
  * Return the type of the node self.
  */
-typedef ir_type *(*get_type_func)(ir_node *self);
+typedef ir_type *(*get_type_func)(const ir_node *self);
 
 /**
  * The get_type_attr operation. Used to traverse all types that can be
  * accessed from an ir_graph.
  * Return the type attribute of the node self.
  */
-typedef ir_type *(*get_type_attr_func)(ir_node *self);
+typedef ir_type *(*get_type_attr_func)(const ir_node *self);
 
 /**
  * The get_entity_attr operation. Used to traverse all entities that can be
  * accessed from an ir_graph.
  * Return the entity attribute of the node self.
  */
-typedef ir_entity *(*get_entity_attr_func)(ir_node *self);
+typedef ir_entity *(*get_entity_attr_func)(const ir_node *self);
 
 /**
  * The verify_node operation.

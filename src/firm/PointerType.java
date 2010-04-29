@@ -8,13 +8,8 @@ public class PointerType extends Type {
 		super(ptr);
 	}
 	
-	public PointerType(Ident name, Type pointsTo, Mode pointerMode) {
-		super(binding.new_type_pointer(name.ptr, pointsTo.ptr, pointerMode.ptr));
-	}
-	
-	/* convenience constructor */
-	public PointerType(String name, Type pointsTo) {
-		this(new Ident(name), pointsTo, Mode.getP());
+	public PointerType(Type pointsTo, Mode pointerMode) {
+		super(binding.new_type_pointer(pointsTo.ptr));
 	}
 	
 	public Type getPointsTo() {
@@ -26,7 +21,7 @@ public class PointerType extends Type {
 	}
 	
 	@Override
-	public void fixed() {
-		super.fixed();
+	public void finishLayout() {
+		super.finishLayout();
 	}
 }

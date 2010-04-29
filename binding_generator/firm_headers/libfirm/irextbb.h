@@ -22,7 +22,7 @@
  * @brief   Extended basis block support.
  * @author  Michael Beck
  * @date    5.2005
- * @version $Id: irextbb.h 25795 2009-04-06 12:22:12Z beck $
+ * @version $Id: irextbb.h 27274 2010-03-09 15:38:51Z matze $
  */
 #ifndef FIRM_ANA_IREXTBB_H
 #define FIRM_ANA_IREXTBB_H
@@ -87,7 +87,8 @@ ir_visited_t get_extbb_visited(const ir_extblk *blk);
 /**
  * Sets the visited counter of an extended block.
  *
- * @param blk  the extended basic block
+ * @param blk      the extended basic block
+ * @param visited  new value for the visited counter
  */
 void set_extbb_visited(ir_extblk *blk, ir_visited_t visited);
 

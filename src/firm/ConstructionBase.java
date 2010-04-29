@@ -3,9 +3,9 @@ package firm;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.Bindings;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irnode;
-import firm.bindings.Bindings;
 import firm.nodes.Node;
 
 class ConstructionBase {
@@ -32,8 +32,8 @@ class ConstructionBase {
 	
 	
 	
-	public Node newAlloc(Node mem, Node size, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
-		Pointer result_ptr = binding_cons.new_Alloc(mem.ptr, size.ptr, type.ptr, where.val);
+	public Node newAlloc(Node mem, Node count, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
+		Pointer result_ptr = binding_cons.new_Alloc(mem.ptr, count.ptr, type.ptr, where.val);
 		return Node.createWrapper(result_ptr);
 	}
 	
@@ -139,8 +139,8 @@ class ConstructionBase {
 	
 	
 	
-	public Node newDiv(Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.ir_cons_flags flags) {
-		Pointer result_ptr = binding_cons.new_Div(mem.ptr, left.ptr, right.ptr, resmode.ptr, flags.val);
+	public Node newDiv(Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
+		Pointer result_ptr = binding_cons.new_Div(mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val);
 		return Node.createWrapper(result_ptr);
 	}
 	

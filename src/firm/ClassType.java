@@ -176,7 +176,7 @@ public class ClassType extends Type {
 	}
 	
 	@Override
-	public void fixed() {
+	public void finishLayout() {
 		/* frontend should have set the offsets of the data entities
 		 *  (by calling Type.layoutFields for example)
 		 * I don't know a way to test if this has happened. */
@@ -184,6 +184,6 @@ public class ClassType extends Type {
 		/* At least we should have a size >= 0 */
 		assert getSizeBytes() >= 0;
 		
-		super.fixed();		
+		super.finishLayout();		
 	}
 }

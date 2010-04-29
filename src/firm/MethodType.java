@@ -2,8 +2,8 @@ package firm;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.binding_typerep.mtp_additional_property;
 import firm.bindings.binding_typerep.ir_variadicity;
+import firm.bindings.binding_typerep.mtp_additional_property;
 
 public class MethodType extends Type {
 
@@ -11,21 +11,10 @@ public class MethodType extends Type {
 		super(ptr);
 	}
 	
-	public MethodType(Ident name, int nParameters, int nResults) {
-		super(binding.new_type_method(name.ptr, nParameters, nResults));
+	public MethodType(int nParameters, int nResults) {
+		super(binding.new_type_method(nParameters, nResults));
 	}
 	
-	public MethodType(String name, int nParameters, int nResults) {
-		this(new Ident(name), nParameters, nResults);
-	}
-	
-//	Pointer new_d_type_method(Pointer name, int n_param, int n_res, Pointer db);
-	
-	public final MethodType clone(Ident prefix) {
-		Pointer p = binding.clone_type_method(ptr, prefix.ptr);
-		return new MethodType(p);
-	}
-
 	public final int getNParams() {
 		return binding.get_method_n_params(ptr);
 	}
@@ -132,7 +121,7 @@ public class MethodType extends Type {
 	}
 
 	@Override
-	public void fixed() {
+	public void finishLayout() {
 		/* make sure all arguments and return types have been set */
 		for (int r = 0; r < getNRess(); ++r) {
 			assert getResType(r) != null;
@@ -141,6 +130,6 @@ public class MethodType extends Type {
 			assert getParamType(p) != null;
 		}
 		
-		super.fixed();		
+		super.finishLayout();		
 	}
 }

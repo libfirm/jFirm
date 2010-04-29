@@ -1,5 +1,7 @@
 #!/usr/bin/python
 from jinja2 import Environment, Template
+import re
+
 from spec_util import verify_node, is_dynamic_pinned, setdefault, isAbstract, setldefault
 import ir_spec
 
@@ -26,9 +28,54 @@ def format_argdecls(arglist):
 	argstrings = map(lambda arg : (arg["type"] + " " + format_filter_keywords(arg["name"])), arglist)
 	return ", ".join(argstrings)
 
+def format_parameterlist(parameterlist):
+	return "\n".join(parameterlist)
+
+def format_nodearguments(node):
+	def format_argument(arg):
+		if arg['type'] == "Node[]":
+			return arg["name"] + ".length, Node.getPointerListFromNodeList(" + arg["name"] + ")"
+		elif "to_wrapper" in arg:
+			return arg["to_wrapper"] % arg['name']
+		else:
+			return "%s.ptr" % arg['name']
+	arguments = map(format_argument, node.arguments)
+	return format_parameterlist(arguments)
+
+
+def format_nodeparameters(node):
+	parameters = map(lambda arg: arg["type"] + " " + arg["name"], node.arguments)
+	return format_parameterlist(parameters)
+
 def format_args(arglist):
 	argstrings = map(lambda arg : arg["name"], arglist)
 	return ", ".join(argstrings)
+
+def format_blockparameter(node):
+	if not hasattr(node, "knownBlock"):
+		return "Node block"
+	return ""
+
+def format_blockargument(node):
+	if hasattr(node, "knownBlock"):
+		if hasattr(node, "knownGraph"):
+			return ""
+		return "this.ptr"
+	else:
+		return "block.ptr"
+
+def format_arguments(string, voidwhenempty = False):
+	args = re.split('\s*\n\s*', string)
+	if args[0] == '':
+		args = args[1:]
+	if len(args) > 0 and args[-1] == '':
+		args = args[:-1]
+	if len(args) == 0 and voidwhenempty:
+		return "void"
+	return ", ".join(args)
+
+def format_parameters(string):
+	return format_arguments(string)
 
 def format_binding_args(arglist, need_graph = False):
 	first = True
@@ -107,6 +154,13 @@ env.filters['ifabstract']  = format_ifabstract
 env.filters['key']         = format_key
 env.filters['filterkeywords'] = format_filter_keywords
 
+env.filters['arguments']      = format_arguments
+env.filters['parameters']     = format_parameters
+env.filters['nodeparameters'] = format_nodeparameters
+env.filters['nodearguments']  = format_nodearguments
+env.filters['blockparameter'] = format_blockparameter
+env.filters['blockargument']  = format_blockargument
+
 def get_java_type(type):
 	if type == "ir_type*":
 		java_type    = "firm.Type"
@@ -139,6 +193,11 @@ def get_java_type(type):
 		to_wrapper   = "%s"
 		from_wrapper = "%s"
 	elif type == "int":
+		java_type    = "int"
+		wrap_type    = "int"
+		to_wrapper   = "%s"
+		from_wrapper = "%s"
+	elif type == "unsigned":
 		java_type    = "int"
 		wrap_type    = "int"
 		to_wrapper   = "%s"
@@ -278,20 +337,11 @@ def preprocess_node(node):
 				type = java_type,
 				to_wrapper = to_wrapper
 			))
+
+		for arg in arguments:
+			arg['name'] = format_filter_keywords(arg['name'])
 			
 		node.arguments = arguments
-
-		#if "block" not in node:
-		ext_arguments = [ ]
-		if not hasattr(node, "knownBlock"):
-			ext_arguments.append(dict(
-				name       = "block",
-				type       = "Node",
-				to_wrapper = "%s.ptr"
-			))
-		for a in arguments:
-			ext_arguments.append(a)
-		node.ext_arguments = ext_arguments	
 
 for node in nodes:
 	preprocess_node(node)
@@ -489,8 +539,16 @@ public class Graph extends GraphBase {
 	{% for node in nodes -%}
 	{% if not isAbstract(node) and not node.noconstr %}
 	/** Create a new {{node.name}} node */
-	public final Node new{{node.classname}}({{node.ext_arguments|argdecls}}) {
-		return Node.createWrapper(binding_cons.new_r_{{node.name}}({{node.ext_arguments|bindingargs(True)}}));
+	public final Node new{{node.classname}}(
+		{%- filter parameters %}
+			{{node|blockparameter}}
+			{{node|nodeparameters}}
+		{%- endfilter %}) {
+		return Node.createWrapper(binding_cons.new_r_{{node.name}}(
+			{%- filter arguments %}
+				{{node|blockargument}}
+				{{node|nodearguments}}
+			{%- endfilter %}));
 	}
 	{% endif %}
 	{%- endfor %}

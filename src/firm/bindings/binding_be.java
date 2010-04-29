@@ -77,19 +77,18 @@ public interface binding_be extends Library {
 		}
 	}
 	public static enum mtp_additional_property {
-		mtp_no_property(0),
-		mtp_property_const(1),
-		mtp_property_pure(2),
-		mtp_property_noreturn(4),
-		mtp_property_nothrow(8),
-		mtp_property_naked(16),
-		mtp_property_malloc(32),
-		mtp_property_weak(64),
-		mtp_property_returns_twice(128),
-		mtp_property_intrinsic(256),
-		mtp_property_runtime(512),
-		mtp_property_private(1024),
-		mtp_property_has_loop(2048),
+		mtp_no_property(0x00000000),
+		mtp_property_const(0x00000001),
+		mtp_property_pure(0x00000002),
+		mtp_property_noreturn(0x00000004),
+		mtp_property_nothrow(0x00000008),
+		mtp_property_naked(0x00000010),
+		mtp_property_malloc(0x00000020),
+		mtp_property_returns_twice(0x00000040),
+		mtp_property_intrinsic(0x00000080),
+		mtp_property_runtime(0x00000100),
+		mtp_property_private(0x00000200),
+		mtp_property_has_loop(0x00000400),
 		mtp_property_inherited((1<<31));
 		public final int val;
 		private static class C { static int next_val; }
@@ -114,11 +113,9 @@ public interface binding_be extends Library {
 		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
-		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const(),
-		symconst_label();
+		symconst_enum_const();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -352,17 +349,17 @@ public interface binding_be extends Library {
 		}
 	}
 	public static enum asm_constraint_flags_t {
-		ASM_CONSTRAINT_FLAG_SUPPORTS_REGISTER(1),
-		ASM_CONSTRAINT_FLAG_SUPPORTS_MEMOP(2),
-		ASM_CONSTRAINT_FLAG_SUPPORTS_IMMEDIATE(4),
-		ASM_CONSTRAINT_FLAG_NO_SUPPORT(8),
-		ASM_CONSTRAINT_FLAG_MODIFIER_WRITE(16),
-		ASM_CONSTRAINT_FLAG_MODIFIER_NO_WRITE(32),
-		ASM_CONSTRAINT_FLAG_MODIFIER_READ(64),
-		ASM_CONSTRAINT_FLAG_MODIFIER_NO_READ(128),
-		ASM_CONSTRAINT_FLAG_MODIFIER_EARLYCLOBBER(256),
-		ASM_CONSTRAINT_FLAG_MODIFIER_COMMUTATIVE(512),
-		ASM_CONSTRAINT_FLAG_INVALID(32768);
+		ASM_CONSTRAINT_FLAG_SUPPORTS_REGISTER(0x0001),
+		ASM_CONSTRAINT_FLAG_SUPPORTS_MEMOP(0x0002),
+		ASM_CONSTRAINT_FLAG_SUPPORTS_IMMEDIATE(0x0004),
+		ASM_CONSTRAINT_FLAG_NO_SUPPORT(0x0008),
+		ASM_CONSTRAINT_FLAG_MODIFIER_WRITE(0x0010),
+		ASM_CONSTRAINT_FLAG_MODIFIER_NO_WRITE(0x0020),
+		ASM_CONSTRAINT_FLAG_MODIFIER_READ(0x0040),
+		ASM_CONSTRAINT_FLAG_MODIFIER_NO_READ(0x0080),
+		ASM_CONSTRAINT_FLAG_MODIFIER_EARLYCLOBBER(0x0100),
+		ASM_CONSTRAINT_FLAG_MODIFIER_COMMUTATIVE(0x0200),
+		ASM_CONSTRAINT_FLAG_INVALID(0x8000);
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -384,6 +381,8 @@ public interface binding_be extends Library {
 	}
 	Pointer __builtin_alloca();
 	double __builtin_huge_val();
+	float __builtin_huge_valf();
+	double __builtin_huge_vall();
 	double __builtin_inf();
 	float __builtin_inff();
 	double __builtin_infl();
@@ -401,6 +400,20 @@ public interface binding_be extends Library {
 	int __builtin_parity();
 	float __builtin_prefetch(Object ... args);
 	void __builtin_trap();
+	com.sun.jna.NativeLong __builtin_object_size();
+	void __builtin_abort();
+	int __builtin_abs();
+	com.sun.jna.NativeLong __builtin_labs();
+	long __builtin_llabs();
+	Pointer __builtin_memcpy();
+	Pointer __builtin___memcpy_chk();
+	void __builtin_exit();
+	Pointer __builtin_malloc();
+	int __builtin_memcmp();
+	Pointer __builtin_memset();
+	com.sun.jna.NativeLong __builtin_strlen();
+	int __builtin_strcmp();
+	String __builtin_strcpy();
 	Pointer arch_dep_default_factory();
 	void arch_dep_init(Pointer factory);
 	void arch_dep_set_opts(/* arch_dep_opts_t */int opts);
@@ -411,14 +424,23 @@ public interface binding_be extends Library {
 	void lower_calls_with_compounds(Pointer params);
 	void lower_CopyB(Pointer irg, int max_size, int native_mode_bytes);
 	void lower_switch(Pointer irg, int spare_size);
+	Pointer lower_switch_pass(String name, int spare_size);
 	void lower_dw_ops(Pointer param);
+	Pointer lower_dw_ops_pass(String name, Pointer param);
 	Pointer def_create_intrinsic_fkt(Pointer method, Pointer op, Pointer imode, Pointer omode, Pointer context);
 	void lower_highlevel_graph(Pointer irg, int lower_bitfields);
+	Pointer lower_highlevel_graph_pass(String name, int lower_bitfields);
 	void lower_highlevel(int lower_bitfields);
 	void lower_const_code();
+	Pointer lower_const_code_pass(String name);
 	void ir_lower_mode_b(Pointer irg, Pointer config);
+	Pointer ir_lower_mode_b_pass(String name, Pointer config);
+	void lower_mux(Pointer irg, Pointer cb_func);
+	Pointer lower_mux_pass(String name, Pointer cb_func);
 	int lower_intrinsics(Pointer list, int length, int part_block_used);
+	Pointer lower_intrinsics_pass(String name, Pointer list, int length, int part_block_used);
 	int i_mapper_abs(Pointer call, Pointer ctx);
+	int i_mapper_bswap(Pointer call, Pointer ctx);
 	int i_mapper_sqrt(Pointer call, Pointer ctx);
 	int i_mapper_cbrt(Pointer call, Pointer ctx);
 	int i_mapper_pow(Pointer call, Pointer ctx);

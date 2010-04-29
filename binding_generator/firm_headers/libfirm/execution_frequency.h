@@ -22,8 +22,8 @@
  * @brief    Compute an estimate of basic block executions.
  * @author   Goetz Lindenmaier
  * @date     5.11.2004
- * @version  $Id: execution_frequency.h 17143 2008-01-02 20:56:33Z beck $
- * @summary
+ * @version  $Id: execution_frequency.h 27143 2010-02-13 11:17:42Z mallon $
+ * @brief
  * We assume the start block of a procedure is executed once.  Based on this we
  * compute the execution freqency of all blocks.
  *

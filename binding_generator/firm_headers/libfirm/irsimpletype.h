@@ -22,8 +22,8 @@
  * @brief    Run most simple type analyses.
  * @author   Goetz Lindenmaier
  * @date     22.8.2003
- * @version  $Id: irsimpletype.h 17143 2008-01-02 20:56:33Z beck $
- * @summary
+ * @version  $Id: irsimpletype.h 27143 2010-02-13 11:17:42Z mallon $
+ * @brief
  *  We compute type information for each node.  It is derived from the
  *  types of the origines of values, e.g. parameter types can be derived
  *  from the method type.

@@ -16,7 +16,6 @@ import firm.PrimitiveType;
 import firm.Program;
 import firm.Type;
 import firm.bindings.binding_typerep.ir_type_state;
-import firm.bindings.binding_typerep.ir_variability;
 import firm.bindings.binding_typerep.ir_visibility;
 import firm.nodes.Block;
 import firm.nodes.Call;
@@ -47,15 +46,15 @@ public class BrainFuck {
 		this.input = input;
 		
 		/* create a new entity for the main function */
-		MethodType type = new MethodType("V()", 0, 0);
+		MethodType type = new MethodType(0, 0);
 		Type global = Program.getGlobalType();
 		Entity mainEnt = new Entity(global, "main", type);
 		mainEnt.setLdIdent(makeLdIdent("main"));
-		mainEnt.setVisibility(ir_visibility.visibility_external_visible);
+		mainEnt.setVisibility(ir_visibility.ir_visibility_default);
 		
 		/* create a new global array for the brainfuck data */
-		PrimitiveType btype = new PrimitiveType("type_byte", Mode.getBu());
-		ArrayType     atype = new ArrayType("type_array", 1, btype);
+		PrimitiveType btype = new PrimitiveType(Mode.getBu());
+		ArrayType     atype = new ArrayType(1, btype);
 		atype.setBounds(0, 0, DATA_SIZE);
 		atype.setSizeBytes(DATA_SIZE);
 		atype.setTypeState(ir_type_state.layout_fixed);
@@ -63,8 +62,7 @@ public class BrainFuck {
 		Type globalType = Program.getGlobalType();
 		Entity data = new Entity(globalType, "data", atype);
 		data.setLdIdent(makeLdIdent("data"));
-		data.setVariability(ir_variability.variability_initialized);
-		data.setVisibility(ir_visibility.visibility_local);
+		data.setVisibility(ir_visibility.ir_visibility_local);
 		
 		/* create a graph */
 		int n_vars = 1;
@@ -75,22 +73,22 @@ public class BrainFuck {
 		construction.setVariable(0, symconst);
 		
 		/* create putchar entity */
-		PrimitiveType intType = new PrimitiveType("type_ind", Mode.getIs());
-		MethodType putcharType = new MethodType("putchar_type", 1, 1);
+		PrimitiveType intType = new PrimitiveType(Mode.getIs());
+		MethodType putcharType = new MethodType(1, 1);
 		putcharType.setParamType(0, intType);
 		putcharType.setResType(0, intType);
 		
 		putcharEntity = new Entity(globalType, "putchar", putcharType);
-		putcharEntity.setVisibility(ir_visibility.visibility_external_allocated);
+		putcharEntity.setVisibility(ir_visibility.ir_visibility_external);
 		putcharEntity.setLdIdent(makeLdIdent("putchar"));
 		putcharSymConst = construction.newSymConst(putcharEntity);
 		
 		/* create getchar entity */
-		MethodType getcharType = new MethodType("getchar_type", 0, 1);
+		MethodType getcharType = new MethodType(0, 1);
 		getcharType.setResType(0, intType);
 		
 		getcharEntity = new Entity(globalType, "getchar", getcharType);
-		getcharEntity.setVisibility(ir_visibility.visibility_external_allocated);
+		getcharEntity.setVisibility(ir_visibility.ir_visibility_external);
 		getcharEntity.setLdIdent(makeLdIdent("getchar"));
 		getcharSymConst = construction.newSymConst(getcharEntity); 
 				
@@ -108,7 +106,7 @@ public class BrainFuck {
 		
 		construction.finish();
 		
-		/* TODO: call optimisations here... */
+		/* you could call optimisations here... */
 		
 		return graph;
 	}
@@ -134,7 +132,7 @@ public class BrainFuck {
 		Node mem = construction.getCurrentMem();
 		
 		Node call = construction.newCall(mem, getcharSymConst, new Node[] {}, getcharEntity.getType());
-		Node callMem = construction.newProj(call, Mode.getM(), Call.pnMRegular);
+		Node callMem = construction.newProj(call, Mode.getM(), Call.pnM);
 		Node callResults = construction.newProj(call, Mode.getT(), Call.pnTResult);
 		Node result = construction.newProj(callResults, Mode.getIs(), 0);
 		Node conv = construction.newConv(result, Mode.getBu());
@@ -195,7 +193,7 @@ public class BrainFuck {
 		Node conv = construction.newConv(result, Mode.getIs());
 		Node call = construction.newCall(mem, putcharSymConst, new Node[] {conv}, putcharEntity.getType());
 		
-		Node callMem = construction.newProj(call, Mode.getM(), Call.pnMRegular);
+		Node callMem = construction.newProj(call, Mode.getM(), Call.pnM);
 		construction.setCurrentMem(callMem);
 	}
 

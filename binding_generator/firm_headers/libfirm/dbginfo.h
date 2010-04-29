@@ -22,8 +22,8 @@
  * @brief     Implements the Firm interface to debug information.
  * @author    Goetz Lindenmaier, Michael Beck
  * @date      2001
- * @version   $Id: dbginfo.h 25194 2009-01-14 15:12:24Z beck $
- * @summary
+ * @version   $Id: dbginfo.h 27143 2010-02-13 11:17:42Z mallon $
+ * @brief
  *  Firm requires a debugging module fulfilling this interface, else no
  *  debugging information is passed to the backend.
  *  The interface requires a datatype representing the debugging
@@ -35,12 +35,9 @@
 #ifndef FIRM_DEBUG_DBGINFO_H
 #define FIRM_DEBUG_DBGINFO_H
 
+#include <stdlib.h>
 #include "firm_types.h"
 #include "ident.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 /**
  * @defgroup debug    The Firm interface to debugging support.
@@ -87,7 +84,7 @@ typedef enum {
 	dbg_opt_confirm,              /**< A Firm subgraph was replace because of a Confirmation. */
 	dbg_gvn_pre,                  /**< A Firm node was replace because of the GVN-PRE algorithm. */
 	dbg_combo,                    /**< A Firm node was replace because of the combo algorithm. */
-	dbg_cond_eval,                /**< A Firm node was replace because of the conditional evaluation algorithm. */
+	dbg_jumpthreading,            /**< A Firm node was replace because of the jumpthreading algorithm. */
 	dbg_backend,                  /**< A Firm subgraph was replaced because of a Backend transformation */
 	dbg_max                       /**< Maximum value. */
 } dbg_action;
@@ -124,24 +121,7 @@ typedef void merge_pair_func(ir_node *new_node, ir_node *old_node, dbg_action ac
 typedef void merge_sets_func(ir_node **new_node_array, int new_num_entries, ir_node **old_node_array, int old_num_entries, dbg_action action);
 
 /**
- * The type of the debug info to human readable string function.
- *
- * @param buf    pointer to a buffer that will hold the info
- * @param len    length of the buffer
- * @param dbg    the debug info
- *
- * @return  Number of written characters to the buffer.
- *
- * @see dbg_init()
- */
-typedef unsigned snprint_dbg_func(char *buf, unsigned len, const dbg_info *dbg);
-
-/**
  *  Initializes the debug support.
- *
- *  @param dbg_info_merge_pair   see function description
- *  @param dbg_info_merge_sets   see function description
- *  @param snprint_dbg           see function description
  *
  *  This function takes pointers to two functions that merge the
  *  debug information when a
@@ -162,43 +142,18 @@ typedef unsigned snprint_dbg_func(char *buf, unsigned len, const dbg_info *dbg);
  *
  *   Further both functions pass an enumeration indicating the action
  *   performed by the transformation, e.g. the kind of optimization performed.
- *
- * The third argument snprint_dbg is called to convert a debug info into a human readable string.
- * This string is the dumped in the dumper functions.
- *
- * Note that if NULL is passed for dbg_info_merge_pair or dbg_info_merge_sets, the default
- * implementations default_dbg_info_merge_pair() and default_dbg_info_merge_sets() are used.
- * NULL passed for snprint_dbg means no output.
  */
-void dbg_init(merge_pair_func *dbg_info_merge_pair, merge_sets_func *dbg_info_merge_sets, snprint_dbg_func *snprint_dbg);
-
-/**
- * The default merge_pair_func implementation, simply copies the debug info
- * from the old Firm node to the new one if the new one does not have debug info yet.
- *
- * @param nw    The new Firm node.
- * @param old   The old Firm node.
- * @param info  The action that cause old node to be replaced by new one.
- */
-void default_dbg_info_merge_pair(ir_node *nw, ir_node *old, dbg_action info);
-
-/**
- * The default merge_sets_func implementation.  If n_old_nodes is equal 1, copies
- * the debug info from the old node to all new ones (if they do not have one), else does nothing.
- *
- * @param new_nodes     An array of new Firm nodes.
- * @param n_new_nodes   The length of the new_nodes array.
- * @param old_nodes     An array of old (replaced) Firm nodes.
- * @param n_old_nodes   The length of the old_nodes array.
- * @param info          The action that cause old node to be replaced by new one.
- */
-void default_dbg_info_merge_sets(ir_node **new_nodes, int n_new_nodes,
-                            ir_node **old_nodes, int n_old_nodes,
-                            dbg_action info);
+void dbg_init(merge_pair_func *dbg_info_merge_pair,
+              merge_sets_func *dbg_info_merge_sets);
 
 /** @} */
 
-/** The type of the debug info retriever function. */
+/**
+ * The type of the debug info retriever function.
+ *  When given a dbg_info returns the name (usually the filename) of the
+ *  compilation unit defining it. @p line is set to the line number of the
+ *  definition.
+ */
 typedef const char *(*retrieve_dbg_func)(const dbg_info *dbg, unsigned *line);
 
 /**
@@ -209,12 +164,27 @@ typedef const char *(*retrieve_dbg_func)(const dbg_info *dbg, unsigned *line);
 void ir_set_debug_retrieve(retrieve_dbg_func func);
 
 /**
+ * The type of the type debug info retrieve function.
+ * Prints a human readable source representation of a type to an obstack.
+ *  (Used for generating debug info like stabs or dwarf)
+ */
+typedef void (*retrieve_type_dbg_func)(char *buffer, size_t buffer_size,
+                                       const type_dbg_info *tdbgi);
+
+/**
+ * Set global print_type_dbg_info function in firm
+ */
+void ir_set_type_debug_retrieve(retrieve_type_dbg_func func);
+
+/**
  * Retrieve the debug info.
  */
 const char *ir_retrieve_dbg_info(const dbg_info *dbg, unsigned *line);
 
-#ifdef __cplusplus
-}
-#endif
+/**
+ * Retrieve type debug info
+ */
+void ir_retrieve_type_dbg_info(char *buffer, size_t buffer_size,
+                               const type_dbg_info *tdbgi);
 
 #endif

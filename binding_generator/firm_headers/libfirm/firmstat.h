@@ -21,7 +21,7 @@
  * @file
  * @brief   Statistics for Firm.
  * @author  Michael Beck
- * @version $Id: firmstat.h 25901 2009-05-08 10:44:04Z beck $
+ * @version $Id: firmstat.h 26419 2009-08-24 19:17:56Z buchwald $
  */
 #ifndef FIRM_STAT_FIRMSTAT_H
 #define FIRM_STAT_FIRMSTAT_H
@@ -123,7 +123,7 @@ enum firmstat_optimizations_t {
 	FS_OPT_COMBO_CF,                          /**< Combo: removed conditional control flow */
 	FS_OPT_COMBO_FOLLOWER,                    /**< Combo: replaced a follower */
 	FS_OPT_COMBO_CONGRUENT,                   /**< Combo: replaced by congruent */
-	FS_OPT_COND_EVAL,                         /**< Conditional evaluation: removed conditional control flow */
+	FS_OPT_JUMPTHREADING,                     /**< Jump threading: removed conditional control flow */
 	FS_OPT_RTS_ABS,                           /**< RTS optimization: call to abs() replaced */
 	FS_OPT_RTS_ALLOCA,                        /**< RTS optimization: call to alloca() replaced */
 	FS_OPT_RTS_SQRT,                          /**< RTS optimization: call to sqrt() replaced */
@@ -168,10 +168,22 @@ enum firmstat_optimizations_t {
  * Dump a snapshot of the statistic values.
  * Never called from libFirm should be called from user.
  *
- * @param name   base name of the statistic output file
- * @param phase  a phase name. Prefix will be firmstat-<phase>-
+ * @param fname  base name of the statistic output file
+ * @param phase  a phase name. Prefix will be firmstat-\<phase\>-
  */
-void stat_dump_snapshot(const char *name, const char *phase);
+void stat_dump_snapshot(const char *fname, const char *phase);
+
+/**
+ * Creates an ir_prog pass for stat_dump_snapshot().
+ *
+ * @param name    the name of this pass or NULL
+ * @param fname   base name of the statistic output file
+ * @param phase   a phase name. Prefix will be firmstat-\<phase\>-
+ *
+ * @return  the newly created ir_prog pass
+ */
+ir_prog_pass_t *stat_dump_snapshot_pass(
+	const char *name, const char *fname, const char *phase);
 
 /**
  * initialize the statistics module.

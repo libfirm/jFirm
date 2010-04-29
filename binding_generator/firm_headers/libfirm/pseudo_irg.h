@@ -22,7 +22,7 @@
  * @brief    interface to pseudo irgs
  * @author   Goetz Lindenmaier, Boris Boesler
  * @date     Oktober 2004
- * @version  $Id: pseudo_irg.h 17143 2008-01-02 20:56:33Z beck $
+ * @version  $Id: pseudo_irg.h 27277 2010-03-09 21:14:15Z matze $
  */
 #ifndef FIRM_IR_PSEUDO_IRG_H
 #define FIRM_IR_PSEUDO_IRG_H
@@ -43,9 +43,11 @@ int      is_pseudo_ir_graph(ir_graph *irg);
 /** Returns the number of pseudo graphs in the program. */
 int get_irp_n_pseudo_irgs(void);
 
+/** Add a graph as pseudo irg */
+void add_irp_pseudo_irg(ir_graph *irg);
+
 /** Returns the pos'th  pseudo graph in the program. */
 ir_graph *get_irp_pseudo_irg(int pos);
-
 
 /** If set, get_irp_n_irgs() and get_irp_irg() behave as if all pseudo
     graphs are in the irg list. If not set, get_entity_irg() returns

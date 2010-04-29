@@ -21,7 +21,7 @@
  * @file
  * @brief   iropt --- optimizations of an ir node.
  * @author  Martin Trapp, Christian Schaefer, Goetz Lindenmaier, Michael Beck
- * @version $Id: iropt.h 24609 2008-12-13 17:56:13Z matze $
+ * @version $Id: iropt.h 27442 2010-04-26 10:24:18Z mallon $
  */
 #ifndef FIRM_IR_IROPT_H
 #define FIRM_IR_IROPT_H
@@ -52,7 +52,7 @@
  *     Fastest mode. Associative and distributive law allowed at the expense
  *     of floating point accuracy and correctness. Explicit rounding is disabled.
  * - fp_no_float_fold:
- *     Avoid floating point constant folding. Usefull for frontends which do not
+ *     Avoid floating point constant folding. Useful for frontends which do not
  *     create arithmetic operations in the backends arithmetic mode.
  */
 typedef enum _fp_model_t {

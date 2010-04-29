@@ -21,7 +21,7 @@
  * @file
  * @brief       double ended queue of generic pointers.
  * @author      Christian von Roques
- * @version     $Id: pdeq.h 17143 2008-01-02 20:56:33Z beck $
+ * @version     $Id: pdeq.h 26440 2009-08-28 09:26:27Z matze $
  */
 #ifndef FIRM_ADT_PDEQ_H
 #define FIRM_ADT_PDEQ_H
@@ -149,23 +149,21 @@ pdeq *pdeq_putl(pdeq *dq, const void *x);
 pdeq *pdeq_putr(pdeq *dq, const void *x);
 
 /**
- * Retrieve a pointer from the left site of a double ended pointer list.
+ * Retrieve (and remove) a pointer from the left site of a double ended pointer
+ * list.
  *
  * @param dq   The list
- *
  * @return The pointer element.
- *
  * @remark This function will fail if the list is empty.
  */
 void *pdeq_getl(pdeq *dq);
 
 /**
- * Retrieve a pointer from the right site of a double ended pointer list.
+ * Retrieve (and remove) a pointer from the right site of a double ended pointer
+ * list.
  *
  * @param dq   The list
- *
  * @return The pointer element.
- *
  * @remark This function will fail if the list is empty.
  */
 void *pdeq_getr(pdeq *dq);

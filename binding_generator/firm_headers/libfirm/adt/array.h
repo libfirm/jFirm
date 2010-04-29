@@ -21,7 +21,7 @@
  * @file
  * @brief     Dynamic and flexible arrays for C.
  * @author    Markus Armbruster, Michael Beck, Matthias Braun, Sebastian Hack
- * @version   $Id: array.h 22711 2008-10-11 19:04:23Z matze $
+ * @version   $Id: array.h 27155 2010-02-14 14:38:55Z mallon $
  */
 #ifndef FIRM_ADT_ARRAY_H
 #define FIRM_ADT_ARRAY_H
@@ -282,8 +282,7 @@ typedef int (ir_arr_cmp_func_t)(const void *a, const void *b);
  * @note           The differences to bsearch(3) which does not give proper insert locations
  *                 in the case that the element is not conatined in the array.
  */
-static inline int
-ir_arr_bsearch(const void *arr, size_t elm_size, ir_arr_cmp_func_t *cmp, const void *elm)
+static inline int ir_arr_bsearch(const void *arr, size_t elm_size, ir_arr_cmp_func_t *cmp, const void *elm)
 {
 	int hi = ARR_LEN(arr);
 	int lo = 0;

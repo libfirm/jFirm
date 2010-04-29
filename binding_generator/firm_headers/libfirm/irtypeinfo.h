@@ -22,8 +22,8 @@
  * @brief    Data structure to hold type information for nodes.
  * @author   Goetz Lindenmaier
  * @date     28.8.2003
- * @version  $Id: irtypeinfo.h 25783 2009-04-03 23:05:53Z beck $
- * @summary
+ * @version  $Id: irtypeinfo.h 27143 2010-02-13 11:17:42Z mallon $
+ * @brief
  *   Data structure to hold type information for nodes.
  *
  *   This module defines a field "type" of type "type *" for each ir node.
@@ -54,7 +54,7 @@ extern ir_type *initial_type;
  *  Initializes the type information module.
  *  Generates a type inititial_type and sets the type of all nodes to this type.
  *  Calling set/get_irn_typeinfo_type() is invalid before calling init. Requires memory
- *  in the order of MIN(<calls to set_irn_typeinfo_type>, #irnodes).
+ *  in the order of MIN(\<calls to set_irn_typeinfo_type\>, \#irnodes).
  */
 void init_irtypeinfo(void);
 void free_irtypeinfo(void);

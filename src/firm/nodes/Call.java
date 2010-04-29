@@ -41,16 +41,24 @@ public class Call extends Node {
 		binding.set_Call_type(this.ptr, _val.ptr);
 	}
 	
+	public int getTailCall() {
+		int _res = binding.get_Call_tail_call(ptr);
+		return _res;
+	}
+
+	public void setTailCall(int _val) {
+		binding.set_Call_tail_call(this.ptr, _val);
+	}
+	
 
 	
 
-	public static final int pnMRegular = 0;
+	public static final int pnM = 0;
 	public static final int pnXRegular = 1;
 	public static final int pnXExcept = 2;
 	public static final int pnTResult = 3;
-	public static final int pnMExcept = 4;
-	public static final int pnPValueResBase = 5;
-	public static final int pnMax = 6;
+	public static final int pnPValueResBase = 4;
+	public static final int pnMax = 5;
 
 	
 	public void accept(NodeVisitor visitor) {

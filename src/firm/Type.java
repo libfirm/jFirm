@@ -27,7 +27,7 @@ public class Type extends JNAWrapper {
 		} else {
 			Type type = new Type(ptr);
 			if (binding.is_Struct_type(ptr) == 0)
-				System.err.println("Unknown Type kind found (" + type.getName() + ")");
+				System.err.println("Unknown Type kind found");
 			return type;
 		}
 	}
@@ -56,19 +56,6 @@ public class Type extends JNAWrapper {
 		return ir_type_state.getEnum(binding.get_type_state(ptr));
 	}
 	
-	public Ident getIdent() {
-		return new Ident(binding.get_type_ident(ptr));
-	}
-	
-	public String getName() {
-		return binding.get_type_name(ptr);
-	}
-	
-	@Override
-	public String toString() {
-		return getName();
-	}
-	
 	/** returns the mode of a type (or null for non-atomic types) */
 	public Mode getMode() {
 		Pointer mode_ptr = binding.get_type_mode(ptr);
@@ -78,7 +65,7 @@ public class Type extends JNAWrapper {
 	}
 
 	/** you must call this function when you are finished constructing a type */
-	public void fixed() {
+	public void finishLayout() {
 		setTypeState(ir_type_state.layout_fixed);
 	}
 }

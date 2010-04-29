@@ -21,7 +21,7 @@
  * @file
  * @brief   Lowering of high level constructs.
  * @author  Michael Beck
- * @version $Id: lowering.h 25168 2009-01-13 12:49:02Z mallon $
+ * @version $Id: lowering.h 27143 2010-02-13 11:17:42Z mallon $
  */
 #ifndef FIRM_LOWERING_H
 #define FIRM_LOWERING_H
@@ -160,6 +160,17 @@ void lower_CopyB(ir_graph *irg, unsigned max_size, unsigned native_mode_bytes);
 void lower_switch(ir_graph *irg, unsigned spare_size);
 
 /**
+ * Creates an ir_graph pass for lower_switch().
+ *
+ * @param name       the name of this pass or NULL
+ * @param spare_size Allowed spare size for table switches in machine words.
+ *                   (Default in edgfe: 128)
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *lower_switch_pass(const char *name, unsigned spare_size);
+
+/**
  * A callback type for creating an intrinsic entity for a given opcode.
  *
  * @param method   the method type of the emulation function entity
@@ -190,8 +201,20 @@ typedef struct _lwrdw_param_t {
 
 /**
  * Lower all double word operations.
+ *
+ * @param param  parameter for lowering
  */
 void lower_dw_ops(const lwrdw_param_t *param);
+
+/**
+ * Creates an ir_prog pass for lower_dw_ops().
+ *
+ * @param name   the name of this pass or NULL
+ * @param param  parameter for lowering
+ *
+ * @return  the newly created ir_prog pass
+ */
+ir_prog_pass_t *lower_dw_ops_pass(const char *name, const lwrdw_param_t *param);
 
 /**
  * Default implementation. Context is unused.
@@ -205,12 +228,25 @@ ir_entity *def_create_intrinsic_fkt(ir_type *method, const ir_op *op,
  * Replace Sel nodes by address computation.  Also resolves array access.
  * Handle bit fields by added And/Or calculations.
  *
- * @param irg  the graph to lower
- * 
+ * @param irg               the graph to lower
+ * @param lower_bitfields   the graph contains old-style bitfield
+ *                          constructs
+ *
  * @note: There is NO lowering ob objects oriented types. This is highly compiler
  *        and ABI specific and should be placed directly in the compiler.
  */
 void lower_highlevel_graph(ir_graph *irg, int lower_bitfields);
+
+/**
+ * Creates an ir_graph pass for lower_highlevel_graph().
+ *
+ * @param name              the name of this pass or NULL
+ * @param lower_bitfields   the graph contains old-style bitfield
+ *                          constructs
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *lower_highlevel_graph_pass(const char *name, int lower_bitfields);
 
 /**
  * Replaces SymConsts by a real constant if possible.
@@ -218,8 +254,8 @@ void lower_highlevel_graph(ir_graph *irg, int lower_bitfields);
  * Handle bit fields by added And/Or calculations.
  * Lowers all graphs.
  *
- * @Note: There is NO lowering ob objects oriented types. This is highly compiler
- *        and ABI specific and should be placed directly in the compiler.
+ * @note There is NO lowering of objects oriented types. This is highly compiler
+ *       and ABI specific and should be placed directly in the compiler.
  */
 void lower_highlevel(int lower_bitfields);
 
@@ -228,12 +264,21 @@ void lower_highlevel(int lower_bitfields);
  */
 void lower_const_code(void);
 
+/**
+ * Creates an ir_prog pass for lower_const_code().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_prog pass
+ */
+ir_prog_pass_t *lower_const_code_pass(const char *name);
+
 typedef struct lower_mode_b_config_t {
 	/* mode that is used to transport 0/1 values */
 	ir_mode *lowered_mode;
 	/* preferred mode for the "set" operations (a psi that produces a 0 or 1) */
 	ir_mode *lowered_set_mode;
-	/* wether direct Cond -> Cmps should also be lowered */
+	/* whether direct Cond -> Cmps should also be lowered */
 	int lower_direct_cmp;
 } lower_mode_b_config_t;
 
@@ -244,10 +289,52 @@ typedef struct lower_mode_b_config_t {
  *
  * Example: Psi(a < 0, 1, 0) => a >> 31
  *
- * @param irg            the firm graph to lower
- * @param config         configuration for mode_b lowerer
+ * @param irg      the firm graph to lower
+ * @param config   configuration for mode_b lowerer
  */
 void ir_lower_mode_b(ir_graph *irg, const lower_mode_b_config_t *config);
+
+/**
+ * Creates an ir_graph pass for ir_lower_mode_b().
+ *
+ * @param name     the name of this pass or NULL
+ * @param config   configuration for mode_b lowerer
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *ir_lower_mode_b_pass(
+	const char *name, const lower_mode_b_config_t *config);
+
+/**
+ * Used as callback, whenever a lowerable mux is found. The return value
+ * indicates, whether the mux should be lowered. This may be used, to lower
+ * floating point muxes, while keeping mux nodes for integers, for example.
+ *
+ * @param mux  The mux node that may be lowered.
+ * @return     A non-zero value indicates that the mux should be lowered.
+ */
+typedef int lower_mux_callback(ir_node* mux);
+
+/**
+ * Lowers all mux nodes in the given graph. A callback function may be
+ * given, to select the mux nodes to lower.
+ *
+ * @param irg      The graph to lower mux nodes in.
+ * @param cb_func  The callback function for mux selection. Can be NULL,
+ *                 to lower all mux nodes.
+ */
+void lower_mux(ir_graph *irg, lower_mux_callback *cb_func);
+
+/**
+ * Creates an ir_graph pass for lower_mux().
+ *
+ * @param name     the name of this pass or NULL
+ * @param cb_func  The callback function for mux selection. Can be NULL,
+ *                 to lower all mux nodes.
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_graph_pass_t *lower_mux_pass(const char *name, lower_mux_callback *cb_func);
 
 /**
  * An intrinsic mapper function.
@@ -311,12 +398,32 @@ typedef union _i_record {
 unsigned lower_intrinsics(i_record *list, int length, int part_block_used);
 
 /**
+ * Creates an irprog pass for lower_intrinsics.
+ *
+ * @param name             the name of this pass or NULL
+ * @param list             an array of intrinsic map records
+ * @param length           the length of the array
+ * @param part_block_used  set to true if part_block() must be using during lowering
+ */
+ir_prog_pass_t *lower_intrinsics_pass(
+	const char *name,
+	i_record *list, int length, int part_block_used);
+
+/**
  * A mapper for the integer/float absolute value: type abs(type v).
  * Replaces the call by a Abs node.
  *
  * @return always 1
  */
 int i_mapper_abs(ir_node *call, void *ctx);
+
+/**
+ * A mapper for the integer byte swap value: type bswap(type v).
+ * Replaces the call by a builtin[ir_bk_bswap] node.
+ *
+ * @return always 1
+ */
+int i_mapper_bswap(ir_node *call, void *ctx);
 
 /**
  * A mapper for the floating point sqrt(v): floattype sqrt(floattype v);

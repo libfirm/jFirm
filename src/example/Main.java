@@ -3,10 +3,7 @@ package example;
 import java.io.IOException;
 
 import firm.Backend;
-import firm.Dump;
 import firm.Firm;
-import firm.Graph;
-import firm.Program;
 
 /* Test libFirm bindings */
 public class Main {
@@ -17,7 +14,7 @@ public class Main {
 		                  Firm.getMinorVersion(), Firm.getMajorVersion());
 
 		/* what is our input file? */
-		String input = "bf_examples/rot13.bf";
+		String input = "bf_examples/bockbeer.bf";
 		if (args.length > 0) {
 			input = args[0]; 
 		}
@@ -27,12 +24,10 @@ public class Main {
 		fuck.compile(input);
 		
 		/* dump all firm graphs to disk */
-		for(Graph g : Program.getGraphs()) {
+		/*for(Graph g : Program.getGraphs()) {
 			Dump.dumpBlockGraph(g, "-finished");
 		}
-		
-		/* omit frame pointer for speed :) */
-		Backend.option("omitfp");
+		*/
 		
 		/* transform to x86 assembler */
 		Backend.createAssembler("test.s", "<builtin>");

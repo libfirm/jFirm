@@ -22,11 +22,11 @@
  * @brief   Removal of unreachable methods.
  * @author  Hubert Schmid
  * @date    09.06.2002
- * @version $Id: ircgopt.h 17143 2008-01-02 20:56:33Z beck $
- * @summary
+ * @version $Id: ircgopt.h 27143 2010-02-13 11:17:42Z mallon $
+ * @brief
  *  (TODO: translate to english)
  *  Entfernen von nicht erreichbaren (aufrufbaren) Methoden. Die Menge
- *  der nicht erreichbaren Methoden wird aus der Abschätzung der
+ *  der nicht erreichbaren Methoden wird aus der Abschï¿½tzung der
  *  Aufrufrelation bestimmt.
  */
 #ifndef FIRM_IR_ICGOPT_H
@@ -42,5 +42,14 @@
  *
  * Frees all interprocedural loop information. */
 void gc_irgs(int n_keep, ir_entity *keep_arr[]);
+
+/**
+ * Creates an ir_prog pass for gc_irgs().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_graph pass
+ */
+ir_prog_pass_t *gc_irgs_pass(const char *name);
 
 #endif

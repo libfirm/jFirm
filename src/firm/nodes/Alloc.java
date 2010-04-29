@@ -21,13 +21,13 @@ public class Alloc extends Node {
 	}
 	
 	
-	public Node getSize() {
-		return createWrapper(binding.get_Alloc_size(ptr));
+	public Node getCount() {
+		return createWrapper(binding.get_Alloc_count(ptr));
 	}
 
 	
-	public void setSize(Node size) {
-		binding.set_Alloc_size(this.ptr, size.ptr);
+	public void setCount(Node count) {
+		binding.set_Alloc_count(this.ptr, count.ptr);
 	}
 	
 

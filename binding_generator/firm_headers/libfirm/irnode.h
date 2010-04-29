@@ -21,7 +21,7 @@
  * @file
  * @brief   Representation of an intermediate operation.
  * @author  Martin Trapp, Christian Schaefer, Goetz Lindenmaier, Michael Beck
- * @version $Id: irnode.h 25919 2009-05-11 11:09:49Z matze $
+ * @version $Id: irnode.h 27387 2010-04-13 08:06:08Z matze $
  */
 #ifndef FIRM_IR_IRNODE_H
 #define FIRM_IR_IRNODE_H
@@ -51,8 +51,6 @@
  *
  *  The common fields are:
  *
- *  - firm_kind - A firm_kind tag containing k_type.  This is useful
- *                for dynamically checking whether a node is a ir_node.
  *  - arity     - The number of predecessors in the Firm graph.
  *  - in        - A list with the predecessors in the Firm graph.  There are
  *                routines to access individual elements and to obtain the
@@ -70,7 +68,7 @@
  * Some projection numbers must be always equal to support automatic phi construction
  */
 enum pn_generic {
-	pn_Generic_M_regular = 0,  /**< The memory result. */
+	pn_Generic_M         = 0,  /**< The memory result. */
 	pn_Generic_X_regular = 1,  /**< Execution result if no exception occurred. */
 	pn_Generic_X_except  = 2,  /**< The control flow result branching to the exception handler */
 	pn_Generic_other     = 3   /**< First free projection number */
@@ -185,8 +183,6 @@ void del_Sync_n(ir_node *n, int i);
 void set_irn_mode(ir_node *node, ir_mode *mode);
 /** Gets the mode struct of a node.  */
 ir_mode *get_irn_mode(const ir_node *node);
-/** Gets the mode-enum ir_modecode. */
-ir_modecode get_irn_modecode(const ir_node *node);
 /** Gets the ident for a string representation of the mode .*/
 ident *get_irn_modeident(const ir_node *node);
 /** Gets the string representation of the mode .*/
@@ -266,14 +262,8 @@ op_pin_state is_irn_pinned_in_irg(const ir_node *node);
  * @param arity The arity of the new node, <0 if can be changed dynamically.
  * @param in    An array of arity predecessor nodes.
  */
-ir_node *
-new_ir_node(dbg_info *db,
-         ir_graph *irg,
-         ir_node *block,
-         ir_op *op,
-         ir_mode *mode,
-         int arity,
-         ir_node *in[]);
+ir_node *new_ir_node(dbg_info *db, ir_graph *irg, ir_node *block, ir_op *op,
+                     ir_mode *mode, int arity, ir_node *in[]);
 
 /**
  * Return the block the node belongs to.  This is only
@@ -303,11 +293,6 @@ void      set_nodes_block (ir_node *node, ir_node *block);
  * nodes we use infix "nodes" and do not name this function
  * get_irn_MacroBlock(). */
 ir_node  *get_nodes_MacroBlock(const ir_node *node);
-
-/**
- * @function get_irn_block()
- * @see get_nodes_block()
- */
 
 /**
  * Projection numbers for result of Start node: use for Proj nodes!
@@ -419,12 +404,14 @@ void set_Block_MacroBlock(ir_node *block, ir_node *mbh);
 ir_node *get_irn_MacroBlock(const ir_node *n);
 /** Returns the ir_graph this Block belongs to. */
 ir_graph *get_Block_irg(const ir_node *block);
-/** Returns non-zero if the block has an assigned label. */
-int has_Block_label(const ir_node *block);
-/** Returns the label of a Block. */
-ir_label_t get_Block_label(const ir_node *block);
-/** Sets a label to a block. */
-void set_Block_label(ir_node *block, ir_label_t label);
+/** Returns non-zero if the block has an entity assigned */
+int has_Block_entity(const ir_node *block);
+/** Returns the entity for a Block */
+ir_entity *get_Block_entity(const ir_node *block);
+/** Returns the entity for a Block (creating it if necessary) */
+ir_entity *create_Block_entity(ir_node *block);
+/** Set a new entity for a block */
+void set_Block_entity(ir_node *block, ir_entity *entity);
 /** Gets the head of the Phi list for this block. */
 ir_node *get_Block_phis(const ir_node *block);
 /** Sets the head of the Phi list for this block. */
@@ -445,8 +432,8 @@ void add_End_keepalive(ir_node *end, ir_node *ka);
 /** Set the Keep alive node at position pos. */
 void set_End_keepalive(ir_node *end, int pos, ir_node *ka);
 
-/** 
- * Set new keep-alives. 
+/**
+ * Set new keep-alives.
  * Beware: This might be an expensive operation if dynamic edges are enabled,
  * so avoid it in the backend.
  */
@@ -468,39 +455,8 @@ ir_node *get_IJmp_target(const ir_node *ijmp);
 /** Sets the target address of an IJmp */
 void set_IJmp_target(ir_node *ijmp, ir_node *tgt);
 
-/* We distinguish three kinds of Cond nodes.  These can be distinguished
-   by the mode of the selector operand and an internal flag of type cond_kind.
-   First we distinguish binary Conds and switch Conds.
-   A binary Cond has as selector a boolean value.  Proj(0) projects the control
-   flow for case "False", Proj(1) the control flow for "True".  A binary Cond
-   is recognized by the boolean selector.
-   The switch Cond has as selector an unsigned integer.  It produces as result
-   an n+1 Tuple (cf0, ... , cfn) of control flows.
-   We differ two flavors of this Cond.  The first, the dense Cond, passes
-   control along output i if the selector value is i, 0 <= i <= n.  If the
-   selector value is >n it passes control along output n.
-   The second Cond flavor differences in the treatment of cases not specified in
-   the source program.  It magically knows about the existence of Proj nodes.
-   It only passes control along output i, 0 <= i <= n, if a node Proj(Cond, i)
-   exists.  Else it passes control along output n (even if this Proj does not
-   exist.)  This Cond we call "fragmentary".  There is a special constructor
-   new_defaultProj that automatically sets the flavor.
-   The two switch flavors are distinguished by a flag of type cond_kind.
-   Default flavor is "dense"
-*/
-typedef enum {
-	dense,        /**< Default. Missing Proj nodes are dead control flow. */
-	fragmentary   /**< Special. No control flow optimizations allowed.  Missing
-	                   Proj nodes mean default control flow, i.e., Proj(n). */
-} cond_kind;
-
-/** Gets the string representation of the Cond node kind. */
-const char *get_cond_kind_name(cond_kind kind);
-
 ir_node  *get_Cond_selector(const ir_node *node);
 void      set_Cond_selector(ir_node *node, ir_node *selector);
-cond_kind get_Cond_kind(const ir_node *node);
-void      set_Cond_kind(ir_node *node, cond_kind kind);
 long      get_Cond_default_proj(const ir_node *node);
 void      set_Cond_default_proj(ir_node *node, long defproj);
 
@@ -535,7 +491,7 @@ int is_Const_all_one(const ir_node *node);
 /** Returns the source language type of a Const node.
  * Must be an atomic type.  Mode of type must be mode of node.
  */
-ir_type  *get_Const_type(ir_node *node);
+ir_type  *get_Const_type(const ir_node *node);
 
 /** Sets the source language type of a Const node. */
 void     set_Const_type(ir_node *node, ir_type *tp);
@@ -543,17 +499,11 @@ void     set_Const_type(ir_node *node, ir_type *tp);
 /** Returns non-zero if s symconst kind has a type attribute */
 #define SYMCONST_HAS_TYPE(kind) ((kind) <= symconst_type_align)
 
-/** Returns non-zero if s symconst kind has an ident attribute */
-#define SYMCONST_HAS_ID(kind) ((kind) == symconst_addr_name)
-
 /** Returns non-zero if s symconst kind has an entity attribute */
 #define SYMCONST_HAS_ENT(kind) ((kind) == symconst_addr_ent || (kind) == symconst_ofs_ent)
 
 /** Returns non-zero if s symconst kind has an enum_const attribute */
 #define SYMCONST_HAS_ENUM(kind) ((kind) == symconst_enum_const)
-
-/** Returns non-zero if s symconst kind has a label attribute */
-#define SYMCONST_HAS_LABEL(kind) ((kind) == symconst_label)
 
 /** Get the kind of the SymConst. */
 symconst_kind get_SymConst_kind(const ir_node *node);
@@ -563,10 +513,6 @@ void          set_SymConst_kind(ir_node *node, symconst_kind num);
 /** Only to access SymConst of kind type_tag or size.  Else assertion: */
 ir_type  *get_SymConst_type(const ir_node *node);
 void     set_SymConst_type(ir_node *node, ir_type *tp);
-
-/** Only to access SymConst of kind addr_name.  Else assertion: */
-ident   *get_SymConst_name(const ir_node *node);
-void     set_SymConst_name(ir_node *node, ident *name);
 
 /** Only to access SymConst of kind addr_ent.  Else assertion: */
 ir_entity *get_SymConst_entity(const ir_node *node);
@@ -583,15 +529,10 @@ union symconst_symbol get_SymConst_symbol(const ir_node *node);
 void                  set_SymConst_symbol(ir_node *node,
                                           union symconst_symbol sym);
 
-/** Only to access SymConst of kind symconst_label.  Else assertion: */
-ir_label_t get_SymConst_label(const ir_node *node);
-void       set_SymConst_label(ir_node *node, ir_label_t label);
-
-
 /** Access the type of the value represented by the SymConst.
  *
  *  Example: primitive type int for SymConst size. */
-ir_type *get_SymConst_value_type(ir_node *node);
+ir_type *get_SymConst_value_type(const ir_node *node);
 void    set_SymConst_value_type(ir_node *node, ir_type *tp);
 
 ir_node   *get_Sel_mem(const ir_node *node);
@@ -609,21 +550,22 @@ void       set_Sel_entity (ir_node *node, ir_entity *ent);
  * Projection numbers for result of Call node: use for Proj nodes!
  */
 typedef enum {
-	pn_Call_M_regular = pn_Generic_M_regular, /**< The memory result. */
+	pn_Call_M         = pn_Generic_M,         /**< The memory result. */
 	pn_Call_X_regular = pn_Generic_X_regular, /**< The control flow result when no exception occurs. */
 	pn_Call_X_except  = pn_Generic_X_except,  /**< The control flow result branching to the exception handler. */
 	pn_Call_T_result  = pn_Generic_other,     /**< The tuple containing all (0, 1, 2, ...) results. */
-	pn_Call_M_except,                         /**< The memory result in case the called method terminated with
-	                                               an exception. */
 	pn_Call_P_value_res_base,                 /**< A pointer to the memory region containing copied results
 	                                               passed by value (for compound result types). */
 	pn_Call_max                               /**< number of projections from a Call */
 } pn_Call;   /* Projection numbers for Call. */
-#define pn_Call_M pn_Call_M_regular
 
+/** Retrieve the memory input of a Call. */
 ir_node *get_Call_mem(const ir_node *node);
+/** Set the memory input of a Call. */
 void     set_Call_mem(ir_node *node, ir_node *mem);
+/** Retrieve the call address of a Call. */
 ir_node *get_Call_ptr(const ir_node *node);
+/** Set the call address of a Call. */
 void     set_Call_ptr(ir_node *node, ir_node *ptr);
 ir_node **get_Call_param_arr(ir_node *node);
 /** Gets the number of parameters of a call. */
@@ -633,11 +575,15 @@ ir_node *get_Call_param(const ir_node *node, int pos);
 /** Sets the call parameter at position pos. */
 void     set_Call_param(ir_node *node, int pos, ir_node *param);
 /** Gets the type of a call. */
-ir_type *get_Call_type(ir_node *node);
+ir_type *get_Call_type(const ir_node *node);
 /** Sets the type of a call. */
 void     set_Call_type(ir_node *node, ir_type *tp);
+/** Returns non-zero if this call can be a tail-call. */
+unsigned get_Call_tail_call(const ir_node *node);
+/** Sets the tail call attribute. */
+void     set_Call_tail_call(ir_node *node, unsigned tail_call);
 
-/** 
+/**
  * Returns non-zero if a Call is surely a self-recursive Call.
  * Beware: if this functions returns 0, the call might be self-recursive!
  */
@@ -674,9 +620,9 @@ void    remove_Call_callee_arr(ir_node *node);
  * Projection numbers for result of Builtin node: use for Proj nodes!
  */
 typedef enum {
-	pn_Builtin_M        = pn_Generic_M_regular, /**< The memory result. */
-	pn_Builtin_1_result = pn_Generic_other,     /**< first result. */
-	pn_Builtin_max                              /**< number of projections from a Builtin */
+	pn_Builtin_M        = pn_Generic_M,     /**< The memory result. */
+	pn_Builtin_1_result = pn_Generic_other, /**< first result. */
+	pn_Builtin_max                          /**< number of projections from a Builtin */
 } pn_Builtin;   /* Projection numbers for Builtin. */
 
 ir_node         *get_Builtin_mem(const ir_node *node);
@@ -691,15 +637,19 @@ ir_node         *get_Builtin_param(const ir_node *node, int pos);
 /** Sets the Builtin parameter at position pos. */
 void            set_Builtin_param(ir_node *node, int pos, ir_node *param);
 /** Gets the type of a builtin. */
-ir_type         *get_Builtin_type(ir_node *node);
+ir_type         *get_Builtin_type(const ir_node *node);
 /** Sets the type of a Builtin. */
 void            set_Builtin_type(ir_node *node, ir_type *tp);
 /** Returns a human readable string for the ir_builtin_kind. */
 const char *get_builtin_kind_name(ir_builtin_kind kind);
 
+/** Retrieve the call address of a CallBegin. */
 ir_node  *get_CallBegin_ptr(const ir_node *node);
+/** Set the call address of a CallBegin. */
 void      set_CallBegin_ptr(ir_node *node, ir_node *ptr);
+/** Retrieve the original Call node of a CallBegin. */
 ir_node  *get_CallBegin_call(const ir_node *node);
+/** Set the original Call node of a CallBegin. */
 void      set_CallBegin_call(ir_node *node, ir_node *call);
 
 /* For unary and binary arithmetic operations the access to the
@@ -763,7 +713,7 @@ void     set_Quot_resmode(ir_node *node, ir_mode *mode);
  * Projection numbers for Quot: use for Proj nodes!
  */
 typedef enum {
-	pn_Quot_M         = pn_Generic_M_regular, /**< Memory result. */
+	pn_Quot_M         = pn_Generic_M,         /**< Memory result. */
 	pn_Quot_X_regular = pn_Generic_X_regular, /**< Execution result if no exception occurred. */
 	pn_Quot_X_except  = pn_Generic_X_except,  /**< Execution result if exception occurred. */
 	pn_Quot_res       = pn_Generic_other,     /**< Result of computation. */
@@ -783,7 +733,7 @@ void     set_DivMod_resmode(ir_node *node, ir_mode *mode);
  * Projection numbers for DivMod: use for Proj nodes!
  */
 typedef enum {
-	pn_DivMod_M         = pn_Generic_M_regular, /**< Memory result. */
+	pn_DivMod_M         = pn_Generic_M,         /**< Memory result. */
 	pn_DivMod_X_regular = pn_Generic_X_regular, /**< Execution result if no exception occurred. */
 	pn_DivMod_X_except  = pn_Generic_X_except,  /**< Execution result if exception occurred. */
 	pn_DivMod_res_div   = pn_Generic_other,     /**< Result of computation a / b. */
@@ -806,7 +756,7 @@ void     set_Div_no_remainder(ir_node *node, int no_remainder);
  * Projection numbers for Div: use for Proj nodes!
  */
 typedef enum {
-	pn_Div_M         = pn_Generic_M_regular, /**< Memory result. */
+	pn_Div_M         = pn_Generic_M,         /**< Memory result. */
 	pn_Div_X_regular = pn_Generic_X_regular, /**< Execution result if no exception occurred. */
 	pn_Div_X_except  = pn_Generic_X_except,  /**< Execution result if exception occurred. */
 	pn_Div_res       = pn_Generic_other,     /**< Result of computation. */
@@ -826,7 +776,7 @@ void     set_Mod_resmode(ir_node *node, ir_mode *mode);
  * Projection numbers for Mod: use for Proj nodes!
  */
 typedef enum {
-	pn_Mod_M         = pn_Generic_M_regular, /**< Memory result.    */
+	pn_Mod_M         = pn_Generic_M,         /**< Memory result.    */
 	pn_Mod_X_regular = pn_Generic_X_regular, /**< Execution result if no exception occurred. */
 	pn_Mod_X_except  = pn_Generic_X_except,  /**< Execution result if exception occurred. */
 	pn_Mod_res       = pn_Generic_other,     /**< Result of computation. */
@@ -904,7 +854,7 @@ void     set_Conv_strict(ir_node *node, int flag);
  */
 ir_node *get_Cast_op(const ir_node *node);
 void     set_Cast_op(ir_node *node, ir_node *op);
-ir_type *get_Cast_type(ir_node *node);
+ir_type *get_Cast_type(const ir_node *node);
 void     set_Cast_type(ir_node *node, ir_type *to_tp);
 
 /** Checks for upcast.
@@ -938,19 +888,25 @@ ir_node **get_Phi_preds_arr(ir_node *node);
 int       get_Phi_n_preds(const ir_node *node);
 ir_node  *get_Phi_pred(const ir_node *node, int pos);
 void      set_Phi_pred(ir_node *node, int pos, ir_node *pred);
+/**
+ * Returns the next element of a block phi list.
+ */
 ir_node  *get_Phi_next(const ir_node *phi);
+/**
+ * Sets the next link of a block Phi list.
+ */
 void      set_Phi_next(ir_node *phi, ir_node *next);
 
-ir_node  *get_Filter_pred(ir_node *node);
+ir_node  *get_Filter_pred(const ir_node *node);
 void      set_Filter_pred(ir_node *node, ir_node *pred);
-long      get_Filter_proj(ir_node *node);
+long      get_Filter_proj(const ir_node *node);
 void      set_Filter_proj(ir_node *node, long proj);
 /* set the interprocedural predecessors, ...d_arr uses current_ir_graph.
  * @@@ Maybe better:  arity is zero if no cg preds. */
 void     set_Filter_cg_pred_arr(ir_node * node, int arity, ir_node ** in);
 void     set_Filter_cg_pred(ir_node * node, int pos, ir_node * pred);
-int      get_Filter_n_cg_preds(ir_node *node);
-ir_node *get_Filter_cg_pred(ir_node *node, int pos);
+int      get_Filter_n_cg_preds(const ir_node *node);
+ir_node *get_Filter_cg_pred(const ir_node *node, int pos);
 
 /** Return true if parameter is a memory operation.
  *
@@ -967,7 +923,7 @@ void     set_memop_ptr(ir_node *node, ir_node *ptr);
  * Projection numbers for Load: use for Proj nodes!
  */
 typedef enum {
-	pn_Load_M         = pn_Generic_M_regular, /**< Memory result. */
+	pn_Load_M         = pn_Generic_M,         /**< Memory result. */
 	pn_Load_X_regular = pn_Generic_X_regular, /**< Execution result if no exception occurred. */
 	pn_Load_X_except  = pn_Generic_X_except,  /**< Execution result if exception occurred. */
 	pn_Load_res       = pn_Generic_other,     /**< Result of load operation. */
@@ -989,7 +945,7 @@ void           set_Load_align(ir_node *node, ir_align align);
  * Projection numbers for Store: use for Proj nodes!
  */
 typedef enum {
-	pn_Store_M         = pn_Generic_M_regular, /**< Memory result. */
+	pn_Store_M         = pn_Generic_M,         /**< Memory result. */
 	pn_Store_X_regular = pn_Generic_X_regular, /**< Execution result if no exception occurred. */
 	pn_Store_X_except  = pn_Generic_X_except,  /**< Execution result if exception occurred. */
 	pn_Store_max       = pn_Generic_other      /**< number of projections from a Store */
@@ -1010,7 +966,7 @@ void           set_Store_align(ir_node *node, ir_align align);
  * Projection numbers for Alloc: use for Proj nodes!
  */
 typedef enum {
-	pn_Alloc_M         = pn_Generic_M_regular, /**< Memory result. */
+	pn_Alloc_M         = pn_Generic_M,         /**< Memory result. */
 	pn_Alloc_X_regular = pn_Generic_X_regular, /**< Execution result if no exception occurred. */
 	pn_Alloc_X_except  = pn_Generic_X_except,  /**< Execution result if exception occurred. */
 	pn_Alloc_res       = pn_Generic_other,     /**< Result of allocation. */
@@ -1019,9 +975,9 @@ typedef enum {
 
 ir_node *get_Alloc_mem(const ir_node *node);
 void     set_Alloc_mem(ir_node *node, ir_node *mem);
-ir_node *get_Alloc_size(const ir_node *node);
-void     set_Alloc_size(ir_node *node, ir_node *size);
-ir_type *get_Alloc_type(ir_node *node);
+ir_node *get_Alloc_count(const ir_node *node);
+void     set_Alloc_count(ir_node *node, ir_node *count);
+ir_type *get_Alloc_type(const ir_node *node);
 void     set_Alloc_type(ir_node *node, ir_type *tp);
 
 ir_where_alloc get_Alloc_where(const ir_node *node);
@@ -1033,7 +989,7 @@ ir_node *get_Free_ptr(const ir_node *node);
 void     set_Free_ptr(ir_node *node, ir_node *ptr);
 ir_node *get_Free_size(const ir_node *node);
 void     set_Free_size(ir_node *node, ir_node *size);
-ir_type *get_Free_type(ir_node *node);
+ir_type *get_Free_type(const ir_node *node);
 void     set_Free_type(ir_node *node, ir_type *tp);
 
 ir_where_alloc get_Free_where(const ir_node *node);
@@ -1048,7 +1004,7 @@ void      add_Sync_pred(ir_node *node, ir_node *pred);
 /** Returns the source language type of a Proj node.
  * Must be an atomic type.  Mode of type must be mode of node.
  */
-ir_type  *get_Proj_type(ir_node *node);
+ir_type  *get_Proj_type(const ir_node *node);
 
 /** Return the predecessor of a Proj node. */
 ir_node  *get_Proj_pred(const ir_node *node);
@@ -1096,12 +1052,10 @@ void     set_Mux_true(ir_node *node, ir_node *ir_true);
  * Projection numbers for result of CopyB node: use for Proj nodes!
  */
 typedef enum {
-	pn_CopyB_M_regular = pn_Generic_M_regular, /**< The memory result. */
+	pn_CopyB_M_regular = pn_Generic_M,         /**< The memory result. */
 	pn_CopyB_X_regular = pn_Generic_X_regular, /**< Execution result if no exception occurred. */
 	pn_CopyB_X_except  = pn_Generic_X_except,  /**< The control flow result branching to the exception handler */
-	pn_CopyB_M_except  = pn_Generic_other,     /**< The memory result in case the runtime function terminated with
-	                                                an exception */
-	pn_CopyB_max                               /**< number of projections from a CopyB */
+	pn_CopyB_max       = pn_Generic_other      /**< number of projections from a CopyB */
 } pn_CopyB;   /* Projection numbers for CopyB. */
 #define pn_CopyB_M pn_CopyB_M_regular
 
@@ -1111,25 +1065,23 @@ ir_node *get_CopyB_dst(const ir_node *node);
 void     set_CopyB_dst(ir_node *node, ir_node *dst);
 ir_node *get_CopyB_src(const ir_node *node);
 void     set_CopyB_src(ir_node *node, ir_node *src);
-ir_type *get_CopyB_type(ir_node *node);
+ir_type *get_CopyB_type(const ir_node *node);
 void     set_CopyB_type(ir_node *node, ir_type *data_type);
 
 /**
  * Projection numbers for result of InstOf node: use for Proj nodes!
  */
 typedef enum {
-	pn_InstOf_M_regular = pn_Generic_M_regular, /**< The memory result. */
+	pn_InstOf_M_regular = pn_Generic_M,         /**< The memory result. */
 	pn_InstOf_X_regular = pn_Generic_X_regular, /**< Execution result if no exception occurred. */
 	pn_InstOf_X_except  = pn_Generic_X_except,  /**< The control flow result branching to the exception handler */
 	pn_InstOf_res       = pn_Generic_other,     /**< The checked object pointer. */
-	pn_InstOf_M_except,                         /**< The memory result in case the runtime function terminated with
-	                                                 an exception */
 	pn_InstOf_max                               /**< number of projections from an InstOf */
 } pn_InstOf;
 #define pn_InstOf_M pn_InstOf_M_regular
 
 /** InstOf access. */
-ir_type *get_InstOf_type(ir_node *node);
+ir_type *get_InstOf_type(const ir_node *node);
 void    set_InstOf_type(ir_node *node, ir_type *type);
 ir_node *get_InstOf_store(const ir_node *node);
 void    set_InstOf_store(ir_node *node, ir_node *obj);
@@ -1140,7 +1092,7 @@ void    set_InstOf_obj(ir_node *node, ir_node *obj);
  * Projection numbers for Raise.
  */
 typedef enum {
-	pn_Raise_M = pn_Generic_M_regular,  /**< The Memory result. */
+	pn_Raise_M = pn_Generic_M,          /**< The Memory result. */
 	pn_Raise_X = pn_Generic_X_regular,  /**< The control flow to the exception handler. */
 	pn_Raise_max                        /**< number of projections from a Raise */
 } pn_Raise;  /* Projection numbers for Raise. */
@@ -1154,7 +1106,7 @@ void     set_Raise_exo_ptr(ir_node *node, ir_node *exoptr);
  * Projection numbers for result of Bound node: use for Proj nodes!
  */
 typedef enum {
-	pn_Bound_M         = pn_Generic_M_regular, /**< The memory result. */
+	pn_Bound_M         = pn_Generic_M,         /**< The memory result. */
 	pn_Bound_X_regular = pn_Generic_X_regular, /**< Execution result if no exception occurred. */
 	pn_Bound_X_except  = pn_Generic_X_except,  /**< The control flow result branching to the exception handler */
 	pn_Bound_res       = pn_Generic_other,     /**< The checked index. */
@@ -1183,18 +1135,27 @@ void     set_Pin_op(ir_node *pin, ir_node *node);
 
 /** Return the assembler text of an ASM pseudo node. */
 ident *get_ASM_text(const ir_node *node);
+/** Set assembler text of ASM node */
+void set_ASM_text(ir_node *node, ident *text);
 /** Return the number of input constraints for an ASM node. */
 int get_ASM_n_input_constraints(const ir_node *node);
 /** Return the input constraints for an ASM node. */
-const ir_asm_constraint *get_ASM_input_constraints(const ir_node *node);
+ir_asm_constraint *get_ASM_input_constraints(const ir_node *node);
+/** Set input constraints for ASM node. */
+void set_ASM_input_constraints(ir_node *node, ir_asm_constraint *constraints);
 /** Return the number of output constraints for an ASM node.  */
 int get_ASM_n_output_constraints(const ir_node *node);
 /** Return the output constraints for an ASM node. */
-const ir_asm_constraint *get_ASM_output_constraints(const ir_node *node);
+ir_asm_constraint *get_ASM_output_constraints(const ir_node *node);
+/** Set output constraints for ASM node. (note: has to be a firm array) */
+void set_ASM_output_constraints(ir_node *node, ir_asm_constraint *constraints);
 /** Return the number of clobbered registers for an ASM node.  */
 int get_ASM_n_clobbers(const ir_node *node);
 /** Return the list of clobbered registers for an ASM node. */
 ident **get_ASM_clobbers(const ir_node *node);
+/** Set list of clobbered register for ASM node (note: has to be a firm
+ *  array) */
+void set_ASM_clobbers(ir_node *node, ident **clobbers);
 
 /*
  *
@@ -1234,6 +1195,12 @@ int      is_Bad(const ir_node *node);
 int      is_NoMem(const ir_node *node);
 /** Returns true if node is a Start node. */
 int      is_Start(const ir_node *node);
+/** Returns true if node is an End node. */
+int      is_End(const ir_node *node);
+/** Returns true if node is an EndExcept node. */
+int      is_EndExcept(const ir_node *node);
+/** Returns true if node is an EndReg node. */
+int      is_EndReg(const ir_node *node);
 /** Returns true if node is a Minus node. */
 int      is_Minus(const ir_node *node);
 /** Returns true if node is a Abs node. */
@@ -1328,8 +1295,16 @@ int      is_IJmp(const ir_node *node);
 int      is_Raise(const ir_node *node);
 /** Returns true if a node is an ASM node. */
 int      is_ASM(const ir_node *node);
-/** Returns true if a node is an Dummy node. */
+/** Returns true if a node is a Dummy node. */
 int      is_Dummy(const ir_node *node);
+/** Returns true if a node is an Anchor node */
+int      is_Anchor(const ir_node *node);
+/** Returns true if a node is a Borrow node */
+int      is_Borrow(const ir_node *node);
+/** Returns true if a node is a Break node */
+int      is_Break(const ir_node *node);
+/** Returns true if a node is an instff node */
+int      is_InstOf(const ir_node *node);
 /** Returns true if node is a Proj node or a Filter node in INTRA-procedural view. */
 int      is_Proj(const ir_node *node);
 /** Returns true if node is a Filter node. */
@@ -1354,6 +1329,21 @@ ir_mode *get_divop_resmod(const ir_node *node);
 /** Returns true if the operation is a forking control flow
  *  operation: Cond. */
 int is_irn_forking(const ir_node *node);
+
+/**
+ * Copies attributes stored in the old node to a new node.
+ * Assumes both have the same opcode and sufficient size.
+ *
+ * @param irg       The irg of the new_node (get_irn_irg on it might not work
+ *                  yet)
+ * @param old_node  the node where the attributes are copied from
+ * @param new_node  node the attributes get copies to.
+ *
+ * This copies all essential information to the new node. It does not copy
+ * temporal or calculated information like visited flags or results of dominance
+ * or loop calculations
+ */
+void copy_node_attr(ir_graph *irg, const ir_node *old_node, ir_node *new_node);
 
 /** Return the type associated with the value produced by n
  *  if the node remarks this type as it is the case for
@@ -1401,6 +1391,11 @@ int is_irn_machine_operand(const ir_node *node);
  * Returns non-zero for nodes that have the n'th user machine flag set.
  */
 int is_irn_machine_user(const ir_node *node, unsigned n);
+
+/**
+ * Returns non-zero for nodes that are CSE neutral to its users.
+ */
+int is_irn_cse_neutral(const ir_node *node);
 
 /**
  * A type to express conditional jump predictions.

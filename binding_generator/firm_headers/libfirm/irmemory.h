@@ -22,7 +22,7 @@
  * @brief    Memory disambiguator
  * @author   Michael Beck
  * @date     27.12.2006
- * @version  $Id: irmemory.h 25793 2009-04-06 11:19:36Z beck $
+ * @version  $Id: irmemory.h 26419 2009-08-24 19:17:56Z buchwald $
  */
 #ifndef FIRM_ANA_IRMEMORY_H
 #define FIRM_ANA_IRMEMORY_H
@@ -226,14 +226,14 @@ unsigned get_irg_memory_disambiguator_options(const ir_graph *irg);
  * Set the memory disambiguator options for a graph.
  *
  * @param irg      the graph
- * @param option   a set of options
+ * @param options  a set of options
  */
 void set_irg_memory_disambiguator_options(ir_graph *irg, unsigned options);
 
 /**
  * Set the global disambiguator options for all graphs not having local options.
  *
- * @param option   a set of options
+ * @param options  a set of options
  */
 void set_irp_memory_disambiguator_options(unsigned options);
 
@@ -243,5 +243,14 @@ void set_irp_memory_disambiguator_options(unsigned options);
  * never taken AND its visibility is visibility_local, then it's private.
  */
 void mark_private_methods(void);
+
+/**
+ * Creates an ir_prog pass for mark_private_methods().
+ *
+ * @param name     the name of this pass or NULL
+ *
+ * @return  the newly created ir_prog pass
+ */
+ir_prog_pass_t *mark_private_methods_pass(const char *name);
 
 #endif /* FIRM_ANA_IRMEMORY_H */

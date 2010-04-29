@@ -21,7 +21,7 @@
  * @file
  * @brief       Hash function for pointers
  * @author      Michael Beck, Sebastian Hack
- * @version     $Id: hashptr.h 22707 2008-10-11 18:52:18Z matze $
+ * @version     $Id: hashptr.h 26956 2010-01-13 15:41:28Z matze $
  */
 #ifndef FIRM_ADT_HASHPTR_H
 #define FIRM_ADT_HASHPTR_H
@@ -64,6 +64,11 @@ static inline unsigned firm_fnv_hash_str(const char *data)
  */
 #define HASH_PTR(ptr)    ((unsigned)(((char *) (ptr) - (char *)0) >> 3))
 
+static inline unsigned hash_ptr(const void *ptr)
+{
+	return HASH_PTR(ptr);
+}
+
 /**
  * Hash a string.
  * @param str The string (can be const).
@@ -78,11 +83,11 @@ static inline unsigned firm_fnv_hash_str(const char *data)
 
 static inline unsigned _hash_combine(unsigned x, unsigned y)
 {
-  unsigned hash = _FIRM_FNV_TIMES_PRIME(_FIRM_FNV_OFFSET_BASIS);
-  hash ^= x;
-  hash  = _FIRM_FNV_TIMES_PRIME(hash);
-  hash ^= y;
-  return hash;
+	unsigned hash = _FIRM_FNV_TIMES_PRIME(_FIRM_FNV_OFFSET_BASIS);
+	hash ^= x;
+	hash  = _FIRM_FNV_TIMES_PRIME(hash);
+	hash ^= y;
+	return hash;
 }
 
 #ifdef _MSC_VER

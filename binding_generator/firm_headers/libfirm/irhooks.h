@@ -21,7 +21,7 @@
  * @file
  * @brief   Generic hooks for various libFirm functions.
  * @author  Michael Beck
- * @version $Id: irhooks.h 23155 2008-10-24 01:37:03Z beck $
+ * @version $Id: irhooks.h 26382 2009-08-19 08:31:48Z mallon $
  */
 #ifndef FIRM_IR_IRHOOKS_H
 #define FIRM_IR_IRHOOKS_H
@@ -284,8 +284,5 @@ extern hook_entry_t *hooks[hook_last];
 #define hook_new_entity(ent)              hook_exec(hook_new_entity, (ctx, ent))
 #define hook_new_type(tp)                 hook_exec(hook_new_type, (ctx, tp))
 #define hook_node_info(F, node)           hook_exec(hook_node_info, (ctx, F, node))
-
-/* the initializer, move to hooks_t.h some day */
-int firm_init_hooks(void);
 
 #endif

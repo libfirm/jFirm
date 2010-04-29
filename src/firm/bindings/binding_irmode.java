@@ -53,19 +53,18 @@ public interface binding_irmode extends Library {
 		}
 	}
 	public static enum mtp_additional_property {
-		mtp_no_property(0),
-		mtp_property_const(1),
-		mtp_property_pure(2),
-		mtp_property_noreturn(4),
-		mtp_property_nothrow(8),
-		mtp_property_naked(16),
-		mtp_property_malloc(32),
-		mtp_property_weak(64),
-		mtp_property_returns_twice(128),
-		mtp_property_intrinsic(256),
-		mtp_property_runtime(512),
-		mtp_property_private(1024),
-		mtp_property_has_loop(2048),
+		mtp_no_property(0x00000000),
+		mtp_property_const(0x00000001),
+		mtp_property_pure(0x00000002),
+		mtp_property_noreturn(0x00000004),
+		mtp_property_nothrow(0x00000008),
+		mtp_property_naked(0x00000010),
+		mtp_property_malloc(0x00000020),
+		mtp_property_returns_twice(0x00000040),
+		mtp_property_intrinsic(0x00000080),
+		mtp_property_runtime(0x00000100),
+		mtp_property_private(0x00000200),
+		mtp_property_has_loop(0x00000400),
 		mtp_property_inherited((1<<31));
 		public final int val;
 		private static class C { static int next_val; }
@@ -90,11 +89,9 @@ public interface binding_irmode extends Library {
 		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
-		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const(),
-		symconst_label();
+		symconst_enum_const();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -206,53 +203,11 @@ public interface binding_irmode extends Library {
 			return null;
 		}
 	}
-	public static enum ir_modecode {
-		irm_BB(),
-		irm_X(),
-		irm_F(),
-		irm_D(),
-		irm_E(),
-		irm_Bs(),
-		irm_Bu(),
-		irm_Hs(),
-		irm_Hu(),
-		irm_Is(),
-		irm_Iu(),
-		irm_Ls(),
-		irm_Lu(),
-		irm_LLs(),
-		irm_LLu(),
-		irm_P(),
-		irm_b(),
-		irm_M(),
-		irm_T(),
-		irm_ANY(),
-		irm_BAD(),
-		irm_max();
-		public final int val;
-		private static class C { static int next_val; }
-
-		ir_modecode(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		ir_modecode() {
-			this.val = C.next_val++;
-		}
-		
-		public static ir_modecode getEnum(int val) {
-			for(ir_modecode entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
 	public static enum ir_mode_sort_helper {
-		irmsh_is_num(16),
-		irmsh_is_data(32),
-		irmsh_is_datab(64),
-		irmsh_is_dataM(128);
+		irmsh_is_num(0x10),
+		irmsh_is_data(0x20),
+		irmsh_is_datab(0x40),
+		irmsh_is_dataM(0x80);
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -329,6 +284,8 @@ public interface binding_irmode extends Library {
 	}
 	Pointer __builtin_alloca();
 	double __builtin_huge_val();
+	float __builtin_huge_valf();
+	double __builtin_huge_vall();
 	double __builtin_inf();
 	float __builtin_inff();
 	double __builtin_infl();
@@ -346,11 +303,24 @@ public interface binding_irmode extends Library {
 	int __builtin_parity();
 	float __builtin_prefetch(Object ... args);
 	void __builtin_trap();
+	com.sun.jna.NativeLong __builtin_object_size();
+	void __builtin_abort();
+	int __builtin_abs();
+	com.sun.jna.NativeLong __builtin_labs();
+	long __builtin_llabs();
+	Pointer __builtin_memcpy();
+	Pointer __builtin___memcpy_chk();
+	void __builtin_exit();
+	Pointer __builtin_malloc();
+	int __builtin_memcmp();
+	Pointer __builtin_memset();
+	com.sun.jna.NativeLong __builtin_strlen();
+	int __builtin_strcmp();
+	String __builtin_strcpy();
 	String get_mode_arithmetic_name(/* ir_mode_arithmetic */int ari);
 	Pointer new_ir_mode(String name, /* ir_mode_sort */int sort, int bit_size, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
 	Pointer new_ir_vector_mode(String name, /* ir_mode_sort */int sort, int bit_size, int num_of_elem, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
 	int is_mode(Pointer thing);
-	/* ir_modecode */int get_mode_modecode(Pointer mode);
 	Pointer get_mode_ident(Pointer mode);
 	String get_mode_name(Pointer mode);
 	/* ir_mode_sort */int get_mode_sort(Pointer mode);
@@ -418,4 +388,5 @@ public interface binding_irmode extends Library {
 	Pointer get_reference_mode_unsigned_eq(Pointer mode);
 	void set_reference_mode_unsigned_eq(Pointer ref_mode, Pointer int_mode);
 	int is_reinterpret_cast(Pointer src, Pointer dst);
+	Pointer get_type_for_mode(Pointer mode);
 }

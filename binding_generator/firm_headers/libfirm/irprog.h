@@ -22,8 +22,8 @@
  * @brief   Entry point to the representation of a whole program.
  * @author  Goetz Lindenmaier
  * @date    2000
- * @version $Id: irprog.h 25956 2009-05-14 18:18:11Z beck $
- * @summary
+ * @version $Id: irprog.h 27143 2010-02-13 11:17:42Z mallon $
+ * @brief
  *  Intermediate Representation (IR) of a program.
  *
  *  This file defines a construct that keeps all information about a
@@ -61,25 +61,8 @@ typedef enum ir_segment_t {
 	/** like constructors, but functions are executed on module exit */
 	IR_SEGMENT_DESTRUCTORS,
 
-	IR_SEGMENT_COUNT
+	IR_SEGMENT_LAST = IR_SEGMENT_DESTRUCTORS
 } ir_segment_t;
-
-/**
- * Data structure that holds central information about a program
- * or a module.
- * One irp is created by libFirm on construction, so irp should never be NULL.
- *
- * - main_irg:  The ir graph that is the entry point to the program.
- *              (Anything not reachable from here may be optimized away
- *              if this irp represents a whole program.
- * - irg:       List of all ir graphs in the program or module.
- * - type:      A list containing all types known to the translated program.
- *              Some types can have several entries in this list (as a result of
- *              using exchange_types()).
- * - glob_type: The unique global type that is owner of all global entities
- *              of this module.
- */
-typedef struct ir_prog ir_prog;
 
 /**
  * A variable pointing to the current irp (program or module).
@@ -113,7 +96,7 @@ ir_prog *get_irp(void);
  * Creates a new ir_prog (a module or compilation unit),
  * returns it and sets irp with it.
  *
- * @param module_name  the name of this irp (module)
+ * @param name  the name of this irp (module)
  */
 ir_prog *new_ir_prog(const char *name);
 
@@ -177,6 +160,12 @@ ir_graph *get_irp_allirg(int pos);
 ir_type *get_segment_type(ir_segment_t segment);
 
 /**
+ * @brief Changes a segment segment type for the program.
+ * (use with care)
+ */
+void set_segment_type(ir_segment_t segment, ir_type *new_type);
+
+/**
  * Returns the "global" type of the irp.
  * Upon creation this is an empty class type.
  * This is a convenience function for get_segment_type(IR_SEGMENT_GLOBAL)
@@ -186,6 +175,7 @@ ir_type *get_glob_type(void);
 /**
  * Returns the "thread local storage" type of the irp.
  * Upon creation this is an empty struct type.
+ * This is a convenience function for get_segment_type(IR_SEGMENT_THREAD_LOCAL)
  */
 ir_type *get_tls_type(void);
 
@@ -196,13 +186,22 @@ void add_irp_type(ir_type *typ);
     shrinks the list by one. */
 void remove_irp_type(ir_type *typ);
 
-/** Returns the number of all types in the irp. */
+/**
+ * Returns the number of all types in the irp.
+ * @deprecated
+ */
 int get_irp_n_types(void);
 
-/** Returns the type at position pos in the irp. */
+/**
+ * Returns the type at position pos in the irp.
+ * @deprecated
+ */
 ir_type *get_irp_type(int pos);
 
-/** Overwrites the type at position pos with another type. */
+/**
+ * Overwrites the type at position pos with another type.
+ * @deprecated
+ */
 void set_irp_type(int pos, ir_type *typ);
 
 /** Returns the number of all modes in the irp. */
@@ -256,6 +255,15 @@ void            set_irp_phase_state(irg_phase_state s);
 irg_outs_state get_irp_ip_outs_state(void);
 void           set_irp_ip_outs_inconsistent(void);
 
+/**
+ * Creates an ir_prog pass for set_irp_phase_state().
+ *
+ * @param name   the name of this pass or NULL
+ * @param state  the state to set
+ *
+ * @return  the newly created ir_prog pass
+ */
+ir_prog_pass_t *set_irp_phase_state_pass(const char *name, irg_phase_state state);
 
 irg_callee_info_state get_irp_callee_info_state(void);
 void                  set_irp_callee_info_state(irg_callee_info_state s);

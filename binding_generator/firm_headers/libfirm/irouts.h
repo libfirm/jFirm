@@ -22,7 +22,7 @@
  * @brief    Compute and access out edges (also called def-use edges).
  * @author   Goetz Lindenmaier, Michael Beck
  * @date     1.2002
- * @version  $Id: irouts.h 22144 2008-09-21 17:41:33Z matze $
+ * @version  $Id: irouts.h 27442 2010-04-26 10:24:18Z mallon $
  */
 #ifndef FIRM_ANA_IROUTS_H
 #define FIRM_ANA_IROUTS_H
@@ -44,14 +44,14 @@ int      get_irn_n_outs(const ir_node *node);
 /** Get the User of a node from the Def-Use edge at position pos. */
 ir_node *get_irn_out(const ir_node *def, int pos);
 
-/** 
+/**
  * Get the User and its input position from the Def-Use edge of def
  * at position pos.
  */
 ir_node *get_irn_out_ex(const ir_node *def, int pos, int *in_pos);
 
-/** 
- * Set the User at position pos. 
+/**
+ * Set the User at position pos.
  *
  * @param def     the Def node
  * @param pos     the number of the Def-Use edge tat is modified
@@ -91,7 +91,7 @@ void irg_out_block_walk(ir_node *node,
 /**
  * returns 1 if outs have been computed for a node, 0 otherwise.
  *
- *  this is usefull to detect newly created nodes that have no outs set yet
+ *  this is useful to detect newly created nodes that have no outs set yet
  */
 int get_irn_outs_computed(const ir_node *node);
 

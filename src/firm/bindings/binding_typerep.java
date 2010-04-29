@@ -53,19 +53,18 @@ public interface binding_typerep extends Library {
 		}
 	}
 	public static enum mtp_additional_property {
-		mtp_no_property(0),
-		mtp_property_const(1),
-		mtp_property_pure(2),
-		mtp_property_noreturn(4),
-		mtp_property_nothrow(8),
-		mtp_property_naked(16),
-		mtp_property_malloc(32),
-		mtp_property_weak(64),
-		mtp_property_returns_twice(128),
-		mtp_property_intrinsic(256),
-		mtp_property_runtime(512),
-		mtp_property_private(1024),
-		mtp_property_has_loop(2048),
+		mtp_no_property(0x00000000),
+		mtp_property_const(0x00000001),
+		mtp_property_pure(0x00000002),
+		mtp_property_noreturn(0x00000004),
+		mtp_property_nothrow(0x00000008),
+		mtp_property_naked(0x00000010),
+		mtp_property_malloc(0x00000020),
+		mtp_property_returns_twice(0x00000040),
+		mtp_property_intrinsic(0x00000080),
+		mtp_property_runtime(0x00000100),
+		mtp_property_private(0x00000200),
+		mtp_property_has_loop(0x00000400),
 		mtp_property_inherited((1<<31));
 		public final int val;
 		private static class C { static int next_val; }
@@ -90,11 +89,9 @@ public interface binding_typerep extends Library {
 		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
-		symconst_addr_name(),
 		symconst_addr_ent(),
 		symconst_ofs_ent(),
-		symconst_enum_const(),
-		symconst_label();
+		symconst_enum_const();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -207,9 +204,10 @@ public interface binding_typerep extends Library {
 		}
 	}
 	public static enum ir_visibility {
-		visibility_local(),
-		visibility_external_visible(),
-		visibility_external_allocated();
+		ir_visibility_default(),
+		ir_visibility_local(),
+		ir_visibility_external(),
+		ir_visibility_private();
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -229,71 +227,26 @@ public interface binding_typerep extends Library {
 			return null;
 		}
 	}
-	public static enum ir_peculiarity {
-		peculiarity_description(),
-		peculiarity_inherited(),
-		peculiarity_existent();
+	public static enum ir_linkage {
+		IR_LINKAGE_DEFAULT(0),
+		IR_LINKAGE_CONSTANT((1<<0)),
+		IR_LINKAGE_WEAK((1<<1)),
+		IR_LINKAGE_GARBAGE_COLLECT((1<<2)),
+		IR_LINKAGE_MERGE((1<<3)),
+		IR_LINKAGE_HIDDEN_USER((1<<4));
 		public final int val;
 		private static class C { static int next_val; }
 
-		ir_peculiarity(int val) {
+		ir_linkage(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		ir_peculiarity() {
+		ir_linkage() {
 			this.val = C.next_val++;
 		}
 		
-		public static ir_peculiarity getEnum(int val) {
-			for(ir_peculiarity entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	public static enum ir_allocation {
-		allocation_automatic(),
-		allocation_parameter(),
-		allocation_dynamic(),
-		allocation_static();
-		public final int val;
-		private static class C { static int next_val; }
-
-		ir_allocation(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		ir_allocation() {
-			this.val = C.next_val++;
-		}
-		
-		public static ir_allocation getEnum(int val) {
-			for(ir_allocation entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	public static enum ir_variability {
-		variability_uninitialized(),
-		variability_initialized(),
-		variability_part_constant(),
-		variability_constant();
-		public final int val;
-		private static class C { static int next_val; }
-
-		ir_variability(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		ir_variability() {
-			this.val = C.next_val++;
-		}
-		
-		public static ir_variability getEnum(int val) {
-			for(ir_variability entry : values()) {
+		public static ir_linkage getEnum(int val) {
+			for(ir_linkage entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -338,28 +291,6 @@ public interface binding_typerep extends Library {
 		
 		public static ir_align getEnum(int val) {
 			for(ir_align entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	public static enum ir_stickyness {
-		stickyness_unsticky(),
-		stickyness_sticky();
-		public final int val;
-		private static class C { static int next_val; }
-
-		ir_stickyness(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		ir_stickyness() {
-			this.val = C.next_val++;
-		}
-		
-		public static ir_stickyness getEnum(int val) {
-			for(ir_stickyness entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -452,10 +383,10 @@ public interface binding_typerep extends Library {
 		tpo_enumeration(),
 		tpo_pointer(),
 		tpo_primitive(),
-		tpo_id(),
+		tpo_code(),
 		tpo_none(),
 		tpo_unknown(),
-		tpo_max();
+		tpo_last(tp_opcode.tpo_unknown.val);
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -598,14 +529,14 @@ public interface binding_typerep extends Library {
 		}
 	}
 	public static enum calling_convention {
-		cc_reg_param(16777216),
-		cc_last_on_top(33554432),
-		cc_callee_clear_stk(67108864),
-		cc_this_call(134217728),
-		cc_compound_ret(268435456),
-		cc_frame_on_caller_stk(536870912),
-		cc_fpreg_param(1073741824),
-		cc_bits((255<<24));
+		cc_reg_param(0x01000000),
+		cc_last_on_top(0x02000000),
+		cc_callee_clear_stk(0x04000000),
+		cc_this_call(0x08000000),
+		cc_compound_ret(0x10000000),
+		cc_frame_on_caller_stk(0x20000000),
+		cc_fpreg_param(0x40000000),
+		cc_bits((0xFF<<24));
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -625,8 +556,57 @@ public interface binding_typerep extends Library {
 			return null;
 		}
 	}
+	public static enum ir_allocation {
+		allocation_automatic(),
+		allocation_parameter(),
+		allocation_dynamic(),
+		allocation_static();
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_allocation(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_allocation() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_allocation getEnum(int val) {
+			for(ir_allocation entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum ir_peculiarity {
+		peculiarity_existent(),
+		peculiarity_description(),
+		peculiarity_inherited();
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_peculiarity(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_peculiarity() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_peculiarity getEnum(int val) {
+			for(ir_peculiarity entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
 	Pointer __builtin_alloca();
 	double __builtin_huge_val();
+	float __builtin_huge_valf();
+	double __builtin_huge_vall();
 	double __builtin_inf();
 	float __builtin_inff();
 	double __builtin_infl();
@@ -644,6 +624,24 @@ public interface binding_typerep extends Library {
 	int __builtin_parity();
 	float __builtin_prefetch(Object ... args);
 	void __builtin_trap();
+	com.sun.jna.NativeLong __builtin_object_size();
+	void __builtin_abort();
+	int __builtin_abs();
+	com.sun.jna.NativeLong __builtin_labs();
+	long __builtin_llabs();
+	Pointer __builtin_memcpy();
+	Pointer __builtin___memcpy_chk();
+	void __builtin_exit();
+	Pointer __builtin_malloc();
+	int __builtin_memcmp();
+	Pointer __builtin_memset();
+	com.sun.jna.NativeLong __builtin_strlen();
+	int __builtin_strcmp();
+	String __builtin_strcpy();
+	/* ir_visibility */int get_entity_visibility(Pointer entity);
+	void set_entity_visibility(Pointer entity, /* ir_visibility */int visibility);
+	int entity_is_externally_visible(Pointer entity);
+	int entity_has_definition(Pointer entity);
 	Pointer new_entity(Pointer owner, Pointer name, Pointer tp);
 	Pointer new_d_entity(Pointer owner, Pointer name, Pointer tp, Pointer db);
 	Pointer copy_entity_own(Pointer old, Pointer new_owner);
@@ -659,15 +657,11 @@ public interface binding_typerep extends Library {
 	void set_entity_owner(Pointer ent, Pointer owner);
 	Pointer get_entity_type(Pointer ent);
 	void set_entity_type(Pointer ent, Pointer tp);
-	/* ir_allocation */int get_entity_allocation(Pointer ent);
-	void set_entity_allocation(Pointer ent, /* ir_allocation */int al);
-	String get_allocation_name(/* ir_allocation */int al);
-	/* ir_visibility */int get_entity_visibility(Pointer ent);
-	void set_entity_visibility(Pointer ent, /* ir_visibility */int vis);
-	String get_visibility_name(/* ir_visibility */int vis);
-	/* ir_variability */int get_entity_variability(Pointer ent);
-	void set_entity_variability(Pointer ent, /* ir_variability */int var);
-	String get_variability_name(/* ir_variability */int var);
+	/* ir_linkage */int get_entity_linkage(Pointer entity);
+	void set_entity_linkage(Pointer entity, /* ir_linkage */int linkage);
+	void add_entity_linkage(Pointer entity, /* ir_linkage */int linkage);
+	void remove_entity_linkage(Pointer entity, /* ir_linkage */int linkage);
+	int is_entity_constant(Pointer ent);
 	/* ir_volatility */int get_entity_volatility(Pointer ent);
 	void set_entity_volatility(Pointer ent, /* ir_volatility */int vol);
 	String get_volatility_name(/* ir_volatility */int var);
@@ -676,8 +670,6 @@ public interface binding_typerep extends Library {
 	/* ir_align */int get_entity_aligned(Pointer ent);
 	void set_entity_aligned(Pointer ent, /* ir_align */int a);
 	String get_align_name(/* ir_align */int a);
-	/* ir_stickyness */int get_entity_stickyness(Pointer ent);
-	void set_entity_stickyness(Pointer ent, /* ir_stickyness */int stickyness);
 	int get_entity_offset(Pointer ent);
 	void set_entity_offset(Pointer ent, int offset);
 	byte get_entity_offset_bits_remainder(Pointer ent);
@@ -688,14 +680,10 @@ public interface binding_typerep extends Library {
 	void set_entity_irg(Pointer ent, Pointer irg);
 	int get_entity_vtable_number(Pointer ent);
 	void set_entity_vtable_number(Pointer ent, int vtable_number);
-	/* ir_peculiarity */int get_entity_peculiarity(Pointer ent);
-	void set_entity_peculiarity(Pointer ent, /* ir_peculiarity */int pec);
-	int is_entity_final(Pointer ent);
-	void set_entity_final(Pointer ent, int _final);
+	void set_entity_label(Pointer ent, com.sun.jna.NativeLong label);
+	com.sun.jna.NativeLong get_entity_label(Pointer ent);
 	int is_entity_compiler_generated(Pointer ent);
 	void set_entity_compiler_generated(Pointer ent, int flag);
-	int is_entity_backend_marked(Pointer ent);
-	void set_entity_backend_marked(Pointer ent, int flag);
 	/* ir_entity_usage */int get_entity_usage(Pointer ent);
 	void set_entity_usage(Pointer ent, /* ir_entity_usage */int flag);
 	Pointer get_entity_dbg_info(Pointer ent);
@@ -715,32 +703,9 @@ public interface binding_typerep extends Library {
 	int get_initializer_compound_n_entries(Pointer initializer);
 	void set_initializer_compound_value(Pointer initializer, int index, Pointer value);
 	Pointer get_initializer_compound_value(Pointer initializer, int index);
-	Pointer new_compound_graph_path(Pointer tp, int length);
-	int is_compound_graph_path(Pointer thing);
-	void free_compound_graph_path(Pointer gr);
-	int get_compound_graph_path_length(Pointer gr);
-	Pointer get_compound_graph_path_node(Pointer gr, int pos);
-	void set_compound_graph_path_node(Pointer gr, int pos, Pointer node);
-	int get_compound_graph_path_array_index(Pointer gr, int pos);
-	void set_compound_graph_path_array_index(Pointer gr, int pos, int index);
-	Pointer get_compound_graph_path_type(Pointer gr);
-	int is_proper_compound_graph_path(Pointer gr, int pos);
-	void add_compound_ent_value_w_path(Pointer ent, Pointer val, Pointer path);
-	void set_compound_ent_value_w_path(Pointer ent, Pointer val, Pointer path, int pos);
-	int get_compound_ent_n_values(Pointer ent);
-	Pointer get_compound_ent_value(Pointer ent, int pos);
-	Pointer get_compound_ent_value_path(Pointer ent, int pos);
-	Pointer get_compound_ent_value_by_path(Pointer ent, Pointer path);
-	void remove_compound_ent_value(Pointer ent, Pointer value_ent);
-	void add_compound_ent_value(Pointer ent, Pointer val, Pointer member);
-	Pointer get_compound_ent_value_member(Pointer ent, int pos);
-	void set_compound_ent_value(Pointer ent, Pointer val, Pointer member, int pos);
 	void set_entity_initializer(Pointer entity, Pointer initializer);
 	int has_entity_initializer(Pointer entity);
 	Pointer get_entity_initializer(Pointer entity);
-	void set_array_entity_values(Pointer ent, Pointer[] values, int num_vals);
-	int get_compound_ent_value_offset_bit_remainder(Pointer ent, int pos);
-	int get_compound_ent_value_offset_bytes(Pointer ent, int pos);
 	void add_entity_overwrites(Pointer ent, Pointer overwritten);
 	int get_entity_n_overwrites(Pointer ent);
 	int get_entity_overwrites_index(Pointer ent, Pointer overwritten);
@@ -757,7 +722,6 @@ public interface binding_typerep extends Library {
 	int is_atomic_entity(Pointer ent);
 	int is_compound_entity(Pointer ent);
 	int is_method_entity(Pointer ent);
-	int equal_entity(Pointer ent1, Pointer ent2);
 	com.sun.jna.NativeLong get_entity_nr(Pointer ent);
 	com.sun.jna.NativeLong get_entity_visited(Pointer ent);
 	void set_entity_visited(Pointer ent, com.sun.jna.NativeLong num);
@@ -771,7 +735,6 @@ public interface binding_typerep extends Library {
 	Pointer get_unknown_entity();
 	String get_tpop_name(Pointer op);
 	/* tp_opcode */int get_tpop_code(Pointer op);
-	Pointer get_tpop_ident(Pointer op);
 	Pointer get_tpop_class();
 	Pointer get_tpop_struct();
 	Pointer get_tpop_method();
@@ -780,7 +743,7 @@ public interface binding_typerep extends Library {
 	Pointer get_tpop_enumeration();
 	Pointer get_tpop_pointer();
 	Pointer get_tpop_primitive();
-	Pointer get_tpop_id();
+	Pointer get_tpop_code_type();
 	Pointer get_tpop_none();
 	Pointer get_tpop_unknown();
 	int is_SubClass_of(Pointer low, Pointer high);
@@ -812,19 +775,13 @@ public interface binding_typerep extends Library {
 	int check_type(Pointer tp);
 	int check_entity(Pointer ent);
 	int tr_vrfy();
-	void exchange_types(Pointer old_type, Pointer new_type);
-	Pointer skip_tid(Pointer tp);
 	void free_type_entities(Pointer tp);
 	void free_type(Pointer tp);
 	Pointer get_type_tpop(Pointer tp);
 	Pointer get_type_tpop_nameid(Pointer tp);
 	String get_type_tpop_name(Pointer tp);
 	/* tp_opcode */int get_type_tpop_code(Pointer tp);
-	Pointer get_type_ident(Pointer tp);
-	void set_type_ident(Pointer tp, Pointer id);
-	String get_type_name(Pointer tp);
-	/* ir_visibility */int get_type_visibility(Pointer tp);
-	void set_type_visibility(Pointer tp, /* ir_visibility */int v);
+	void ir_print_type(String buffer, com.sun.jna.NativeLong buffer_size, Pointer tp);
 	String get_type_state_name(/* ir_type_state */int s);
 	/* ir_type_state */int get_type_state(Pointer tp);
 	void set_type_state(Pointer tp, /* ir_type_state */int state);
@@ -851,6 +808,8 @@ public interface binding_typerep extends Library {
 	int smaller_type(Pointer st, Pointer lt);
 	Pointer new_type_class(Pointer name);
 	Pointer new_d_type_class(Pointer name, Pointer db);
+	Pointer get_class_ident(Pointer clss);
+	String get_class_name(Pointer clss);
 	void add_class_member(Pointer clss, Pointer member);
 	int get_class_n_members(Pointer clss);
 	Pointer get_class_member(Pointer clss, int pos);
@@ -871,9 +830,6 @@ public interface binding_typerep extends Library {
 	Pointer get_class_supertype(Pointer clss, int pos);
 	void set_class_supertype(Pointer clss, Pointer supertype, int pos);
 	void remove_class_supertype(Pointer clss, Pointer supertype);
-	String get_peculiarity_name(/* ir_peculiarity */int p);
-	/* ir_peculiarity */int get_class_peculiarity(Pointer clss);
-	void set_class_peculiarity(Pointer clss, /* ir_peculiarity */int pec);
 	Pointer get_class_type_info(Pointer clss);
 	void set_class_type_info(Pointer clss, Pointer ent);
 	int get_class_vtable_size(Pointer clss);
@@ -889,6 +845,8 @@ public interface binding_typerep extends Library {
 	int is_Class_type(Pointer clss);
 	Pointer new_type_struct(Pointer name);
 	Pointer new_d_type_struct(Pointer name, Pointer db);
+	Pointer get_struct_ident(Pointer strct);
+	String get_struct_name(Pointer strct);
 	void add_struct_member(Pointer strct, Pointer member);
 	int get_struct_n_members(Pointer strct);
 	Pointer get_struct_member(Pointer strct, int pos);
@@ -896,9 +854,8 @@ public interface binding_typerep extends Library {
 	void set_struct_member(Pointer strct, int pos, Pointer member);
 	void remove_struct_member(Pointer strct, Pointer member);
 	int is_Struct_type(Pointer strct);
-	Pointer new_type_method(Pointer name, int n_param, int n_res);
-	Pointer new_d_type_method(Pointer name, int n_param, int n_res, Pointer db);
-	Pointer clone_type_method(Pointer tp, Pointer prefix);
+	Pointer new_type_method(int n_param, int n_res);
+	Pointer new_d_type_method(int n_param, int n_res, Pointer db);
 	int get_method_n_params(Pointer method);
 	Pointer get_method_param_type(Pointer method, int pos);
 	void set_method_param_type(Pointer method, int pos, Pointer tp);
@@ -929,6 +886,8 @@ public interface binding_typerep extends Library {
 	int is_Method_type(Pointer method);
 	Pointer new_type_union(Pointer name);
 	Pointer new_d_type_union(Pointer name, Pointer db);
+	Pointer get_union_ident(Pointer uni);
+	String get_union_name(Pointer uni);
 	int get_union_n_members(Pointer uni);
 	void add_union_member(Pointer uni, Pointer member);
 	Pointer get_union_member(Pointer uni, int pos);
@@ -936,8 +895,8 @@ public interface binding_typerep extends Library {
 	void set_union_member(Pointer uni, int pos, Pointer member);
 	void remove_union_member(Pointer uni, Pointer member);
 	int is_Union_type(Pointer uni);
-	Pointer new_type_array(Pointer name, int n_dims, Pointer element_type);
-	Pointer new_d_type_array(Pointer name, int n_dims, Pointer element_type, Pointer db);
+	Pointer new_type_array(int n_dims, Pointer element_type);
+	Pointer new_d_type_array(int n_dims, Pointer element_type, Pointer db);
 	int get_array_n_dimensions(Pointer array);
 	void set_array_bounds_int(Pointer array, int dimension, int lower_bound, int upper_bound);
 	void set_array_bounds(Pointer array, int dimension, Pointer lower_bound, Pointer upper_bound);
@@ -961,6 +920,8 @@ public interface binding_typerep extends Library {
 	int is_Array_type(Pointer array);
 	Pointer new_type_enumeration(Pointer name, int n_enums);
 	Pointer new_d_type_enumeration(Pointer name, int n_enums, Pointer db);
+	Pointer get_enumeration_ident(Pointer enumeration);
+	String get_enumeration_name(Pointer enumeration);
 	void set_enumeration_const(Pointer enumeration, int pos, Pointer nameid, Pointer con);
 	int get_enumeration_n_enums(Pointer enumeration);
 	Pointer get_enumeration_const(Pointer enumeration, int pos);
@@ -968,32 +929,37 @@ public interface binding_typerep extends Library {
 	void set_enumeration_value(Pointer enum_cnst, Pointer con);
 	Pointer get_enumeration_value(Pointer enum_cnst);
 	void set_enumeration_nameid(Pointer enum_cnst, Pointer id);
-	Pointer get_enumeration_nameid(Pointer enum_cnst);
-	String get_enumeration_name(Pointer enum_cnst);
+	Pointer get_enumeration_const_nameid(Pointer enum_cnst);
+	String get_enumeration_const_name(Pointer enum_cnst);
 	int is_Enumeration_type(Pointer enumeration);
-	Pointer new_type_pointer(Pointer name, Pointer points_to, Pointer ptr_mode);
-	Pointer new_d_type_pointer(Pointer name, Pointer points_to, Pointer ptr_mode, Pointer db);
+	Pointer new_type_pointer(Pointer points_to);
+	Pointer new_d_type_pointer(Pointer points_to, Pointer db);
 	void set_pointer_points_to_type(Pointer pointer, Pointer tp);
 	Pointer get_pointer_points_to_type(Pointer pointer);
 	int is_Pointer_type(Pointer pointer);
 	Pointer find_pointer_type_to_type(Pointer tp);
-	Pointer new_type_primitive(Pointer name, Pointer mode);
-	Pointer new_d_type_primitive(Pointer name, Pointer mode, Pointer db);
+	Pointer new_type_primitive(Pointer mode);
+	Pointer new_d_type_primitive(Pointer mode, Pointer db);
 	int is_Primitive_type(Pointer primitive);
 	Pointer get_primitive_base_type(Pointer tp);
 	void set_primitive_base_type(Pointer tp, Pointer base_tp);
 	Pointer get_none_type();
+	Pointer get_code_type();
 	Pointer get_unknown_type();
 	int is_atomic_type(Pointer tp);
+	Pointer get_compound_ident(Pointer tp);
+	String get_compound_name(Pointer tp);
 	int get_compound_n_members(Pointer tp);
 	Pointer get_compound_member(Pointer tp, int pos);
 	int get_compound_member_index(Pointer tp, Pointer member);
+	void default_layout_compound_type(Pointer tp);
 	int is_compound_type(Pointer tp);
+	int is_code_type(Pointer tp);
 	int is_frame_type(Pointer tp);
 	int is_value_param_type(Pointer tp);
 	int is_lowered_type(Pointer tp);
-	Pointer new_type_value(Pointer name);
-	Pointer new_type_frame(Pointer name);
+	Pointer new_type_value();
+	Pointer new_type_frame();
 	Pointer clone_frame_type(Pointer type);
 	void set_lowered_type(Pointer tp, Pointer lowered_type);
 	Pointer get_associated_type(Pointer tp);
@@ -1005,7 +971,6 @@ public interface binding_typerep extends Library {
 	Pointer mature_type(Pointer tp);
 	Pointer mature_type_free(Pointer tp);
 	Pointer mature_type_free_entities(Pointer tp);
-	void init_type_identify(Pointer ti_if);
 	void type_walk(Pointer pre, Pointer post, Pointer env);
 	void type_walk_prog(Pointer pre, Pointer post, Pointer env);
 	void type_walk_irg(Pointer irg, Pointer pre, Pointer post, Pointer env);
@@ -1014,4 +979,14 @@ public interface binding_typerep extends Library {
 	void class_walk_super2sub(Pointer pre, Pointer post, Pointer env);
 	void walk_types_entities(Pointer tp, Pointer doit, Pointer env);
 	void types_calc_finalization();
+	/* ir_visibility */int get_type_visibility(Pointer tp);
+	void set_type_visibility(Pointer tp, /* ir_visibility */int v);
+	/* ir_allocation */int get_entity_allocation(Pointer ent);
+	void set_entity_allocation(Pointer ent, /* ir_allocation */int al);
+	/* ir_peculiarity */int get_entity_peculiarity(Pointer ent);
+	void set_entity_peculiarity(Pointer ent, /* ir_peculiarity */int pec);
+	int is_entity_final(Pointer ent);
+	void set_entity_final(Pointer ent, int _final);
+	/* ir_peculiarity */int get_class_peculiarity(Pointer clss);
+	void set_class_peculiarity(Pointer clss, /* ir_peculiarity */int pec);
 }

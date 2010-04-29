@@ -3,19 +3,19 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
-public class Cast extends Node {
+public class Cast extends Unop {
 
 	public Cast(Pointer ptr) {
 		super(ptr);
 	}
 
 	
-	
+	@Override
 	public Node getOp() {
 		return createWrapper(binding.get_Cast_op(ptr));
 	}
 
-	
+	@Override
 	public void setOp(Node op) {
 		binding.set_Cast_op(this.ptr, op.ptr);
 	}

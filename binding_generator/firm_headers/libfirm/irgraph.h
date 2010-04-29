@@ -21,7 +21,7 @@
  * @file
  * @brief    Entry point to the representation of procedure code.
  * @author   Martin Trapp, Christian Schaefer, Goetz Lindenmaier
- * @version  $Id: irgraph.h 25937 2009-05-13 11:44:51Z matze $
+ * @version  $Id: irgraph.h 27285 2010-03-10 17:25:21Z matze $
  */
 #ifndef FIRM_IR_IRGRAPH_H
 #define FIRM_IR_IRGRAPH_H
@@ -126,8 +126,6 @@ void      set_current_ir_graph(ir_graph *graph);
  * (get_irn_*, set_irn_*) is influenced by this flag. */
 int get_interprocedural_view(void);
 void set_interprocedural_view(int state);
-#else
-#define get_interprocedural_view()  0
 #endif
 
 /**
@@ -521,6 +519,7 @@ enum ir_resources_enum_t {
 
 	/* global (irp) resources */
 	IR_RESOURCE_ENTITY_LINK   = 1 << 8,  /**< IR-entity link fields are used. */
+	IR_RESOURCE_TYPE_VISITED  = 1 << 9,  /**< type visited flags */
 
 	/* masks */
 	IR_RESOURCE_LOCAL_MASK    = 0x00FF,  /**< Mask for all local resources. */
@@ -533,8 +532,8 @@ void ir_reserve_resources(ir_graph *irg, ir_resources_t resources);
 void ir_free_resources(ir_graph *irg, ir_resources_t resources);
 ir_resources_t ir_resources_reserved(const ir_graph *irg);
 #else
-#define ir_reserve_resources(irg,resources)
-#define ir_free_resources(irg,resources)
+#define ir_reserve_resources(irg,resources)  (void)0
+#define ir_free_resources(irg,resources)     (void)0
 #define ir_resources_reserved(irg)           0
 #endif
 

@@ -22,8 +22,8 @@
  * @brief       Representation and computation of the callgraph.
  * @author      Goetz Lindenmaier
  * @date        21.7.2004
- * @version     $Id: callgraph.h 25788 2009-04-04 13:57:28Z beck $
- * @summary
+ * @version     $Id: callgraph.h 27143 2010-02-13 11:17:42Z mallon $
+ * @brief
  *  This file contains the representation of the callgraph.
  *  The nodes of the call graph are ir_graphs.  The edges between
  *  the nodes are calling relations.  I.e., if method a calls method

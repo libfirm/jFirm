@@ -22,8 +22,8 @@
  * @brief    Implements simple sequence numbers for Firm debug info.
  * @author   Michael Beck
  * @date     2005
- * @version  $Id: seqnumbers.h 17143 2008-01-02 20:56:33Z beck $
- * @summary
+ * @version  $Id: seqnumbers.h 27143 2010-02-13 11:17:42Z mallon $
+ * @brief
  *  Sequence numbers for Firm.
  *
  *  A sequence number is an unique number representing a filename

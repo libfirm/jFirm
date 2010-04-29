@@ -12,12 +12,12 @@ public class ArrayType extends Type {
 		super(ptr);
 	}
 	
-	public ArrayType(Ident name, int n_dims, Type elementType) {
-		super(binding.new_type_array(name.ptr, n_dims, elementType.ptr));
+	public ArrayType(int n_dims, Type elementType) {
+		super(binding.new_type_array(n_dims, elementType.ptr));
 	}
 
-	public ArrayType(String name, int n_dims, Type elementType) {
-		this(new Ident(name), n_dims, elementType);
+	public ArrayType(Type elementType) {
+		this(1, elementType);
 	}
 	
 	public int getNDimensions() {
@@ -75,7 +75,7 @@ public class ArrayType extends Type {
 	}
 	
 	@Override
-	public void fixed() {
+	public void finishLayout() {
 		/* calculate the array size */
 		assert getElementType().getTypeState() == ir_type_state.layout_fixed;
 		
@@ -86,6 +86,6 @@ public class ArrayType extends Type {
 		}
 		setSizeBytes(size);
 		
-		super.fixed();
+		super.finishLayout();
 	}
 }

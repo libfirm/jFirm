@@ -22,11 +22,11 @@
  * @brief    Interprocedural analysis to improve the call graph estimate.
  * @author   Florian
  * @date     09.06.2002
- * @version  $Id: rta.h 25796 2009-04-06 12:24:38Z beck $
- * @summary
+ * @version  $Id: rta.h 27143 2010-02-13 11:17:42Z mallon $
+ * @brief
  * (TODO translate to english)
- * Intraprozedurale Analyse zur Abschätzung der Aufrufrelation. Es wird
- * die Menge der instantiierten Klassen bestimmt, und daraus eine Abschätzung
+ * Intraprozedurale Analyse zur Abschï¿½tzung der Aufrufrelation. Es wird
+ * die Menge der instantiierten Klassen bestimmt, und daraus eine Abschï¿½tzung
  * der aufgerufenen Methoden.
  *
  * Voraussetzung ist, dass das Programm keine Methodenzeiger handhaben kann.

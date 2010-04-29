@@ -21,8 +21,8 @@
  * @file
  * @brief     Central firm header.
  * @author    Martin Trapp, Christian Schaefer, Goetz Lindenmaier
- * @version   $Id: firm.h 25422 2009-02-04 09:42:57Z moritz $
- * @summary
+ * @version   $Id: firm.h 27143 2010-02-13 11:17:42Z mallon $
+ * @brief
  *  Central FIRM header.
  *
  *  FIRM is a full graph based intermediate representation in SSA Form
@@ -63,68 +63,62 @@
 extern "C" {
 #endif
 
-/* The representations */
-#include "firm_common.h"   /* common type tags. */
-#include "irprog.h"        /* control flow and data of a program */
-#include "irgraph.h"       /* graphs */
-#include "typerep.h"       /* type representation */
-#include "tv.h"            /* target values */
+#include "analyze_irg_args.h"
+#include "be.h"
+#include "callgraph.h"
+#include "cdep.h"
+#include "cgana.h"
+#include "dbginfo.h"
+#include "execfreq.h"
+#include "execution_frequency.h"
+#include "field_temperature.h"
+#include "firm_common.h"
+#include "firmstat.h"
+#include "firm_types.h"
+#include "height.h"
+#include "ident.h"
+#include "interval_analysis.h"
+#include "irarch.h"
+#include "ircgcons.h"
+#include "ircgopt.h"
+#include "irconsconfirm.h"
+#include "ircons.h"
+#include "irdom.h"
+#include "vrp.h"
+#include "irdump.h"
+#include "iredgekinds.h"
+#include "iredges.h"
+#include "irextbb.h"
+#include "irflag.h"
+#include "irgmod.h"
+#include "irgopt.h"
+#include "irgraph.h"
+#include "irgwalk.h"
+#include "irhooks.h"
+#include "irio.h"
+#include "irloop.h"
+#include "irmemory.h"
+#include "irmode.h"
 #include "irnode.h"
 #include "irop.h"
-#include "ident.h"         /* source code identificators */
-
-/* Functionality */
-#include "ircons.h"        /* construct ir */
-#include "ircgcons.h"      /* construct interprocedural graph */
-
-/* Optimizations */
-#include "irflag.h"         /* optimization flags */
-#include "irgopt.h"         /* optimize ir */
-#include "iroptimize.h"     /* optimize ir by reassociation */
-#include "ircgopt.h"        /* Optimizations based on interprocedural graph */
 #include "iropt.h"
-
-/* Lowering */
-#include "lowering.h"         /* lowering of different calls parameters, intrinsic calls, double word types, high-level constructs */
-
-/* Analyses */
-#include "irouts.h"           /* Graph reversal / out edges. */
-#include "trouts.h"           /* Graph reversal / out edges for types. */
-#include "irdom.h"            /* Dominator analysis */
-#include "cgana.h"            /* Analysis to construct interprocedural graph */
-                              /* including some optimizations */
-#include "irloop.h"           /* loop and backedge analysis */
-#include "callgraph.h"        /* Callgraph construction */
-#include "irconsconfirm.h"    /* Confirm nodes */
-#include "analyze_irg_args.h" /* Simple pointer parameter analysis */
-#include "irtypeinfo.h"       /* type information for nodes */
-#include "irmemory.h"         /* memory disambiguation */
-#include "interval_analysis.h"
-#include "field_temperature.h"
-#include "execution_frequency.h"
-
-/* Support */
-#include "irgmod.h"         /* Support to modify ir */
-#include "irgwalk.h"        /* Support to walk ir */
-
-#include "irarch.h"        /* architecture dependent optimizations */
-
-#include "firmstat.h"      /* statistics */
-
-#include "dbginfo.h"       /* debug support */
-#include "seqnumbers.h"    /* debug support */
-#include "firm_ycomp.h"    /* ycomp debugging support */
-
-#include "irdump.h"
-#include "irio.h"
+#include "iroptimize.h"
+#include "irouts.h"
+#include "irpass.h"
 #include "irprintf.h"
+#include "irprog.h"
+#include "irsimpletype.h"
+#include "irtypeinfo.h"
 #include "irvrfy.h"
-
-#include "irarch.h"
-
-#include "iredges.h"
-
-#include "be.h"
+#include "lowering.h"
+#include "pseudo_irg.h"
+#include "rta.h"
+#include "seqnumbers.h"
+#include "structure.h"
+#include "timing.h"
+#include "trouts.h"
+#include "tv.h"
+#include "typerep.h"
 
 #ifdef __cplusplus
 }

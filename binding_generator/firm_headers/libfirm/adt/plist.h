@@ -19,10 +19,10 @@
 
 /**
  * @file
- * @author Kimon Hoffmann
- * @date   14.07.2005
- * @cvs-id $Id: plist.h 17143 2008-01-02 20:56:33Z beck $
- * @summary Simple, non circular, double linked pointer list.
+ * @author  Kimon Hoffmann
+ * @date    14.07.2005
+ * @version $Id: plist.h 26415 2009-08-24 15:15:36Z buchwald $
+ * @brief   Simple, non circular, double linked pointer list.
  *          Created because the properties of the standard circular list were
  *          not very well suited for the interference graph implementation.
  *          This list uses an obstack and a free-list to efficiently manage its

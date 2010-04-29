@@ -27,7 +27,7 @@ class Add(Binop):
 	flags = ["commutative"]
 
 class Alloc(Op):
-	ins   = [ "mem", "size" ]
+	ins   = [ "mem", "count" ]
 	outs  = [ "M", "X_regular", "X_except", "res" ]
 	flags = [ "fragile", "uses_memory" ]
 	attrs = [
@@ -61,9 +61,10 @@ class ASM(Op):
 	mode          = "mode_T"
 	arity         = "variable"
 	flags         = [ "keep", "uses_memory" ]
-	attr_struct   = "asm_attr"
 	pinned        = "memory"
 	pinned_init   = "op_pin_state_pinned"
+	attr_struct   = "asm_attr"
+	attrs_name    = "assem"
 	attrs = [
 		dict(
 			name = "input_constraints",
@@ -72,6 +73,7 @@ class ASM(Op):
 		dict(
 			name = "n_output_constraints",
 			type = "int",
+			noprop = True,
 		),
 		dict(
 			name = "output_constraints",
@@ -80,6 +82,7 @@ class ASM(Op):
 		dict(
 			name = "n_clobbers",
 			type = "int",
+			noprop = True,
 		),
 		dict(
 			name = "clobbers",
@@ -113,7 +116,7 @@ class Block(Op):
 	flags       = [ "labeled" ]
 	attr_struct = "block_attr"
 	java_noconstr = True
-	
+
 	init = '''
 	/* macroblock header */
 	res->in[0] = res;
@@ -129,40 +132,20 @@ class Block(Op):
 	res->attr.block.entity      = NULL;
 
 	set_Block_matured(res, 1);
-	set_Block_block_visited(res, 0);	
-	'''
-	
-	d_pre = '''
-	int i;
-	int has_unknown = 0;
-	'''
-	
-	d_post = '''
+	set_Block_block_visited(res, 0);
+
 	/* Create and initialize array for Phi-node construction. */
-	if (get_irg_phase_state(current_ir_graph) == phase_building) {
-		res->attr.block.graph_arr = NEW_ARR_D(ir_node *, current_ir_graph->obst,
-		                                      current_ir_graph->n_loc);
-		memset(res->attr.block.graph_arr, 0, sizeof(ir_node *)*current_ir_graph->n_loc);
+	if (get_irg_phase_state(irg) == phase_building) {
+		res->attr.block.graph_arr = NEW_ARR_D(ir_node *, irg->obst, irg->n_loc);
+		memset(res->attr.block.graph_arr, 0, irg->n_loc * sizeof(ir_node*));
 	}
-
-	for (i = arity - 1; i >= 0; i--)
-		if (is_Unknown(in[i])) {
-			has_unknown = 1;
-			break;
-		}
-
-	if (!has_unknown) res = optimize_node(res);
-
-	current_ir_graph->current_block = res;
-
-	IRN_VRFY_IRG(res, current_ir_graph);
 	'''
-	
+
 	java_add   = '''
 	public void addPred(Node node) {
 		binding_cons.add_immBlock_pred(ptr, node.ptr);
 	}
-	
+
 	public void mature() {
 		binding_cons.mature_immBlock(ptr);
 	}
@@ -173,16 +156,14 @@ class Block(Op):
 	}
 
 	public boolean blockVisited() {
-		int visited = getGraph().getBlockVisited();
-		return binding.get_Block_block_visited(ptr).intValue() >= visited;
+		return 0 != binding.Block_block_visited(ptr);
 	}
-	
-	public void markBlockVisited() {
-		int visited = getGraph().getBlockVisited();		
-		binding.set_Block_block_visited(ptr, new com.sun.jna.NativeLong(visited));
-	}	
 
-	public boolean isBad() {	
+	public void markBlockVisited() {
+		binding.mark_Block_block_visited(ptr);
+	}
+
+	public boolean isBad() {
 		return binding.is_Bad(ptr) != 0;
 	}
 	'''
@@ -197,6 +178,7 @@ class Bound(Op):
 	pinned = "exception"
 	pinned_init = "op_pin_state_pinned"
 	attr_struct = "bound_attr"
+	attrs_name  = "bound"
 	d_post = '''
 	firm_alloc_frag_arr(res, op_Bound, &res->attr.bound.exc.frag_arr);
 	'''
@@ -209,7 +191,7 @@ class Break(Op):
 class Builtin(Op):
 	ins      = [ "mem" ]
 	arity    = "variable"
-	outs     = [ "M_regular", "X_regular", "X_except", "T_result", "M_except", "P_value_res_base" ]
+	outs     = [ "M", "X_regular", "X_except", "T_result", "P_value_res_base" ]
 	flags    = [ "uses_memory" ]
 	attrs    = [
 		dict(
@@ -231,12 +213,18 @@ class Builtin(Op):
 class Call(Op):
 	ins      = [ "mem", "ptr" ]
 	arity    = "variable"
-	outs     = [ "M_regular", "X_regular", "X_except", "T_result", "M_except", "P_value_res_base" ]
+	outs     = [ "M", "X_regular", "X_except", "T_result", "P_value_res_base" ]
 	flags    = [ "fragile", "uses_memory" ]
 	attrs    = [
 		dict(
 			type = "ir_type*",
 			name = "type"
+		),
+		dict(
+			type = "unsigned",
+			name = "tail_call",
+			# the tail call attribute can only be set by analysis
+			init = "0"
 		)
 	]
 	attr_struct = "call_attr"
@@ -267,11 +255,9 @@ class CallBegin(Op):
 class Carry(Binop):
 	flags = [ "commutative" ]
 
-class Cast(Op):
-	ins      = [ "op" ]
+class Cast(Unop):
 	mode     = "get_irn_mode(irn_op)"
 	flags    = [ "highlevel" ]
-	pinned   = "no"
 	attrs    = [
 		dict(
 			type = "ir_type*",
@@ -316,19 +302,20 @@ class Confirm(Op):
 		),
 	]
 	attr_struct = "confirm_attr"
+	attrs_name  = "confirm"
 
 class Const(Op):
 	mode       = ""
 	flags      = [ "constlike", "start_block" ]
 	knownBlock = True
 	pinned     = "no"
+	attrs_name = "con"
 	attrs      = [
 		dict(
 			type = "tarval*",
 			name = "tarval",
 		)
 	]
-	attrs_name = "con"
 	attr_struct = "const_attr"
 
 class Conv(Unop):
@@ -345,10 +332,11 @@ class Conv(Unop):
 		)
 	]
 	attr_struct = "conv_attr"
+	attrs_name  = "conv"
 
 class CopyB(Op):
 	ins   = [ "mem", "dst", "src" ]
-	outs  = [ "M", "X_regular", "X_except", "M_except" ]
+	outs  = [ "M", "X_regular", "X_except" ]
 	flags = [ "fragile", "highlevel", "uses_memory" ]
 	attrs = [
 		dict(
@@ -357,6 +345,7 @@ class CopyB(Op):
 		)
 	]
 	attr_struct = "copyb_attr"
+	attrs_name  = "copyb"
 	pinned      = "memory"
 	pinned_init = "op_pin_state_pinned"
 	d_post = '''
@@ -367,13 +356,7 @@ class Div(Op):
 	ins   = [ "mem", "left", "right" ]
 	outs  = [ "M", "X_regular", "X_except", "res" ]
 	flags = [ "fragile", "uses_memory" ]
-	pinned_init = "flags & cons_floats ? op_pin_state_floats : op_pin_state_pinned"
-	constructor_args = [
-		dict(
-			type = "ir_cons_flags",
-			name = "flags"
-		)
-	]
+	attrs_name = "divmod"
 	attrs = [
 		dict(
 			type = "ir_mode*",
@@ -382,10 +365,13 @@ class Div(Op):
 		dict(
 			name = "no_remainder",
 			type = "int",
-			init = "flags & cons_remainderless",
+			init = "0",
+			special = dict(
+				suffix = "RL",
+				init = "1"
+			)
 		)
 	]
-	attrs_name = "divmod"
 	attr_struct = "divmod_attr"
 	pinned      = "exception"
 	op_index    = 1
@@ -398,13 +384,13 @@ class DivMod(Op):
 	ins   = [ "mem", "left", "right" ]
 	outs  = [ "M", "X_regular", "X_except", "res_div", "res_mod" ]
 	flags = [ "fragile", "uses_memory" ]
+	attrs_name = "divmod"
 	attrs = [
 		dict(
 			type = "ir_mode*",
 			name = "resmode"
 		),
 	]
-	attrs_name = "divmod"
 	attr_struct = "divmod_attr"
 	pinned      = "exception"
 	op_index    = 1
@@ -456,6 +442,7 @@ class Filter(Op):
 	]
 	pinned      = "yes"
 	attr_struct = "filter_attr"
+	attrs_name  = "filter"
 	java_noconstr = True
 
 class Free(Op):
@@ -488,7 +475,7 @@ class IJmp(Op):
 
 class InstOf(Op):
 	ins   = [ "store", "obj" ]
-	outs  = [ "M", "X_regular", "X_except", "res", "M_except" ]
+	outs  = [ "M", "X_regular", "X_except", "res" ]
 	flags = [ "highlevel" ]
 	attrs = [
 		dict(
@@ -512,33 +499,23 @@ class Load(Op):
 	flags    = [ "fragile", "uses_memory" ]
 	pinned   = "exception"
 	pinned_init = "flags & cons_floats ? op_pin_state_floats : op_pin_state_pinned"
-	attrs = [
+	attrs    = [
 		dict(
 			type = "ir_mode*",
 			name = "mode",
 			java_name = "load_mode"
 		),
-		dict(
-			type = "ir_volatility",
-			name = "volatility",
-			init = "flags & cons_volatile ? volatility_is_volatile : volatility_non_volatile"
-		),
-		dict(
-			type  = "ir_align",
-			name  = "align",
-			init  = "flags & cons_unaligned ? align_non_aligned : align_is_aligned"
-		)
 	]
 	attr_struct = "load_attr"
 	constructor_args = [
 		dict(
 			type = "ir_cons_flags",
 			name = "flags",
-		)
+		),
 	]
 	d_post = '''
 	firm_alloc_frag_arr(res, op_Load, &res->attr.load.exc.frag_arr);
-	'''	
+	'''
 
 class Minus(Unop):
 	flags = []
@@ -547,13 +524,13 @@ class Mod(Op):
 	ins   = [ "mem", "left", "right" ]
 	outs  = [ "M", "X_regular", "X_except", "res" ]
 	flags = [ "fragile", "uses_memory" ]
+	attrs_name = "divmod"
 	attrs = [
 		dict(
 			type = "ir_mode*",
 			name = "resmode"
 		),
 	]
-	attrs_name = "divmod"
 	attr_struct = "divmod_attr"
 	pinned      = "exception"
 	op_index    = 1
@@ -587,11 +564,11 @@ class Or(Binop):
 	flags = [ "commutative" ]
 
 class Phi(Op):
-	pinned      = "yes"
-	arity       = "variable"
-	flags       = []
-	attr_struct = "phi_attr"
-	custom_is   = True
+	pinned        = "yes"
+	arity         = "variable"
+	flags         = []
+	attr_struct   = "phi_attr"
+	custom_is     = True
 	java_noconstr = True
 	init = '''
 	/* Memory Phis in endless loops must be kept alive.
@@ -607,29 +584,35 @@ class Pin(Op):
 	pinned   = "yes"
 
 class Proj(Op):
-	ins      = [ "pred" ]
-	flags    = []
-	pinned   = "no"
-	attrs    = [
+	ins        = [ "pred" ]
+	flags      = []
+	pinned     = "no"
+	knownBlock = True
+	knownGraph = True
+	block      = "get_nodes_block(irn_pred)"
+	graph      = "get_irn_irg(irn_pred)"
+	attrs      = [
 		dict(
 			type = "long",
 			name = "proj",
+			initname = "",
+			noprop = False,
 		)
 	]
-	attr_struct = "proj_attr"
+	attr_struct = "long"
 	custom_is   = True
 
 class Quot(Op):
 	ins   = [ "mem", "left", "right" ]
 	outs  = [ "M", "X_regular", "X_except", "res" ]
 	flags = [ "fragile", "uses_memory" ]
+	attrs_name = "divmod"
 	attrs = [
 		dict(
 			type = "ir_mode*",
 			name = "resmode"
 		),
 	]
-	attrs_name = "divmod"
 	attr_struct = "divmod_attr"
 	pinned      = "exception"
 	op_index    = 1
@@ -678,7 +661,6 @@ class Shrs(Binop):
 	flags = []
 
 class Start(Op):
-	outs       = [ "X_initial_exec", "M", "P_frame_base", "P_tls", "T_args" ]
 	mode       = "mode_T"
 	pinned     = "yes"
 	flags      = [ "cfopcode" ]
@@ -695,19 +677,7 @@ class Store(Op):
 		dict(
 			type = "ir_cons_flags",
 			name = "flags",
-		)
-	]
-	attrs = [
-		dict(
-			type = "ir_volatility",
-			name = "volatility",
-			init = "flags & cons_volatile ? volatility_is_volatile : volatility_non_volatile"
 		),
-		dict(
-			type = "ir_align",
-			name = "align",
-			init = "flags & cons_unaligned ? align_non_aligned : align_is_aligned"
-		)
 	]
 	d_post = '''
 	firm_alloc_frag_arr(res, op_Store, &res->attr.store.exc.frag_arr);
@@ -724,7 +694,8 @@ class SymConst(Op):
 	attrs      = [
 		dict(
 			type = "ir_entity*",
-			name = "entity"
+			name = "entity",
+			noprop = True
 		)
 	]
 	attr_struct = "symconst_attr"

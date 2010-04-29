@@ -22,8 +22,8 @@
  * @brief    Reverse edges that reference types/entities.
  * @author   Goetz Lindenmaier
  * @date     29.10.2004
- * @version  $Id: trouts.h 17123 2008-01-01 16:31:54Z beck $
- * @summary
+ * @version  $Id: trouts.h 27143 2010-02-13 11:17:42Z mallon $
+ * @brief
  *  Trouts list all uses of types and entities.
  *  Each type gets a list of all Alloc nodes allocating it.
  *  Each entity gets two lists:
@@ -77,9 +77,9 @@ int get_type_n_casts(const ir_type *tp);
 /** Cast node that cast a pointer to this type. */
 ir_node *get_type_cast(const ir_type *tp, int pos);
 void add_type_cast(const ir_type *tp, ir_node *cast);
-/** Return number of upcasts. O(#casts). */
+/** Return number of upcasts. O(\#casts). */
 int get_class_n_upcasts(const ir_type *clss);
-/** Return number of downcasts. O(#casts). */
+/** Return number of downcasts. O(\#casts). */
 int get_class_n_downcasts(const ir_type *clss);
 
 /* Access all pointer types that point to tp. */

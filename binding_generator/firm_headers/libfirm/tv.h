@@ -23,8 +23,8 @@
  *           values.
  * @date     2003
  * @author   Mathias Heil
- * @version  $Id: tv.h 24520 2008-12-11 11:57:55Z matze $
- * @summary
+ * @version  $Id: tv.h 27291 2010-03-12 12:38:02Z matze $
+ * @brief
  *   Tarvals represent target machine values.  They are typed by modes.
  *   Tarvals only represent values of mode_sort:
  *    - int_number,
@@ -74,7 +74,7 @@
  *  - 0[0-7]*            (octal representation)
  *  - (+|-)?[1-9][0-9]*  (decimal representation)
  *
- * if mode if float_number:
+ * if mode is float_number:
  *  - (+|-)?(decimal int) (. (decimal int))? ((e|E)(+|-)?(decimal int))?
  *
  * if mode is boolean: true, True, TRUE ... False... 0, 1,
@@ -101,6 +101,26 @@
  *   new_tarval_from_double()
  */
 tarval *new_tarval_from_str(const char *str, size_t len, ir_mode *mode);
+
+/**
+ * Construct a new tarval from a given string.
+ *
+ * @param str   The string representing the target value
+ * @param len   The length of the string
+ * @param sign  is -1 or 1 depending on the numbers sign
+ * @param base  number system base.
+ *              binary(2), octal(8), decimal(10) and hexadecimal(16) numbers
+ *              are supported.
+ * @param mode  The mode requested for the result tarval
+ *
+ * @return
+ *   A tarval with the given mode. If overflow settings are set to
+ *   TV_OVERFLOW_BAD then a tarval_bad is returned if the number can't be
+ *   represented in the given mode.
+ *   Return bad if the number couldn't successfully be parsed.
+ */
+tarval *new_integer_tarval_from_str(const char *str, size_t len, char sign,
+                                    unsigned char base, ir_mode *mode);
 
 /**
  * Constructor function for new tarvals
@@ -227,7 +247,7 @@ int tarval_is_double(tarval *tv);
  *   the struct tarval
  */
 
-/** 
+/**
  * Returns the mode of the tarval.
  *
  * @param tv    the tarval
@@ -462,7 +482,7 @@ tarval *tarval_not(tarval *a);
  */
 tarval *tarval_neg(tarval *a);
 
-/** 
+/**
  * Addition of two tarvals.
  *
  * @param a  the first tarval
@@ -493,7 +513,7 @@ tarval *tarval_sub(tarval *a, tarval *b, ir_mode *dst_mode);
  */
 tarval *tarval_mul(tarval *a, tarval *b);
 
-/** 
+/**
  * Division of two floating point tarvals.
  *
  * @param a  the first tarval
@@ -553,7 +573,17 @@ tarval *tarval_abs(tarval *a);
  */
 tarval *tarval_and(tarval *a, tarval *b);
 
-/** 
+/**
+ * Bitwise and not of two integer tarvals.
+ *
+ * @param a  the first tarval
+ * @param b  the second tarval
+ *
+ * @return a & ~b or tarval_bad
+ */
+tarval *tarval_andnot(tarval *a, tarval *b);
+
+/**
  * Bitwise or of two integer tarvals.
  *
  * @param a  the first tarval
@@ -609,11 +639,11 @@ tarval *tarval_shrs(tarval *a, tarval *b);
  * @param a  the first tarval
  * @param b  the second tarval
  *
- * @return a <<L>> b or tarval_bad
+ * @return a \<\<L\>\> b or tarval_bad
  */
 tarval *tarval_rotl(tarval *a, tarval *b);
 
-/** 
+/**
  * Returns the carry flag of the last operation.
  */
 int tarval_carry(void);
@@ -706,10 +736,10 @@ char *get_tarval_bitpattern(tarval *tv);
  *
  * To query a 32bit value the following code can be used:
  *
- * val0 = tarval_sub_bits(tv, 0);
+ * val0 = tarval_sub_bits(tv, 0);  <- lowest bits
  * val1 = tarval_sub_bits(tv, 1);
  * val2 = tarval_sub_bits(tv, 2);
- * val3 = tarval_sub_bits(tv, 3);
+ * val3 = tarval_sub_bits(tv, 3);  <- highest bits
  *
  * Because this is the bit representation of the target machine, only the following
  * operations are legal on the result:
@@ -718,7 +748,7 @@ char *get_tarval_bitpattern(tarval *tv);
  * - bitwise logical operations to select/mask bits
  *
  * @param tv        the tarval
- * @param byte_ofs  the byte offset
+ * @param byte_ofs  the byte offset from lower to higher
  *
  * @note
  *   The result of this function is undefined if the mode is neither integer nor float.
@@ -732,6 +762,24 @@ unsigned char get_tarval_sub_bits(tarval *tv, unsigned byte_ofs);
  * @param tv    the tarval
  */
 int tarval_is_single_bit(tarval *tv);
+
+/**
+ * Return the number of set bits in a given (integer) tarval.
+ *
+ * @param tv    the tarval
+ *
+ * @return number of set bits or -1 on error
+ */
+int get_tarval_popcount(tarval *tv);
+
+/**
+ * Return the number of the lowest set bit in a given (integer) tarval.
+ *
+ * @param tv    the tarval
+ *
+ * @return number of lowest set bit or -1 on error
+ */
+int get_tarval_lowest_bit(tarval *tv);
 
 /**
  * Output a tarval to a string buffer.
@@ -770,7 +818,7 @@ int tarval_ieee754_get_exponent(tarval *tv);
  * precision loss.
  *
  * @param tv    the tarval
- * param  mode  the mode to convert to
+ * @param mode  the mode to convert to
  */
 int tarval_ieee754_can_conv_lossless(tarval *tv, ir_mode *mode);
 

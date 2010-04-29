@@ -2,7 +2,7 @@
 #
 # You need a new version cparser (with jna backend) and firm headers
 
-. config
+. config.${USER}
 
 FIRM_INC=firm_headers
 

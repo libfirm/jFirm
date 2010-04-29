@@ -22,8 +22,8 @@
  * @brief   Data modes of operations.
  * @author  Martin Trapp, Christian Schaefer, Goetz Lindenmaier, Mathias Heil,
  *          Michael Beck
- * @version $Id: irmode.h 25780 2009-04-03 22:39:29Z beck $
- * @summary
+ * @version $Id: irmode.h 27143 2010-02-13 11:17:42Z mallon $
+ * @brief
  *  This module specifies the modes that type the firm nodes.  It defines
  *  a datasturcture that describes a mode and implements constructors and
  *  access routines to this datastructure. Further it defines a set of
@@ -38,34 +38,6 @@
 #include "firm_types.h"
 
 /* ********** Predefined modes ********** */
-
-/**
- * Predefined mode according to tech report 1999-14.
- */
-typedef enum ir_modecode { /* irm is short for `ir mode' */
-	irm_BB,                       /**< basic block */
-	irm_X,                        /**< execution */
-	irm_F,                        /**< float(32) */
-	irm_D,                        /**< double(64) */
-	irm_E,                        /**< extended(80) */
-	irm_Bs,                       /**< signed byte(8) */
-	irm_Bu,                       /**< unsigned byte(8) */
-	irm_Hs,                       /**< signed short(16) */
-	irm_Hu,                       /**< unsigned short(16) */
-	irm_Is,                       /**< signed int(32) */
-	irm_Iu,                       /**< unsigned int(32) */
-	irm_Ls,                       /**< signed long(64) */
-	irm_Lu,                       /**< unsigned long(64) */
-	irm_LLs,                      /**< signed long long(128) */
-	irm_LLu,                      /**< unsigned long long(128) */
-	irm_P,                        /**< pointer */
-	irm_b,                        /**< internal boolean */
-	irm_M,                        /**< memory */
-	irm_T,                        /**< tuple */
-	irm_ANY,                      /**< undefined mode */
-	irm_BAD,                      /**< bad mode */
-	irm_max                       /**< maximum value for ir_modecode */
-} ir_modecode;
 
 /** Helper values for ir_mode_sort. */
 enum ir_mode_sort_helper {
@@ -188,9 +160,6 @@ ir_mode *new_ir_vector_mode(const char *name, ir_mode_sort sort, int bit_size, u
 int is_mode(const void *thing);
 
 /* ********** Access methods to read mode information *********** */
-
-/** Returns the classification of the mode */
-ir_modecode get_mode_modecode(const ir_mode *mode);
 
 /** Returns the ident* of the mode */
 ident      *get_mode_ident(const ir_mode *mode);
@@ -383,7 +352,7 @@ void set_modeP_data(ir_mode *p);
 
 /*@{*/
 /**
-   Functions to check, whether a ir_modecode is signed, float, int, character,
+   Functions to check, whether a mode is signed, float, int, character,
    reference, num, data, datab or dataM.
 
    For more exact definitions read the corresponding pages
@@ -508,5 +477,10 @@ void set_reference_mode_unsigned_eq(ir_mode *ref_mode, ir_mode *int_mode);
  * no conversion is done)
  */
 int is_reinterpret_cast(const ir_mode *src, const ir_mode *dst);
+
+/**
+ * Returns the primitive type matching the given mode
+ */
+ir_type *get_type_for_mode(const ir_mode *mode);
 
 #endif

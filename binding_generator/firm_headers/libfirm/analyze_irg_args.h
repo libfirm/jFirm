@@ -21,13 +21,14 @@
  * @file
  * @brief     read/write analyze of graph argument, which have mode reference
  * @author    Beyhan Veliev
- * @version   $Id: analyze_irg_args.h 19122 2008-04-04 13:31:04Z beck $
+ * @version   $Id: analyze_irg_args.h 26815 2009-12-21 12:26:22Z matze $
  */
 #ifndef FIRM_ANA_ANALYZE_IRG_ARGS_H
 #define FIRM_ANA_ANALYZE_IRG_ARGS_H
 
 #include "irgraph.h"
 #include "firm_types.h"
+#include "typerep.h"
 
 /**
  * Returns for a method with pointer parameter

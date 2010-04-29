@@ -1,8 +1,7 @@
-
 /**
  * @file
  * @brief   Doubly linked lists.
- * @version $Id: list.h 22707 2008-10-11 18:52:18Z matze $
+ * @version $Id: list.h 27143 2010-02-13 11:17:42Z mallon $
  *
  * Simple doubly linked list implementation.
  *
@@ -96,7 +95,7 @@ static inline void __list_del(struct list_head * prev, struct list_head * next)
  * list_del - deletes entry from list.
  * @param entry  the element to delete from the list.
  *
- * @Note
+ * @note
  *   list_empty on entry does not return true after this, the entry is
  *   in an undefined state.
  */

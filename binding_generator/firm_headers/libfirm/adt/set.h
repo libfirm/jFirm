@@ -21,7 +21,7 @@
  * @file
  * @brief       hashset: datastructure containing objects accessible by their key
  * @author      Markus Armbruster
- * @verison     $Id: set.h 17143 2008-01-02 20:56:33Z beck $
+ * @version     $Id: set.h 26419 2009-08-24 19:17:56Z buchwald $
  */
 #ifndef FIRM_ADT_SET_H
 #define FIRM_ADT_SET_H
@@ -67,7 +67,7 @@ typedef int (*set_cmp_fun) (const void *elt, const void *key, size_t size);
  * Creates a new set.
  *
  * @param func    The compare function of this set.
- * @param slots   Initial number of collision chains.  I.e., #slots
+ * @param slots   Initial number of collision chains.  I.e., \#slots
  *                different keys can be hashed without collisions.
  *
  * @returns
