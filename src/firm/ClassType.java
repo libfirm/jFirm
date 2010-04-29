@@ -18,6 +18,14 @@ public class ClassType extends Type {
 		this(new Ident(name));
 	}
 	
+	public Ident getIdent() {
+		return new Ident(binding.get_class_ident(ptr));
+	}
+	
+	public String getName() {
+		return getIdent().toString();
+	}
+	
 	public void addMember(Entity entity) {
 		binding.add_class_member(ptr, entity.ptr);
 	}
@@ -149,39 +157,20 @@ public class ClassType extends Type {
 		binding.remove_class_supertype(ptr, superType.ptr);
 	}
 	
+	/**
+	 * Layout members of a compound type in a "default" way
+	 * which should be okay for most languages.
+	 */
 	public void layoutFields() {
-		int offset = 0;
-		int alignment = 1;
-		
-		for (int m = 0; m < getNMembers(); ++m) {
-			Entity entity = getMember(m);
-			if (entity.getType() instanceof MethodType)
-				continue;
-			
-			/* align entity */
-			int align = entity.getType().getAlignmentBytes();
-			if (align > 0 && offset % align != 0) {
-				offset += align - (offset % align);
-			}
-			/* remember maximum alignment */
-			if (align > alignment)
-				alignment = align;
-			
-			entity.setOffset(offset);
-			offset += entity.getType().getSizeBytes();
-		}
-		
-		setAlignmentBytes(alignment);
-		setSizeBytes(offset);
+		binding.default_layout_compound_type(ptr);
 	}
 	
 	@Override
 	public void finishLayout() {
-		/* frontend should have set the offsets of the data entities
-		 *  (by calling Type.layoutFields for example)
-		 * I don't know a way to test if this has happened. */
-		
-		/* At least we should have a size >= 0 */
+		/* you have to layout the type first.
+		 * (for example by calling layoutFields)
+		 * layouting should also set the size of the class 
+		 */
 		assert getSizeBytes() >= 0;
 		
 		super.finishLayout();		

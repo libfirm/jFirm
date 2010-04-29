@@ -8,7 +8,7 @@ public class PointerType extends Type {
 		super(ptr);
 	}
 	
-	public PointerType(Type pointsTo, Mode pointerMode) {
+	public PointerType(Type pointsTo) {
 		super(binding.new_type_pointer(pointsTo.ptr));
 	}
 	
