@@ -129,6 +129,7 @@ public class Construction extends ConstructionBase {
 	 * @param mode  mode of the value to return  
 	 */
 	public Node getVariable(int num, Mode mode) {
+		assert num < graph.getnLocalVars();
 		return Node.createWrapper(binding_cons.get_value(num, mode.ptr));
 	}
 	
