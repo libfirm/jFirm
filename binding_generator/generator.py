@@ -300,6 +300,14 @@ def preprocess_node(node):
 			type = "op_pin_state"
 		))
 
+	# transform outs into name, comment tuples if not in this format already
+	if hasattr(node, "outs"):
+		for i in range(0,len(node.outs)):
+			out = node.outs[i]
+			if not isinstance(out, tuple):
+				out = (out, "")
+			node.outs[i] = out
+
 	# construct node arguments
 	if not isAbstract(node):
 		arguments = [ ]
@@ -388,7 +396,10 @@ public {{"abstract "|ifabstract(node)}}class {{node.classname}} extends {{node.p
 	{{ node.java_add }}
 
 	{% for out in node.outs -%}
-	public static final int pn{{out|CamelCase}} = {{loop.index0}};
+	{%- if out[1] != "" %}
+	/** {{out[1]}} */
+	{% endif -%}
+	public static final int pn{{out[0]|CamelCase}} = {{loop.index0}};
 	{% endfor -%}
 	public static final int pnMax = {{len(node.outs)}};
 
