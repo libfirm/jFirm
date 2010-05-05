@@ -3,9 +3,9 @@ package firm;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.Bindings;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irnode;
+import firm.bindings.Bindings;
 import firm.nodes.Node;
 
 class ConstructionBase {
