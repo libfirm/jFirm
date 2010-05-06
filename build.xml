@@ -5,7 +5,7 @@
 
   <!-- set global properties for this build -->
   <property name="projectname" value="jfirm" />
-  <property name="version" value="0.2.5" />
+  <property name="version" value="0.3.0" />
   <property name="srcdir" location="src"/>
   <property name="workdir" location="release"/>
   <property name="releasename" value="${projectname}-${version}"/>
@@ -53,8 +53,8 @@
 			   	<filename name="bf_examples/*.bf"/>
 			   	<filename name="lib/jna.jar"/>
 			   	<filename name="lib/libfirm.so"/>
-			   	<filename name="lib/libfirm.dylib"/>
-	    		<filename name="lib/firm.dll"/>
+					<!-- <filename name="lib/libfirm.dylib"/>
+					<filename name="lib/firm.dll"/> -->
 				<filename name="src/**/*" />
 	    	</or>
 	    </fileset>
