@@ -5,6 +5,15 @@ import com.sun.jna.Pointer;
 import firm.bindings.Bindings;
 import firm.bindings.ModeBinding;
 
+/**
+ * Mode represents values that can be produced by firm nodes.
+ * There are modes describing numbers and their arithmetic
+ * operations on them. As well as some special nodes for representing
+ * control-flow, memory/side-effects, or (internal) truth-values.
+ * 
+ *  There are a number of predefined modes available
+ *  in the static getX() functions.
+ */
 public final class Mode extends JNAWrapper {
 
 	private static final ModeBinding b = Bindings.getModeBinding();

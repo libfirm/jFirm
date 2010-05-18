@@ -8,7 +8,7 @@ import firm.nodes.Node;
 
 public class ArrayType extends Type {
 
-	protected ArrayType(Pointer ptr) {
+	ArrayType(Pointer ptr) {
 		super(ptr);
 	}
 	

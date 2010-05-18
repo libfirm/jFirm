@@ -4,6 +4,10 @@ import firm.bindings.Bindings;
 import firm.bindings.binding_irdump;
 import firm.nodes.Node;
 
+/**
+ * Utility class containing various functions for dumping firm graphs
+ * @author matze
+ */
 public final class Dump {
 	private static final binding_irdump binding = Bindings.getIrDumpBinding();
 	

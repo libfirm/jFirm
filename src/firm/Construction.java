@@ -8,6 +8,11 @@ import firm.bindings.binding_typerep.ir_type_state;
 import firm.nodes.Block;
 import firm.nodes.Node;
 
+/**
+ * Utility class helping in constructing firm graphs.
+ * (Performs SSA-construction and keeps track of variables/
+ *  state during construction).
+ */
 public class Construction extends ConstructionBase {
 	
 	private final Graph graph;
@@ -22,7 +27,6 @@ public class Construction extends ConstructionBase {
 		/* well firm can only support 1 active graph construction.
 		 * you have to call Construction.finish() to start
 		 * another one.
-		 * TODO: private constructor + factory...
 		 */
 		if (constructionActive) {
 			throw new IllegalStateException("Another construction is currently in progress."
@@ -33,7 +37,7 @@ public class Construction extends ConstructionBase {
 		
 		/* backedges interfere with construction somehow... */
 		if (BackEdges.enabled(graph)) {
-			throw new IllegalStateException("Backedges must not be enabled while building the graph");
+			throw new IllegalStateException("Backedges must be disabled while building the graph");
 		}
 		
 		this.graph = graph;
@@ -159,7 +163,7 @@ public class Construction extends ConstructionBase {
 			}
 		});
 		
-		/* construct a frame type... (TODO: do this properly...) */
+		/* setup a minimal frame type... */
 		Type frameType = graph.getFrameType();
 		frameType.setSizeBytes(0);
 		frameType.setAlignmentBytes(4);

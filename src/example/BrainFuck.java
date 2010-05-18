@@ -74,9 +74,8 @@ public class BrainFuck {
 		
 		/* create putchar entity */
 		PrimitiveType intType = new PrimitiveType(Mode.getIs());
-		MethodType putcharType = new MethodType(1, 1);
-		putcharType.setParamType(0, intType);
-		putcharType.setResType(0, intType);
+		MethodType putcharType 
+			= new MethodType(new Type[] {intType}, new Type[] {intType});
 		
 		putcharEntity = new Entity(globalType, "putchar", putcharType);
 		putcharEntity.setVisibility(ir_visibility.ir_visibility_external);
@@ -84,8 +83,7 @@ public class BrainFuck {
 		putcharSymConst = construction.newSymConst(putcharEntity);
 		
 		/* create getchar entity */
-		MethodType getcharType = new MethodType(0, 1);
-		getcharType.setResType(0, intType);
+		MethodType getcharType = new MethodType(new Type[] {}, new Type[] {intType});
 		
 		getcharEntity = new Entity(globalType, "getchar", getcharType);
 		getcharEntity.setVisibility(ir_visibility.ir_visibility_external);

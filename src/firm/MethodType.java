@@ -7,12 +7,20 @@ import firm.bindings.binding_typerep.mtp_additional_property;
 
 public class MethodType extends Type {
 
-	public MethodType(Pointer ptr) {
+	MethodType(Pointer ptr) {
 		super(ptr);
 	}
 	
 	public MethodType(int nParameters, int nResults) {
 		super(binding.new_type_method(nParameters, nResults));
+	}
+	
+	public MethodType(Type[] parameterTypes, Type[] resultTypes) {
+		this(parameterTypes.length, resultTypes.length);
+		for (int i = 0; i < parameterTypes.length; ++i)
+			setParamType(i, parameterTypes[i]);
+		for (int i = 0; i < resultTypes.length; ++i)
+			setResType(i, resultTypes[i]);
 	}
 	
 	public final int getNParams() {
@@ -106,11 +114,6 @@ public class MethodType extends Type {
 	public final void setAdditionalProperty(mtp_additional_property flag) {
 		binding.set_method_additional_property(ptr, flag.val);
 	}
-
-//TODO calling conventions are macros in libfirm
-//	int get_default_cc_mask();
-//	int get_method_calling_convention(Pointer method);
-//	void set_method_calling_convention(Pointer method, int cc_mask);
 
 	public final int getNRegparams() {
 		return binding.get_method_n_params(ptr);

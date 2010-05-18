@@ -5,9 +5,19 @@ import java.util.Iterator;
 import firm.bindings.Bindings;
 import firm.bindings.binding_irprog;
 
+/**
+ * Represents a complete program/compilation unit in firm.
+ * There is currently only a single active program allowed in firm
+ * so this is class only contains static utility functions.  
+ */
 public class Program {
 	
 	private static final binding_irprog binding = Bindings.getIrProgBinding();
+	
+	private Program() {
+		/* Program should not be instantiated currently
+		 * just use the static functions */
+	}
 	
 	public static ClassType getGlobalType() {
 		Type type = Type.createWrapper(binding.get_glob_type());

@@ -4,7 +4,7 @@ import com.sun.jna.Pointer;
 
 public class PrimitiveType extends Type {
 
-	public PrimitiveType(Pointer ptr) {
+	PrimitiveType(Pointer ptr) {
 		super(ptr);
 	}
 	

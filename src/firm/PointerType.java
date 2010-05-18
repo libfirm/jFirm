@@ -4,7 +4,7 @@ import com.sun.jna.Pointer;
 
 public class PointerType extends Type {
 
-	protected PointerType(Pointer ptr) {
+	PointerType(Pointer ptr) {
 		super(ptr);
 	}
 	

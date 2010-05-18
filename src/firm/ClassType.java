@@ -6,7 +6,7 @@ import com.sun.jna.Pointer;
 
 public class ClassType extends Type {
 	
-	protected ClassType(Pointer ptr) {
+	ClassType(Pointer ptr) {
 		super(ptr);
 	}
 	
