@@ -348,24 +348,6 @@ public final class Mode extends JNAWrapper {
 		return new Mode(modePtr);
 	}
 
-	public static final Mode getPCode() {
-		Pointer modePtr = b.get_modeP_code();
-		return new Mode(modePtr);
-	}
-
-	public static final Mode getPData() {
-		Pointer modePtr = b.get_modeP_data();
-		return new Mode(modePtr);
-	}
-
-	public static final void setPCode(final Mode mode) {
-		b.set_modeP_code(mode.ptr);
-	}
-
-	public static final void setPData(final Mode mode) {
-		b.set_modeP_data(mode.ptr);
-	}
-
 	public final boolean isSigned() {
 		return 0 != b.mode_is_signed(ptr);
 	}

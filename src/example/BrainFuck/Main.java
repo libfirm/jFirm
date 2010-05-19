@@ -1,4 +1,4 @@
-package example;
+package example.BrainFuck;
 
 import java.io.IOException;
 
