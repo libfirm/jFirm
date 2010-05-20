@@ -32,14 +32,20 @@ We ship several prebuilt libraries containing the native libFirm code with jFirm
 a) Linux
 
 You have to make sure java can find these platform specific libraries.
-In Linux/Mac this works by setting LD_LIBRARY_PATH to the directory that
-contains the library.
+On Linux this works by setting the LD_LIBRARY_PATH environment variable to the
+directory that contains the library.
 
 b) Mac
 
 You have to make sure java can find these platform specific libraries.
-In Linux/Mac this works by setting DYLD_LIBRARY_PATH to the directory that
-contains the library.
+On the Mac this works by setting the DYLD_LIBRARY_PATH environment variable to
+the directory that contains the library.
+
+c) Windows
+
+You have to make sure java can find these platform specific libraries.
+On Windows this works by setting the PATH environment variable to the directory
+that contains the library.
 
 2.4 Compile Java Source
 Just compile the java sourcecode. You have to set your java compiler to
