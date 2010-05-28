@@ -53,8 +53,10 @@
 			   	<filename name="bf_examples/*.bf"/>
 			   	<filename name="lib/jna.jar"/>
 			   	<filename name="lib/libfirm.so"/>
-					<!-- <filename name="lib/libfirm.dylib"/>
-					<filename name="lib/firm.dll"/> -->
+					<filename name="lib/libfirm.dylib"/>
+					<filename name="lib/firm.dll"/>
+					<filename name="lib/64/libfirm.so"/>
+					<filename name="lib/64/libfirm.dylib"/>
 				<filename name="src/**/*" />
 	    	</or>
 	    </fileset>

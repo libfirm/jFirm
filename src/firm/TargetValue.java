@@ -28,13 +28,28 @@ public class TargetValue extends JNAWrapper {
 		this(b.new_tarval_from_long(new NativeLong(l), mode.ptr));
 	}
 	
-	public final long getLong() {
+	public TargetValue(int i, Mode mode) {
+		this((long) i, mode);
+	}
+	
+	
+	/** return true if the value can be represented in a C long type */
+	public final boolean isLong() {
+		return 0 != b.tarval_is_long(ptr);
+	}
+	
+	/** return value as long */
+	public final long asLong() {
 		NativeLong l = b.get_tarval_long(ptr);
 		return l.longValue();
 	}
 	
-	public final boolean isLong() {
-		return 0 != b.tarval_is_long(ptr);
+	/**
+	 * return value as int
+	 * Warning: there are no overflow checks in place here
+	 */
+	public final int asInt() {
+		return (int) asLong();
 	}
 	
 	public final static TargetValue newFromDouble(double d, Mode mode) {
@@ -236,10 +251,6 @@ public class TargetValue extends JNAWrapper {
 		return new TargetValue(ptarval);
 	}
 
-//	public final TargetValue divmod(TargetValue other, Pointer /* tarval ** >*/ mod_res) {
-//		throw new NotImplementedException();
-//	}
-
 	public final TargetValue abs() {
 		Pointer ptarval = b.tarval_abs(ptr);
 		return new TargetValue(ptarval);
@@ -344,15 +355,8 @@ public class TargetValue extends JNAWrapper {
 		return 0 != b.tarval_is_single_bit(ptr);
 	}
 
-//	public final int snprintf(String buf, NativeLong buflen, Pointer tv) {
-//	}
-//
-	public final int printf() {
-		return b.tarval_printf(ptr);
-	}
-
-	public final int ieee754ZeroMantissa() {
-		return b.tarval_ieee754_zero_mantissa(ptr);
+	public final boolean ieee754ZeroMantissa() {
+		return b.tarval_ieee754_zero_mantissa(ptr) != 0;
 	}
 
 	public final int ieee754GetExponent() {

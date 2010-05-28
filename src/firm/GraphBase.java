@@ -55,6 +55,10 @@ public abstract class GraphBase extends JNAWrapper {
 		return Node.createWrapper(binding_cons.new_rd_SymConst_addr_ent(Pointer.NULL, ptr, Mode.getP().ptr, entity.ptr, entity.getType().ptr));
 	}
 	
+	public Node newConst(int value, Mode mode) {
+		return Node.createWrapper(binding_cons.new_rd_Const_long(Pointer.NULL, ptr, mode.ptr, new NativeLong(value)));
+	}
+	
 	/**
 	 * free resources occupied by the graph.
 	 * You are not allowed to use the graph anymore after calling this.
