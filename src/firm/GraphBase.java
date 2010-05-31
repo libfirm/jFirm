@@ -367,7 +367,7 @@ public abstract class GraphBase extends JNAWrapper {
 	
 	/**
 	 * walks all graph nodes, ensuring that nodes inside a basic block are visited in
-	 * toplogical order. Nodes in different blocks might still get visited in an
+	 * topological order. Nodes in different blocks might still get visited in an
 	 * interleaved order.
 	 */
 	public void walkTopological(NodeVisitor visitor) {
