@@ -59,6 +59,11 @@ public final class Firm {
 		}			
 	}; 
 	
+	/**
+	 * Initializes the firm library. Must be called before using any
+	 * operations of the firm library (except querying the version numbers)
+	 * Must not be called more than once unless there was an finish() call.
+	 */
 	public static void init() {
 		/* hack to catch asserts... */
 		if (binding_cb == null) {
@@ -92,6 +97,14 @@ public final class Firm {
 		} else {
 			Backend.option("ia32-gasmode=elf");
 		}		
+	}
+	
+	/**
+	 * frees internal datastructures of firm. After this call no firm
+	 * operaion must be performed anymore.
+	 */
+	public static void finish() {
+		binding.ir_finish();
 	}
 	
 	private Firm() {
