@@ -19,6 +19,28 @@ public class Program {
 		 * just use the static functions */
 	}
 	
+	/**
+	 * creates a new Program/Compilation Unit and makes it the current program.
+	 * Note that this does not free the memory of the previous program.
+	 */
+	public static void newProgram(String name) {
+		binding.new_ir_prog(name);
+	}
+	
+	/**
+	 * Set name of the currently active program/compilation unit
+	 */
+	public static void setName(String name) {
+		binding.set_irp_prog_name(new Ident(name).ptr);
+	}
+	
+	/**
+	 * Get name of the currently active program/compilation unit
+	 */
+	public static String getName() {
+		return binding.get_irp_name();
+	}
+	
 	public static ClassType getGlobalType() {
 		Type type = Type.createWrapper(binding.get_glob_type());
 		assert type instanceof ClassType;
