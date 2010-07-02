@@ -144,7 +144,7 @@ public class SimpleIf {
 		for (Graph g : Program.getGraphs()) {
 			g.check();
 			// Should produce a file calc(II)I.vcg
-			Dump.dumpBlockGraph(g, "");
+			Dump.dumpGraph(g, "");
 		}
 	}
 }

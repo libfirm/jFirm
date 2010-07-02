@@ -5,6 +5,30 @@ import com.sun.jna.Pointer;
 
 
 public interface binding_irop extends Library {
+	public static enum __codecvt_result {
+		__codecvt_ok(),
+		__codecvt_partial(),
+		__codecvt_error(),
+		__codecvt_noconv();
+		public final int val;
+		private static class C { static int next_val; }
+
+		__codecvt_result(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		__codecvt_result() {
+			this.val = C.next_val++;
+		}
+		
+		public static __codecvt_result getEnum(int val) {
+			for(__codecvt_result entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
 	public static enum ip_view_state {
 		ip_view_no(),
 		ip_view_valid(),
@@ -197,30 +221,6 @@ public interface binding_irop extends Library {
 		
 		public static ir_builtin_kind getEnum(int val) {
 			for(ir_builtin_kind entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	public static enum __codecvt_result {
-		__codecvt_ok(),
-		__codecvt_partial(),
-		__codecvt_error(),
-		__codecvt_noconv();
-		public final int val;
-		private static class C { static int next_val; }
-
-		__codecvt_result(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		__codecvt_result() {
-			this.val = C.next_val++;
-		}
-		
-		public static __codecvt_result getEnum(int val) {
-			for(__codecvt_result entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -420,118 +420,82 @@ public interface binding_irop extends Library {
 			return null;
 		}
 	}
-	Pointer __builtin_alloca();
-	double __builtin_huge_val();
-	float __builtin_huge_valf();
-	double __builtin_huge_vall();
-	double __builtin_inf();
-	float __builtin_inff();
-	double __builtin_infl();
-	double __builtin_nan();
-	float __builtin_nanf();
-	double __builtin_nanl();
-	void __builtin_va_end();
-	com.sun.jna.NativeLong __builtin_expect();
-	Pointer __builtin_return_address();
-	Pointer __builtin_frame_address();
-	int __builtin_ffs();
-	int __builtin_clz();
-	int __builtin_ctz();
-	int __builtin_popcount();
-	int __builtin_parity();
-	float __builtin_prefetch(Object ... args);
-	void __builtin_trap();
-	com.sun.jna.NativeLong __builtin_object_size();
-	void __builtin_abort();
-	int __builtin_abs();
-	com.sun.jna.NativeLong __builtin_labs();
-	long __builtin_llabs();
-	Pointer __builtin_memcpy();
-	Pointer __builtin___memcpy_chk();
-	void __builtin_exit();
-	Pointer __builtin_malloc();
-	int __builtin_memcmp();
-	Pointer __builtin_memset();
-	com.sun.jna.NativeLong __builtin_strlen();
-	int __builtin_strcmp();
-	String __builtin_strcpy();
 	Pointer new_id_from_str(String str);
-	Pointer new_id_from_chars(String str, int len);
+	Pointer new_id_from_chars(String str, com.sun.jna.NativeLong len);
 	String get_id_str(Pointer id);
-	int get_id_strlen(Pointer id);
+	com.sun.jna.NativeLong get_id_strlen(Pointer id);
 	int id_is_prefix(Pointer prefix, Pointer id);
 	int id_is_suffix(Pointer suffix, Pointer id);
 	int id_contains_char(Pointer id, byte c);
 	Pointer id_unique(String tag);
-	void firm_init_mangle();
 	Pointer id_mangle_entity(Pointer ent);
 	Pointer id_mangle_u(Pointer first, Pointer scnd);
 	Pointer id_mangle_dot(Pointer first, Pointer scnd);
 	Pointer id_mangle(Pointer first, Pointer scnd);
 	Pointer id_mangle3(String prefix, Pointer middle, String suffix);
 	Pointer id_decorate_win32_c_fkt(Pointer ent, Pointer id);
-	Pointer get_op_Block();
-	Pointer get_op_Start();
-	Pointer get_op_End();
-	Pointer get_op_Jmp();
-	Pointer get_op_IJmp();
-	Pointer get_op_Cond();
-	Pointer get_op_Return();
-	Pointer get_op_Sel();
-	Pointer get_op_Const();
-	Pointer get_op_SymConst();
-	Pointer get_op_Call();
+	Pointer get_op_Abs();
 	Pointer get_op_Add();
-	Pointer get_op_Sub();
-	Pointer get_op_Minus();
-	Pointer get_op_Mul();
-	Pointer get_op_Mulh();
-	Pointer get_op_Quot();
+	Pointer get_op_Alloc();
+	Pointer get_op_Anchor();
+	Pointer get_op_And();
+	Pointer get_op_ASM();
+	Pointer get_op_Bad();
+	Pointer get_op_Block();
+	Pointer get_op_Borrow();
+	Pointer get_op_Bound();
+	Pointer get_op_Break();
+	Pointer get_op_Builtin();
+	Pointer get_op_CallBegin();
+	Pointer get_op_Call();
+	Pointer get_op_Carry();
+	Pointer get_op_Cast();
+	Pointer get_op_Cmp();
+	Pointer get_op_Cond();
+	Pointer get_op_Confirm();
+	Pointer get_op_Const();
+	Pointer get_op_Conv();
+	Pointer get_op_CopyB();
 	Pointer get_op_DivMod();
 	Pointer get_op_Div();
-	Pointer get_op_Mod();
-	Pointer get_op_Abs();
-	Pointer get_op_And();
-	Pointer get_op_Or();
+	Pointer get_op_Dummy();
+	Pointer get_op_EndExcept();
+	Pointer get_op_EndReg();
+	Pointer get_op_End();
 	Pointer get_op_Eor();
-	Pointer get_op_Not();
-	Pointer get_op_Cmp();
-	Pointer get_op_Shl();
-	Pointer get_op_Shr();
-	Pointer get_op_Shrs();
-	Pointer get_op_Rotl();
-	Pointer get_op_Conv();
-	Pointer get_op_Cast();
-	Pointer get_op_Carry();
-	Pointer get_op_Borrow();
-	Pointer get_op_Phi();
-	Pointer get_op_Load();
-	Pointer get_op_Store();
-	Pointer get_op_Alloc();
+	Pointer get_op_Filter();
 	Pointer get_op_Free();
+	Pointer get_op_Id();
+	Pointer get_op_IJmp();
+	Pointer get_op_InstOf();
+	Pointer get_op_Jmp();
+	Pointer get_op_Load();
+	Pointer get_op_Minus();
+	Pointer get_op_Mod();
+	Pointer get_op_Mulh();
+	Pointer get_op_Mul();
+	Pointer get_op_Mux();
+	Pointer get_op_NoMem();
+	Pointer get_op_Not();
+	Pointer get_op_Or();
+	Pointer get_op_Phi();
+	Pointer get_op_Pin();
+	Pointer get_op_Proj();
+	Pointer get_op_Quot();
+	Pointer get_op_Raise();
+	Pointer get_op_Return();
+	Pointer get_op_Rotl();
+	Pointer get_op_Sel();
+	Pointer get_op_Shl();
+	Pointer get_op_Shrs();
+	Pointer get_op_Shr();
+	Pointer get_op_Start();
+	Pointer get_op_Store();
+	Pointer get_op_Sub();
+	Pointer get_op_SymConst();
 	Pointer get_op_Sync();
 	Pointer get_op_Tuple();
-	Pointer get_op_Proj();
-	Pointer get_op_Id();
-	Pointer get_op_Bad();
-	Pointer get_op_Confirm();
 	Pointer get_op_Unknown();
-	Pointer get_op_Filter();
-	Pointer get_op_Break();
-	Pointer get_op_CallBegin();
-	Pointer get_op_EndReg();
-	Pointer get_op_EndExcept();
-	Pointer get_op_NoMem();
-	Pointer get_op_Mux();
-	Pointer get_op_CopyB();
-	Pointer get_op_InstOf();
-	Pointer get_op_Raise();
-	Pointer get_op_Bound();
-	Pointer get_op_Pin();
-	Pointer get_op_ASM();
-	Pointer get_op_Builtin();
-	Pointer get_op_Dummy();
-	Pointer get_op_Anchor();
 	Pointer get_op_ident(Pointer op);
 	String get_op_name(Pointer op);
 	int get_op_code(Pointer op);

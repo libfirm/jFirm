@@ -22,12 +22,13 @@
  * @brief   Compute heights of nodes inside basic blocks
  * @author  Sebastian Hack
  * @date    19.04.2006
- * @version $Id: height.h 27274 2010-03-09 15:38:51Z matze $
+ * @version $Id$
  */
 #ifndef FIRM_ANA_HEIGHTS_H
 #define FIRM_ANA_HEIGHTS_H
 
 #include "firm_types.h"
+#include "begin.h"
 
 typedef struct _heights_t heights_t;
 
@@ -38,7 +39,7 @@ typedef struct _heights_t heights_t;
  * @param irn  The node.
  * @return     The height of the node.
  */
-unsigned get_irn_height(heights_t *h, const ir_node *irn);
+FIRM_API unsigned get_irn_height(heights_t *h, const ir_node *irn);
 
 /**
  * Check, if a certain node is reachable according to data dependence edges from another node.
@@ -47,14 +48,15 @@ unsigned get_irn_height(heights_t *h, const ir_node *irn);
  * @param m The other node.
  * @return  1, if n is data dependent on m, 0 if not.
  */
-int heights_reachable_in_block(heights_t *h, const ir_node *n, const ir_node *m);
+FIRM_API int heights_reachable_in_block(heights_t *h, const ir_node *n,
+                                        const ir_node *m);
 
 /**
  * Recompute the height information.
  * This can be used to recompute the height information if the graph has changed since the last computation.
  * @param h The heights object.
  */
-void heights_recompute(heights_t *h);
+FIRM_API void heights_recompute(heights_t *h);
 
 /**
  * Recompute the height information for a certain block.
@@ -63,20 +65,21 @@ void heights_recompute(heights_t *h);
  * @param block The block
  * @return The maximum over all heights in the block.
  */
-unsigned heights_recompute_block(heights_t *h, ir_node *block);
+FIRM_API unsigned heights_recompute_block(heights_t *h, ir_node *block);
 
 /**
  * Make a new heights object.
  * This also computes the heights for each block in the graph.
  * @param irg The graph.
  */
-heights_t *heights_new(ir_graph *irg);
+FIRM_API heights_t *heights_new(ir_graph *irg);
 
 /**
  * Free a heights object.
  * @param h The heights object.
  */
-void heights_free(heights_t *h);
+FIRM_API void heights_free(heights_t *h);
 
+#include "end.h"
 
-#endif /* FIRM_ANA_HEIGHTS_H */
+#endif

@@ -227,85 +227,7 @@ public interface binding_irdump extends Library {
 			return null;
 		}
 	}
-	public static enum ird_color_t {
-		ird_color_prog_background(),
-		ird_color_block_background(),
-		ird_color_dead_block_background(),
-		ird_color_block_inout(),
-		ird_color_default_node(),
-		ird_color_phi(),
-		ird_color_memory(),
-		ird_color_controlflow(),
-		ird_color_const(),
-		ird_color_anchor(),
-		ird_color_proj(),
-		ird_color_uses_memory(),
-		ird_color_error(),
-		ird_color_entity(),
-		ird_color_count();
-		public final int val;
-		private static class C { static int next_val; }
-
-		ird_color_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		ird_color_t() {
-			this.val = C.next_val++;
-		}
-		
-		public static ird_color_t getEnum(int val) {
-			for(ird_color_t entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	public static enum edge_kind {
-		data_edge(0x01),
-		block_edge(0x02),
-		cf_edge(0x03),
-		exc_cf_edge(0x04),
-		mem_edge(0x05),
-		dominator_edge(0x06),
-		node2type_edge(0x07),
-		ent_type_edge(0x11),
-		ent_own_edge(0x12),
-		ent_overwrites_edge(0x13),
-		ent_value_edge(0x14),
-		ent_corr_edge(0x15),
-		meth_par_edge(0x21),
-		meth_res_edge(0x22),
-		type_super_edge(0x23),
-		union_edge(0x24),
-		ptr_pts_to_edge(0x25),
-		arr_elt_type_edge(0x26),
-		arr_ent_edge(0x27),
-		type_member_edge(0x28),
-		intra_edge(0),
-		inter_edge(0x40),
-		back_edge(0x80);
-		public final int val;
-		private static class C { static int next_val; }
-
-		edge_kind(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		edge_kind() {
-			this.val = C.next_val++;
-		}
-		
-		public static edge_kind getEnum(int val) {
-			for(edge_kind entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-	public static enum dump_verbosity {
+	public static enum ir_dump_verbosity_t {
 		dump_verbosity_onlynames(0x00000001),
 		dump_verbosity_fields(0x00000002),
 		dump_verbosity_methods(0x00000004),
@@ -334,117 +256,98 @@ public interface binding_irdump extends Library {
 		public final int val;
 		private static class C { static int next_val; }
 
-		dump_verbosity(int val) {
+		ir_dump_verbosity_t(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		dump_verbosity() {
+		ir_dump_verbosity_t() {
 			this.val = C.next_val++;
 		}
 		
-		public static dump_verbosity getEnum(int val) {
-			for(dump_verbosity entry : values()) {
+		public static ir_dump_verbosity_t getEnum(int val) {
+			for(ir_dump_verbosity_t entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
 			return null;
 		}
 	}
-	Pointer __builtin_alloca();
-	double __builtin_huge_val();
-	float __builtin_huge_valf();
-	double __builtin_huge_vall();
-	double __builtin_inf();
-	float __builtin_inff();
-	double __builtin_infl();
-	double __builtin_nan();
-	float __builtin_nanf();
-	double __builtin_nanl();
-	void __builtin_va_end();
-	com.sun.jna.NativeLong __builtin_expect();
-	Pointer __builtin_return_address();
-	Pointer __builtin_frame_address();
-	int __builtin_ffs();
-	int __builtin_clz();
-	int __builtin_ctz();
-	int __builtin_popcount();
-	int __builtin_parity();
-	float __builtin_prefetch(Object ... args);
-	void __builtin_trap();
-	com.sun.jna.NativeLong __builtin_object_size();
-	void __builtin_abort();
-	int __builtin_abs();
-	com.sun.jna.NativeLong __builtin_labs();
-	long __builtin_llabs();
-	Pointer __builtin_memcpy();
-	Pointer __builtin___memcpy_chk();
-	void __builtin_exit();
-	Pointer __builtin_malloc();
-	int __builtin_memcmp();
-	Pointer __builtin_memset();
-	com.sun.jna.NativeLong __builtin_strlen();
-	int __builtin_strcmp();
-	String __builtin_strcpy();
-	void set_dump_ir_graph_hook(Pointer hook);
+	public static enum ir_dump_flags_t {
+		ir_dump_flag_blocks_as_subgraphs((1<<0)),
+		ir_dump_flag_group_extbb((1<<1)),
+		ir_dump_flag_with_typegraph((1<<2)),
+		ir_dump_flag_disable_edge_labels((1<<3)),
+		ir_dump_flag_consts_local((1<<4)),
+		ir_dump_flag_idx_label((1<<5)),
+		ir_dump_flag_number_label((1<<6)),
+		ir_dump_flag_keepalive_edges((1<<7)),
+		ir_dump_flag_out_edges((1<<8)),
+		ir_dump_flag_dominance((1<<9)),
+		ir_dump_flag_loops((1<<10)),
+		ir_dump_flag_back_edges((1<<11)),
+		ir_dump_flag_analysed_types((1<<12)),
+		ir_dump_flag_iredges((1<<13)),
+		ir_dump_flag_node_addresses((1<<14)),
+		ir_dump_flag_all_anchors((1<<15)),
+		ir_dump_flag_macroblock_edges((1<<16)),
+		ir_dump_flag_show_marks((1<<17)),
+		ir_dump_flag_no_entity_values((1<<20)),
+		ir_dump_flag_ld_names((1<<21)),
+		ir_dump_flag_entities_in_hierarchy((1<<22));
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_dump_flags_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_dump_flags_t() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_dump_flags_t getEnum(int val) {
+			for(ir_dump_flags_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	void dump_ir_graph(Pointer graph, String suffix);
+	void dump_ir_prog_ext(Pointer func, String suffix);
+	void dump_ir_graph_ext(Pointer func, Pointer graph, String suffix);
+	void dump_all_ir_graphs(String suffix);
+	void ir_set_dump_path(String path);
+	void ir_set_dump_filter(String name);
+	String ir_get_dump_filter();
+	int ir_should_dump(String name);
+	Pointer dump_all_ir_graph_pass(String name, String suffix);
+	void dump_ir_graph_file(Pointer out, Pointer graph);
+	void dump_cfg(Pointer out, Pointer graph);
+	void dump_callgraph(Pointer out);
+	void dump_typegraph(Pointer out);
+	void dump_class_hierarchy(Pointer out);
+	void dump_loop_tree(Pointer out, Pointer graph);
+	void dump_callgraph_loop_tree(Pointer out);
+	void dump_types_as_text(Pointer out);
+	void dump_globals_as_text(Pointer out);
+	void dump_loop(Pointer out, Pointer loop);
+	void dump_irnode_to_file(Pointer out, Pointer node);
+	void dump_graph_as_text(Pointer out, Pointer graph);
+	void dump_entity_to_file(Pointer out, Pointer entity);
+	void dump_type_to_file(Pointer out, Pointer type);
+	void ir_set_dump_verbosity(/* ir_dump_verbosity_t */int verbosity);
+	/* ir_dump_verbosity_t */int ir_get_dump_verbosity();
+	void ir_set_dump_flags(/* ir_dump_flags_t */int flags);
+	void ir_add_dump_flags(/* ir_dump_flags_t */int flags);
+	void ir_remove_dump_flags(/* ir_dump_flags_t */int flags);
+	/* ir_dump_flags_t */int ir_get_dump_flags();
 	void set_dump_node_vcgattr_hook(Pointer hook);
 	void set_dump_edge_vcgattr_hook(Pointer hook);
 	void set_dump_node_edge_hook(Pointer func);
 	Pointer get_dump_node_edge_hook();
 	void set_dump_block_edge_hook(Pointer func);
 	Pointer get_dump_block_edge_hook();
-	void dump_ir_graph(Pointer irg, String suffix);
-	void dump_ir_graph_file(Pointer irg, Pointer out);
-	void dump_ir_block_graph(Pointer irg, String suffix);
-	void dump_ir_block_graph_file(Pointer irg, Pointer out);
-	void dump_ir_extblock_graph(Pointer irg, String suffix);
-	void dump_ir_extblock_graph_file(Pointer irg, Pointer out);
-	void dump_all_cg_block_graph(String suffix);
-	void dump_ir_graph_w_types(Pointer irg, String suffix);
-	void dump_ir_graph_w_types_file(Pointer irg, Pointer out);
-	void dump_ir_block_graph_w_types(Pointer irg, String suffix);
-	void dump_ir_block_graph_w_types_file(Pointer irg, Pointer out);
-	void dump_all_ir_graphs(Pointer dump_graph, String suffix);
-	Pointer dump_all_ir_graph_pass(String name, Pointer dump_graph, String suffix);
-	void dump_cfg(Pointer irg, String suffix);
-	void dump_subgraph(Pointer root, int depth, String suffix);
-	void dump_callgraph(String suffix);
-	void dump_type_graph(Pointer irg, String suffix);
-	void dump_all_types(String suffix);
-	void dump_class_hierarchy(int entities, String suffix);
-	void dump_loop_tree(Pointer irg, String suffix);
-	void dump_loop(Pointer l, String suffix);
-	void dump_callgraph_loop_tree(String suffix);
-	int dump_irnode_to_file(Pointer f, Pointer n);
-	void dump_irnode(Pointer n);
-	void dump_graph_to_file(Pointer F, Pointer irg);
-	void dump_graph(Pointer g);
-	void dump_graph_as_text(Pointer irg, String suffix);
-	void dump_entity_to_file(Pointer F, Pointer ent, int verbosity);
-	void dump_entity(Pointer ent);
-	void dump_type_to_file(Pointer f, Pointer tp, /* dump_verbosity */int verbosity);
-	void dump_type(Pointer tp);
-	void dump_types_as_text(int verbosity, String suffix);
-	void dump_globals_as_text(int verbosity, String suffix);
-	void only_dump_method_with_name(Pointer name);
-	Pointer get_dump_file_filter_ident();
-	int is_filtered_dump_name(Pointer name);
-	void turn_off_edge_labels();
-	void dump_consts_local(int flag);
-	void dump_node_idx_label(int flag);
-	void dump_constant_entity_values(int flag);
-	void dump_keepalive_edges(int flag);
-	int get_opt_dump_keepalive_edges();
-	void dump_out_edges(int flag);
-	void dump_dominator_information(int flag);
-	void dump_loop_information(int flag);
-	void dump_backedge_information(int flag);
-	void set_opt_dump_analysed_type_info(int flag);
-	void dump_new_edges(int flag);
-	void dump_pointer_values_to_info(int flag);
-	void dump_ld_names(int flag);
-	void dump_all_anchors(int flag);
-	void dump_macroblock_edges(int flag);
-	void dump_block_marker_in_title(int flag);
 	Pointer dump_add_node_info_callback(Pointer cb, Pointer data);
-	void dump_remv_node_info_callback(Pointer handle);
+	void dump_remove_node_info_callback(Pointer handle);
 }

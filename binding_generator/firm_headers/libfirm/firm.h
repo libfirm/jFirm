@@ -21,7 +21,7 @@
  * @file
  * @brief     Central firm header.
  * @author    Martin Trapp, Christian Schaefer, Goetz Lindenmaier
- * @version   $Id: firm.h 27143 2010-02-13 11:17:42Z mallon $
+ * @version   $Id$
  * @brief
  *  Central FIRM header.
  *
@@ -58,10 +58,6 @@
  */
 #ifndef FIRM_COMMON_FIRM_H
 #define FIRM_COMMON_FIRM_H
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 #include "analyze_irg_args.h"
 #include "be.h"
@@ -119,9 +115,5 @@ extern "C" {
 #include "trouts.h"
 #include "tv.h"
 #include "typerep.h"
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif

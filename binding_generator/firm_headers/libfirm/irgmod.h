@@ -21,29 +21,30 @@
  * @file
  * @brief    Support for ir graph modification.
  * @author   Martin Trapp, Christian Schaefer, Goetz Lindenmaier
- * @version  $Id: irgmod.h 26935 2010-01-09 00:30:16Z beck $
+ * @version  $Id$
  */
 #ifndef FIRM_IR_IRGMOD_H
 #define FIRM_IR_IRGMOD_H
 
 #include "firm_types.h"
+#include "begin.h"
 
 /** Exchanges two nodes by conserving edges leaving old (i.e.,
    pointers pointing to old).  Turns the old node into an Id. */
-void exchange(ir_node *old, ir_node *nw);
+FIRM_API void exchange(ir_node *old, ir_node *nw);
 
 /** Turns a node into a "useless" Tuple.
  *
  *  Turns a node into a "useless" Tuple.  The Tuple node just forms a tuple
- *  from several inputs.  The predecessors of the tuple have to be
- *  set by hand.  The block predecessor automatically remains the same.
+ *  from several inputs. All predecessors of the tuple are set to bad and
+ *  should be replaced if necssary. The block predecessor remains the same.
  *  This is useful if a node returning a tuple is removed, but the Projs
  *  extracting values from the tuple are not available.
  *
  *  @param node The node to be turned into a tuple.
  *  @param arity The number of values formed into a Tuple.
  */
-void turn_into_tuple(ir_node *node, int arity);
+FIRM_API void turn_into_tuple(ir_node *node, int arity);
 
 /** Walks over the passed IR graph and collects all Phi nodes as a
   * list in their corresponding block (using get_Block_phis() API).
@@ -53,7 +54,7 @@ void turn_into_tuple(ir_node *node, int arity);
   * All partBlocks are linked to its macroblock header.
   * All other link fields are cleared afterwards.
   */
-void collect_phiprojs(ir_graph *irg);
+FIRM_API void collect_phiprojs(ir_graph *irg);
 
 /** Parts a block into two.  This is useful to insert other blocks within a
  *  given block.
@@ -70,12 +71,14 @@ void collect_phiprojs(ir_graph *irg);
  *
  * @param node   The node were to break the block
  */
-void part_block(ir_node *node);
+FIRM_API void part_block(ir_node *node);
 
 /**
  * Kill a node by setting its predecessors to Bad and finally
  * exchange the node by Bad itself.
  */
-void kill_node(ir_node *node);
+FIRM_API void kill_node(ir_node *node);
 
-#endif /* FIRM_IR_IRGMOD_H */
+#include "end.h"
+
+#endif

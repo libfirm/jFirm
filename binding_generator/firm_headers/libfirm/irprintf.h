@@ -22,7 +22,7 @@
  * @brief    A little printf understanding some firm types.
  * @author   Sebastian Hack
  * @date     29.11.2004
- * @version  $Id: irprintf.h 22707 2008-10-11 18:52:18Z matze $
+ * @version  $Id$
  */
 #ifndef FIRM_IR_IRPRINTF_H
 #define FIRM_IR_IRPRINTF_H
@@ -30,28 +30,10 @@
 #include <stddef.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include "begin.h"
 
 /* forward definition */
 struct obstack;
-
-/**
- * Something that can append strings and chars to something.
- */
-typedef struct _appender_t {
-	void (*init)(void *object, size_t n);
-	void (*append_char)(void *object, size_t n, char ch);
-	void (*append_str)(void *object, size_t n, const char *str);
-} appender_t;
-
-/**
- * A callback function type to add something to an appender.
- *
- * @param app    The appender.
- * @param object The object for the appender.
- * @param limit  The limit for the appender.
- * @param arg    The thing to append.
- */
-typedef void (ir_printf_cb_t)(const appender_t *app, void *object, size_t limit, const void *arg);
 
 /**
  * A string formatting routine for ir objects.
@@ -96,56 +78,41 @@ typedef void (ir_printf_cb_t)(const appender_t *app, void *object, size_t limit,
  * @endcode
  * The @c it_pset is an iterator interface (of type
  * @c iterator_t that allows the dumper to traverse the set.
- *
- * As special case when working with collections, you can also give a
- * callback function which will be invoked on each element in the
- * collection. It gets the appender (the thing where the textual
- * representation of the element is written to) and its parameters
- * passed by the dumping function. Suppose you have your own data type
- * @c xyz_t and want to dump a pset of it, you have:
- * @code
- *   void xyz_dump(const appender_t *app, void *object, size_t limit,
- *       const void *arg)
- *   {
- *     const xyz_t *xyz = arg;
- *     app->append_str(object, limit, xyz->name);
- *   }
- *   ...
- *   pset *xyzs;
- *
- *   ir_printf("A set of xyz\'s: %*C\n", it_pset, xyzs, xyz_dump);
- * @endcode
  */
-void ir_printf(const char *fmt, ...);
+FIRM_API void ir_printf(const char *fmt, ...);
 
 /**
  * @see irn_printf.
  */
-void ir_fprintf(FILE *f, const char *fmt, ...);
+FIRM_API void ir_fprintf(FILE *f, const char *fmt, ...);
 
 /**
  * @see irn_printf.
  */
-void ir_snprintf(char *buf, size_t n, const char *fmt, ...);
+FIRM_API void ir_snprintf(char *buf, size_t n, const char *fmt, ...);
 
 /**
  * @see irn_printf.
  */
-void ir_vprintf(const char *fmt, va_list args);
+FIRM_API void ir_vprintf(const char *fmt, va_list args);
 
 /**
  * @see irn_printf.
  */
-void ir_vfprintf(FILE *f, const char *fmt, va_list args);
+FIRM_API void ir_vfprintf(FILE *f, const char *fmt, va_list args);
 
 /**
  * @see irn_printf.
  */
-void ir_vsnprintf(char *buf, size_t len, const char *fmt, va_list args);
+FIRM_API void ir_vsnprintf(char *buf, size_t len, const char *fmt,
+                           va_list args);
 
 /**
  * @see irn_printf.
  */
-void ir_obst_vprintf(struct obstack *obst, const char *fmt, va_list args);
+FIRM_API void ir_obst_vprintf(struct obstack *obst, const char *fmt,
+                              va_list args);
+
+#include "end.h"
 
 #endif

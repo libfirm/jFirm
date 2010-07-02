@@ -21,12 +21,13 @@
  * @file
  * @brief    Check irnodes for correctness.
  * @author   Christian Schaefer, Goetz Lindenmaier, Till Riedel
- * @version  $Id: irvrfy.h 26374 2009-08-17 21:53:48Z beck $
+ * @version  $Id$
  */
 #ifndef FIRM_IR_IRVRFY_H
 #define FIRM_IR_IRVRFY_H
 
 #include "firm_types.h"
+#include "begin.h"
 
 /**
  * Tests the modes of checknode and its predecessors.
@@ -35,7 +36,7 @@
  * @return
  * 	NON-zero on success
  */
-int irn_vrfy(ir_node *checknode);
+FIRM_API int irn_vrfy(ir_node *checknode);
 
 /**
  * Tests the modes of checknode and its predecessors.
@@ -44,7 +45,7 @@ int irn_vrfy(ir_node *checknode);
  * @return
  * 	NON-zero on success
  */
-int irn_vrfy_irg(ir_node *checknode, ir_graph *irg);
+FIRM_API int irn_vrfy_irg(ir_node *checknode, ir_graph *irg);
 
 /**
  * Same as irn_vrfy_irg, but temporary sets verification mode to
@@ -52,7 +53,7 @@ int irn_vrfy_irg(ir_node *checknode, ir_graph *irg);
  * @return
  * 	NON-zero on success
  */
-int irn_vrfy_irg_dump(ir_node *checknode, ir_graph *irg, const char **bad_string);
+FIRM_API int irn_vrfy_irg_dump(ir_node *checknode, ir_graph *irg, const char **bad_string);
 
 /**
  * Flags for irg_verify().
@@ -72,7 +73,7 @@ typedef enum _irg_verify_flags_t {
  * @return
  * 	NON-zero on success.
  */
-int irg_verify(ir_graph *irg, unsigned flags);
+FIRM_API int irg_verify(ir_graph *irg, unsigned flags);
 
 /**
  * Compatibility macro. Deprecated soon.
@@ -87,7 +88,7 @@ int irg_verify(ir_graph *irg, unsigned flags);
  *
  * @return  the newly created ir_graph pass
  */
-ir_graph_pass_t *irg_verify_pass(const char *name, unsigned flags);
+FIRM_API ir_graph_pass_t *irg_verify_pass(const char *name, unsigned flags);
 
 /**
  * Possible flags for irg_vrfy_bads().
@@ -107,13 +108,15 @@ enum verify_bad_flags_t {
  *               which Bads are allowed
  * @returns      a value combined of verify_bad_flags_t indicating the problems found.
  */
-int irg_vrfy_bads(ir_graph *irg, int flags);
+FIRM_API int irg_vrfy_bads(ir_graph *irg, int flags);
 
 /**
  *  Enable/disable verification of Load/Store nodes with
  *  its entities. If disabled, Store(SymConst(array)) will be allowed
  *  (C-frontend builds this :-)
  */
-void vrfy_enable_entity_tests(int enable);
+FIRM_API void vrfy_enable_entity_tests(int enable);
+
+#include "end.h"
 
 #endif

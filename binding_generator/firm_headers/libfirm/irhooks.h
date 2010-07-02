@@ -21,7 +21,7 @@
  * @file
  * @brief   Generic hooks for various libFirm functions.
  * @author  Michael Beck
- * @version $Id: irhooks.h 26382 2009-08-19 08:31:48Z mallon $
+ * @version $Id$
  */
 #ifndef FIRM_IR_IRHOOKS_H
 #define FIRM_IR_IRHOOKS_H
@@ -29,6 +29,7 @@
 #include "irop.h"
 #include "irnode.h"
 #include "irgraph.h"
+#include "begin.h"
 
 /**
  * options for the hook_merge_nodes hook
@@ -222,7 +223,7 @@ typedef enum {
  * @param hook   the hook type
  * @param entry  the hook entry
  */
-void register_hook(hook_type_t hook, hook_entry_t *entry);
+FIRM_API void register_hook(hook_type_t hook, hook_entry_t *entry);
 
 /**
  * unregister a hook entry.
@@ -230,9 +231,9 @@ void register_hook(hook_type_t hook, hook_entry_t *entry);
  * @param hook   the hook type
  * @param entry  the hook entry
  */
-void unregister_hook(hook_type_t hook, hook_entry_t *entry);
+FIRM_API void unregister_hook(hook_type_t hook, hook_entry_t *entry);
 
-extern hook_entry_t *hooks[hook_last];
+FIRM_API hook_entry_t *hooks[hook_last];
 
 /**
  * execute the hook what with the args args
@@ -284,5 +285,7 @@ extern hook_entry_t *hooks[hook_last];
 #define hook_new_entity(ent)              hook_exec(hook_new_entity, (ctx, ent))
 #define hook_new_type(tp)                 hook_exec(hook_new_type, (ctx, tp))
 #define hook_node_info(F, node)           hook_exec(hook_node_info, (ctx, F, node))
+
+#include "end.h"
 
 #endif

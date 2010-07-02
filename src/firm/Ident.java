@@ -34,13 +34,16 @@ public class Ident extends JNAWrapper {
 		return super.equals(object);
 	}
 	
+	/**
+	 * create an identifier that is different from any other identifier
+	 * created by createUnique. You must specify %u inside the tag which
+	 * is replaced by a unique number.
+	 * @param tag
+	 * @return
+	 */
 	public final static Ident createUnique(String tag) {
 		Pointer pIdent = binding.id_unique(tag);
 		return new Ident(pIdent);
-	}
-	
-	public final static void initMangle() {
-		binding.firm_init_mangle();
 	}
 	
 	public final static Ident mangleEntity(Entity ent) {

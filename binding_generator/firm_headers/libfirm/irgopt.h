@@ -21,18 +21,20 @@
  * @file
  * @brief   Optimizations for a whole ir graph, i.e., a procedure.
  * @author  Christian Schaefer, Goetz Lindenmaier, Sebastian Felis
- * @version $Id: irgopt.h 27271 2010-03-07 22:21:24Z matze $
+ * @version $Id$
  */
 #ifndef FIRM_IR_IRGOPT_H
 #define FIRM_IR_IRGOPT_H
 
 #include "firm_types.h"
+#include "begin.h"
 
-/** Applies local optimizations (see iropt.h) to all nodes reachable from node n.
+/** Applies local optimizations (see iropt.h) to all nodes reachable from node
+ * @p n.
  *
  * @param n The node to be optimized.
  */
-void local_optimize_node(ir_node *n);
+FIRM_API void local_optimize_node(ir_node *n);
 
 /** Applies local optimizations (see iropt.h) to all nodes in the graph.
  *
@@ -41,7 +43,7 @@ void local_optimize_node(ir_node *n);
  * After applying local_optimize_graph() to a IR-graph, Bad nodes
  * only occur as predecessor of Block and Phi nodes.
  */
-void local_optimize_graph(ir_graph *irg);
+FIRM_API void local_optimize_graph(ir_graph *irg);
 
 /** Applies local optimizations (see iropt.h) to all nodes in the graph.
  *
@@ -54,7 +56,7 @@ void local_optimize_graph(ir_graph *irg);
  *
  * @return non-zero if the optimization could be applied, 0 else
  */
-int optimize_graph_df(ir_graph *irg);
+FIRM_API int optimize_graph_df(ir_graph *irg);
 
 /**
  * Creates an ir_graph pass for optimize_graph_df().
@@ -63,7 +65,7 @@ int optimize_graph_df(ir_graph *irg);
  *
  * @return  the newly created ir_graph pass
  */
-ir_graph_pass_t *optimize_graph_df_pass(const char *name);
+FIRM_API ir_graph_pass_t *optimize_graph_df_pass(const char *name);
 
 /** Places an empty basic block on critical control flow edges thereby
  * removing them.
@@ -74,7 +76,7 @@ ir_graph_pass_t *optimize_graph_df_pass(const char *name);
  *
  * @param irg  IR Graph
  */
-void remove_critical_cf_edges(ir_graph *irg);
+FIRM_API void remove_critical_cf_edges(ir_graph *irg);
 
 /** Places an empty basic block on critical control flow edges thereby
  * removing them.
@@ -86,6 +88,9 @@ void remove_critical_cf_edges(ir_graph *irg);
  * @param irg                     IR Graph
  * @param ignore_exception_edges  if non-zero, exception edges will be ignored
  */
-void remove_critical_cf_edges_ex(ir_graph *irg, int ignore_exception_edges);
+FIRM_API void remove_critical_cf_edges_ex(ir_graph *irg,
+                                          int ignore_exception_edges);
+
+#include "end.h"
 
 #endif

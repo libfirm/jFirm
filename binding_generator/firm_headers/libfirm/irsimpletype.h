@@ -22,7 +22,7 @@
  * @brief    Run most simple type analyses.
  * @author   Goetz Lindenmaier
  * @date     22.8.2003
- * @version  $Id: irsimpletype.h 27143 2010-02-13 11:17:42Z mallon $
+ * @version  $Id$
  * @brief
  *  We compute type information for each node.  It is derived from the
  *  types of the origines of values, e.g. parameter types can be derived
@@ -35,8 +35,7 @@
 #include "irgraph.h"
 #include "irnode.h"
 #include "typerep.h"
-
-
+#include "begin.h"
 
 /* ------------ Building and Removing the type information  ----------- */
 
@@ -57,22 +56,11 @@
  * Uses the link field of types.  Sets this field of each type to point to a
  * pointer type that points to the type (Got it? ;-)).
  */
-void simple_analyse_types(void);
+FIRM_API void simple_analyse_types(void);
 
 /** Frees all type information datastructures.  Sets the flag in irg to "???". */
-void free_simple_type_information(void);
+FIRM_API void free_simple_type_information(void);
 
-/** Computes type information for a node.
- *
- *  Computes type information for a node.  Does not remark this type information
- *  in the ir.  Computes the type information by analysing the predecessors.
- *  Calls the same basic analyses routine for a node as simple_analyse_types,
- *  but returns unknown_type for Phi nodes.
- *  Each call is theoretically O(n).
- *
- *  Not yet implemented, but I guess we want this for iropt, to find the
- *  type for newly allocated constants.
- */
-/* type *analyse_irn_type(ir_node *node); */
+#include "end.h"
 
 #endif

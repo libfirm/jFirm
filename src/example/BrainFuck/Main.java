@@ -10,6 +10,8 @@ public class Main {
 	
 	public static void main(String[] args) throws IOException {
 		Firm.init();
+		Firm.finish();
+		Firm.init();
 		System.out.printf("Initialized Firm Version: %1s.%2s\n",
 		                  Firm.getMinorVersion(), Firm.getMajorVersion());
 
@@ -33,5 +35,9 @@ public class Main {
 		Backend.createAssembler("test.s", "<builtin>");
 		/* assembler */
 		Runtime.getRuntime().exec("gcc test.s -o a.out");
+		
+		Firm.finish();
+		Firm.init();
+		Firm.finish();
 	}
 }

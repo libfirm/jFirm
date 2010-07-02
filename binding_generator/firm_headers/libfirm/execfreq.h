@@ -22,33 +22,39 @@
  * @brief       Compute an estimate of basic block executions.
  * @author      Adam M. Szalkowski
  * @date        28.05.2006
- * @version     $Id: execfreq.h 17143 2008-01-02 20:56:33Z beck $
+ * @version     $Id$
  */
 #ifndef FIRM_ANA_EXECFREQ_H
 #define FIRM_ANA_EXECFREQ_H
 
 #include "firm_types.h"
+#include "begin.h"
 
 struct ir_exec_freq;
 
 /**
  * Create execfreq structure (to be used with set_execfreq)
  */
-ir_exec_freq *create_execfreq(ir_graph *irg);
+FIRM_API ir_exec_freq *create_execfreq(ir_graph *irg);
 
 /**
  * Set execution frequency of a basic block
  */
-void set_execfreq(ir_exec_freq *ef, const ir_node *block, double freq);
+FIRM_API void set_execfreq(ir_exec_freq *ef, const ir_node *block, double freq);
 
 /**
  * Create execfreq structure and initialize with estimated frequencies
  */
-ir_exec_freq *compute_execfreq(ir_graph *irg, double loop_weight);
+FIRM_API ir_exec_freq *compute_execfreq(ir_graph *irg, double loop_weight);
 
-void free_execfreq(ir_exec_freq *ef);
+FIRM_API void free_execfreq(ir_exec_freq *ef);
 
-double get_block_execfreq(const ir_exec_freq *ef, const ir_node *block);
-unsigned long get_block_execfreq_ulong(const ir_exec_freq *ef, const ir_node *block);
+FIRM_API double get_block_execfreq(const ir_exec_freq *ef,
+                                   const ir_node *block);
+
+FIRM_API unsigned long get_block_execfreq_ulong(const ir_exec_freq *ef,
+                                                const ir_node *block);
+
+#include "end.h"
 
 #endif

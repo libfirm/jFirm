@@ -227,42 +227,6 @@ public interface binding_iredges extends Library {
 			return null;
 		}
 	}
-	Pointer __builtin_alloca();
-	double __builtin_huge_val();
-	float __builtin_huge_valf();
-	double __builtin_huge_vall();
-	double __builtin_inf();
-	float __builtin_inff();
-	double __builtin_infl();
-	double __builtin_nan();
-	float __builtin_nanf();
-	double __builtin_nanl();
-	void __builtin_va_end();
-	com.sun.jna.NativeLong __builtin_expect();
-	Pointer __builtin_return_address();
-	Pointer __builtin_frame_address();
-	int __builtin_ffs();
-	int __builtin_clz();
-	int __builtin_ctz();
-	int __builtin_popcount();
-	int __builtin_parity();
-	float __builtin_prefetch(Object ... args);
-	void __builtin_trap();
-	com.sun.jna.NativeLong __builtin_object_size();
-	void __builtin_abort();
-	int __builtin_abs();
-	com.sun.jna.NativeLong __builtin_labs();
-	long __builtin_llabs();
-	Pointer __builtin_memcpy();
-	Pointer __builtin___memcpy_chk();
-	void __builtin_exit();
-	Pointer __builtin_malloc();
-	int __builtin_memcmp();
-	Pointer __builtin_memset();
-	com.sun.jna.NativeLong __builtin_strlen();
-	int __builtin_strcmp();
-	String __builtin_strcpy();
-	void edges_notify_edge_kind(Pointer src, int pos, Pointer tgt, Pointer old_tgt, /* ir_edge_kind_t */int kind, Pointer irg);
 	Pointer get_irn_out_edge_first_kind(Pointer irn, /* ir_edge_kind_t */int kind);
 	Pointer get_irn_out_edge_next(Pointer irn, Pointer last);
 	Pointer get_edge_src_irn(Pointer edge);
@@ -285,5 +249,6 @@ public interface binding_iredges extends Library {
 	void edges_node_deleted(Pointer irn, Pointer irg);
 	void edges_notify_edge(Pointer src, int pos, Pointer tgt, Pointer old_tgt, Pointer irg);
 	void irg_block_edges_walk(Pointer block, Pointer pre, Pointer post, Pointer env);
+	void irg_walk_edges(Pointer start, Pointer pre, Pointer post, Pointer env);
 	void edges_reset_private_data(Pointer irg, int offset, int size);
 }

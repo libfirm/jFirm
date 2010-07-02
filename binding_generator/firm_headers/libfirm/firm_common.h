@@ -21,15 +21,17 @@
  * @file
  * @brief    common firm declarations
  * @author   Martin Trapp, Christian Schaefer, Goetz Lindenmaier
- * @version  $Id: firm_common.h 26909 2010-01-05 15:56:54Z matze $
+ * @version  $Id$
  */
 #ifndef FIRM_COMMON_FIRM_COMMON_H
 #define FIRM_COMMON_FIRM_COMMON_H
 
 #include "firm_types.h"
+#include "begin.h"
 
 /**
  * libFirm initialization parameters.
+ * @deprecated
  */
 struct _firm_parameter_t {
 	/**
@@ -42,6 +44,7 @@ struct _firm_parameter_t {
 	/**
 	 * Statistic options. If statistic function where enabled, these
 	 * flags configure it, see enum firmstat_options_t.
+	 * @deprecated  call firm_init_stat(options) instead
 	 */
 	unsigned enable_statistics;
 
@@ -50,6 +53,7 @@ struct _firm_parameter_t {
 	 * used before definition. The function should insert a default value,
 	 * and/or raise a compiler error/warning. Note that returning
 	 * an Unknown is allowed here.
+	 * @deprecated  call ir_set_uninitialized_local_variable_func() instead
 	 */
 	uninitialized_local_variable_func_t *initialize_local_func;
 
@@ -61,13 +65,16 @@ struct _firm_parameter_t {
 	type_identify_if_t *ti_if;
 
 	/**
-	 * The interface for the ident module.
-	 * If not set, the default libFirm ident module (using hash sets).
+	 * dummy parameter
+	 * (this used to hold an identifier module structure)
 	 */
-	ident_if_t *id_if;
+	void *id_if;
 
 	/**
-	 * The default calling convention.
+	 * dummy parameter
+	 * (this used to hold a default calling convention, but this concept is no
+	 *  more. You should always set the calling convention manually after
+	 *  creating the method entity if you need something else)
 	 */
 	unsigned cc_mask;
 
@@ -85,31 +92,34 @@ typedef struct _firm_parameter_t firm_parameter_t;
  * Initializes the firm library.  Allocates default data structures.
  * Initializes configurable behavior of the library.
  *
- * @param params   A structure containing the parameters of the libFirm.
- *
- * The parameter struct may be NULL. In that case, the original FIRM behavior
- * is conserved.
+ * @param params   should be NULL (you can pass a structure containing
+ *                 initial parameters but this is deprecated)
  */
-void ir_init(const firm_parameter_t *params);
+FIRM_API void ir_init(const firm_parameter_t *params);
 
 /**
  * Frees all memory occupied by the firm library.
  */
-void ir_finish(void);
+FIRM_API void ir_finish(void);
 
 /** returns the libFirm major version number */
-unsigned ir_get_version_major(void);
+FIRM_API unsigned ir_get_version_major(void);
 /** returns libFirm minor version number */
-unsigned ir_get_version_minor(void);
+FIRM_API unsigned ir_get_version_minor(void);
 /** returns string describing libFirm revision */
-const char *ir_get_version_revision(void);
+FIRM_API const char *ir_get_version_revision(void);
 /** returns string describing libFirm build */
-const char *ir_get_version_build(void);
+FIRM_API const char *ir_get_version_build(void);
 
 
 
-/** a list of firm kinds
- @@@ not all datatypes are tagged yet. */
+/**
+ * a list of firm kinds
+ * Most important datastructures in firm contain a firm_kind field at the
+ * beginning so given void* pointer you can usually still guess the kind
+ * of thing the pointer points to.
+ * This is used in debug helper functions and printers.
+ */
 typedef enum {
 	k_BAD = 0,                /**< An invalid firm node. */
 	k_entity,                 /**< An entity. */
@@ -136,12 +146,14 @@ typedef enum {
  *
  * @param firm_thing  pointer representing a firm object
  */
-firm_kind get_kind(const void *firm_thing);
+FIRM_API firm_kind get_kind(const void *firm_thing);
 
 /** Returns the kind of a thing as a string. */
-const char *print_firm_kind(void *firm_thing);
+FIRM_API const char *print_firm_kind(void *firm_thing);
 
 /** Print an identification of a firm thing. */
-void firm_identify_thing(void *X);
+FIRM_API void firm_identify_thing(void *X);
+
+#include "end.h"
 
 #endif

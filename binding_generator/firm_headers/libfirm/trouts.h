@@ -22,24 +22,21 @@
  * @brief    Reverse edges that reference types/entities.
  * @author   Goetz Lindenmaier
  * @date     29.10.2004
- * @version  $Id: trouts.h 27143 2010-02-13 11:17:42Z mallon $
+ * @version  $Id$
  * @brief
  *  Trouts list all uses of types and entities.
  *  Each type gets a list of all Alloc nodes allocating it.
  *  Each entity gets two lists:
  *    - one containing all accesses (Load, (Call), Store),
  *    - and one containing all uses to get a reference (Sel, SymConst).
- *
- * @todo
- *   To list all uses of entities of a type, we also should list all
- *   static/automatic allocated entities in types.  The Alloc nodes
- *   represent only the dynamic allocated entities.
  */
 #ifndef FIRM_ANA_TROUTS_H
 #define FIRM_ANA_TROUTS_H
 
 #include "firm_types.h"
 #include "irgraph.h"
+
+#include "begin.h"
 
 /*-----------------------------------------------------------------*/
 /* Accessing the trout datastructures.                             */
@@ -52,51 +49,47 @@
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /** Number of Load/Store nodes that possibly access this entity. */
-int get_entity_n_accesses(const ir_entity *ent);
+FIRM_API int get_entity_n_accesses(const ir_entity *ent);
 /** Load/Store node that possibly access this entity. */
-ir_node *get_entity_access(const ir_entity *ent, int pos);
+FIRM_API ir_node *get_entity_access(const ir_entity *ent, int pos);
 
 /** Number of references to an entity, in form of SymConst/Sel.
  *  Including references from constant entities and the like. */
-int get_entity_n_references(const ir_entity *ent);
+FIRM_API int get_entity_n_references(const ir_entity *ent);
 /** References to an entity, in form of SymConst/Sel
  *  Including references from constants. */
-ir_node *get_entity_reference(const ir_entity *ent, int pos);
+FIRM_API ir_node *get_entity_reference(const ir_entity *ent, int pos);
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 /* types                                                           */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 /** Number of Alloc nodes that create an instance of this type. */
-int get_type_n_allocs(const ir_type *tp);
+FIRM_API int get_type_n_allocs(const ir_type *tp);
 /** Alloc node that create an instance of this type. */
-ir_node *get_type_alloc(const ir_type *tp, int pos);
+FIRM_API ir_node *get_type_alloc(const ir_type *tp, int pos);
 
 /** Number of Cast nodes that cast a pointer to this type. */
-int get_type_n_casts(const ir_type *tp);
+FIRM_API int get_type_n_casts(const ir_type *tp);
 /** Cast node that cast a pointer to this type. */
-ir_node *get_type_cast(const ir_type *tp, int pos);
-void add_type_cast(const ir_type *tp, ir_node *cast);
+FIRM_API ir_node *get_type_cast(const ir_type *tp, int pos);
+FIRM_API void add_type_cast(const ir_type *tp, ir_node *cast);
 /** Return number of upcasts. O(\#casts). */
-int get_class_n_upcasts(const ir_type *clss);
+FIRM_API int get_class_n_upcasts(const ir_type *clss);
 /** Return number of downcasts. O(\#casts). */
-int get_class_n_downcasts(const ir_type *clss);
+FIRM_API int get_class_n_downcasts(const ir_type *clss);
 
 /* Access all pointer types that point to tp. */
-int     get_type_n_pointertypes_to(const ir_type *tp);
-ir_type *get_type_pointertype_to(const ir_type *tp, int pos);
-void    add_type_pointertype_to(const ir_type *tp, ir_type *ptp);
+FIRM_API int     get_type_n_pointertypes_to(const ir_type *tp);
+FIRM_API ir_type *get_type_pointertype_to(const ir_type *tp, int pos);
+FIRM_API void    add_type_pointertype_to(const ir_type *tp, ir_type *ptp);
 
 /* Access all array types that contain elements of type tp.
  * Does not find subarrays, e.g., int[] being element of int[][]
  * for multi dimensional arrays. */
-int     get_type_n_arraytypes_of(const ir_type *tp);
-ir_type *get_type_arraytype_of(const ir_type *tp, int pos);
-void    add_type_arraytype_of(const ir_type *tp, ir_type *atp);
-
-
-
-/* @@@ TODO: compute all entities that use a type. */
+FIRM_API int     get_type_n_arraytypes_of(const ir_type *tp);
+FIRM_API ir_type *get_type_arraytype_of(const ir_type *tp, int pos);
+FIRM_API void    add_type_arraytype_of(const ir_type *tp, ir_type *atp);
 
 /*------------------------------------------------------------------*/
 /* Building and Removing the trout datastructure                    */
@@ -106,9 +99,9 @@ void    add_type_arraytype_of(const ir_type *tp, ir_type *atp);
  *
  *  We reuse the enum of irouts.
  *  @see irouts.h. */
-irg_outs_state get_trouts_state(void);
+FIRM_API irg_outs_state get_trouts_state(void);
 /** Set the tr out state to inconsistent if it is consistent. */
-void           set_trouts_inconsistent(void);
+FIRM_API void           set_trouts_inconsistent(void);
 
 /** Compute the outs of types and entities.
  *
@@ -132,9 +125,11 @@ void           set_trouts_inconsistent(void);
  *
  *  Sets trout state to outs_consistent.
  */
-void compute_trouts(void);
+FIRM_API void compute_trouts(void);
 
 /** Free trout data. */
-void free_trouts(void);
+FIRM_API void free_trouts(void);
+
+#include "end.h"
 
 #endif

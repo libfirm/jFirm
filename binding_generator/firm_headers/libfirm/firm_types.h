@@ -21,10 +21,12 @@
  * @file
  * @brief      Definition of opaque firm types
  * @author     Michael Beck
- * @version    $Id: firm_types.h 27362 2010-04-09 12:38:55Z beck $
+ * @version    $Id$
  */
 #ifndef FIRM_COMMON_FIRM_TYPES_H
 #define FIRM_COMMON_FIRM_TYPES_H
+
+#include "begin.h"
 
 typedef unsigned long ir_visited_t;
 typedef unsigned long ir_exc_region_t;
@@ -197,7 +199,6 @@ typedef enum {
 	pn_Cmp_Uge   = pn_Cmp_Uo|pn_Cmp_Eq|pn_Cmp_Gt, /**< unordered, greater or equal */
 	pn_Cmp_Ne    = pn_Cmp_Uo|pn_Cmp_Lt|pn_Cmp_Gt, /**< unordered, less or greater = not equal */
 	pn_Cmp_True  = 15                             /**< true */
-	/* not_mask = Leg*/   /* bits to flip to negate comparison * @@ hack for JNI interface */
 } pn_Cmp;   /* Projection numbers for Cmp */
 
 /** The allocation place. */
@@ -230,5 +231,7 @@ typedef enum {
 	ir_bk_outport,                /**< out port */
 	ir_bk_inner_trampoline,       /**< address of a trampoline for GCC inner functions */
 } ir_builtin_kind;
+
+#include "end.h"
 
 #endif

@@ -26,10 +26,6 @@ public class ClassType extends Type {
 		return getIdent().toString();
 	}
 	
-	public void addMember(Entity entity) {
-		binding.add_class_member(ptr, entity.ptr);
-	}
-	
 	public int getNMembers() {
 		return binding.get_class_n_members(ptr);
 	}
@@ -71,10 +67,6 @@ public class ClassType extends Type {
 		return getMemberByName(new Ident(name));
 	}
 
-	public void removeMember(Entity member) {
-		binding.remove_class_member(ptr, member.ptr);
-	}
-	
 	public void addSubtype(Type subType) {
 		binding.add_class_subtype(ptr, subType.ptr);
 	}

@@ -21,7 +21,7 @@
  * @file
  * @brief   Import/export textual representation of firm.
  * @author  Moritz Kroll
- * @version $Id: irio.h 27274 2010-03-09 15:38:51Z matze $
+ * @version $Id$
  *
  * Note: The file format is not considered stable yet. So expect
  * incompatibilities between file formats of different libfirm versions.
@@ -32,6 +32,7 @@
 #include <stdio.h>
 
 #include "firm_types.h"
+#include "begin.h"
 
 /**
  * Exports the whole irp to the given file in a textual form.
@@ -40,12 +41,12 @@
  *
  * Exports all types, all ir graphs, and the constant graph.
  */
-void ir_export(const char *filename);
+FIRM_API void ir_export(const char *filename);
 
 /**
  * same as ir_export but writes to a FILE*
  */
-void ir_export_file(FILE *output, const char *outputname);
+FIRM_API void ir_export_file(FILE *output, const char *outputname);
 
 /**
  * Write the given ir graph to a stream in a textual format
@@ -56,7 +57,8 @@ void ir_export_file(FILE *output, const char *outputname);
  *
  * Exports the type graph used by the given graph and the graph itself.
  */
-void ir_export_irg(ir_graph *irg, FILE *output, const char *outputname);
+FIRM_API void ir_export_irg(ir_graph *irg, FILE *output,
+                            const char *outputname);
 
 /**
  * Imports the data stored in the given file.
@@ -65,11 +67,13 @@ void ir_export_irg(ir_graph *irg, FILE *output, const char *outputname);
  *
  * Imports any type graphs and ir graphs contained in the file.
  */
-void ir_import(const char *filename);
+FIRM_API void ir_import(const char *filename);
 
 /**
  * same as ir_import but imports from a FILE*
  */
-void ir_import_file(FILE *input, const char *inputname);
+FIRM_API void ir_import_file(FILE *input, const char *inputname);
+
+#include "end.h"
 
 #endif

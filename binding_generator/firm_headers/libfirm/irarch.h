@@ -22,12 +22,13 @@
  * @brief  Some machine dependent optimizations.
  * @date   1.10.2004
  * @author Sebastian Hack
- * @version $Id: irarch.h 22855 2008-10-13 23:08:13Z beck $
+ * @version $Id$
  */
 #ifndef FIRM_IR_IRARCH_H
 #define FIRM_IR_IRARCH_H
 
 #include "firm_types.h"
+#include "begin.h"
 
 /**
  * The Multiplication replacement can consist of the following instructions.
@@ -81,7 +82,7 @@ typedef const ir_settings_arch_dep_t *(*arch_dep_params_factory_t)(void);
 /**
  * A default parameter factory for testing purposes.
  */
-const ir_settings_arch_dep_t *arch_dep_default_factory(void);
+FIRM_API const ir_settings_arch_dep_t *arch_dep_default_factory(void);
 
 /**
  * Optimization flags.
@@ -100,13 +101,13 @@ typedef enum {
  *                  is not called, the machine dependent optimizations
  *                  are not enabled at all.
  */
-void arch_dep_init(arch_dep_params_factory_t factory);
+FIRM_API void arch_dep_init(arch_dep_params_factory_t factory);
 
 /**
  * Set the optimizations that shall be applied.
  * @param opts An optimization bit mask.
  */
-void arch_dep_set_opts(arch_dep_opts_t opts);
+FIRM_API void arch_dep_set_opts(arch_dep_opts_t opts);
 
 /**
  * Replace Muls with Lea/Shifts/Add/Subs if these
@@ -115,7 +116,7 @@ void arch_dep_set_opts(arch_dep_opts_t opts);
  * @param irn       The Firm node to inspect.
  * @return          A replacement expression for irn.
  */
-ir_node *arch_dep_replace_mul_with_shifts(ir_node *irn);
+FIRM_API ir_node *arch_dep_replace_mul_with_shifts(ir_node *irn);
 
 /**
  * Replace Divs with Shifts and Add/Subs and Mulh.
@@ -132,7 +133,7 @@ ir_node *arch_dep_replace_mul_with_shifts(ir_node *irn);
  * @param irn       The Firm node to inspect.
  * @return          A replacement expression for irn.
  */
-ir_node *arch_dep_replace_div_by_const(ir_node *irn);
+FIRM_API ir_node *arch_dep_replace_div_by_const(ir_node *irn);
 
 /**
  * Replace Mods with Shifts and Add/Subs and Mulh.
@@ -149,7 +150,7 @@ ir_node *arch_dep_replace_div_by_const(ir_node *irn);
  * @param irn       The Firm node to inspect.
  * @return          A replacement expression for irn.
  */
-ir_node *arch_dep_replace_mod_by_const(ir_node *irn);
+FIRM_API ir_node *arch_dep_replace_mod_by_const(ir_node *irn);
 
 /**
  * Replace DivMods with Shifts and Add/Subs and Mulh.
@@ -167,6 +168,9 @@ ir_node *arch_dep_replace_mod_by_const(ir_node *irn);
  * @param mod       After call contains the Firm node mod result or NULL.
  * @param irn       The Firm node to inspect.
  */
-void arch_dep_replace_divmod_by_const(ir_node **div, ir_node **mod, ir_node *irn);
+FIRM_API void arch_dep_replace_divmod_by_const(ir_node **div, ir_node **mod,
+                                               ir_node *irn);
+
+#include "end.h"
 
 #endif

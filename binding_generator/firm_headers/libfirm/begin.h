@@ -19,25 +19,39 @@
 
 /**
  * @file
- * @brief  Declares different kind of edges between nodes
- * @date   29.08.2006
- * @author Sebastian Hack
+ * @brief       Should be included in all public firm headers at the beginning
+ * @author      Matthias Braun
+ * @version     $Id$
  */
-#ifndef FIRM_IR_IREDGEKINDS_H
-#define FIRM_IR_IREDGEKINDS_H
+#ifndef FIRM_BEGIN_H
+#define FIRM_BEGIN_H
 
-#include "begin.h"
+/**
+ * @def FIRM_API
+ * Declaration specifier which marks a function/variable as being publicly
+ * visible outside the firm library/dll
+ */
+#ifdef FIRM_DLL
+	#ifdef FIRM_BUILD
+		#ifdef _WIN32
+			#define FIRM_API extern __declspec(dllexport)
+		#else
+			#define FIRM_API extern __attribute__((visibility("default")))
+		#endif
+	#else
+		#ifdef _WIN32
+			#define FIRM_API extern __declspec(dllimport)
+		#else
+			#define FIRM_API
+		#endif
+	#endif
+#else
+	#define  FIRM_API
+#endif
 
-/** Supported Edge kinds. */
-enum _ir_edge_kind_t {
-	EDGE_KIND_NORMAL,  /**< Normal data flow edges. */
-	EDGE_KIND_BLOCK,   /**< Block to Block control flow edges. */
-	EDGE_KIND_DEP,     /**< Dependency edges. */
-	EDGE_KIND_LAST
-};
-
-typedef enum _ir_edge_kind_t ir_edge_kind_t;
-
-#include "end.h"
+/* mark declarations as C function */
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #endif

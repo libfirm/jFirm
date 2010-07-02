@@ -21,7 +21,7 @@
  * @file
  * @brief   Representation of opcode of intermediate operation.
  * @author  Christian Schaefer, Goetz Lindenmaier, Michael Beck
- * @version $Id: irop.h 27456 2010-04-29 11:46:30Z matze $
+ * @version $Id$
  * @brief
  *  Operators of firm nodes.
  *
@@ -32,10 +32,10 @@
 #ifndef FIRM_IR_IROP_H
 #define FIRM_IR_IROP_H
 
-#include "firm_types.h"
-
 #include <stdio.h>
+#include "firm_types.h"
 #include "ident.h"
+#include "begin.h"
 
 /** The allowed arities. */
 typedef enum {
@@ -126,107 +126,156 @@ typedef enum {
 	iro_MaxOpcode
 } ir_opcode;
 
-extern ir_op *op_Block;           ir_op *get_op_Block     (void);
+FIRM_API ir_op *op_Abs;
+FIRM_API ir_op *op_Add;
+FIRM_API ir_op *op_Alloc;
+FIRM_API ir_op *op_Anchor;
+FIRM_API ir_op *op_And;
+FIRM_API ir_op *op_ASM;
+FIRM_API ir_op *op_Bad;
+FIRM_API ir_op *op_Block;
+FIRM_API ir_op *op_Borrow;
+FIRM_API ir_op *op_Bound;
+FIRM_API ir_op *op_Break;
+FIRM_API ir_op *op_Builtin;
+FIRM_API ir_op *op_Call;
+FIRM_API ir_op *op_CallBegin;
+FIRM_API ir_op *op_Carry;
+FIRM_API ir_op *op_Cast;
+FIRM_API ir_op *op_Cmp;
+FIRM_API ir_op *op_Cond;
+FIRM_API ir_op *op_Confirm;
+FIRM_API ir_op *op_Const;
+FIRM_API ir_op *op_Conv;
+FIRM_API ir_op *op_CopyB;
+FIRM_API ir_op *op_Div;
+FIRM_API ir_op *op_DivMod;
+FIRM_API ir_op *op_Dummy;
+FIRM_API ir_op *op_End;
+FIRM_API ir_op *op_EndExcept;
+FIRM_API ir_op *op_EndReg;
+FIRM_API ir_op *op_Eor;
+FIRM_API ir_op *op_Filter;
+FIRM_API ir_op *op_Free;
+FIRM_API ir_op *op_Id;
+FIRM_API ir_op *op_IJmp;
+FIRM_API ir_op *op_InstOf;
+FIRM_API ir_op *op_Jmp;
+FIRM_API ir_op *op_Load;
+FIRM_API ir_op *op_Minus;
+FIRM_API ir_op *op_Mod;
+FIRM_API ir_op *op_Mul;
+FIRM_API ir_op *op_Mulh;
+FIRM_API ir_op *op_Mux;
+FIRM_API ir_op *op_NoMem;
+FIRM_API ir_op *op_Not;
+FIRM_API ir_op *op_Or;
+FIRM_API ir_op *op_Phi;
+FIRM_API ir_op *op_Pin;
+FIRM_API ir_op *op_Proj;
+FIRM_API ir_op *op_Quot;
+FIRM_API ir_op *op_Raise;
+FIRM_API ir_op *op_Return;
+FIRM_API ir_op *op_Rotl;
+FIRM_API ir_op *op_Sel;
+FIRM_API ir_op *op_Shl;
+FIRM_API ir_op *op_Shrs;
+FIRM_API ir_op *op_Shr;
+FIRM_API ir_op *op_Start;
+FIRM_API ir_op *op_Store;
+FIRM_API ir_op *op_Sub;
+FIRM_API ir_op *op_SymConst;
+FIRM_API ir_op *op_Sync;
+FIRM_API ir_op *op_Tuple;
+FIRM_API ir_op *op_Unknown;
 
-extern ir_op *op_Start;           ir_op *get_op_Start     (void);
-extern ir_op *op_End;             ir_op *get_op_End       (void);
-extern ir_op *op_Jmp;             ir_op *get_op_Jmp       (void);
-extern ir_op *op_IJmp;            ir_op *get_op_IJmp      (void);
-extern ir_op *op_Cond;            ir_op *get_op_Cond      (void);
-extern ir_op *op_Return;          ir_op *get_op_Return    (void);
-extern ir_op *op_Sel;             ir_op *get_op_Sel       (void);
-
-extern ir_op *op_Const;           ir_op *get_op_Const     (void);
-extern ir_op *op_SymConst;        ir_op *get_op_SymConst  (void);
-
-extern ir_op *op_Call;            ir_op *get_op_Call      (void);
-extern ir_op *op_Add;             ir_op *get_op_Add       (void);
-extern ir_op *op_Sub;             ir_op *get_op_Sub       (void);
-extern ir_op *op_Minus;           ir_op *get_op_Minus     (void);
-extern ir_op *op_Mul;             ir_op *get_op_Mul       (void);
-extern ir_op *op_Mulh;            ir_op *get_op_Mulh      (void);
-extern ir_op *op_Quot;            ir_op *get_op_Quot      (void);
-extern ir_op *op_DivMod;          ir_op *get_op_DivMod    (void);
-extern ir_op *op_Div;             ir_op *get_op_Div       (void);
-extern ir_op *op_Mod;             ir_op *get_op_Mod       (void);
-extern ir_op *op_Abs;             ir_op *get_op_Abs       (void);
-extern ir_op *op_And;             ir_op *get_op_And       (void);
-extern ir_op *op_Or;              ir_op *get_op_Or        (void);
-extern ir_op *op_Eor;             ir_op *get_op_Eor       (void);
-extern ir_op *op_Not;             ir_op *get_op_Not       (void);
-extern ir_op *op_Cmp;             ir_op *get_op_Cmp       (void);
-extern ir_op *op_Shl;             ir_op *get_op_Shl       (void);
-extern ir_op *op_Shr;             ir_op *get_op_Shr       (void);
-extern ir_op *op_Shrs;            ir_op *get_op_Shrs      (void);
-extern ir_op *op_Rotl;            ir_op *get_op_Rotl      (void);
-extern ir_op *op_Conv;            ir_op *get_op_Conv      (void);
-extern ir_op *op_Cast;            ir_op *get_op_Cast      (void);
-extern ir_op *op_Carry;           ir_op *get_op_Carry     (void);
-extern ir_op *op_Borrow;          ir_op *get_op_Borrow    (void);
-
-extern ir_op *op_Phi;             ir_op *get_op_Phi       (void);
-
-extern ir_op *op_Load;            ir_op *get_op_Load      (void);
-extern ir_op *op_Store;           ir_op *get_op_Store     (void);
-extern ir_op *op_Alloc;           ir_op *get_op_Alloc     (void);
-extern ir_op *op_Free;            ir_op *get_op_Free      (void);
-
-extern ir_op *op_Sync;            ir_op *get_op_Sync      (void);
-
-extern ir_op *op_Tuple;           ir_op *get_op_Tuple     (void);
-extern ir_op *op_Proj;            ir_op *get_op_Proj      (void);
-extern ir_op *op_Id;              ir_op *get_op_Id        (void);
-extern ir_op *op_Bad;             ir_op *get_op_Bad       (void);
-extern ir_op *op_Confirm;         ir_op *get_op_Confirm   (void);
-
-extern ir_op *op_Unknown;         ir_op *get_op_Unknown   (void);
-extern ir_op *op_Filter;          ir_op *get_op_Filter    (void);
-extern ir_op *op_Break;           ir_op *get_op_Break     (void);
-extern ir_op *op_CallBegin;       ir_op *get_op_CallBegin (void);
-extern ir_op *op_EndReg;          ir_op *get_op_EndReg    (void);
-extern ir_op *op_EndExcept;       ir_op *get_op_EndExcept (void);
-
-extern ir_op *op_NoMem;           ir_op *get_op_NoMem     (void);
-extern ir_op *op_Mux;             ir_op *get_op_Mux       (void);
-extern ir_op *op_CopyB;           ir_op *get_op_CopyB     (void);
-
-extern ir_op *op_InstOf;          ir_op *get_op_InstOf    (void);
-extern ir_op *op_Raise;           ir_op *get_op_Raise     (void);
-extern ir_op *op_Bound;           ir_op *get_op_Bound     (void);
-
-extern ir_op *op_Pin;             ir_op *get_op_Pin       (void);
-
-extern ir_op *op_ASM;             ir_op *get_op_ASM       (void);
-extern ir_op *op_Builtin;         ir_op *get_op_Builtin   (void);
-
-extern ir_op *op_Dummy;           ir_op *get_op_Dummy     (void);
-
-extern ir_op *op_Anchor;          ir_op *get_op_Anchor    (void);
+FIRM_API ir_op *get_op_Abs       (void);
+FIRM_API ir_op *get_op_Add       (void);
+FIRM_API ir_op *get_op_Alloc     (void);
+FIRM_API ir_op *get_op_Anchor    (void);
+FIRM_API ir_op *get_op_And       (void);
+FIRM_API ir_op *get_op_ASM       (void);
+FIRM_API ir_op *get_op_Bad       (void);
+FIRM_API ir_op *get_op_Block     (void);
+FIRM_API ir_op *get_op_Borrow    (void);
+FIRM_API ir_op *get_op_Bound     (void);
+FIRM_API ir_op *get_op_Break     (void);
+FIRM_API ir_op *get_op_Builtin   (void);
+FIRM_API ir_op *get_op_CallBegin (void);
+FIRM_API ir_op *get_op_Call      (void);
+FIRM_API ir_op *get_op_Carry     (void);
+FIRM_API ir_op *get_op_Cast      (void);
+FIRM_API ir_op *get_op_Cmp       (void);
+FIRM_API ir_op *get_op_Cond      (void);
+FIRM_API ir_op *get_op_Confirm   (void);
+FIRM_API ir_op *get_op_Const     (void);
+FIRM_API ir_op *get_op_Conv      (void);
+FIRM_API ir_op *get_op_CopyB     (void);
+FIRM_API ir_op *get_op_DivMod    (void);
+FIRM_API ir_op *get_op_Div       (void);
+FIRM_API ir_op *get_op_Dummy     (void);
+FIRM_API ir_op *get_op_EndExcept (void);
+FIRM_API ir_op *get_op_EndReg    (void);
+FIRM_API ir_op *get_op_End       (void);
+FIRM_API ir_op *get_op_Eor       (void);
+FIRM_API ir_op *get_op_Filter    (void);
+FIRM_API ir_op *get_op_Free      (void);
+FIRM_API ir_op *get_op_Id        (void);
+FIRM_API ir_op *get_op_IJmp      (void);
+FIRM_API ir_op *get_op_InstOf    (void);
+FIRM_API ir_op *get_op_Jmp       (void);
+FIRM_API ir_op *get_op_Load      (void);
+FIRM_API ir_op *get_op_Minus     (void);
+FIRM_API ir_op *get_op_Mod       (void);
+FIRM_API ir_op *get_op_Mulh      (void);
+FIRM_API ir_op *get_op_Mul       (void);
+FIRM_API ir_op *get_op_Mux       (void);
+FIRM_API ir_op *get_op_NoMem     (void);
+FIRM_API ir_op *get_op_Not       (void);
+FIRM_API ir_op *get_op_Or        (void);
+FIRM_API ir_op *get_op_Phi       (void);
+FIRM_API ir_op *get_op_Pin       (void);
+FIRM_API ir_op *get_op_Proj      (void);
+FIRM_API ir_op *get_op_Quot      (void);
+FIRM_API ir_op *get_op_Raise     (void);
+FIRM_API ir_op *get_op_Return    (void);
+FIRM_API ir_op *get_op_Rotl      (void);
+FIRM_API ir_op *get_op_Sel       (void);
+FIRM_API ir_op *get_op_Shl       (void);
+FIRM_API ir_op *get_op_Shrs      (void);
+FIRM_API ir_op *get_op_Shr       (void);
+FIRM_API ir_op *get_op_Start     (void);
+FIRM_API ir_op *get_op_Store     (void);
+FIRM_API ir_op *get_op_Sub       (void);
+FIRM_API ir_op *get_op_SymConst  (void);
+FIRM_API ir_op *get_op_Sync      (void);
+FIRM_API ir_op *get_op_Tuple     (void);
+FIRM_API ir_op *get_op_Unknown   (void);
 
 /** Returns the ident for the opcode name */
-ident *get_op_ident(const ir_op *op);
+FIRM_API ident *get_op_ident(const ir_op *op);
 
 /** Returns the string for the opcode. */
-const char *get_op_name(const ir_op *op);
+FIRM_API const char *get_op_name(const ir_op *op);
 
 /** Returns the enum for the opcode */
-unsigned get_op_code(const ir_op *op);
+FIRM_API unsigned get_op_code(const ir_op *op);
 
 /** Returns a human readable name of an op_pin_state. */
-const char *get_op_pin_state_name(op_pin_state s);
+FIRM_API const char *get_op_pin_state_name(op_pin_state s);
 
 /** Gets pinned state of an opcode. */
-op_pin_state get_op_pinned(const ir_op *op);
+FIRM_API op_pin_state get_op_pinned(const ir_op *op);
 
 /** Sets pinned in the opcode.  Setting it to floating has no effect
     for Block, Phi and control flow nodes. */
-void set_op_pinned(ir_op *op, op_pin_state pinned);
+FIRM_API void set_op_pinned(ir_op *op, op_pin_state pinned);
 
 /** Returns the next free IR opcode number, allows to register user ops. */
-unsigned get_next_ir_opcode(void);
+FIRM_API unsigned get_next_ir_opcode(void);
 
 /** Returns the next free n IR opcode number, allows to register a bunch of user ops. */
-unsigned get_next_ir_opcodes(unsigned num);
+FIRM_API unsigned get_next_ir_opcodes(unsigned num);
 
 /**
  * A generic function pointer type.
@@ -239,17 +288,17 @@ typedef void (*op_func)(void);
 /**
  * Returns the generic function pointer from an IR operation.
  */
-op_func get_generic_function_ptr(const ir_op *op);
+FIRM_API op_func get_generic_function_ptr(const ir_op *op);
 
 /**
  * Store a generic function pointer into an IR operation.
  */
-void set_generic_function_ptr(ir_op *op, op_func func);
+FIRM_API void set_generic_function_ptr(ir_op *op, op_func func);
 
 /**
  * Return the irop flags of an IR opcode.
  */
-irop_flags get_op_flags(const ir_op *op);
+FIRM_API irop_flags get_op_flags(const ir_op *op);
 
 /**
  * The hash operation.
@@ -359,7 +408,7 @@ typedef enum {
  * Writes several informations requested by reason to
  * an output file
  */
-typedef int (*dump_node_func)(ir_node *self, FILE *F, dump_reason_t reason);
+typedef void (*dump_node_func)(FILE *out, ir_node *self, dump_reason_t reason);
 
 /**
  * io_op Operations.
@@ -403,11 +452,13 @@ typedef struct {
  * This function can create all standard Firm opcode as well as new ones.
  * The behavior of new opcode depends on the operations \c ops and the \c flags.
  */
-ir_op *new_ir_op(unsigned code, const char *name, op_pin_state p,
-       unsigned flags, op_arity opar, int op_index, size_t attr_size,
-       const ir_op_ops *ops);
+FIRM_API ir_op *new_ir_op(unsigned code, const char *name, op_pin_state p,
+                          unsigned flags, op_arity opar, int op_index,
+                          size_t attr_size, const ir_op_ops *ops);
 
 /** Returns the ir_op_ops of an ir_op. */
-const ir_op_ops *get_op_ops(const ir_op *op);
+FIRM_API const ir_op_ops *get_op_ops(const ir_op *op);
+
+#include "end.h"
 
 #endif
