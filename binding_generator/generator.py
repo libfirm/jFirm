@@ -9,11 +9,6 @@ java_keywords = [ "public", "private", "protected", "true", "false" ]
 
 nodes = []
 for node in ir_spec.nodes:
-	# Filter out some special nodes we don't really need/want here
-	if node.name in ["ASM", "CallBegin", "Borrow", "Carry", "EndExcept",
-	                 "EndReg", "Op" ]:
-		continue
-
 	# Some nodes need special constructors for now...
 	if node.name in ["SymConst", "End", "Start", "Dummy", "Anchor"]:
 		node.noconstr = True
