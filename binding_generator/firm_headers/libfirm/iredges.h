@@ -22,7 +22,7 @@
  * @brief   Public header for the automatically updating outs.
  * @author  Sebastian Hack
  * @date    3.2.2005
- * @version $Id$
+ * @version $Id: iredges.h 27631 2010-06-17 09:22:34Z matze $
  */
 #ifndef FIRM_IR_IREDGES_H
 #define FIRM_IR_IREDGES_H

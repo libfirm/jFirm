@@ -1,33 +1,11 @@
 package firm.bindings;
 /* WARNING: Automatically generated file */
-import com.sun.jna.Library;
+import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
 
-public interface binding_lowering extends Library {
-	public static enum ip_view_state {
-		ip_view_no(),
-		ip_view_valid(),
-		ip_view_invalid();
-		public final int val;
-		private static class C { static int next_val; }
-
-		ip_view_state(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		ip_view_state() {
-			this.val = C.next_val++;
-		}
-		
-		public static ip_view_state getEnum(int val) {
-			for(ip_view_state entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
+public class binding_lowering {
+	static { Native.register("firm"); }
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
@@ -46,6 +24,29 @@ public interface binding_lowering extends Library {
 		
 		public static op_pin_state getEnum(int val) {
 			for(op_pin_state entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum cond_jmp_predicate {
+		COND_JMP_PRED_NONE(),
+		COND_JMP_PRED_TRUE(),
+		COND_JMP_PRED_FALSE();
+		public final int val;
+		private static class C { static int next_val; }
+
+		cond_jmp_predicate(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		cond_jmp_predicate() {
+			this.val = C.next_val++;
+		}
+		
+		public static cond_jmp_predicate getEnum(int val) {
+			for(cond_jmp_predicate entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -111,42 +112,6 @@ public interface binding_lowering extends Library {
 			return null;
 		}
 	}
-	public static enum pn_Cmp {
-		pn_Cmp_False(0),
-		pn_Cmp_Eq(1),
-		pn_Cmp_Lt(2),
-		pn_Cmp_Le((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Gt(4),
-		pn_Cmp_Ge((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Lg((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Leg(((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uo(8),
-		pn_Cmp_Ue((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)),
-		pn_Cmp_Ul((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Ule(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Ug((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uge(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Ne(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_True(15);
-		public final int val;
-		private static class C { static int next_val; }
-
-		pn_Cmp(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		pn_Cmp() {
-			this.val = C.next_val++;
-		}
-		
-		public static pn_Cmp getEnum(int val) {
-			for(pn_Cmp entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
 	public static enum ir_where_alloc {
 		stack_alloc(),
 		heap_alloc();
@@ -197,6 +162,53 @@ public interface binding_lowering extends Library {
 		
 		public static ir_builtin_kind getEnum(int val) {
 			for(ir_builtin_kind entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum pn_generic {
+		pn_Generic_M(0),
+		pn_Generic_X_regular(1),
+		pn_Generic_X_except(2),
+		pn_Generic_other(3);
+		public final int val;
+		private static class C { static int next_val; }
+
+		pn_generic(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		pn_generic() {
+			this.val = C.next_val++;
+		}
+		
+		public static pn_generic getEnum(int val) {
+			for(pn_generic entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum ir_value_classify_sign {
+		value_classified_unknown(0),
+		value_classified_positive(1),
+		value_classified_negative(-1);
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_value_classify_sign(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_value_classify_sign() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_value_classify_sign getEnum(int val) {
+			for(ir_value_classify_sign entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -273,49 +285,48 @@ public interface binding_lowering extends Library {
 			return null;
 		}
 	}
-	void lower_calls_with_compounds(Pointer params);
-	void lower_CopyB(Pointer irg, int max_size, int native_mode_bytes);
-	void lower_switch(Pointer irg, int spare_size);
-	Pointer lower_switch_pass(String name, int spare_size);
-	void lower_dw_ops(Pointer param);
-	Pointer lower_dw_ops_pass(String name, Pointer param);
-	Pointer def_create_intrinsic_fkt(Pointer method, Pointer op, Pointer imode, Pointer omode, Pointer context);
-	void lower_highlevel_graph(Pointer irg, int lower_bitfields);
-	Pointer lower_highlevel_graph_pass(String name, int lower_bitfields);
-	void lower_highlevel(int lower_bitfields);
-	void lower_const_code();
-	Pointer lower_const_code_pass(String name);
-	void ir_lower_mode_b(Pointer irg, Pointer config);
-	Pointer ir_lower_mode_b_pass(String name, Pointer config);
-	void lower_mux(Pointer irg, Pointer cb_func);
-	Pointer lower_mux_pass(String name, Pointer cb_func);
-	int lower_intrinsics(Pointer list, int length, int part_block_used);
-	Pointer lower_intrinsics_pass(String name, Pointer list, int length, int part_block_used);
-	int i_mapper_abs(Pointer call, Pointer ctx);
-	int i_mapper_bswap(Pointer call, Pointer ctx);
-	int i_mapper_sqrt(Pointer call, Pointer ctx);
-	int i_mapper_cbrt(Pointer call, Pointer ctx);
-	int i_mapper_pow(Pointer call, Pointer ctx);
-	int i_mapper_exp(Pointer call, Pointer ctx);
-	int i_mapper_log(Pointer call, Pointer ctx);
-	int i_mapper_sin(Pointer call, Pointer ctx);
-	int i_mapper_cos(Pointer call, Pointer ctx);
-	int i_mapper_tan(Pointer call, Pointer ctx);
-	int i_mapper_asin(Pointer call, Pointer ctx);
-	int i_mapper_acos(Pointer call, Pointer ctx);
-	int i_mapper_atan(Pointer call, Pointer ctx);
-	int i_mapper_sinh(Pointer call, Pointer ctx);
-	int i_mapper_cosh(Pointer call, Pointer ctx);
-	int i_mapper_tanh(Pointer call, Pointer ctx);
-	int i_mapper_strcmp(Pointer call, Pointer ctx);
-	int i_mapper_strncmp(Pointer call, Pointer ctx);
-	int i_mapper_strcpy(Pointer call, Pointer ctx);
-	int i_mapper_strlen(Pointer call, Pointer ctx);
-	int i_mapper_memcpy(Pointer call, Pointer ctx);
-	int i_mapper_mempcpy(Pointer call, Pointer ctx);
-	int i_mapper_memmove(Pointer call, Pointer ctx);
-	int i_mapper_memset(Pointer call, Pointer ctx);
-	int i_mapper_memcmp(Pointer call, Pointer ctx);
-	int i_mapper_alloca(Pointer call, Pointer ctx);
-	int i_mapper_RuntimeCall(Pointer node, Pointer rt);
+	public static native void lower_calls_with_compounds(Pointer params);
+	public static native void lower_CopyB(Pointer irg, int max_size, int native_mode_bytes);
+	public static native void lower_switch(Pointer irg, int spare_size, int allow_out_of_bounds);
+	public static native void lower_dw_ops(Pointer param);
+	public static native Pointer def_create_intrinsic_fkt(Pointer method, Pointer op, Pointer imode, Pointer omode, Pointer context);
+	public static native void lower_highlevel_graph(Pointer irg, int lower_bitfields);
+	public static native Pointer lower_highlevel_graph_pass(String name, int lower_bitfields);
+	public static native void lower_highlevel(int lower_bitfields);
+	public static native void lower_const_code();
+	public static native Pointer lower_const_code_pass(String name);
+	public static native Pointer ir_create_mux_set(Pointer cond, Pointer dest_mode);
+	public static native Pointer ir_create_cond_set(Pointer cond, Pointer dest_mode);
+	public static native void ir_lower_mode_b(Pointer irg, Pointer config);
+	public static native void lower_mux(Pointer irg, Pointer cb_func);
+	public static native Pointer lower_mux_pass(String name, Pointer cb_func);
+	public static native int lower_intrinsics(Pointer list, int length, int part_block_used);
+	public static native Pointer lower_intrinsics_pass(String name, Pointer list, int length, int part_block_used);
+	public static native int i_mapper_abs(Pointer call, Pointer ctx);
+	public static native int i_mapper_bswap(Pointer call, Pointer ctx);
+	public static native int i_mapper_sqrt(Pointer call, Pointer ctx);
+	public static native int i_mapper_cbrt(Pointer call, Pointer ctx);
+	public static native int i_mapper_pow(Pointer call, Pointer ctx);
+	public static native int i_mapper_exp(Pointer call, Pointer ctx);
+	public static native int i_mapper_log(Pointer call, Pointer ctx);
+	public static native int i_mapper_sin(Pointer call, Pointer ctx);
+	public static native int i_mapper_cos(Pointer call, Pointer ctx);
+	public static native int i_mapper_tan(Pointer call, Pointer ctx);
+	public static native int i_mapper_asin(Pointer call, Pointer ctx);
+	public static native int i_mapper_acos(Pointer call, Pointer ctx);
+	public static native int i_mapper_atan(Pointer call, Pointer ctx);
+	public static native int i_mapper_sinh(Pointer call, Pointer ctx);
+	public static native int i_mapper_cosh(Pointer call, Pointer ctx);
+	public static native int i_mapper_tanh(Pointer call, Pointer ctx);
+	public static native int i_mapper_strcmp(Pointer call, Pointer ctx);
+	public static native int i_mapper_strncmp(Pointer call, Pointer ctx);
+	public static native int i_mapper_strcpy(Pointer call, Pointer ctx);
+	public static native int i_mapper_strlen(Pointer call, Pointer ctx);
+	public static native int i_mapper_memcpy(Pointer call, Pointer ctx);
+	public static native int i_mapper_mempcpy(Pointer call, Pointer ctx);
+	public static native int i_mapper_memmove(Pointer call, Pointer ctx);
+	public static native int i_mapper_memset(Pointer call, Pointer ctx);
+	public static native int i_mapper_memcmp(Pointer call, Pointer ctx);
+	public static native int i_mapper_alloca(Pointer call, Pointer ctx);
+	public static native int i_mapper_RuntimeCall(Pointer node, Pointer rt);
 }

@@ -1,33 +1,11 @@
 package firm.bindings;
 /* WARNING: Automatically generated file */
-import com.sun.jna.Library;
+import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
 
-public interface binding_irgopt extends Library {
-	public static enum ip_view_state {
-		ip_view_no(),
-		ip_view_valid(),
-		ip_view_invalid();
-		public final int val;
-		private static class C { static int next_val; }
-
-		ip_view_state(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		ip_view_state() {
-			this.val = C.next_val++;
-		}
-		
-		public static ip_view_state getEnum(int val) {
-			for(ip_view_state entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
+public class binding_irgopt {
+	static { Native.register("firm"); }
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
@@ -46,6 +24,29 @@ public interface binding_irgopt extends Library {
 		
 		public static op_pin_state getEnum(int val) {
 			for(op_pin_state entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum cond_jmp_predicate {
+		COND_JMP_PRED_NONE(),
+		COND_JMP_PRED_TRUE(),
+		COND_JMP_PRED_FALSE();
+		public final int val;
+		private static class C { static int next_val; }
+
+		cond_jmp_predicate(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		cond_jmp_predicate() {
+			this.val = C.next_val++;
+		}
+		
+		public static cond_jmp_predicate getEnum(int val) {
+			for(cond_jmp_predicate entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -111,42 +112,6 @@ public interface binding_irgopt extends Library {
 			return null;
 		}
 	}
-	public static enum pn_Cmp {
-		pn_Cmp_False(0),
-		pn_Cmp_Eq(1),
-		pn_Cmp_Lt(2),
-		pn_Cmp_Le((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Gt(4),
-		pn_Cmp_Ge((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Lg((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Leg(((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uo(8),
-		pn_Cmp_Ue((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)),
-		pn_Cmp_Ul((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Ule(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Ug((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uge(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Ne(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_True(15);
-		public final int val;
-		private static class C { static int next_val; }
-
-		pn_Cmp(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		pn_Cmp() {
-			this.val = C.next_val++;
-		}
-		
-		public static pn_Cmp getEnum(int val) {
-			for(pn_Cmp entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
 	public static enum ir_where_alloc {
 		stack_alloc(),
 		heap_alloc();
@@ -203,10 +168,57 @@ public interface binding_irgopt extends Library {
 			return null;
 		}
 	}
-	void local_optimize_node(Pointer n);
-	void local_optimize_graph(Pointer irg);
-	int optimize_graph_df(Pointer irg);
-	Pointer optimize_graph_df_pass(String name);
-	void remove_critical_cf_edges(Pointer irg);
-	void remove_critical_cf_edges_ex(Pointer irg, int ignore_exception_edges);
+	public static enum pn_generic {
+		pn_Generic_M(0),
+		pn_Generic_X_regular(1),
+		pn_Generic_X_except(2),
+		pn_Generic_other(3);
+		public final int val;
+		private static class C { static int next_val; }
+
+		pn_generic(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		pn_generic() {
+			this.val = C.next_val++;
+		}
+		
+		public static pn_generic getEnum(int val) {
+			for(pn_generic entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum ir_value_classify_sign {
+		value_classified_unknown(0),
+		value_classified_positive(1),
+		value_classified_negative(-1);
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_value_classify_sign(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_value_classify_sign() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_value_classify_sign getEnum(int val) {
+			for(ir_value_classify_sign entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static native void local_optimize_node(Pointer n);
+	public static native void local_optimize_graph(Pointer irg);
+	public static native int optimize_graph_df(Pointer irg);
+	public static native Pointer optimize_graph_df_pass(String name);
+	public static native void remove_critical_cf_edges(Pointer irg);
+	public static native void remove_critical_cf_edges_ex(Pointer irg, int ignore_exception_edges);
 }

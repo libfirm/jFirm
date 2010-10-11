@@ -22,7 +22,7 @@
  * @brief    A little printf understanding some firm types.
  * @author   Sebastian Hack
  * @date     29.11.2004
- * @version  $Id$
+ * @version  $Id: irprintf.h 27575 2010-05-21 21:55:10Z beck $
  */
 #ifndef FIRM_IR_IRPRINTF_H
 #define FIRM_IR_IRPRINTF_H

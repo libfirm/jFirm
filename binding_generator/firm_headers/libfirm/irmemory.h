@@ -22,7 +22,7 @@
  * @brief    Memory disambiguator
  * @author   Michael Beck
  * @date     27.12.2006
- * @version  $Id$
+ * @version  $Id: irmemory.h 28041 2010-10-06 08:40:40Z matze $
  */
 #ifndef FIRM_ANA_IRMEMORY_H
 #define FIRM_ANA_IRMEMORY_H
@@ -81,19 +81,16 @@ typedef enum {
  * Called by get_alias_relation().
  */
 typedef ir_alias_relation (*DISAMBIGUATOR_FUNC)(
-	const ir_graph *irg,
 	const ir_node *adr1, const ir_mode *mode1,
 	const ir_node *adr2, const ir_mode *mode2);
 
 /**
  * Classify a base pointer.
  *
- * @param irg  the graph of the pointer
  * @param irn  the node representing the base address
  * @param ent  the base entity of the base address iff any
  */
-FIRM_API ir_storage_class_class_t classify_pointer(const ir_graph *irg,
-                                                   const ir_node *irn,
+FIRM_API ir_storage_class_class_t classify_pointer(const ir_node *irn,
                                                    const ir_entity *ent);
 
 /**
@@ -136,7 +133,6 @@ FIRM_API const char *get_ir_alias_relation_name(ir_alias_relation rel);
  * interrogated to detect the alias relation.
  */
 FIRM_API ir_alias_relation get_alias_relation(
-	const ir_graph *irg,
 	const ir_node *adr1, const ir_mode *mode1,
 	const ir_node *adr2, const ir_mode *mode2);
 
@@ -165,7 +161,6 @@ FIRM_API void mem_disambig_init(void);
  * @see get_alias_relation()
  */
 FIRM_API ir_alias_relation get_alias_relation_ex(
-	const ir_graph *irg,
 	const ir_node *adr1, const ir_mode *mode1,
 	const ir_node *adr2, const ir_mode *mode2);
 
@@ -182,8 +177,7 @@ FIRM_API void set_irg_entity_usage_state(ir_graph *irg,
 /**
  * Assure that the entity usage flags have been computed for the given graph.
  *
- * This is an intraprocedural analysis that computes the entity usage state
- * for all local variables.
+ * This analysis computes the entity usage state for all local variables.
  *
  * Note that this is a conservative estimation that by no Firm transformation
  * can be invalidated, so it's only recomputed if manually triggered by calling

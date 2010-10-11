@@ -22,7 +22,7 @@
  * @brief   Entry point to the representation of a whole program.
  * @author  Goetz Lindenmaier
  * @date    2000
- * @version $Id$
+ * @version $Id: irprog.h 27762 2010-07-19 12:17:29Z matze $
  * @brief
  *  Intermediate Representation (IR) of a program.
  *
@@ -36,8 +36,6 @@
  *     program.  It is not the base class of
  *     all classes in a class hierarchy (as, e.g., "object" in java).
  *   - A degenerated graph that contains constant expressions.
- *   - interprocedural outs state.
- *   - a flag indicating validity of the interprocedural representation.
  *   - the output file name
  */
 #ifndef FIRM_IR_IRPROG_H
@@ -150,13 +148,6 @@ FIRM_API ir_graph *get_irp_irg(int pos);
 
 /** Sets the ir graph at position pos. */
 FIRM_API void set_irp_irg(int pos, ir_graph *irg);
-
-/** Gets the number of graphs _and_ pseudo graphs. */
-FIRM_API int get_irp_n_allirgs(void);
-
-/** Returns the ir graph at position pos of all graphs (including
- pseudo graphs).  Visits first graphs, then pseudo graphs. */
-FIRM_API ir_graph *get_irp_allirg(int pos);
 
 /**
  * Returns the type containing the entities for a segment.

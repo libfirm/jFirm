@@ -22,7 +22,7 @@
  * @brief       Compute an estimate of basic block executions.
  * @author      Adam M. Szalkowski
  * @date        28.05.2006
- * @version     $Id$
+ * @version     $Id: execfreq.h 27575 2010-05-21 21:55:10Z beck $
  */
 #ifndef FIRM_ANA_EXECFREQ_H
 #define FIRM_ANA_EXECFREQ_H

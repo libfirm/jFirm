@@ -22,7 +22,7 @@
  * @brief     Implements the Firm interface to debug information.
  * @author    Goetz Lindenmaier, Michael Beck
  * @date      2001
- * @version   $Id$
+ * @version   $Id: dbginfo.h 27575 2010-05-21 21:55:10Z beck $
  * @brief
  *  Firm requires a debugging module fulfilling this interface, else no
  *  debugging information is passed to the backend.

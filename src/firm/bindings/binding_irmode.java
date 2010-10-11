@@ -1,33 +1,11 @@
 package firm.bindings;
 /* WARNING: Automatically generated file */
-import com.sun.jna.Library;
+import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
 
-public interface binding_irmode extends Library {
-	public static enum ip_view_state {
-		ip_view_no(),
-		ip_view_valid(),
-		ip_view_invalid();
-		public final int val;
-		private static class C { static int next_val; }
-
-		ip_view_state(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		ip_view_state() {
-			this.val = C.next_val++;
-		}
-		
-		public static ip_view_state getEnum(int val) {
-			for(ip_view_state entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
+public class binding_irmode {
+	static { Native.register("firm"); }
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
@@ -46,6 +24,29 @@ public interface binding_irmode extends Library {
 		
 		public static op_pin_state getEnum(int val) {
 			for(op_pin_state entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum cond_jmp_predicate {
+		COND_JMP_PRED_NONE(),
+		COND_JMP_PRED_TRUE(),
+		COND_JMP_PRED_FALSE();
+		public final int val;
+		private static class C { static int next_val; }
+
+		cond_jmp_predicate(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		cond_jmp_predicate() {
+			this.val = C.next_val++;
+		}
+		
+		public static cond_jmp_predicate getEnum(int val) {
+			for(cond_jmp_predicate entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -111,42 +112,6 @@ public interface binding_irmode extends Library {
 			return null;
 		}
 	}
-	public static enum pn_Cmp {
-		pn_Cmp_False(0),
-		pn_Cmp_Eq(1),
-		pn_Cmp_Lt(2),
-		pn_Cmp_Le((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Gt(4),
-		pn_Cmp_Ge((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Lg((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Leg(((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uo(8),
-		pn_Cmp_Ue((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)),
-		pn_Cmp_Ul((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Ule(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Ug((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uge(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Ne(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_True(15);
-		public final int val;
-		private static class C { static int next_val; }
-
-		pn_Cmp(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		pn_Cmp() {
-			this.val = C.next_val++;
-		}
-		
-		public static pn_Cmp getEnum(int val) {
-			for(pn_Cmp entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
 	public static enum ir_where_alloc {
 		stack_alloc(),
 		heap_alloc();
@@ -197,6 +162,53 @@ public interface binding_irmode extends Library {
 		
 		public static ir_builtin_kind getEnum(int val) {
 			for(ir_builtin_kind entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum pn_generic {
+		pn_Generic_M(0),
+		pn_Generic_X_regular(1),
+		pn_Generic_X_except(2),
+		pn_Generic_other(3);
+		public final int val;
+		private static class C { static int next_val; }
+
+		pn_generic(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		pn_generic() {
+			this.val = C.next_val++;
+		}
+		
+		public static pn_generic getEnum(int val) {
+			for(pn_generic entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum ir_value_classify_sign {
+		value_classified_unknown(0),
+		value_classified_positive(1),
+		value_classified_negative(-1);
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_value_classify_sign(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_value_classify_sign() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_value_classify_sign getEnum(int val) {
+			for(ir_value_classify_sign entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -282,76 +294,76 @@ public interface binding_irmode extends Library {
 			return null;
 		}
 	}
-	String get_mode_arithmetic_name(/* ir_mode_arithmetic */int ari);
-	Pointer new_ir_mode(String name, /* ir_mode_sort */int sort, int bit_size, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
-	Pointer new_ir_vector_mode(String name, /* ir_mode_sort */int sort, int bit_size, int num_of_elem, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
-	int is_mode(Pointer thing);
-	Pointer get_mode_ident(Pointer mode);
-	String get_mode_name(Pointer mode);
-	/* ir_mode_sort */int get_mode_sort(Pointer mode);
-	int get_mode_size_bits(Pointer mode);
-	int get_mode_size_bytes(Pointer mode);
-	int get_mode_sign(Pointer mode);
-	/* ir_mode_arithmetic */int get_mode_arithmetic(Pointer mode);
-	int get_mode_modulo_shift(Pointer mode);
-	int get_mode_n_vector_elems(Pointer mode);
-	Pointer get_mode_link(Pointer mode);
-	void set_mode_link(Pointer mode, Pointer l);
-	Pointer get_mode_min(Pointer mode);
-	Pointer get_mode_max(Pointer mode);
-	Pointer get_mode_null(Pointer mode);
-	Pointer get_mode_one(Pointer mode);
-	Pointer get_mode_minus_one(Pointer mode);
-	Pointer get_mode_all_one(Pointer mode);
-	Pointer get_mode_infinite(Pointer mode);
-	Pointer get_mode_NAN(Pointer mode);
-	Pointer get_modeF();
-	Pointer get_modeD();
-	Pointer get_modeE();
-	Pointer get_modeBs();
-	Pointer get_modeBu();
-	Pointer get_modeHs();
-	Pointer get_modeHu();
-	Pointer get_modeIs();
-	Pointer get_modeIu();
-	Pointer get_modeLs();
-	Pointer get_modeLu();
-	Pointer get_modeLLs();
-	Pointer get_modeLLu();
-	Pointer get_modeP();
-	Pointer get_modeb();
-	Pointer get_modeX();
-	Pointer get_modeBB();
-	Pointer get_modeM();
-	Pointer get_modeT();
-	Pointer get_modeANY();
-	Pointer get_modeBAD();
-	Pointer get_modeP_code();
-	Pointer get_modeP_data();
-	void set_modeP_code(Pointer p);
-	void set_modeP_data(Pointer p);
-	int mode_is_signed(Pointer mode);
-	int mode_is_float(Pointer mode);
-	int mode_is_int(Pointer mode);
-	int mode_is_reference(Pointer mode);
-	int mode_is_num(Pointer mode);
-	int mode_is_data(Pointer mode);
-	int mode_is_datab(Pointer mode);
-	int mode_is_dataM(Pointer mode);
-	int mode_is_float_vector(Pointer mode);
-	int mode_is_int_vector(Pointer mode);
-	int smaller_mode(Pointer sm, Pointer lm);
-	int values_in_mode(Pointer sm, Pointer lm);
-	Pointer find_unsigned_mode(Pointer mode);
-	Pointer find_signed_mode(Pointer mode);
-	Pointer find_double_bits_int_mode(Pointer mode);
-	int mode_honor_signed_zeros(Pointer mode);
-	int mode_overflow_on_unary_Minus(Pointer mode);
-	int mode_wrap_around(Pointer mode);
-	Pointer get_reference_mode_signed_eq(Pointer mode);
-	void set_reference_mode_signed_eq(Pointer ref_mode, Pointer int_mode);
-	Pointer get_reference_mode_unsigned_eq(Pointer mode);
-	void set_reference_mode_unsigned_eq(Pointer ref_mode, Pointer int_mode);
-	int is_reinterpret_cast(Pointer src, Pointer dst);
-	Pointer get_type_for_mode(Pointer mode);
+	public static native String get_mode_arithmetic_name(/* ir_mode_arithmetic */int ari);
+	public static native Pointer new_ir_mode(String name, /* ir_mode_sort */int sort, int bit_size, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
+	public static native Pointer new_ir_vector_mode(String name, /* ir_mode_sort */int sort, int bit_size, int num_of_elem, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
+	public static native int is_mode(Pointer thing);
+	public static native Pointer get_mode_ident(Pointer mode);
+	public static native String get_mode_name(Pointer mode);
+	public static native /* ir_mode_sort */int get_mode_sort(Pointer mode);
+	public static native int get_mode_size_bits(Pointer mode);
+	public static native int get_mode_size_bytes(Pointer mode);
+	public static native int get_mode_sign(Pointer mode);
+	public static native /* ir_mode_arithmetic */int get_mode_arithmetic(Pointer mode);
+	public static native int get_mode_modulo_shift(Pointer mode);
+	public static native int get_mode_n_vector_elems(Pointer mode);
+	public static native Pointer get_mode_link(Pointer mode);
+	public static native void set_mode_link(Pointer mode, Pointer l);
+	public static native Pointer get_mode_min(Pointer mode);
+	public static native Pointer get_mode_max(Pointer mode);
+	public static native Pointer get_mode_null(Pointer mode);
+	public static native Pointer get_mode_one(Pointer mode);
+	public static native Pointer get_mode_minus_one(Pointer mode);
+	public static native Pointer get_mode_all_one(Pointer mode);
+	public static native Pointer get_mode_infinite(Pointer mode);
+	public static native Pointer get_mode_NAN(Pointer mode);
+	public static native Pointer get_modeF();
+	public static native Pointer get_modeD();
+	public static native Pointer get_modeE();
+	public static native Pointer get_modeBs();
+	public static native Pointer get_modeBu();
+	public static native Pointer get_modeHs();
+	public static native Pointer get_modeHu();
+	public static native Pointer get_modeIs();
+	public static native Pointer get_modeIu();
+	public static native Pointer get_modeLs();
+	public static native Pointer get_modeLu();
+	public static native Pointer get_modeLLs();
+	public static native Pointer get_modeLLu();
+	public static native Pointer get_modeP();
+	public static native Pointer get_modeb();
+	public static native Pointer get_modeX();
+	public static native Pointer get_modeBB();
+	public static native Pointer get_modeM();
+	public static native Pointer get_modeT();
+	public static native Pointer get_modeANY();
+	public static native Pointer get_modeBAD();
+	public static native Pointer get_modeP_code();
+	public static native Pointer get_modeP_data();
+	public static native void set_modeP_code(Pointer p);
+	public static native void set_modeP_data(Pointer p);
+	public static native int mode_is_signed(Pointer mode);
+	public static native int mode_is_float(Pointer mode);
+	public static native int mode_is_int(Pointer mode);
+	public static native int mode_is_reference(Pointer mode);
+	public static native int mode_is_num(Pointer mode);
+	public static native int mode_is_data(Pointer mode);
+	public static native int mode_is_datab(Pointer mode);
+	public static native int mode_is_dataM(Pointer mode);
+	public static native int mode_is_float_vector(Pointer mode);
+	public static native int mode_is_int_vector(Pointer mode);
+	public static native int smaller_mode(Pointer sm, Pointer lm);
+	public static native int values_in_mode(Pointer sm, Pointer lm);
+	public static native Pointer find_unsigned_mode(Pointer mode);
+	public static native Pointer find_signed_mode(Pointer mode);
+	public static native Pointer find_double_bits_int_mode(Pointer mode);
+	public static native int mode_honor_signed_zeros(Pointer mode);
+	public static native int mode_overflow_on_unary_Minus(Pointer mode);
+	public static native int mode_wrap_around(Pointer mode);
+	public static native Pointer get_reference_mode_signed_eq(Pointer mode);
+	public static native void set_reference_mode_signed_eq(Pointer ref_mode, Pointer int_mode);
+	public static native Pointer get_reference_mode_unsigned_eq(Pointer mode);
+	public static native void set_reference_mode_unsigned_eq(Pointer ref_mode, Pointer int_mode);
+	public static native int is_reinterpret_cast(Pointer src, Pointer dst);
+	public static native Pointer get_type_for_mode(Pointer mode);
 }

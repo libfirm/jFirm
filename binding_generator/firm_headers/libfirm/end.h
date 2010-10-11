@@ -21,7 +21,7 @@
  * @file
  * @brief       Should be included in all public firm headers at the end
  * @author      Matthias Braun
- * @version     $Id$
+ * @version     $Id: end.h 27564 2010-05-20 12:54:31Z matze $
  */
 #ifndef FIRM_END_H
 #define FIRM_END_H

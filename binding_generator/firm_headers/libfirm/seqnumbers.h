@@ -22,7 +22,7 @@
  * @brief    Implements simple sequence numbers for Firm debug info.
  * @author   Michael Beck
  * @date     2005
- * @version  $Id$
+ * @version  $Id: seqnumbers.h 27575 2010-05-21 21:55:10Z beck $
  * @brief
  *  Sequence numbers for Firm.
  *

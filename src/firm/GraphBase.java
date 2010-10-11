@@ -5,11 +5,12 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 
-import firm.bindings.Bindings;
 import firm.bindings.binding_ircons;
+import firm.bindings.binding_irgmod;
 import firm.bindings.binding_irgraph;
 import firm.bindings.binding_irnode;
 import firm.bindings.binding_irop;
+import firm.bindings.binding_irvrfy;
 import firm.bindings.binding_irnode.ir_opcode;
 import firm.bindings.binding_irvrfy.irg_verify_flags_t;
 import firm.nodes.Bad;
@@ -19,7 +20,6 @@ import firm.nodes.NoMem;
 import firm.nodes.Node;
 import firm.nodes.NodeVisitor;
 import firm.nodes.Phi;
-import firm.nodes.Proj;
 import firm.nodes.Start;
 
 /**
@@ -27,11 +27,6 @@ import firm.nodes.Start;
  * the automatically generated code in the Graph class.
  */
 public abstract class GraphBase extends JNAWrapper {
-	
-	static final binding_irgraph binding = Bindings.getIrGraphBinding();
-	static final binding_irnode binding_node = Bindings.getIrNodeBinding();
-	static final binding_irop binding_op = Bindings.getIrOpBinding();
-	public static final binding_ircons binding_cons = Bindings.getIrConsBinding();
 
 	public GraphBase(Pointer ptr) {
 		super(ptr);
@@ -41,22 +36,22 @@ public abstract class GraphBase extends JNAWrapper {
 	 * returns the currently active graph
 	 */
 	public static Graph getCurrent() {
-		return new Graph(binding.get_current_ir_graph());
+		return new Graph(binding_irgraph.get_current_ir_graph());
 	}
 	
 	/**
 	 * sets the currently active graph
 	 */
 	public static void setCurrent(GraphBase graph) {
-		binding.set_current_ir_graph(graph.ptr);
+		binding_irgraph.set_current_ir_graph(graph.ptr);
 	}
 	
 	public Node newSymConst(Entity entity) {
-		return Node.createWrapper(binding_cons.new_rd_SymConst_addr_ent(Pointer.NULL, ptr, Mode.getP().ptr, entity.ptr, entity.getType().ptr));
+		return Node.createWrapper(binding_ircons.new_rd_SymConst_addr_ent(Pointer.NULL, ptr, Mode.getP().ptr, entity.ptr));
 	}
 	
 	public Node newConst(int value, Mode mode) {
-		return Node.createWrapper(binding_cons.new_rd_Const_long(Pointer.NULL, ptr, mode.ptr, new NativeLong(value)));
+		return Node.createWrapper(binding_ircons.new_rd_Const_long(Pointer.NULL, ptr, mode.ptr, new NativeLong(value)));
 	}
 	
 	/**
@@ -64,189 +59,167 @@ public abstract class GraphBase extends JNAWrapper {
 	 * You are not allowed to use the graph anymore after calling this.
 	 */
 	public void free() {
-		binding.free_ir_graph(ptr);
+		binding_irgraph.free_ir_graph(ptr);
 	}
 
 	/**
 	 * returns associated entity
 	 */
 	public Entity getEntity() {
-		return new Entity(binding.get_irg_entity(ptr));
+		return new Entity(binding_irgraph.get_irg_entity(ptr));
 	}
 	
 	public void setEntity(Entity entity) {
-		binding.set_irg_entity(ptr, entity.ptr);
+		binding_irgraph.set_irg_entity(ptr, entity.ptr);
 	}
 
 	/**
 	 * returns compound type for the functions stackframe layout
 	 */
 	public Type getFrameType() {
-		return Type.createWrapper(binding.get_irg_frame_type(ptr));
+		return Type.createWrapper(binding_irgraph.get_irg_frame_type(ptr));
 	}
 	
 	public void setFrameType(Type type) {
-		binding.set_irg_frame_type(ptr, type.ptr);
+		binding_irgraph.set_irg_frame_type(ptr, type.ptr);
 	}
 
 	/**
 	 * returns the start block
 	 */
 	public Block getStartBlock() {
-		return new Block(binding.get_irg_start_block(ptr));
+		return new Block(binding_irgraph.get_irg_start_block(ptr));
 	}
 
 	/**
 	 * returns the start node
 	 */
 	public Start getStart() {
-		return new Start(binding.get_irg_start(ptr));
+		return new Start(binding_irgraph.get_irg_start(ptr));
 	}
 	
 	/** returns the end block */
 	public Block getEndBlock() {
-		return new Block(binding.get_irg_end_block(ptr));
+		return new Block(binding_irgraph.get_irg_end_block(ptr));
 	}
 	
 	/** returns the end node */
 	public End getEnd() {
-		return new End(binding.get_irg_end(ptr));
-	}
-	
-	/** returns the end node for exceptions */
-	public End getEndReg() {
-		return new End(binding.get_irg_end_reg(ptr));
-	}
-	
-	/** returns the initial ProjX node (start of control flow) */
-	public Proj getInitialExec() {
-		return new Proj(binding.get_irg_initial_exec(ptr));
+		return new End(binding_irgraph.get_irg_end(ptr));
 	}
 	
 	/** returns the initial memory */
 	public Node getInitialMem() {
-		return Node.createWrapper(binding.get_irg_initial_mem(ptr));
+		return Node.createWrapper(binding_irgraph.get_irg_initial_mem(ptr));
 	}
 	
 	/** returns the pointer to the functions stackframe */
 	public Node getFrame() {
-		return Node.createWrapper(binding.get_irg_frame(ptr));
+		return Node.createWrapper(binding_irgraph.get_irg_frame(ptr));
 	}
 	
 	/** returns the pointer to the thread local storage area */
 	public Node getTls() {
-		return Node.createWrapper(binding.get_irg_tls(ptr));
+		return Node.createWrapper(binding_irgraph.get_irg_tls(ptr));
 	}
 	
 	/** returns function arguments */
 	public Node getArgs() {
-		return Node.createWrapper(binding.get_irg_args(ptr));
+		return Node.createWrapper(binding_irgraph.get_irg_args(ptr));
 	}
 	
 	/** returns the Bad node */
 	public Bad getBad() {
-		return new Bad(binding.get_irg_bad(ptr));
+		return new Bad(binding_irgraph.get_irg_bad(ptr));
 	}
 	
 	/** return the NoMem node */
 	public NoMem getNoMem() {
-		return new NoMem(binding.get_irg_no_mem(ptr));
+		return new NoMem(binding_irgraph.get_irg_no_mem(ptr));
 	}
 	
 	public void setStartBlock(Block block) {
-		binding.set_irg_start_block(ptr, block.ptr);
+		binding_irgraph.set_irg_start_block(ptr, block.ptr);
 	}
 	
 	public void setStart(Node node) {
-		binding.set_irg_start(ptr, node.ptr);
+		binding_irgraph.set_irg_start(ptr, node.ptr);
 	}
 	
 	public void setEndBlock(Block block) {
-		binding.set_irg_end_block(ptr, block.ptr);
+		binding_irgraph.set_irg_end_block(ptr, block.ptr);
 	}
 	
 	public void setEnd(Node node) {
-		binding.set_irg_end(ptr, node.ptr);
-	}
-	
-	public void setEndReg(Node node) {
-		binding.set_irg_end_reg(ptr, node.ptr);
+		binding_irgraph.set_irg_end(ptr, node.ptr);
 	}
 	
 	public void setInitialExec(Node node) {
-		binding.set_irg_initial_exec(ptr, node.ptr);
+		binding_irgraph.set_irg_initial_exec(ptr, node.ptr);
 	}
 	
 	public void setInitialMem(Node node) {
-		binding.set_irg_initial_mem(ptr, node.ptr);
+		binding_irgraph.set_irg_initial_mem(ptr, node.ptr);
 	}
 	
 	public void setFrame(Node node) {
-		binding.set_irg_frame(ptr, node.ptr);
+		binding_irgraph.set_irg_frame(ptr, node.ptr);
 	}
 	
 	public void setTls(Node node) {
-		binding.set_irg_tls(ptr, node.ptr);
+		binding_irgraph.set_irg_tls(ptr, node.ptr);
 	}
 	
 	public void setArgs(Node node) {
-		binding.set_irg_args(ptr, node.ptr);
+		binding_irgraph.set_irg_args(ptr, node.ptr);
 	}
 	
 	public void setBad(Node node) {
-		binding.set_irg_bad(ptr, node.ptr);
+		binding_irgraph.set_irg_bad(ptr, node.ptr);
 	}
 	
 	public void setNoMem(Node node) {
-		binding.set_irg_no_mem(ptr, node.ptr);
-	}
-	
-	public Block getCurrentBlock() {
-		return new Block(binding.get_irg_current_block(ptr));
-	}
-	
-	public void setCurrentBlock(Block block) {
-		binding.set_irg_current_block(ptr, block.ptr);
+		binding_irgraph.set_irg_no_mem(ptr, node.ptr);
 	}
 	
 	public int getnLocalVars() {
-		return binding.get_irg_n_locs(ptr);
+		return binding_irgraph.get_irg_n_locs(ptr);
 	}
 	
 	public int getNr() {
-		return binding.get_irg_graph_nr(ptr).intValue();
+		return binding_irgraph.get_irg_graph_nr(ptr).intValue();
 	}
 	
 	public int getIdx() {
-		return binding.get_irg_idx(ptr);
+		return binding_irgraph.get_irg_idx(ptr);
 	}
 	
 	public void incVisited() {
-		binding.inc_irg_visited(ptr);
+		binding_irgraph.inc_irg_visited(ptr);
 	}
 	
 	public int getVisited() {
-		return binding.get_irg_visited(ptr).intValue();
+		return binding_irgraph.get_irg_visited(ptr).intValue();
 	}
 	
 	public void setVisited(int visited) {
-		binding.set_irg_visited(ptr, new NativeLong(visited));
+		binding_irgraph.set_irg_visited(ptr, new NativeLong(visited));
 	}
 	
 	public void incBlockVisited() {
-		binding.inc_irg_block_visited(ptr);
+		binding_irgraph.inc_irg_block_visited(ptr);
 	}
 	
 	public int getBlockVisited() {
-		return binding.get_irg_block_visited(ptr).intValue();
+		return binding_irgraph.get_irg_block_visited(ptr).intValue();
 	}
 	
 	public void setBlockVisited(int visited) {
-		binding.set_irg_block_visited(ptr, new NativeLong(visited));
+		binding_irgraph.set_irg_block_visited(ptr, new NativeLong(visited));
 	}
 	
 	public int getLastIdx() {
-		return binding.get_irg_last_idx(ptr);
+		return binding_irgraph.get_irg_last_idx(ptr);
 	}
 	
 	private void walkHelper(NodeVisitor walker, Node node) {
@@ -338,11 +311,11 @@ public abstract class GraphBase extends JNAWrapper {
 	}
 	
 	protected void incrementNodeVisited() {
-		binding.inc_irg_visited(ptr);
+		binding_irgraph.inc_irg_visited(ptr);
 	}
 	
 	protected void incrementBlockVisited() {
-		binding.inc_irg_block_visited(ptr);
+		binding_irgraph.inc_irg_block_visited(ptr);
 	}
 	
 	/**
@@ -392,11 +365,11 @@ public abstract class GraphBase extends JNAWrapper {
 	}
 	
 	public void setPhaseState(binding_irgraph.irg_phase_state state) {
-		binding.set_irg_phase_state(ptr, state.val);
+		binding_irgraph.set_irg_phase_state(ptr, state.val);
 	}
 	
 	public binding_irgraph.irg_phase_state getPhaseState() {
-		return binding_irgraph.irg_phase_state.getEnum(binding.get_irg_phase_state(ptr));
+		return binding_irgraph.irg_phase_state.getEnum(binding_irgraph.get_irg_phase_state(ptr));
 	}
 	
 	@Override
@@ -417,7 +390,7 @@ public abstract class GraphBase extends JNAWrapper {
 	 * @param graph   the graph to check
 	 */
 	public void check() {
-		Util.binding_vrfy.irg_verify(ptr, irg_verify_flags_t.VRFY_ENFORCE_SSA.val);
+		binding_irvrfy.irg_verify(ptr, irg_verify_flags_t.VRFY_ENFORCE_SSA.val);
 	}
 
 	/** 
@@ -433,7 +406,7 @@ public abstract class GraphBase extends JNAWrapper {
 	 *  @param outArity The number of values formed into a Tuple.
 	 */
 	public static Node turnIntoTuple(Node node, int outArity) {
-		Util.binding_mod.turn_into_tuple(node.ptr, outArity);
+		binding_irgmod.turn_into_tuple(node.ptr, outArity);
 		Node tuple = Node.createWrapper(node.ptr);
 		Graph graph = node.getGraph();
 		for (int i = 0; i < outArity; ++i) {
@@ -447,7 +420,7 @@ public abstract class GraphBase extends JNAWrapper {
 	 * exchange the node by Bad itself.
 	 */
 	public static void killNode(Node node) {
-		Util.binding_mod.kill_node(node.ptr);
+		binding_irgmod.kill_node(node.ptr);
 	}
 
 	/** 
@@ -457,7 +430,7 @@ public abstract class GraphBase extends JNAWrapper {
 	public static void exchange(Node oldNode, Node newNode) {
 		assert oldNode != newNode;
 		assert !oldNode.equals(newNode);
-		Util.binding_mod.exchange(oldNode.ptr, newNode.ptr);
+		binding_irgmod.exchange(oldNode.ptr, newNode.ptr);
 	}
 	
 	public static class IrOpOps extends Structure {
@@ -490,8 +463,8 @@ public abstract class GraphBase extends JNAWrapper {
 	}
 	
 	private void copyNodeAttr(Pointer old_node, Pointer new_node) {
-		Pointer op = binding_node.get_irn_op(old_node);
-		IrOpOps ops = new IrOpOps(binding_op.get_op_ops(op));
+		Pointer op = binding_irnode.get_irn_op(old_node);
+		IrOpOps ops = new IrOpOps(binding_irop.get_op_ops(op));
 		ops.copy_attr.invoke(old_node, new_node);
 	}
 	
@@ -506,10 +479,10 @@ public abstract class GraphBase extends JNAWrapper {
 	 *  calling getGraph() on the copied node)
 	 */
 	public Node copyNode(Node node) {
-		Pointer dbgi = binding_node.get_irn_dbg_info(node.ptr);
-		Pointer op = binding_node.get_irn_op(node.ptr);
-		Pointer mode = binding_node.get_irn_mode(node.ptr);
-		int arity = binding_node.get_irn_arity(node.ptr);
+		Pointer dbgi = binding_irnode.get_irn_dbg_info(node.ptr);
+		Pointer op = binding_irnode.get_irn_op(node.ptr);
+		Pointer mode = binding_irnode.get_irn_mode(node.ptr);
+		int arity = binding_irnode.get_irn_arity(node.ptr);
 		Pointer[] ins = new Pointer[arity];
 		for (int i = 0; i < arity; ++i) {
 			ins[i] = node.getPred(i).ptr;
@@ -518,13 +491,9 @@ public abstract class GraphBase extends JNAWrapper {
 		if (node.getOpCode() == ir_opcode.iro_Block) {
 			block = null;
 		} else {
-			block = binding_node.get_nodes_block(node.ptr);
+			block = binding_irnode.get_nodes_block(node.ptr);
 		}
-		Pointer new_node = binding_node.new_ir_node(dbgi, ptr, block, op, mode, arity, ins);
-		if (node.getOpCode() == ir_opcode.iro_Block) {
-			Pointer macroblock = binding_node.get_Block_MacroBlock(node.ptr);
-			binding_node.set_Block_MacroBlock(new_node, macroblock);
-		}
+		Pointer new_node = binding_irnode.new_ir_node(dbgi, ptr, block, op, mode, arity, ins);
 		copyNodeAttr(node.ptr, new_node);
 		
 		return Node.createWrapper(new_node);
@@ -535,9 +504,9 @@ public abstract class GraphBase extends JNAWrapper {
 	 * information gets invalidated.
 	 */
 	public void notifyControlFlowChange() {
-		binding.set_irg_loopinfo_inconsistent(ptr);
-		binding.set_irg_doms_inconsistent(ptr);
-		binding.set_irg_extblk_inconsistent(ptr);
-		binding.set_irg_outs_inconsistent(ptr);
+		binding_irgraph.set_irg_loopinfo_inconsistent(ptr);
+		binding_irgraph.set_irg_doms_inconsistent(ptr);
+		binding_irgraph.set_irg_extblk_inconsistent(ptr);
+		binding_irgraph.set_irg_outs_inconsistent(ptr);
 	}
 }

@@ -3,6 +3,12 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_ircons;
+import firm.bindings.binding_irnode;
+/* There are "unused" warnings in some classes,
+	but suppressing these, emits warnings, because
+	of useless suppress in others. Just ignore this! */
+
 public class Phi extends Node {
 
 	public Phi(Pointer ptr) {

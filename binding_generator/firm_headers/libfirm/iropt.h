@@ -21,7 +21,7 @@
  * @file
  * @brief   iropt --- optimizations of an ir node.
  * @author  Martin Trapp, Christian Schaefer, Goetz Lindenmaier, Michael Beck
- * @version $Id$
+ * @version $Id: iropt.h 28062 2010-10-08 13:36:56Z matze $
  */
 #ifndef FIRM_IR_IROPT_H
 #define FIRM_IR_IROPT_H
@@ -52,11 +52,8 @@
  * - fp_model_fast:
  *     Fastest mode. Associative and distributive law allowed at the expense
  *     of floating point accuracy and correctness. Explicit rounding is disabled.
- * - fp_no_float_fold:
- *     Avoid floating point constant folding. Useful for frontends which do not
- *     create arithmetic operations in the backends arithmetic mode.
  */
-typedef enum _fp_model_t {
+typedef enum fp_model_t {
 	fp_explicit_rounding  = (1u << 0),  /**< Explicit rounding at assignments, typecasts, return
 	                                  and function calls. Conv nodes may NOT be removed, even
 	                                  if they look useless. */
@@ -69,7 +66,6 @@ typedef enum _fp_model_t {
 	                                  synchronized exception code. */
 	fp_environment_access = (1u << 5),  /**< FPU environment can be accessed. Even Constant folding
 	                                  cannot be done. */
-	fp_no_float_fold      = (1u << 6),
 
 	/** Precise floating point model. Default. */
 	fp_model_precise = fp_explicit_rounding|fp_strict_algebraic|fp_contradictions,
@@ -83,7 +79,7 @@ typedef enum _fp_model_t {
 /** If the expression referenced can be evaluated statically
  *  computed_value returns a tarval representing the result.
  *  Else returns tarval_bad. */
-FIRM_API tarval *computed_value(const ir_node *n);
+FIRM_API ir_tarval *computed_value(const ir_node *n);
 
 /** Applies all optimizations to n that are expressible as a pattern
  *  in Firm, i.e., they need not a walk of the graph.

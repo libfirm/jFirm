@@ -22,7 +22,7 @@
  * @brief    Data structure to hold type information for nodes.
  * @author   Goetz Lindenmaier
  * @date     28.8.2003
- * @version  $Id$
+ * @version  $Id: irtypeinfo.h 27575 2010-05-21 21:55:10Z beck $
  * @brief
  *   Data structure to hold type information for nodes.
  *

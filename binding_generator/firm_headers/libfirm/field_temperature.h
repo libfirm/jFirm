@@ -22,7 +22,7 @@
  * @brief    Compute an estimate of field temperature, i.e., field access heuristic.
  * @author   Goetz Lindenmaier
  * @date     21.7.2004
- * @version  $Id$
+ * @version  $Id: field_temperature.h 27575 2010-05-21 21:55:10Z beck $
  * @note
  *  Watch it! This is highly java dependent.
  *

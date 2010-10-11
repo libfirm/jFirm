@@ -21,7 +21,7 @@
  * @file
  * @brief   Import/export textual representation of firm.
  * @author  Moritz Kroll
- * @version $Id$
+ * @version $Id: irio.h 27575 2010-05-21 21:55:10Z beck $
  *
  * Note: The file format is not considered stable yet. So expect
  * incompatibilities between file formats of different libfirm versions.

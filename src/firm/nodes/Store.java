@@ -3,6 +3,12 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_ircons;
+import firm.bindings.binding_irnode;
+/* There are "unused" warnings in some classes,
+	but suppressing these, emits warnings, because
+	of useless suppress in others. Just ignore this! */
+
 public class Store extends Node {
 
 	public Store(Pointer ptr) {
@@ -12,32 +18,32 @@ public class Store extends Node {
 	
 	
 	public Node getMem() {
-		return createWrapper(binding.get_Store_mem(ptr));
+		return createWrapper(binding_irnode.get_Store_mem(ptr));
 	}
 
 	
 	public void setMem(Node mem) {
-		binding.set_Store_mem(this.ptr, mem.ptr);
+		binding_irnode.set_Store_mem(this.ptr, mem.ptr);
 	}
 	
 	
 	public Node getPtr() {
-		return createWrapper(binding.get_Store_ptr(ptr));
+		return createWrapper(binding_irnode.get_Store_ptr(ptr));
 	}
 
 	
 	public void setPtr(Node ptr) {
-		binding.set_Store_ptr(this.ptr, ptr.ptr);
+		binding_irnode.set_Store_ptr(this.ptr, ptr.ptr);
 	}
 	
 	
 	public Node getValue() {
-		return createWrapper(binding.get_Store_value(ptr));
+		return createWrapper(binding_irnode.get_Store_value(ptr));
 	}
 
 	
 	public void setValue(Node value) {
-		binding.set_Store_value(this.ptr, value.ptr);
+		binding_irnode.set_Store_value(this.ptr, value.ptr);
 	}
 	
 
@@ -45,8 +51,14 @@ public class Store extends Node {
 
 	
 
+	
+	/** memory result */
 	public static final int pnM = 0;
+	
+	/** control flow when no exception occurs */
 	public static final int pnXRegular = 1;
+	
+	/** control flow when exception occured */
 	public static final int pnXExcept = 2;
 	public static final int pnMax = 3;
 

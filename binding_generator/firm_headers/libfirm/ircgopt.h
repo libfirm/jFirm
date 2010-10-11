@@ -22,7 +22,7 @@
  * @brief   Removal of unreachable methods.
  * @author  Hubert Schmid
  * @date    09.06.2002
- * @version $Id$
+ * @version $Id: ircgopt.h 27575 2010-05-21 21:55:10Z beck $
  * @brief
  *  (TODO: translate to english)
  *  Entfernen von nicht erreichbaren (aufrufbaren) Methoden. Die Menge

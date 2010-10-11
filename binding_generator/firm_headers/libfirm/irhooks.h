@@ -21,7 +21,7 @@
  * @file
  * @brief   Generic hooks for various libFirm functions.
  * @author  Michael Beck
- * @version $Id$
+ * @version $Id: irhooks.h 27924 2010-08-12 12:16:48Z matze $
  */
 #ifndef FIRM_IR_IRHOOKS_H
 #define FIRM_IR_IRHOOKS_H
@@ -66,7 +66,7 @@ typedef enum {
 	HOOK_OPT_LAST
 } hook_opt_kind;
 
-typedef enum _if_result_t {
+typedef enum if_result_t {
 	IF_RESULT_SUCCESS         = 0,  /**< if conversion could be done */
 	IF_RESULT_SIDE_EFFECT     = 1,  /**< if conversion failed because of side effect */
 	IF_RESULT_SIDE_EFFECT_PHI = 2,  /**< if conversion failed because of Phi node found */

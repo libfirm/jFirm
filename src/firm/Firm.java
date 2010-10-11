@@ -6,15 +6,11 @@ import com.sun.jna.Native;
 import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
 
-import firm.bindings.Bindings;
 import firm.bindings.binding_firm_common;
 import firm.bindings.binding_irflag;
 import firm.bindings.binding_libc;
 
 public final class Firm {
-	
-	private static final binding_firm_common binding = Bindings.getFirmCommonBinding();
-	private static final binding_irflag binding_flag = (binding_irflag) Native.loadLibrary("firm", binding_irflag.class);
 	
 	public interface binding_callback extends Library {
 
@@ -26,19 +22,19 @@ public final class Firm {
 	}	
 
 	public static int getMajorVersion() {
-		return binding.ir_get_version_major();
+		return binding_firm_common.ir_get_version_major();
 	}
 	
 	public static int getMinorVersion() {
-		return binding.ir_get_version_minor();
+		return binding_firm_common.ir_get_version_minor();
 	}
 	
 	public static String getBuild() {
-		return binding.ir_get_version_build();
+		return binding_firm_common.ir_get_version_build();
 	}
 	
 	public static String getRevision() {
-		return binding.ir_get_version_revision();
+		return binding_firm_common.ir_get_version_revision();
 	}
 		
 	private static binding_callback binding_cb = null;
@@ -80,12 +76,12 @@ public final class Firm {
 		}
 
 		// catch abort signal
-		Backend.binding_c.signal(/*SIGABRT*/ 6, sigHandler);
+		binding_libc.signal(/*SIGABRT*/ 6, sigHandler);
 
-		binding.ir_init(Pointer.NULL);
+		binding_firm_common.ir_init(Pointer.NULL);
 		
 		/* disable all optimisations */
-		binding_flag.set_optimize(0);
+		binding_irflag.set_optimize(0);
 		
 		/* adapt backend to architecture */
 		if (Platform.isMac()) {
@@ -104,7 +100,7 @@ public final class Firm {
 	 * operaion must be performed anymore.
 	 */
 	public static void finish() {
-		binding.ir_finish();
+		binding_firm_common.ir_finish();
 	}
 	
 	private Firm() {

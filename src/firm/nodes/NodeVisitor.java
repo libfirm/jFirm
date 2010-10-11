@@ -6,8 +6,6 @@ package firm.nodes;
  */
 public interface NodeVisitor {
 
-	/** called when accept is called on a Abs node */
-	void visit(Abs node);
 	/** called when accept is called on a Add node */
 	void visit(Add node);
 	/** called when accept is called on a Alloc node */
@@ -20,14 +18,16 @@ public interface NodeVisitor {
 	void visit(Bad node);
 	/** called when accept is called on a Block node */
 	void visit(Block node);
+	/** called when accept is called on a Borrow node */
+	void visit(Borrow node);
 	/** called when accept is called on a Bound node */
 	void visit(Bound node);
-	/** called when accept is called on a Break node */
-	void visit(Break node);
 	/** called when accept is called on a Builtin node */
 	void visit(Builtin node);
 	/** called when accept is called on a Call node */
 	void visit(Call node);
+	/** called when accept is called on a Carry node */
+	void visit(Carry node);
 	/** called when accept is called on a Cast node */
 	void visit(Cast node);
 	/** called when accept is called on a Cmp node */
@@ -42,6 +42,8 @@ public interface NodeVisitor {
 	void visit(Conv node);
 	/** called when accept is called on a CopyB node */
 	void visit(CopyB node);
+	/** called when accept is called on a Deleted node */
+	void visit(Deleted node);
 	/** called when accept is called on a Div node */
 	void visit(Div node);
 	/** called when accept is called on a DivMod node */
@@ -52,8 +54,6 @@ public interface NodeVisitor {
 	void visit(End node);
 	/** called when accept is called on a Eor node */
 	void visit(Eor node);
-	/** called when accept is called on a Filter node */
-	void visit(Filter node);
 	/** called when accept is called on a Free node */
 	void visit(Free node);
 	/** called when accept is called on a IJmp node */
@@ -132,11 +132,6 @@ public interface NodeVisitor {
 		
 	
 		@Override
-		public void visit(Abs node) {
-			defaultVisit(node);
-		}
-	
-		@Override
 		public void visit(Add node) {
 			defaultVisit(node);
 		}
@@ -167,12 +162,12 @@ public interface NodeVisitor {
 		}
 	
 		@Override
-		public void visit(Bound node) {
+		public void visit(Borrow node) {
 			defaultVisit(node);
 		}
 	
 		@Override
-		public void visit(Break node) {
+		public void visit(Bound node) {
 			defaultVisit(node);
 		}
 	
@@ -183,6 +178,11 @@ public interface NodeVisitor {
 	
 		@Override
 		public void visit(Call node) {
+			defaultVisit(node);
+		}
+	
+		@Override
+		public void visit(Carry node) {
 			defaultVisit(node);
 		}
 	
@@ -222,6 +222,11 @@ public interface NodeVisitor {
 		}
 	
 		@Override
+		public void visit(Deleted node) {
+			defaultVisit(node);
+		}
+	
+		@Override
 		public void visit(Div node) {
 			defaultVisit(node);
 		}
@@ -243,11 +248,6 @@ public interface NodeVisitor {
 	
 		@Override
 		public void visit(Eor node) {
-			defaultVisit(node);
-		}
-	
-		@Override
-		public void visit(Filter node) {
 			defaultVisit(node);
 		}
 	

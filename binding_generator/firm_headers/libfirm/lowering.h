@@ -21,7 +21,7 @@
  * @file
  * @brief   Lowering of high level constructs.
  * @author  Michael Beck
- * @version $Id$
+ * @version $Id: lowering.h 28023 2010-09-22 14:07:44Z matze $
  */
 #ifndef FIRM_LOWERING_H
 #define FIRM_LOWERING_H
@@ -160,20 +160,12 @@ FIRM_API void lower_CopyB(ir_graph *irg, unsigned max_size,
  * @param irg        The ir graph to be lowered.
  * @param spare_size Allowed spare size for table switches in machine words.
  *                   (Default in edgfe: 128)
+ * @param allow_out_of_bounds   backend can handle out-of-bounds values
+ *                              (values bigger than minimum and maximum proj
+ *                               number)
  */
-FIRM_API void lower_switch(ir_graph *irg, unsigned spare_size);
-
-/**
- * Creates an ir_graph pass for lower_switch().
- *
- * @param name       the name of this pass or NULL
- * @param spare_size Allowed spare size for table switches in machine words.
- *                   (Default in edgfe: 128)
- *
- * @return  the newly created ir_graph pass
- */
-FIRM_API ir_graph_pass_t *lower_switch_pass(const char *name,
-                                            unsigned spare_size);
+FIRM_API void lower_switch(ir_graph *irg, unsigned spare_size,
+                           int allow_out_of_bounds);
 
 /**
  * A callback type for creating an intrinsic entity for a given opcode.
@@ -185,23 +177,17 @@ FIRM_API ir_graph_pass_t *lower_switch_pass(const char *name,
  * @param context  the context parameter
  */
 typedef ir_entity *(create_intrinsic_fkt)(ir_type *method, const ir_op *op,
-                                          const ir_mode *imode, const ir_mode *omode,
-                                          void *context);
+                                          const ir_mode *imode,
+                                          const ir_mode *omode, void *context);
 
 /**
  * The lowering parameter description.
  */
-typedef struct _lwrdw_param_t {
-	int enable;                   /**< if true lowering is enabled */
-	int little_endian;            /**< if true should be lowered for little endian, else big endian */
-	ir_mode *high_signed;         /**< the double word signed mode to be lowered, typically Ls */
-	ir_mode *high_unsigned;       /**< the double word unsigned mode to be lowered, typically Lu */
-	ir_mode *low_signed;          /**< the word signed mode to be used, typically Is */
-	ir_mode *low_unsigned;        /**< the word unsigned mode to be used, typically Iu */
-
-	/** callback that creates the intrinsic entity */
-	create_intrinsic_fkt *create_intrinsic;
-	void *ctx;                    /**< context parameter for the creator function */
+typedef struct lwrdw_param_t {
+	unsigned              little_endian : 1; /**< if true should be lowered for little endian, else big endian */
+	unsigned              doubleword_size;   /**< bitsize of the doubleword mode */
+	create_intrinsic_fkt *create_intrinsic;  /**< callback that creates the intrinsic entity */
+	void                 *ctx;               /**< context parameter for the creator function */
 } lwrdw_param_t;
 
 /**
@@ -210,17 +196,6 @@ typedef struct _lwrdw_param_t {
  * @param param  parameter for lowering
  */
 FIRM_API void lower_dw_ops(const lwrdw_param_t *param);
-
-/**
- * Creates an ir_prog pass for lower_dw_ops().
- *
- * @param name   the name of this pass or NULL
- * @param param  parameter for lowering
- *
- * @return  the newly created ir_prog pass
- */
-FIRM_API ir_prog_pass_t *lower_dw_ops_pass(const char *name,
-                                           const lwrdw_param_t *param);
 
 /**
  * Default implementation. Context is unused.
@@ -281,12 +256,32 @@ FIRM_API void lower_const_code(void);
  */
 FIRM_API ir_prog_pass_t *lower_const_code_pass(const char *name);
 
+/**
+ * Function which creates a "set" instraction. A "set" instruction takes a
+ * condition value (a value with mode_b) as input and produces a value in a
+ * general purpose integer mode.
+ * Most architectures have special intrinsics for this. But if all else fails
+ * you can just produces the an if-like construct.
+ */
+typedef ir_node* (*create_set_func)(ir_node *cond);
+
+/**
+ * implementation of create_set_func which produces a Mux node with 0/1 input
+ */
+ir_node *ir_create_mux_set(ir_node *cond, ir_mode *dest_mode);
+
+/**
+ * implementation of create_set_func which produces a cond with control
+ * flow
+ */
+ir_node *ir_create_cond_set(ir_node *cond, ir_mode *dest_mode);
+
 typedef struct lower_mode_b_config_t {
 	/* mode that is used to transport 0/1 values */
 	ir_mode *lowered_mode;
-	/* preferred mode for the "set" operations (a psi that produces a 0 or 1) */
-	ir_mode *lowered_set_mode;
-	/* whether direct Cond -> Cmps should also be lowered */
+	/* callback for creating set-like instructions */
+	create_set_func create_set;
+	/* whether direct Cond(Cmp) should also be lowered */
 	int lower_direct_cmp;
 } lower_mode_b_config_t;
 
@@ -302,17 +297,6 @@ typedef struct lower_mode_b_config_t {
  */
 FIRM_API void ir_lower_mode_b(ir_graph *irg,
                               const lower_mode_b_config_t *config);
-
-/**
- * Creates an ir_graph pass for ir_lower_mode_b().
- *
- * @param name     the name of this pass or NULL
- * @param config   configuration for mode_b lowerer
- *
- * @return  the newly created ir_graph pass
- */
-FIRM_API ir_graph_pass_t *ir_lower_mode_b_pass(const char *name,
-                                           const lower_mode_b_config_t *config);
 
 /**
  * Used as callback, whenever a lowerable mux is found. The return value
@@ -364,7 +348,7 @@ enum ikind {
 /**
  * An intrinsic call record.
  */
-typedef struct _i_call_record {
+typedef struct i_call_record {
 	enum ikind    kind;       /**< must be INTRINSIC_CALL */
 	ir_entity     *i_ent;     /**< the entity representing an intrinsic call */
 	i_mapper_func i_mapper;   /**< the mapper function to call */
@@ -375,7 +359,7 @@ typedef struct _i_call_record {
 /**
  * An intrinsic instruction record.
  */
-typedef struct _i_instr_record {
+typedef struct i_instr_record {
 	enum ikind    kind;       /**< must be INTRINSIC_INSTR */
 	ir_op         *op;        /**< the opcode that must be mapped. */
 	i_mapper_func i_mapper;   /**< the mapper function to call */
@@ -386,7 +370,7 @@ typedef struct _i_instr_record {
 /**
  * An intrinsic record.
  */
-typedef union _i_record {
+typedef union i_record {
 	i_call_record  i_call;
 	i_instr_record i_instr;
 } i_record;
@@ -613,7 +597,7 @@ FIRM_API int i_mapper_alloca(ir_node *call, void *ctx);
 /**
  * A runtime routine description.
  */
-typedef struct _runtime_rt {
+typedef struct runtime_rt {
 	ir_entity *ent;            /**< The entity representing the runtime routine. */
 	ir_mode   *mode;           /**< The operation mode of the mapped instruction. */
 	ir_mode   *res_mode;       /**< The result mode of the mapped instruction or NULL. */

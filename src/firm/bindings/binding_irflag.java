@@ -1,33 +1,11 @@
 package firm.bindings;
 /* WARNING: Automatically generated file */
-import com.sun.jna.Library;
+import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
 
-public interface binding_irflag extends Library {
-	public static enum ip_view_state {
-		ip_view_no(),
-		ip_view_valid(),
-		ip_view_invalid();
-		public final int val;
-		private static class C { static int next_val; }
-
-		ip_view_state(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		ip_view_state() {
-			this.val = C.next_val++;
-		}
-		
-		public static ip_view_state getEnum(int val) {
-			for(ip_view_state entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
+public class binding_irflag {
+	static { Native.register("firm"); }
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
@@ -46,6 +24,29 @@ public interface binding_irflag extends Library {
 		
 		public static op_pin_state getEnum(int val) {
 			for(op_pin_state entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum cond_jmp_predicate {
+		COND_JMP_PRED_NONE(),
+		COND_JMP_PRED_TRUE(),
+		COND_JMP_PRED_FALSE();
+		public final int val;
+		private static class C { static int next_val; }
+
+		cond_jmp_predicate(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		cond_jmp_predicate() {
+			this.val = C.next_val++;
+		}
+		
+		public static cond_jmp_predicate getEnum(int val) {
+			for(cond_jmp_predicate entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -111,42 +112,6 @@ public interface binding_irflag extends Library {
 			return null;
 		}
 	}
-	public static enum pn_Cmp {
-		pn_Cmp_False(0),
-		pn_Cmp_Eq(1),
-		pn_Cmp_Lt(2),
-		pn_Cmp_Le((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Gt(4),
-		pn_Cmp_Ge((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Lg((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Leg(((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uo(8),
-		pn_Cmp_Ue((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)),
-		pn_Cmp_Ul((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Ule(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Ug((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uge(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Ne(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_True(15);
-		public final int val;
-		private static class C { static int next_val; }
-
-		pn_Cmp(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		pn_Cmp() {
-			this.val = C.next_val++;
-		}
-		
-		public static pn_Cmp getEnum(int val) {
-			for(pn_Cmp entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
 	public static enum ir_where_alloc {
 		stack_alloc(),
 		heap_alloc();
@@ -203,6 +168,53 @@ public interface binding_irflag extends Library {
 			return null;
 		}
 	}
+	public static enum pn_generic {
+		pn_Generic_M(0),
+		pn_Generic_X_regular(1),
+		pn_Generic_X_except(2),
+		pn_Generic_other(3);
+		public final int val;
+		private static class C { static int next_val; }
+
+		pn_generic(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		pn_generic() {
+			this.val = C.next_val++;
+		}
+		
+		public static pn_generic getEnum(int val) {
+			for(pn_generic entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum ir_value_classify_sign {
+		value_classified_unknown(0),
+		value_classified_positive(1),
+		value_classified_negative(-1);
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_value_classify_sign(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_value_classify_sign() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_value_classify_sign getEnum(int val) {
+			for(ir_value_classify_sign entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
 	public static enum firm_verification_t {
 		FIRM_VERIFICATION_OFF(0),
 		FIRM_VERIFICATION_ON(1),
@@ -227,36 +239,26 @@ public interface binding_irflag extends Library {
 			return null;
 		}
 	}
-	void set_optimize(int value);
-	int get_optimize();
-	void set_opt_constant_folding(int value);
-	void set_opt_algebraic_simplification(int value);
-	void set_opt_cse(int value);
-	int get_opt_cse();
-	void set_opt_global_cse(int value);
-	void set_opt_unreachable_code(int value);
-	void set_opt_control_flow(int value);
-	void set_opt_control_flow_straightening(int value);
-	void set_opt_control_flow_weak_simplification(int value);
-	void set_opt_control_flow_strong_simplification(int value);
-	void set_opt_dyn_meth_dispatch(int value);
-	int get_opt_dyn_meth_dispatch();
-	void set_opt_optimize_class_casts(int value);
-	void set_opt_suppress_downcast_optimization(int value);
-	int get_opt_suppress_downcast_optimization();
-	void set_opt_fragile_ops(int value);
-	void set_opt_remove_confirm(int value);
-	void set_opt_ldst_only_null_ptr_exceptions(int value);
-	void set_opt_sel_based_null_check_elim(int value);
-	void set_opt_global_null_ptr_elimination(int value);
-	void set_opt_auto_create_sync(int value);
-	void set_opt_normalize(int value);
-	void set_opt_allow_conv_b(int value);
-	void set_opt_precise_exc_context(int value);
-	void set_opt_alias_analysis(int value);
-	void set_opt_closed_world(int value);
-	void save_optimization_state(Pointer state);
-	void restore_optimization_state(Pointer state);
-	void all_optimizations_off();
-	void do_node_verification(/* firm_verification_t */int mode);
+	public static native void set_optimize(int value);
+	public static native int get_optimize();
+	public static native void set_opt_constant_folding(int value);
+	public static native void set_opt_algebraic_simplification(int value);
+	public static native void set_opt_cse(int value);
+	public static native int get_opt_cse();
+	public static native void set_opt_global_cse(int value);
+	public static native void set_opt_unreachable_code(int value);
+	public static native void set_opt_dyn_meth_dispatch(int value);
+	public static native int get_opt_dyn_meth_dispatch();
+	public static native void set_opt_suppress_downcast_optimization(int value);
+	public static native int get_opt_suppress_downcast_optimization();
+	public static native void set_opt_ldst_only_null_ptr_exceptions(int value);
+	public static native void set_opt_sel_based_null_check_elim(int value);
+	public static native void set_opt_global_null_ptr_elimination(int value);
+	public static native void set_opt_auto_create_sync(int value);
+	public static native void set_opt_alias_analysis(int value);
+	public static native void set_opt_closed_world(int value);
+	public static native void save_optimization_state(Pointer state);
+	public static native void restore_optimization_state(Pointer state);
+	public static native void all_optimizations_off();
+	public static native void do_node_verification(/* firm_verification_t */int mode);
 }

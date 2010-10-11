@@ -21,7 +21,7 @@
  * @file
  * @brief     Manager for transformation passes.
  * @author    Michael Beck
- * @version   $Id$
+ * @version   $Id: irpass.h 27575 2010-05-21 21:55:10Z beck $
  */
 #ifndef FIRM_IR_PASS_H
 #define FIRM_IR_PASS_H

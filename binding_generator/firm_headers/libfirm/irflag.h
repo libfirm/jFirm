@@ -21,7 +21,7 @@
  * @file
  * @brief   Flags to control optimizations.
  * @author  Christian Schaefer, Goetz Lindenmaier, Michael Beck
- * @version $Id$
+ * @version $Id: irflag.h 28021 2010-09-22 14:07:43Z matze $
  * @brief
  * Flags to customize the behavior of libfirm.
  *
@@ -108,23 +108,6 @@ FIRM_API void set_opt_global_cse(int value);
  */
 FIRM_API void set_opt_unreachable_code(int value);
 
-/** Enables/Disables control flow optimizations.
- *
- * Performs Straightening, if simplifications and loop simplifications.
- * Sets all separate control flow flags (control_flow_straightening,
- * weak_simplification, strong_simplification and critical_edges).
- */
-FIRM_API void set_opt_control_flow(int value);
-
-/** Enables/Disables Straightening. */
-FIRM_API void set_opt_control_flow_straightening(int value);
-
-/** Enables/Disables if simplifications in local optimizations. */
-FIRM_API void set_opt_control_flow_weak_simplification(int value);
-
-/** Enables/Disables strong if and loop simplification (in optimize_cf). */
-FIRM_API void set_opt_control_flow_strong_simplification(int value);
-
 /** Enable/Disable optimization of dynamic method dispatch.
  *
  * This flag enables/disables the optimization of dynamic method dispatch.
@@ -134,12 +117,6 @@ FIRM_API void set_opt_control_flow_strong_simplification(int value);
 FIRM_API void set_opt_dyn_meth_dispatch(int value);
 FIRM_API int get_opt_dyn_meth_dispatch(void);
 
-/** Enable/Disable type optimization of cast nodes.
- *
- * Controls the optimizations in tropt.h.  Default: on.
- */
-FIRM_API void set_opt_optimize_class_casts(int value);
-
 /** Restricts the behavior of cast optimization.
  *
  *  If set, downcast are not optimized if they might be
@@ -148,20 +125,6 @@ FIRM_API void set_opt_optimize_class_casts(int value);
  */
 FIRM_API void set_opt_suppress_downcast_optimization(int value);
 FIRM_API int get_opt_suppress_downcast_optimization(void);
-
-/** Enable/Disable floating of fragile ops.
- *
- * This flags enables/disables the floating of fragile operations.
- * If this flag is on, fragile operations which are known to NOT raise
- * an exception can be place to other basic blocks.
- * Otherwise they remain in the block they were created.
- */
-FIRM_API void set_opt_fragile_ops(int value);
-
-/**
- * Enable/Disable Confirm node removal during local optimization.
- */
-FIRM_API void set_opt_remove_confirm(int value);
 
 /**
  * Enable/Disable Null exception in Load and Store nodes only.
@@ -216,44 +179,6 @@ FIRM_API void set_opt_global_null_ptr_elimination(int value);
  */
 FIRM_API void set_opt_auto_create_sync(int value);
 
-/** Enable/Disable normalizations of the firm representation.
- *
- *  This flag guards transformations that normalize the Firm representation
- *  as removing Ids and Tuples, useless Phis, replacing SymConst(id) by
- *  Const(entity) and others.
- *  The transformations guarded by this flag are not guarded by flag
- *  "optimize".
- *  Many algorithms operating on Firm can not deal with constructs in
- *  the non-normalized representation.
- *  default: ON
- *
- *  @note ATTENTION: not all such transformations are guarded by a flag.
- */
-FIRM_API void set_opt_normalize(int value);
-
-/**
- * Enable/Disable ConvB() nodes with a "semantic behavior", i.e. a real
- * operation that must be executed.
- */
-FIRM_API void set_opt_allow_conv_b(int value);
-
-/** Enable/Disable precise exception context.
- *
- * If enabled, all exceptions form a barrier for values, as in the
- * following example:
- *
- * @code
- * a = 1;
- * b = 3 / 0;
- * a = 2;
- * @endcode
- *
- * If precise exception handling is enabled, an exception handler see a == 1,
- * else it might see a == 2.
- * Enable this for languages with strict exception order like Java.
- */
-FIRM_API void set_opt_precise_exc_context(int value);
-
 /** Enable/Disable Alias analysis.
  *
  * If enabled, memory disambiguation by alias analysis is used.
@@ -286,7 +211,7 @@ FIRM_API void all_optimizations_off(void);
 /**
  * Possible verification modes.
  */
-typedef enum _firm_verification_t {
+typedef enum firm_verification_t {
   FIRM_VERIFICATION_OFF        = 0,	/**< do not verify nodes at all */
   FIRM_VERIFICATION_ON         = 1,	/**< do node verification and assert on error in debug version */
   FIRM_VERIFICATION_REPORT     = 2,	/**< do node verification, but report to stderr only */

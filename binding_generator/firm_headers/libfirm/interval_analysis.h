@@ -22,7 +22,7 @@
  * @brief      Decompost control flow graph into acylic, hierarchic intervals.
  * @author     Goetz Lindenmaier
  * @date       5.11.2004
- * @version    $Id$
+ * @version    $Id: interval_analysis.h 27704 2010-07-06 11:53:09Z matze $
  * @brief
  *  Decompost control flow graph into acylic, hierarchic intervals.
  *
@@ -39,6 +39,7 @@
 #define FIRM_ANA_INTERVAL_ANALYSIS_H
 
 #include "firm_types.h"
+#include <stdio.h>
 #include "begin.h"
 
 /** The ins of regions:  regions are loops or blocks. */

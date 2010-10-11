@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1995-2008 University of Karlsruhe.  All right reserved.
+ * Copyright (C) 1995-2010 University of Karlsruhe.  All right reserved.
  *
  * This file is part of libFirm.
  *
@@ -21,7 +21,7 @@
  * @file
  * @brief      Definition of opaque firm types
  * @author     Michael Beck
- * @version    $Id$
+ * @version    $Id: firm_types.h 28076 2010-10-08 19:29:19Z beck $
  */
 #ifndef FIRM_COMMON_FIRM_TYPES_H
 #define FIRM_COMMON_FIRM_TYPES_H
@@ -34,12 +34,13 @@ typedef unsigned long ir_label_t;
 
 typedef struct dbg_info             dbg_info,            *dbg_info_ptr;
 typedef struct type_dbg_info        type_dbg_info,       *type_dbg_info_ptr;
-typedef const struct _ident         ident,               *ir_ident_ptr;
+typedef const struct ident          ident,               *ir_ident_ptr;
 typedef struct ir_node              ir_node,             *ir_node_ptr;
 typedef struct ir_op                ir_op,               *ir_op_ptr;
 typedef struct ir_mode              ir_mode,             *ir_mode_ptr;
-typedef struct _ir_edge_t           ir_edge_t,           *ir_edge_ptr;
-typedef struct tarval               tarval,              *ir_tarval_ptr;
+typedef struct ir_edge_t            ir_edge_t,           *ir_edge_ptr;
+typedef struct ir_heights_t         ir_heights_t;
+typedef struct ir_tarval            ir_tarval,           *ir_tarval_ptr;
 typedef struct ir_enum_const        ir_enum_const,       *ir_enum_const_ptr;
 typedef struct ir_type              ir_type,             *ir_type_ptr;
 typedef struct ir_graph             ir_graph,            *ir_graph_ptr;
@@ -48,12 +49,11 @@ typedef struct ir_loop              ir_loop,             *ir_loop_ptr;
 typedef struct ir_region            ir_region,           *ir_region_ptr;
 typedef struct ir_reg_tree          ir_reg_tree,         *ir_reg_tree_ptr;
 typedef struct ir_entity            ir_entity,           *ir_entity_ptr;
-typedef struct _ir_extblk           ir_extblk,           *ir_extblk_ptr;
+typedef struct ir_extblk            ir_extblk,           *ir_extblk_ptr;
 typedef struct ir_exec_freq         ir_exec_freq,        *ir_exec_freq_ptr;
 typedef struct ir_cdep              ir_cdep,             *ir_cdep_ptr;
 typedef struct sn_entry             *seqno_t;
 typedef struct arch_irn_ops_t       arch_irn_ops_t;
-typedef struct ident_if_t           ident_if_t;
 typedef struct type_identify_if_t   type_identify_if_t;
 typedef struct ir_graph_pass_t      ir_graph_pass_t;
 typedef struct ir_prog_pass_t       ir_prog_pass_t;
@@ -70,19 +70,10 @@ typedef void irg_reg_walk_func(ir_region *, void *);
 typedef struct ir_settings_arch_dep_t ir_settings_arch_dep_t;
 typedef struct ir_settings_if_conv_t  ir_settings_if_conv_t;
 
-/* states */
+/* Needed for MSVC to suppress warnings because it doest NOT handle const right. */
+typedef const ir_node *ir_node_cnst_ptr;
 
-/** The state of the interprocedural view.
- *
- * This value indicates the state of the interprocedural view.
- */
-typedef enum {
-	ip_view_no,       /**< The interprocedural view is not constructed.  There are no
-	                       view specific nodes (EndReg, Filter, Break ...) in any graph.  */
-	ip_view_valid,    /**< The interprocedural view is valid.  */
-	ip_view_invalid   /**< The interprocedural view is invalid.  Specific nodes are
-	                       all still in the representation, but the graph is no more complete. */
-} ip_view_state;
+/* states */
 
 /**
  * This function is called, whenever a local variable is used before definition
@@ -110,6 +101,15 @@ typedef enum {
 	op_pin_state_mem_pinned     /**< Node must be remain in this basic block if it can throw an
 	                                 exception or uses memory, else can float. Used internally. */
 } op_pin_state;
+
+/**
+ * A type to express conditional jump predictions.
+ */
+typedef enum {
+	COND_JMP_PRED_NONE,        /**< No jump prediction. Default. */
+	COND_JMP_PRED_TRUE,        /**< The True case is predicted. */
+	COND_JMP_PRED_FALSE        /**< The False case is predicted. */
+} cond_jmp_predicate;
 
 /**
  * Additional method type properties:
@@ -175,32 +175,6 @@ typedef union symconst_symbol {
 	ir_enum_const *enum_p;    /**< The enumeration constant of a SymConst. */
 } symconst_symbol;
 
-/**
- * Projection numbers for Cmp are defined several times.
- * The bit patterns are used for various tests, so don't change.
- * The "unordered" values are possible results of comparing
- * floating point numbers.
- * Note that the encoding is imported, so do NOT change the order.
- */
-typedef enum {
-	pn_Cmp_False = 0,                             /**< false */
-	pn_Cmp_Eq    = 1,                             /**< equal */
-	pn_Cmp_Lt    = 2,                             /**< less */
-	pn_Cmp_Le    = pn_Cmp_Eq|pn_Cmp_Lt,           /**< less or equal */
-	pn_Cmp_Gt    = 4,                             /**< greater */
-	pn_Cmp_Ge    = pn_Cmp_Eq|pn_Cmp_Gt,           /**< greater or equal */
-	pn_Cmp_Lg    = pn_Cmp_Lt|pn_Cmp_Gt,           /**< less or greater */
-	pn_Cmp_Leg   = pn_Cmp_Lt|pn_Cmp_Eq|pn_Cmp_Gt, /**< less, equal or greater = ordered */
-	pn_Cmp_Uo    = 8,                             /**< unordered */
-	pn_Cmp_Ue    = pn_Cmp_Uo|pn_Cmp_Eq,           /**< unordered or equal */
-	pn_Cmp_Ul    = pn_Cmp_Uo|pn_Cmp_Lt,           /**< unordered or less */
-	pn_Cmp_Ule   = pn_Cmp_Uo|pn_Cmp_Eq|pn_Cmp_Lt, /**< unordered, less or equal */
-	pn_Cmp_Ug    = pn_Cmp_Uo|pn_Cmp_Gt,           /**< unordered or greater */
-	pn_Cmp_Uge   = pn_Cmp_Uo|pn_Cmp_Eq|pn_Cmp_Gt, /**< unordered, greater or equal */
-	pn_Cmp_Ne    = pn_Cmp_Uo|pn_Cmp_Lt|pn_Cmp_Gt, /**< unordered, less or greater = not equal */
-	pn_Cmp_True  = 15                             /**< true */
-} pn_Cmp;   /* Projection numbers for Cmp */
-
 /** The allocation place. */
 typedef enum {
 	stack_alloc,          /**< Alloc allocates the object on the stack. */
@@ -231,6 +205,26 @@ typedef enum {
 	ir_bk_outport,                /**< out port */
 	ir_bk_inner_trampoline,       /**< address of a trampoline for GCC inner functions */
 } ir_builtin_kind;
+
+/**
+ * Some projection numbers must be always equal to support automatic phi construction
+ */
+enum pn_generic {
+	pn_Generic_M         = 0,  /**< The memory result. */
+	pn_Generic_X_regular = 1,  /**< Execution result if no exception occurred. */
+	pn_Generic_X_except  = 2,  /**< The control flow result branching to the exception handler */
+	pn_Generic_other     = 3   /**< First free projection number */
+};
+
+/**
+ * Possible return values of value_classify().
+ */
+typedef enum {
+	value_classified_unknown  = 0,   /**< could not classify */
+	value_classified_positive = 1,   /**< value is positive, i.e. >= 0 */
+	value_classified_negative = -1   /**< value is negative, i.e. <= 0 if
+	                                      no signed zero exists or < 0 else */
+} ir_value_classify_sign;
 
 #include "end.h"
 

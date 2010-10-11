@@ -1,10 +1,11 @@
 package firm.bindings;
 /* WARNING: Automatically generated file */
-import com.sun.jna.Library;
+import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
 
-public interface binding_irdump extends Library {
+public class binding_irdump {
+	static { Native.register("firm"); }
 	public static enum __codecvt_result {
 		__codecvt_ok(),
 		__codecvt_partial(),
@@ -29,29 +30,6 @@ public interface binding_irdump extends Library {
 			return null;
 		}
 	}
-	public static enum ip_view_state {
-		ip_view_no(),
-		ip_view_valid(),
-		ip_view_invalid();
-		public final int val;
-		private static class C { static int next_val; }
-
-		ip_view_state(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		ip_view_state() {
-			this.val = C.next_val++;
-		}
-		
-		public static ip_view_state getEnum(int val) {
-			for(ip_view_state entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
@@ -70,6 +48,29 @@ public interface binding_irdump extends Library {
 		
 		public static op_pin_state getEnum(int val) {
 			for(op_pin_state entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum cond_jmp_predicate {
+		COND_JMP_PRED_NONE(),
+		COND_JMP_PRED_TRUE(),
+		COND_JMP_PRED_FALSE();
+		public final int val;
+		private static class C { static int next_val; }
+
+		cond_jmp_predicate(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		cond_jmp_predicate() {
+			this.val = C.next_val++;
+		}
+		
+		public static cond_jmp_predicate getEnum(int val) {
+			for(cond_jmp_predicate entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -135,42 +136,6 @@ public interface binding_irdump extends Library {
 			return null;
 		}
 	}
-	public static enum pn_Cmp {
-		pn_Cmp_False(0),
-		pn_Cmp_Eq(1),
-		pn_Cmp_Lt(2),
-		pn_Cmp_Le((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Gt(4),
-		pn_Cmp_Ge((pn_Cmp.pn_Cmp_Eq.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Lg((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Leg(((pn_Cmp.pn_Cmp_Lt.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uo(8),
-		pn_Cmp_Ue((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)),
-		pn_Cmp_Ul((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Ule(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Ug((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uge(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Eq.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Ne(((pn_Cmp.pn_Cmp_Uo.val|pn_Cmp.pn_Cmp_Lt.val)|pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_True(15);
-		public final int val;
-		private static class C { static int next_val; }
-
-		pn_Cmp(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-		pn_Cmp() {
-			this.val = C.next_val++;
-		}
-		
-		public static pn_Cmp getEnum(int val) {
-			for(pn_Cmp entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
 	public static enum ir_where_alloc {
 		stack_alloc(),
 		heap_alloc();
@@ -221,6 +186,53 @@ public interface binding_irdump extends Library {
 		
 		public static ir_builtin_kind getEnum(int val) {
 			for(ir_builtin_kind entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum pn_generic {
+		pn_Generic_M(0),
+		pn_Generic_X_regular(1),
+		pn_Generic_X_except(2),
+		pn_Generic_other(3);
+		public final int val;
+		private static class C { static int next_val; }
+
+		pn_generic(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		pn_generic() {
+			this.val = C.next_val++;
+		}
+		
+		public static pn_generic getEnum(int val) {
+			for(pn_generic entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+	public static enum ir_value_classify_sign {
+		value_classified_unknown(0),
+		value_classified_positive(1),
+		value_classified_negative(-1);
+		public final int val;
+		private static class C { static int next_val; }
+
+		ir_value_classify_sign(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+		ir_value_classify_sign() {
+			this.val = C.next_val++;
+		}
+		
+		public static ir_value_classify_sign getEnum(int val) {
+			for(ir_value_classify_sign entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -289,8 +301,7 @@ public interface binding_irdump extends Library {
 		ir_dump_flag_iredges((1<<13)),
 		ir_dump_flag_node_addresses((1<<14)),
 		ir_dump_flag_all_anchors((1<<15)),
-		ir_dump_flag_macroblock_edges((1<<16)),
-		ir_dump_flag_show_marks((1<<17)),
+		ir_dump_flag_show_marks((1<<16)),
 		ir_dump_flag_no_entity_values((1<<20)),
 		ir_dump_flag_ld_names((1<<21)),
 		ir_dump_flag_entities_in_hierarchy((1<<22));
@@ -313,41 +324,41 @@ public interface binding_irdump extends Library {
 			return null;
 		}
 	}
-	void dump_ir_graph(Pointer graph, String suffix);
-	void dump_ir_prog_ext(Pointer func, String suffix);
-	void dump_ir_graph_ext(Pointer func, Pointer graph, String suffix);
-	void dump_all_ir_graphs(String suffix);
-	void ir_set_dump_path(String path);
-	void ir_set_dump_filter(String name);
-	String ir_get_dump_filter();
-	int ir_should_dump(String name);
-	Pointer dump_all_ir_graph_pass(String name, String suffix);
-	void dump_ir_graph_file(Pointer out, Pointer graph);
-	void dump_cfg(Pointer out, Pointer graph);
-	void dump_callgraph(Pointer out);
-	void dump_typegraph(Pointer out);
-	void dump_class_hierarchy(Pointer out);
-	void dump_loop_tree(Pointer out, Pointer graph);
-	void dump_callgraph_loop_tree(Pointer out);
-	void dump_types_as_text(Pointer out);
-	void dump_globals_as_text(Pointer out);
-	void dump_loop(Pointer out, Pointer loop);
-	void dump_irnode_to_file(Pointer out, Pointer node);
-	void dump_graph_as_text(Pointer out, Pointer graph);
-	void dump_entity_to_file(Pointer out, Pointer entity);
-	void dump_type_to_file(Pointer out, Pointer type);
-	void ir_set_dump_verbosity(/* ir_dump_verbosity_t */int verbosity);
-	/* ir_dump_verbosity_t */int ir_get_dump_verbosity();
-	void ir_set_dump_flags(/* ir_dump_flags_t */int flags);
-	void ir_add_dump_flags(/* ir_dump_flags_t */int flags);
-	void ir_remove_dump_flags(/* ir_dump_flags_t */int flags);
-	/* ir_dump_flags_t */int ir_get_dump_flags();
-	void set_dump_node_vcgattr_hook(Pointer hook);
-	void set_dump_edge_vcgattr_hook(Pointer hook);
-	void set_dump_node_edge_hook(Pointer func);
-	Pointer get_dump_node_edge_hook();
-	void set_dump_block_edge_hook(Pointer func);
-	Pointer get_dump_block_edge_hook();
-	Pointer dump_add_node_info_callback(Pointer cb, Pointer data);
-	void dump_remove_node_info_callback(Pointer handle);
+	public static native void dump_ir_graph(Pointer graph, String suffix);
+	public static native void dump_ir_prog_ext(Pointer func, String suffix);
+	public static native void dump_ir_graph_ext(Pointer func, Pointer graph, String suffix);
+	public static native void dump_all_ir_graphs(String suffix);
+	public static native void ir_set_dump_path(String path);
+	public static native void ir_set_dump_filter(String name);
+	public static native String ir_get_dump_filter();
+	public static native int ir_should_dump(String name);
+	public static native Pointer dump_all_ir_graph_pass(String name, String suffix);
+	public static native void dump_ir_graph_file(Pointer out, Pointer graph);
+	public static native void dump_cfg(Pointer out, Pointer graph);
+	public static native void dump_callgraph(Pointer out);
+	public static native void dump_typegraph(Pointer out);
+	public static native void dump_class_hierarchy(Pointer out);
+	public static native void dump_loop_tree(Pointer out, Pointer graph);
+	public static native void dump_callgraph_loop_tree(Pointer out);
+	public static native void dump_types_as_text(Pointer out);
+	public static native void dump_globals_as_text(Pointer out);
+	public static native void dump_loop(Pointer out, Pointer loop);
+	public static native void dump_irnode_to_file(Pointer out, Pointer node);
+	public static native void dump_graph_as_text(Pointer out, Pointer graph);
+	public static native void dump_entity_to_file(Pointer out, Pointer entity);
+	public static native void dump_type_to_file(Pointer out, Pointer type);
+	public static native void ir_set_dump_verbosity(/* ir_dump_verbosity_t */int verbosity);
+	public static native /* ir_dump_verbosity_t */int ir_get_dump_verbosity();
+	public static native void ir_set_dump_flags(/* ir_dump_flags_t */int flags);
+	public static native void ir_add_dump_flags(/* ir_dump_flags_t */int flags);
+	public static native void ir_remove_dump_flags(/* ir_dump_flags_t */int flags);
+	public static native /* ir_dump_flags_t */int ir_get_dump_flags();
+	public static native void set_dump_node_vcgattr_hook(Pointer hook);
+	public static native void set_dump_edge_vcgattr_hook(Pointer hook);
+	public static native void set_dump_node_edge_hook(Pointer func);
+	public static native Pointer get_dump_node_edge_hook();
+	public static native void set_dump_block_edge_hook(Pointer func);
+	public static native Pointer get_dump_block_edge_hook();
+	public static native Pointer dump_add_node_info_callback(Pointer cb, Pointer data);
+	public static native void dump_remove_node_info_callback(Pointer handle);
 }

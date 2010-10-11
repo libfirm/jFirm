@@ -8,24 +8,19 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 import firm.Graph;
-import firm.GraphBase;
 import firm.JNAWrapper;
 import firm.Mode;
-import firm.bindings.Bindings;
-import firm.bindings.binding_ircons;
 import firm.bindings.binding_irnode;
 import firm.bindings.binding_irnode.ir_opcode;
 
 public abstract class Node extends JNAWrapper {
-	protected static final binding_irnode binding = Bindings.getIrNodeBinding();
-	protected static final binding_ircons binding_cons = GraphBase.binding_cons;
 
 	public Node(Pointer ptr) {
 		super(ptr);
 	}
 	
 	public Graph getGraph() {
-		return new Graph(binding.get_irn_irg(ptr));
+		return new Graph(binding_irnode.get_irn_irg(ptr));
 	}
 	
 	public static Node createWrapper(Pointer ptr) {
@@ -41,32 +36,32 @@ public abstract class Node extends JNAWrapper {
 	}
 	
 	public Mode getMode() {
-		return new Mode(binding.get_irn_mode(ptr));
+		return new Mode(binding_irnode.get_irn_mode(ptr));
 	}
 	
 	public int getPredCount() {
-		return binding.get_irn_arity(ptr);
+		return binding_irnode.get_irn_arity(ptr);
 	}
 	
 	public void markVisited() {
-		binding.set_irn_visited(ptr, new NativeLong(getGraph().getVisited()));
+		binding_irnode.set_irn_visited(ptr, new NativeLong(getGraph().getVisited()));
 	}
 	
 	public boolean visited() {
-		int node_visited = binding.get_irn_visited(ptr).intValue();
+		int node_visited = binding_irnode.get_irn_visited(ptr).intValue();
 		return node_visited >= getGraph().getVisited();
 	}
 	
 	public Node getPred(int n) {
-		return createWrapper(binding.get_irn_n(ptr, n));
+		return createWrapper(binding_irnode.get_irn_n(ptr, n));
 	}
 	
 	public void setPred(int n, Node node) {
-		binding.set_irn_n(ptr, n, node.ptr);
+		binding_irnode.set_irn_n(ptr, n, node.ptr);
 	}
 	
 	public int getNr() {
-		return binding.get_irn_node_nr(ptr).intValue();
+		return binding_irnode.get_irn_node_nr(ptr).intValue();
 	}
 	
 	public class PredIterator implements Iterator<Node> {
@@ -104,24 +99,24 @@ public abstract class Node extends JNAWrapper {
 	 * @return Type of the current node
 	 */
 	public binding_irnode.ir_opcode getOpCode() {
-		int code = binding.get_irn_opcode(this.ptr);
+		int code = binding_irnode.get_irn_opcode(this.ptr);
 		binding_irnode.ir_opcode op = binding_irnode.ir_opcode.getEnum(code);
 		return op;
 	}
 	
 	@Override
 	public String toString() {
-		return binding.gdb_node_helper(ptr);
+		return binding_irnode.gdb_node_helper(ptr);
 	}
 	
 	public Node getBlock() {
-		return createWrapper(binding.get_nodes_block(ptr));
+		return createWrapper(binding_irnode.get_nodes_block(ptr));
 	}
 	
 	public void setBlock(Node block) {
 		assert block.getOpCode() == ir_opcode.iro_Block || block.getOpCode() == ir_opcode.iro_Bad;
 		assert this.getOpCode() != ir_opcode.iro_Block;
-		binding.set_nodes_block(ptr, block.ptr);
+		binding_irnode.set_nodes_block(ptr, block.ptr);
 	}
 	
 	public abstract void accept(NodeVisitor visitor);

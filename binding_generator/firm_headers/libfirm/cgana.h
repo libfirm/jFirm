@@ -22,7 +22,7 @@
  * @brief       Intraprozedural analyses to estimate the call graph.
  * @author      Hubert Schmid
  * @date        09.06.2002
- * @version     $Id$
+ * @version     $Id: cgana.h 27575 2010-05-21 21:55:10Z beck $
  * @brief
  *  Interprocedural analysis to estimate the calling relation.
  *

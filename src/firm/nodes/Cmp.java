@@ -3,6 +3,12 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_ircons;
+import firm.bindings.binding_irnode;
+/* There are "unused" warnings in some classes,
+	but suppressing these, emits warnings, because
+	of useless suppress in others. Just ignore this! */
+
 public class Cmp extends Binop {
 
 	public Cmp(Pointer ptr) {
@@ -12,22 +18,22 @@ public class Cmp extends Binop {
 	
 	@Override
 	public Node getLeft() {
-		return createWrapper(binding.get_Cmp_left(ptr));
+		return createWrapper(binding_irnode.get_Cmp_left(ptr));
 	}
 
 	@Override
 	public void setLeft(Node left) {
-		binding.set_Cmp_left(this.ptr, left.ptr);
+		binding_irnode.set_Cmp_left(this.ptr, left.ptr);
 	}
 	
 	@Override
 	public Node getRight() {
-		return createWrapper(binding.get_Cmp_right(ptr));
+		return createWrapper(binding_irnode.get_Cmp_right(ptr));
 	}
 
 	@Override
 	public void setRight(Node right) {
-		binding.set_Cmp_right(this.ptr, right.ptr);
+		binding_irnode.set_Cmp_right(this.ptr, right.ptr);
 	}
 	
 
@@ -54,10 +60,10 @@ public class Cmp extends Binop {
 	/** greater or equal */
 	public static final int pnGe = 5;
 	
-	/** less or greater */
+	/** less or greater ('not equal' for integer numbers) */
 	public static final int pnLg = 6;
 	
-	/** less, equal or greater ('not equal' for integer numbers) */
+	/** less, equal or greater ('not unordered') */
 	public static final int pnLeg = 7;
 	
 	/** unordered */
@@ -78,7 +84,7 @@ public class Cmp extends Binop {
 	/** onordered, greater or equal */
 	public static final int pnUge = 13;
 	
-	/** unordered, less, greater or equal ('not equal' for floatingpoint numbers) */
+	/** unordered, less or greater ('not equal' for floatingpoint numbers) */
 	public static final int pnNe = 14;
 	
 	/** always true */

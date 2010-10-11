@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1995-2008 University of Karlsruhe.  All right reserved.
+ * Copyright (C) 1995-2010 University of Karlsruhe.  All right reserved.
  *
  * This file is part of libFirm.
  *
@@ -23,7 +23,7 @@
  *          representation.
  * @author  Martin Trapp, Christian Schaefer, Goetz Lindenmaier, Boris Boesler,
  *          Michael Beck
- * @version $Id$
+ * @version $Id: ircons.h 28062 2010-10-08 13:36:56Z matze $
  */
 
 /**
@@ -254,7 +254,7 @@
  *    ir_node *new_IJmp     (ir_node *tgt);
  *    ir_node *new_Cond     (ir_node *c);
  *    ir_node *new_Return   (ir_node *store, int arity, ir_node **in);
- *    ir_node *new_Const    (tarval *con);
+ *    ir_node *new_Const    (ir_tarval *con);
  *    ir_node *new_SymConst (ir_mode *mode, symconst_symbol value, symconst_kind kind);
  *    ir_node *new_simpleSel (ir_node *store, ir_node *objptr, ir_entity *ent);
  *    ir_node *new_Sel    (ir_node *store, ir_node *objptr, int arity,
@@ -272,7 +272,6 @@
  *    ir_node *new_DivMod (ir_node *memop, ir_node *op1, ir_node *op2, ir_mode *mode, op_pin_state state);
  *    ir_node *new_Div    (ir_node *memop, ir_node *op1, ir_node *op2, ir_mode *mode, op_pin_state state);
  *    ir_node *new_Mod    (ir_node *memop, ir_node *op1, ir_node *op2, ir_mode *mode, op_pin_state state;
- *    ir_node *new_Abs    (ir_node *op,                ir_mode *mode);
  *    ir_node *new_And    (ir_node *op1, ir_node *op2, ir_mode *mode);
  *    ir_node *new_Or     (ir_node *op1, ir_node *op2, ir_mode *mode);
  *    ir_node *new_Eor    (ir_node *op1, ir_node *op2, ir_mode *mode);
@@ -381,7 +380,7 @@
  *
  *    Mature_immBlock also fixes the number of inputs to the Phi nodes.  Mature_immBlock
  *    should be called as early as possible, as afterwards the generation of Phi
- *   nodes is more efficient.
+ *    nodes is more efficient.
  *
  *    Inputs:
  *      There is an input for each control flow predecessor of the block.
@@ -406,12 +405,10 @@
  *    --------------------------------------------
  *
  *    Creates a new Block with the given list of predecessors.  This block
- *    is mature.  As other constructors calls optimization and vrfy for the
+ *    is mature.  As other constructors calls optimization and verify for the
  *    block.  If one of the predecessors is Unknown (as it has to be filled in
  *    later) optimizations are skipped.  This is necessary to
- *    construct Blocks in loops.  Leaving Unknown in the Block after finishing
- *    the construction may have strange effects, especially for interprocedural
- *    representation and analysis.
+ *    construct Blocks in loops.
  *
  *
  *    CONTROL FLOW OPERATIONS
@@ -428,7 +425,7 @@
  *   node in each procedure which is automatically created by new_ir_graph.
  *
  *    Inputs:
- *      No inputs except the block it belogns to.
+ *      No inputs except the block it belongs to.
  *    Output:
  *      A tuple of 4 (5, 6) distinct values. These are labeled by the following
  *      projection numbers (pn_Start):
@@ -488,13 +485,13 @@
  *      A value of mode I_u. (i)
  *    Output:
  *      A tuple of n control flows.  If the Cond's input is i, control
- *      flow will procede along output i. If the input is >= n control
+ *      flow will proceed along output i. If the input is >= n control
  *      flow proceeds along output n.
  *
  *    ir_node *new_Return (ir_node *store, int arity, ir_node **in)
  *    -------------------------------------------------------------
  *
- *    The return node has as inputs the results of the procedure.  It
+ *    The Return node has as inputs the results of the procedure.  It
  *    passes the control flow to the end_block.
  *
  *    Inputs:
@@ -503,9 +500,8 @@
  *    Output
  *      Control flow to the end block.
  *
- *    ---------
  *
- *    ir_node *new_Const (tarval *con)
+ *    ir_node *new_Const (ir_tarval *con)
  *    -----------------------------------------------
  *
  *    Creates a constant in the constant table and adds a Const node
@@ -723,11 +719,6 @@
  *
  *    Trivial.
  *
- *    ir_node *new_Abs (ir_node *op, ir_mode *mode)
- *    ---------------------------------------------
- *
- *    Trivial.
- *
  *    ir_node *new_And (ir_node *op1, ir_node *op2, ir_mode *mode)
  *    ------------------------------------------------------------
  *
@@ -831,9 +822,7 @@
  *    of in's of current_block.  This is not checked by the library!
  *    If one of the predecessors is Unknown (as it has to be filled in
  *    later) optimizations are skipped.  This is necessary to
- *    construct Phi nodes in loops.  Leaving Unknown in the Phi after finishing
- *    the construction may have strange effects, especially for interprocedural
- *    representation and analysis.
+ *    construct Phi nodes in loops.
  *
  *    Parameter
  *      arity            number of predecessors
@@ -1127,6 +1116,7 @@
 
 #include "firm_types.h"
 #include "begin.h"
+#include "irnode.h"
 
 /**
  * constrained flags for memory operations.
@@ -1158,17 +1148,15 @@ FIRM_API ir_node *new_rd_Block(dbg_info *db, ir_graph *irg, int arity, ir_node *
  *
  * @param *db    A pointer for debug information.
  * @param *irg   The IR graph the node belongs to.
- * @param *block The IR block the node belongs to.
  */
-FIRM_API ir_node *new_rd_Start(dbg_info *db, ir_graph *irg, ir_node *block);
+FIRM_API ir_node *new_rd_Start(dbg_info *db, ir_graph *irg);
 
 /** Constructor for a End node.
  *
  * @param *db    A pointer for  debug information.
  * @param *irg   The IR graph the node  belongs to.
- * @param *block The IR block the node belongs to.
  */
-FIRM_API ir_node *new_rd_End(dbg_info *db, ir_graph *irg, ir_node *block);
+FIRM_API ir_node *new_rd_End(dbg_info *db, ir_graph *irg);
 
 /** Constructor for a Jmp node.
  *
@@ -1189,18 +1177,6 @@ FIRM_API ir_node *new_rd_Jmp(dbg_info *db, ir_node *block);
  * @param *tgt    The IR node representing the target address.
  */
 FIRM_API ir_node *new_rd_IJmp(dbg_info *db, ir_node *block, ir_node *tgt);
-
-/** Constructor for a Break node.
- *
- * Break represents control flow to a single control successor just as Jmp.
- * The blocks separated by a break may not be concatenated by an optimization.
- * It is used for the interprocedural representation where blocks are parted
- * behind Call nodes to represent the control flow to called procedures.
- *
- * @param *db     A pointer for debug information.
- * @param *block  The block the node belong to.
- */
-FIRM_API ir_node *new_rd_Break(dbg_info *db, ir_node *block);
 
 /** Constructor for a Cond node.
  *
@@ -1231,22 +1207,6 @@ FIRM_API ir_node *new_rd_Cond(dbg_info *db, ir_node *block, ir_node *c);
 FIRM_API ir_node *new_rd_Return(dbg_info *db, ir_node *block,
                                 ir_node *store, int arity, ir_node *in[]);
 
-/** Constructor for a Const_type node.
- *
- * Adds the node to the start block.
- *
- * The constant represents a target value.  This constructor sets high
- * level type information for the constant value.
- * Derives mode from passed tarval.
- *
- * @param *db    A pointer for debug information.
- * @param *irg   The IR graph the node  belongs to.
- * @param *con   Points to an entry in the constant table.
- * @param *tp    The type of the constant.
- */
-FIRM_API ir_node *new_rd_Const_type(dbg_info *db, ir_graph *irg,
-                                    tarval *con, ir_type *tp);
-
 /** Constructor for a Const node.
  *
  * Adds the node to the start block.
@@ -1260,7 +1220,7 @@ FIRM_API ir_node *new_rd_Const_type(dbg_info *db, ir_graph *irg,
  * @param *irg   The IR graph the node  belongs to.
  * @param *con   Points to an entry in the constant table.
  */
-FIRM_API ir_node *new_rd_Const(dbg_info *db, ir_graph *irg, tarval *con);
+FIRM_API ir_node *new_rd_Const(dbg_info *db, ir_graph *irg, ir_tarval *con);
 
 /**
  * Constructor for a Const node.
@@ -1279,7 +1239,7 @@ FIRM_API ir_node *new_rd_Const(dbg_info *db, ir_graph *irg, tarval *con);
 FIRM_API ir_node *new_rd_Const_long(dbg_info *db, ir_graph *irg,
                                     ir_mode *mode, long value);
 
-/** Constructor for a SymConst_type node.
+/** Constructor for a SymConst node.
  *
  *  This is the constructor for a symbolic constant.
  *    There are several kinds of symbolic constants:
@@ -1313,15 +1273,6 @@ FIRM_API ir_node *new_rd_Const_long(dbg_info *db, ir_graph *irg,
  * @param val     A type, ident, entity or enum constant depending on the
  *                SymConst kind.
  * @param kind    The kind of the symbolic constant, see the list above
- * @param tp      The source type of the constant.
- */
-FIRM_API ir_node *new_rd_SymConst_type(dbg_info *db, ir_graph *irg,
-                                       ir_mode *mode, union symconst_symbol val,
-                                       symconst_kind kind, ir_type *tp);
-
-/** Constructor for a SymConst node.
- *
- *  Same as new_rd_SymConst_type, except that it sets the type to type_unknown.
  */
 FIRM_API ir_node *new_rd_SymConst(dbg_info *db, ir_graph *irg, ir_mode *mode,
                                   union symconst_symbol value,
@@ -1329,51 +1280,46 @@ FIRM_API ir_node *new_rd_SymConst(dbg_info *db, ir_graph *irg, ir_mode *mode,
 
 /** Constructor for a SymConst addr_ent node.
  *
- * Same as new_rd_SymConst_type, except that the constructor is tailored for
+ * Same as new_rd_SymConst, except that the constructor is tailored for
  * symconst_addr_ent.
  * Adds the SymConst to the start block of irg. */
 FIRM_API ir_node *new_rd_SymConst_addr_ent(dbg_info *db, ir_graph *irg,
-                                           ir_mode *mode, ir_entity *symbol,
-                                           ir_type *tp);
+                                           ir_mode *mode, ir_entity *symbol);
 
 /** Constructor for a SymConst ofs_ent node.
  *
- * Same as new_rd_SymConst_type, except that the constructor is tailored for
+ * Same as new_rd_SymConst, except that the constructor is tailored for
  * symconst_ofs_ent.
  * Adds the SymConst to the start block of irg.
  */
 FIRM_API ir_node *new_rd_SymConst_ofs_ent(dbg_info *db, ir_graph *irg,
-                                          ir_mode *mode, ir_entity *symbol,
-                                          ir_type *tp);
+                                          ir_mode *mode, ir_entity *symbol);
 
 /** Constructor for a SymConst type_tag node.
  *
- * Same as new_rd_SymConst_type, except that the constructor is tailored for
+ * Same as new_rd_SymConst, except that the constructor is tailored for
  * symconst_type_tag.
  * Adds the SymConst to the start block of irg.
  */
 FIRM_API ir_node *new_rd_SymConst_type_tag(dbg_info *db, ir_graph *irg,
-                                           ir_mode *mode, ir_type *symbol,
-                                           ir_type *tp);
+                                           ir_mode *mode, ir_type *symbol);
 
 /** Constructor for a SymConst size node.
  *
- * Same as new_rd_SymConst_type, except that the constructor is tailored for
+ * Same as new_rd_SymConst, except that the constructor is tailored for
  * symconst_type_size.
  * Adds the SymConst to the start block of irg. */
 FIRM_API ir_node *new_rd_SymConst_size(dbg_info *db, ir_graph *irg,
-                                       ir_mode *mode, ir_type *symbol,
-                                       ir_type *tp);
+                                       ir_mode *mode, ir_type *symbol);
 
 /** Constructor for a SymConst size node.
  *
- * Same as new_rd_SymConst_type, except that the constructor is tailored for
+ * Same as new_rd_SymConst, except that the constructor is tailored for
  * symconst_type_align.
  * Adds the SymConst to the start block of irg.
  */
 FIRM_API ir_node *new_rd_SymConst_align(dbg_info *db, ir_graph *irg,
-                                        ir_mode *mode, ir_type *symbol,
-                                        ir_type *tp);
+                                        ir_mode *mode, ir_type *symbol);
 
 /** Constructor for a simpleSel node.
  *
@@ -1571,16 +1517,6 @@ FIRM_API ir_node *new_rd_Mod(dbg_info *db, ir_node *block, ir_node *memop,
                              ir_node *op1, ir_node *op2, ir_mode *mode,
                              op_pin_state state);
 
-/** Constructor for a Abs node.
- *
- * @param   *db    A pointer for debug information.
- * @param   *block The IR block the node belongs to.
- * @param   *op    The operand
- * @param   *mode  The mode of the operands and the result.
- */
-FIRM_API ir_node *new_rd_Abs(dbg_info *db, ir_node *block, ir_node *op,
-                             ir_mode *mode);
-
 /** Constructor for a And node.
  *
  * @param   *db    A pointer for debug information.
@@ -1712,6 +1648,8 @@ FIRM_API ir_node *new_rd_Cast(dbg_info *db, ir_node *block,
                               ir_node *op, ir_type *to_tp);
 
 /** Constructor for a Carry node.
+ * Note: This node is not supported by the backends! Only use for program
+ * analysis tasks.
  *
  * @param   *db    A pointer for debug information.
  * @param   *block The IR block the node belongs to.
@@ -1723,6 +1661,8 @@ FIRM_API ir_node *new_rd_Carry(dbg_info *db, ir_node *block,
                                ir_node *op1, ir_node *op2, ir_mode *mode);
 
 /** Constructor for a Borrow node.
+ * Note: This node is not supported by the backends! Only use for program
+ * analysis tasks.
  *
  * @param   *db    A pointer for debug information.
  * @param   *block The IR block the node belongs to.
@@ -1891,61 +1831,6 @@ FIRM_API ir_node *new_rd_Confirm(dbg_info *db, ir_node *block,
  */
 FIRM_API ir_node *new_rd_Unknown(dbg_info *db, ir_graph *irg, ir_mode *m);
 
-/** Constructor for a CallBegin node.
- *
- * CallBegin represents control flow depending of the pointer value
- * representing the called method to the called methods.  The
- * constructor copies the method pointer input from the passed Call
- * node.
- *
- * @param *db     A pointer for debug information.
- * @param *block  The block the node belong to.
- * @param *ptr    pointer to the called function
- * @param *call   associated call operation
- */
-FIRM_API ir_node *new_rd_CallBegin(dbg_info *db, ir_node *block, ir_node *ptr,
-                                   ir_node *call);
-
-/** Constructor for a EndReg node.
- *
- * Used to represent regular procedure end in interprocedual view.
- *
- * @param *db     A pointer for debug information.
- * @param *irg    The IR graph the node belong to.
- * @param *block  The block the node belong to.
- */
-FIRM_API ir_node *new_rd_EndReg(dbg_info *db, ir_graph *irg, ir_node *block);
-
-/** Constructor for a EndExcept node.
- *
- * Used to represent exceptional procedure end in interprocedural view.
- *
- * @param *db     A pointer for debug information.
- * @param *irg    The IR graph the node belong to.
- * @param *block  The block the node belong to.
- */
-FIRM_API ir_node *new_rd_EndExcept(dbg_info *db, ir_graph *irg, ir_node *block);
-
-/** Constructor for a Filter node.
- *
- * Adds the node to the block in current_ir_block.  Filter is a node
- * with two views used to construct the interprocedural view.  In
- * intraprocedural view its semantics are identical to the Proj node.
- * In interprocedural view the Filter performs the Phi operation on
- * method parameters or results.  Other than a Phi a Filter node may
- * not be removed if it has only a single input.
- *
- * The constructor builds the Filter in intraprocedural view.
- *
- * @param *db     A pointer for debug information.
- * @param *block  The block the node belong to.
- * @param *arg  The tuple value to project from.
- * @param *mode The mode of the projected value.
- * @param proj  The position in the tuple to project from.
- */
-FIRM_API ir_node *new_rd_Filter(dbg_info *db,ir_node *block, ir_node *arg,
-                                ir_mode *mode, long proj);
-
 /** Constructor for a Mux node.
  *
  * @param *db       A pointer for debug information.
@@ -2058,19 +1943,11 @@ FIRM_API ir_node *new_rd_ASM(dbg_info *db, ir_node *block,
  */
 FIRM_API ir_node *new_r_Block(ir_graph *irg, int arity, ir_node *in[]);
 
-/** Constructor for a Start node.
- *
- * @param *irg   The IR graph the node belongs to.
- * @param *block The IR block the node belongs to.
- */
-FIRM_API ir_node *new_r_Start(ir_graph *irg, ir_node *block);
+/** Constructor for a Start node. */
+FIRM_API ir_node *new_r_Start(ir_graph *irg);
 
-/** Constructor for a End node.
- *
- * @param *irg   The IR graph the node  belongs to.
- * @param *block The IR block the node belongs to.
- */
-FIRM_API ir_node *new_r_End(ir_graph *irg, ir_node *block);
+/** Constructor for a End node. */
+FIRM_API ir_node *new_r_End(ir_graph *irg);
 
 /** Constructor for a Jmp node.
  *
@@ -2112,7 +1989,7 @@ FIRM_API ir_node *new_r_Cond(ir_node *block, ir_node *c);
  * @param *block The IR block the node belongs to.
  * @param *store The state of memory.
  * @param arity  Number of array indices.
- * @param *in[]   Array with index inputs to the node. The constructor copies this array.
+ * @param *in[]  Array with index inputs to the node. The constructor copies this array.
  */
 FIRM_API ir_node *new_r_Return(ir_node *block, ir_node *store,
                                int arity, ir_node *in[]);
@@ -2129,7 +2006,7 @@ FIRM_API ir_node *new_r_Return(ir_node *block, ir_node *store,
  * @param *irg   The IR graph the node  belongs to.
  * @param *con   Points to an entry in the constant table.
  */
-FIRM_API ir_node *new_r_Const(ir_graph *irg, tarval *con);
+FIRM_API ir_node *new_r_Const(ir_graph *irg, ir_tarval *con);
 
 /** Constructor for a Const node.
  *
@@ -2144,20 +2021,6 @@ FIRM_API ir_node *new_r_Const(ir_graph *irg, tarval *con);
  * @param value  A value from which the tarval is made.
  */
 FIRM_API ir_node *new_r_Const_long(ir_graph *irg, ir_mode *mode, long value);
-
-/** Constructor for a Const_type node.
- *
- * Adds the node to the start block.
- *
- * The constant represents a target value.  This constructor sets high
- * level type information for the constant value.
- * Derives mode from passed tarval.
- *
- * @param *irg   The IR graph the node  belongs to.
- * @param *con   Points to an entry in the constant table.
- * @param *tp    The type of the constant.
- */
-FIRM_API ir_node *new_r_Const_type(ir_graph *irg, tarval *con, ir_type *tp);
 
 /** Constructor for a SymConst node.
  *
@@ -2378,14 +2241,6 @@ FIRM_API ir_node *new_r_DivRL(ir_node *block, ir_node *memop,
 FIRM_API ir_node *new_r_Mod(ir_node *block, ir_node *memop,
                             ir_node *op1, ir_node *op2, ir_mode *mode,
                             op_pin_state state);
-
-/** Constructor for a Abs node.
- *
- * @param *block The IR block the node belongs to.
- * @param *op    The operand
- * @param *mode  The mode of the operands and the result.
- */
-FIRM_API ir_node *new_r_Abs(ir_node *block, ir_node *op, ir_mode *mode);
 
 /** Constructor for a And node.
  *
@@ -2674,67 +2529,6 @@ FIRM_API ir_node *new_r_Confirm(ir_node *block, ir_node *val, ir_node *bound,
  */
 FIRM_API ir_node *new_r_Unknown(ir_graph *irg, ir_mode *m);
 
-/** Constructor for a CallBegin node.
- *
- * CallBegin represents control flow depending of the pointer value
- * representing the called method to the called methods.  The
- * constructor copies the method pointer input from the passed Call
- * node.
- *
- * @param *block  The block the node belong to.
- * @param *ptr    pointer to the called function
- * @param *call   associated call operation
- */
-FIRM_API ir_node *new_r_CallBegin(ir_node *block, ir_node *ptr, ir_node *call);
-
-/** Constructor for a EndReg node.
- *
- * Used to represent regular procedure end in interprocedual view.
- *
- * @param *irg    The IR graph the node belong to.
- * @param *block  The block the node belong to.
- */
-FIRM_API ir_node *new_r_EndReg(ir_graph *irg, ir_node *block);
-
-/** Constructor for a EndExcept node.
- *
- * Used to represent exceptional procedure end in interprocedural view.
- *
- * @param *irg    The IR graph the node belong to.
- * @param *block  The block the node belong to.
- */
-FIRM_API ir_node *new_r_EndExcept(ir_graph *irg, ir_node *block);
-
-/** Constructor for a Break node.
- *
- * Break represents control flow to a single control successor just as Jmp.
- * The blocks separated by a break may not be concatenated by an optimization.
- * It is used for the interprocedural representation where blocks are parted
- * behind Call nodes to represent the control flow to called procedures.
- *
- * @param *block  The block the node belong to.
- */
-FIRM_API ir_node *new_r_Break(ir_node *block);
-
-/** Constructor for a Filter node.
- *
- * Constructor for a Filter node. Adds the node to the block in current_ir_block.
- * Filter is a node with two views used to construct the interprocedural view.
- * In intraprocedural view its semantics are identical to the Proj node.
- * In interprocedural view the Filter performs the Phi operation on method
- * parameters or results.  Other than a Phi a Filter node may not be removed
- * if it has only a single input.
- *
- * The constructor builds the Filter in intraprocedural view.
- *
- * @param *block  The block the node belong to.
- * @param *arg    The tuple value to project from.
- * @param *mode   The mode of the projected value.
- * @param proj    The position in the tuple to project from.
- */
-FIRM_API ir_node *new_r_Filter(ir_node *block, ir_node *arg, ir_mode *mode,
-                               long proj);
-
 /** Constructor for a NoMem node.
  *
  * Returns the unique NoMem node of the graph.  The same as
@@ -2836,9 +2630,11 @@ FIRM_API ir_node *new_r_ASM(ir_node *block,
  *  @param target  The new current block.
  */
 FIRM_API void set_cur_block(ir_node *target);
+FIRM_API void set_r_cur_block(ir_graph *irg, ir_node *target);
 
 /** Returns the current block of the current graph. */
 FIRM_API ir_node *get_cur_block(void);
+FIRM_API ir_node *get_r_cur_block(ir_graph *irg);
 
 /** Constructor for a Block node.
  *
@@ -2919,21 +2715,6 @@ FIRM_API ir_node *new_d_Cond(dbg_info *db, ir_node *c);
 FIRM_API ir_node *new_d_Return(dbg_info *db, ir_node *store,
                                int arity, ir_node *in[]);
 
-/** Constructor for a Const_type node.
- *
- * Adds the node to the start block.
- *
- * The constant represents a target value.  This constructor sets high
- * level type information for the constant value.
- * Derives mode from passed tarval.
- *
- * @param *db    A pointer for debug information.
- * @param *con   Points to an entry in the constant table. This pointer is
-                 added to the attributes of the node.
- * @param *tp    The type of the constant.
- */
-FIRM_API ir_node *new_d_Const_type(dbg_info *db, tarval *con, ir_type *tp);
-
 /** Constructor for a Const node.
  *
  * Adds the node to the block in current_ir_block.
@@ -2947,7 +2728,7 @@ FIRM_API ir_node *new_d_Const_type(dbg_info *db, tarval *con, ir_type *tp);
  * @param *con   Points to an entry in the constant table. This pointer is added
  *               to the attributes of the node.
  */
-FIRM_API ir_node *new_d_Const(dbg_info *db, tarval *con);
+FIRM_API ir_node *new_d_Const(dbg_info *db, ir_tarval *con);
 
 /**
  * @see new_rd_Const_long()
@@ -2958,7 +2739,7 @@ FIRM_API ir_node *new_d_Const(dbg_info *db, tarval *con);
  */
 FIRM_API ir_node *new_d_Const_long(dbg_info *db, ir_mode *mode, long value);
 
-/** Constructor for a SymConst_type node.
+/** Constructor for a SymConst node.
  *
  *  This is the constructor for a symbolic constant.
  *    There are several kinds of symbolic constants:
@@ -2991,15 +2772,6 @@ FIRM_API ir_node *new_d_Const_long(dbg_info *db, ir_mode *mode, long value);
  * @param value   A type, ident, entity or enum constant depending on the
  *                SymConst kind.
  * @param kind    The kind of the symbolic constant, see the list above
- * @param tp      The source type of the constant.
- */
-FIRM_API ir_node *new_d_SymConst_type(dbg_info *db, ir_mode *mode,
-                                      union symconst_symbol value,
-                                      symconst_kind kind, ir_type *tp);
-
-/** Constructor for a SymConst node.
- *
- *  Same as new_d_SymConst_type, except that it sets the type to type_unknown.
  */
 FIRM_API ir_node *new_d_SymConst(dbg_info *db, ir_mode *mode,
                                  union symconst_symbol value,
@@ -3204,16 +2976,6 @@ FIRM_API ir_node *new_d_DivRL(dbg_info *db, ir_node *memop,
 FIRM_API ir_node *new_d_Mod(dbg_info *db, ir_node *memop,
                             ir_node *op1, ir_node *op2, ir_mode *mode,
                             op_pin_state state);
-
-/** Constructor for a Abs node.
- *
- * Adds the node to the block in current_ir_block.
- *
- * @param   *db    A pointer for debug information.
- * @param   *op    The operand
- * @param   *mode  The mode of the operands and the result.
- */
-FIRM_API ir_node *new_d_Abs(dbg_info *db, ir_node *op, ir_mode *mode);
 
 /** Constructor for a And node.
  *
@@ -3531,70 +3293,6 @@ FIRM_API ir_node *new_d_Confirm(dbg_info *db, ir_node *val, ir_node *bound,
  */
 FIRM_API ir_node *new_d_Unknown(dbg_info *db, ir_mode *m);
 
-/** Constructor for a CallBegin node.
- *
- * CallBegin represents control flow depending of the pointer value
- * representing the called method to the called methods.  The
- * constructor copies the method pointer input from the passed Call
- * node.Adds the node to the block in current_ir_block.
- *
- * @param *db     A pointer for debug information.
- * @param *ptr    pointer to the called function
- * @param *call   associated call operation
- */
-FIRM_API ir_node *new_d_CallBegin(dbg_info *db, ir_node *ptr, ir_node *call);
-
-/** Constructor for an EndReg node.
- *
- *Adds the node to the block in current_ir_block.
- *
- * @param *db     A pointer for debug information.
- */
-FIRM_API ir_node *new_d_EndReg(dbg_info *db);
-
-/** Constructor for an EndExcept node.
- *
- * Used to represent regular procedure end in interprocedual view.
- * Adds the node to the block in current_ir_block.
- *
- * @param *db     A pointer for debug information.
- */
-FIRM_API ir_node *new_d_EndExcept(dbg_info *db);
-
-/** Constructor for a Break node.
- *
- * Used to represent exceptional procedure end in interprocedural view.
- * Adds the node to the block in current_ir_block.
- *
- * Break represents control flow to a single control successor just as Jmp.
- * The blocks separated by a break may not be concatenated by an optimization.
- * It is used for the interprocedural representation where blocks are parted
- * behind Call nodes to represent the control flow to called procedures.
- *
- * @param *db     A pointer for debug information.
- */
-FIRM_API ir_node *new_d_Break(dbg_info *db);
-
-/** Constructor for a Filter node.
- *
- * Constructor for a Filter node. Adds the node to the block in
- * current_ir_block.  Filter is a node with two views used to
- * construct the interprocedural view.  In intraprocedural view its
- * semantics are identical to the Proj node.  In interprocedural view
- * the Filter performs the Phi operation on method parameters or
- * results.  Other than a Phi a Filter node may not be removed if it
- * has only a single input.
- *
- * The constructor builds the Filter in intraprocedural view.
- *
- * @param *db   A pointer for debug information.
- * @param *arg  The tuple value to project from.
- * @param *mode The mode of the projected value.
- * @param proj  The position in the tuple to project from.
- */
-FIRM_API ir_node *new_d_Filter(dbg_info *db, ir_node *arg, ir_mode *mode,
-                               long proj);
-
 /** Constructor for a Mux node.
  *
  * @param *db       A pointer for debug information.
@@ -3705,20 +3403,6 @@ FIRM_API ir_node *new_Start(void);
  */
 FIRM_API ir_node *new_End(void);
 
-/** Constructor for an EndReg node.
- *
- * Used to represent regular procedure end in interprocedual view.
- * Adds the node to the block in current_ir_block.
- */
-FIRM_API ir_node *new_EndReg(void);
-
-/** Constructor for an EndExpcept node.
- *
- *  Used to represent exceptional procedure end in interprocedural view.
- *  Adds the node to the block in current_ir_block.
- */
-FIRM_API ir_node *new_EndExcept(void);
-
 /** Constructor for a Jump node.
  *
  * Adds the node to the block in current_ir_block.
@@ -3735,15 +3419,6 @@ FIRM_API ir_node *new_Jmp(void);
  * @param *tgt    The IR node representing the target address.
  */
 FIRM_API ir_node *new_IJmp(ir_node *tgt);
-
-/** Constructor for a Break node.
- * Break represents control flow to a single control successor just as Jmp.
- * The blocks separated by a break may not be concatenated by an optimization.
- * It is used for the interprocedural representation where blocks are parted
- * behind Call nodes to represent the control flow to called procedures.
- * Adds the node to the block in current_ir_block.
- */
-FIRM_API ir_node *new_Break(void);
 
 /** Constructor for a Cond node.
  *
@@ -3781,7 +3456,7 @@ FIRM_API ir_node *new_Return(ir_node *store, int arity, ir_node *in[]);
  * @param *con   Points to an entry in the constant table. This pointer is
  *               added to the attributes of  the node.
  */
-FIRM_API ir_node *new_Const(tarval *con);
+FIRM_API ir_node *new_Const(ir_tarval *con);
 
 /**
  * Make a const from a long.
@@ -3795,48 +3470,6 @@ FIRM_API ir_node *new_Const(tarval *con);
  * @return A new const node.
  */
 FIRM_API ir_node *new_Const_long(ir_mode *mode, long value);
-
-/** Constructor for a Const node.
- *
- * Derives mode from passed tarval. */
-FIRM_API ir_node *new_Const_type(tarval *con, ir_type *tp);
-
-/** Constructor for a SymConst_type node.
- *
- *  This is the constructor for a symbolic constant.
- *    There are several kinds of symbolic constants:
- *    - symconst_type_tag   The symbolic constant represents a type tag.  The
- *                          type the tag stands for is given explicitly.
- *    - symconst_type_size  The symbolic constant represents the size of a type.
- *                          The type of which the constant represents the size
- *                          is given explicitly.
- *    - symconst_type_align The symbolic constant represents the alignment of a
- *                          type.  The type of which the constant represents the
- *                          size is given explicitly.
- *    - symconst_addr_ent   The symbolic constant represents the address of an
- *                          entity (variable or method).  The variable is given
- *                          explicitly by a firm entity.
- *    - symconst_ofs_ent    The symbolic constant represents the offset of an
- *                          entity in its owner type.
- *    - symconst_enum_const The symbolic constant is a enumeration constant of
- *                          an enumeration type.
- *
- *    Inputs to the node:
- *      No inputs except the block it belongs to.
- *    Outputs of the node.
- *      An unsigned integer (I_u) or a pointer (P).
- *
- *    Mention union in declaration so that the firmjni generator recognizes that
- *    it can not cast the argument to an int.
- *
- * @param mode    The mode for the SymConst.
- * @param value   A type, ident, entity or enum constant depending on the
- *                SymConst kind.
- * @param kind    The kind of the symbolic constant, see the list above
- * @param tp      The source type of the constant.
- */
-FIRM_API ir_node *new_SymConst_type(ir_mode *mode, union symconst_symbol value,
-                                    symconst_kind kind, ir_type *tp);
 
 /** Constructor for a SymConst node.
  *
@@ -3935,18 +3568,6 @@ FIRM_API ir_node *new_Call(ir_node *store, ir_node *callee,
  */
 FIRM_API ir_node *new_Builtin(ir_node *store, int arity, ir_node *in[],
                               ir_builtin_kind kind, ir_type *tp);
-
-/** Constructor for a CallBegin node.
- *
- * CallBegin represents control flow depending of the pointer value
- * representing the called method to the called methods.  The
- * constructor copies the method pointer input from the passed Call
- * node. Adds the node to the block in current_ir_block.
- *
- * @param *ptr    pointer to the called function
- * @param *call   associated call operation
- */
-FIRM_API ir_node *new_CallBegin(ir_node *ptr, ir_node *call);
 
 /** Constructor for a Add node.
  *
@@ -4059,15 +3680,6 @@ FIRM_API ir_node *new_DivRL(ir_node *memop, ir_node *op1, ir_node *op2,
  */
 FIRM_API ir_node *new_Mod(ir_node *memop, ir_node *op1, ir_node *op2,
                           ir_mode *mode, op_pin_state state);
-
-/** Constructor for a Abs node.
- *
- * Adds the node to the block in current_ir_block.
- *
- * @param   *op    The operand
- * @param   *mode  The mode of the operands and the result.
- */
-FIRM_API ir_node *new_Abs(ir_node *op, ir_mode *mode);
 
 /** Constructor for a And node.
  *
@@ -4285,23 +3897,6 @@ FIRM_API ir_node *new_Sync(int arity, ir_node *in[]);
  */
 FIRM_API ir_node *new_Proj(ir_node *arg, ir_mode *mode, long proj);
 
-/** Constructor for a Filter node.
- *
- * Constructor for a Filter node. Adds the node to the block in current_ir_block.
- * Filter is a node with two views used to construct the interprocedural view.
- * In intraprocedural view its semantics are identical to the Proj node.
- * In interprocedural view the Filter performs the Phi operation on method
- * parameters or results.  Other than a Phi a Filter node may not be removed
- * if it has only a single input.
- *
- * The constructor builds the Filter in intraprocedural view.
- *
- * @param *arg  The tuple value to project from.
- * @param *mode The mode of the projected value.
- * @param proj  The position in the tuple to project from.
- */
-FIRM_API ir_node *new_Filter(ir_node *arg, ir_mode *mode, long proj);
-
 /** Constructor for a defaultProj node.
  *
  * Represents the default control flow of a Switch-Cond node.
@@ -4504,28 +4099,14 @@ FIRM_API ir_node *new_Dummy(ir_mode *mode);
  */
 FIRM_API ir_node *new_d_immBlock(dbg_info *db);
 FIRM_API ir_node *new_immBlock(void);
-
-/** Create an immature PartBlock.
- *
- * An immature block has only one Block or PartBlock predecessor.
- * A PartBlock forms together with one BLock and possibly other
- * PartBlocks a MacroBlock.
- *
- * Adds the PartBlock to the graph in current_ir_graph. Does set
- * current_block.  Can be used with automatic Phi node construction.
- * This constructor can only be used if the graph is in
- * state_building.
- */
-FIRM_API ir_node *new_d_immPartBlock(dbg_info *db, ir_node *pred_jmp);
-FIRM_API ir_node *new_immPartBlock(ir_node *pred_jmp);
+FIRM_API ir_node *new_r_immBlock(ir_graph *irg);
+FIRM_API ir_node *new_rd_immBlock(dbg_info *db, ir_graph *irg);
 
 /** Add a control flow edge to an immature block. */
 FIRM_API void add_immBlock_pred(ir_node *immblock, ir_node *jmp);
 
 /** Finalize a Block node, when all control flows are known. */
 FIRM_API void mature_immBlock(ir_node *block);
-#define mature_cur_block() mature_immBlock(get_cur_block());
-
 
 /** Get the current value of a local variable.
  *
@@ -4537,8 +4118,18 @@ FIRM_API void mature_immBlock(ir_node *block);
  * @param  pos   The position/id of the local variable.
  * @param *mode  The mode of the value to get.
  */
-FIRM_API ir_node *get_d_value(dbg_info *db, int pos, ir_mode *mode);
 FIRM_API ir_node *get_value(int pos, ir_mode *mode);
+FIRM_API ir_node *get_r_value(ir_graph *irg, int pos, ir_mode *mode);
+
+/**
+ * Try to guess the mode of a local variable.
+ * This is done by recursively going up the control flow graph until
+ * we find a definition for the variable. The mode of the first found
+ * definition is returned. NULL in case no definition is found.
+ *
+ * @param  pos   The position/id of the local variable.
+ */
+FIRM_API ir_mode *ir_guess_mode(int pos);
 
 /** Remark a new definition of a variable.
  *
@@ -4551,6 +4142,7 @@ FIRM_API ir_node *get_value(int pos, ir_mode *mode);
  * @param *value The new value written to the local variable.
  */
 FIRM_API void set_value(int pos, ir_node *value);
+FIRM_API void set_r_value(ir_graph *irg, int pos, ir_node *value);
 
 /**
  * Find the value number for a node in the current block.
@@ -4569,6 +4161,7 @@ FIRM_API int find_value(ir_node *value);
  * state value.
  */
 FIRM_API ir_node *get_store(void);
+FIRM_API ir_node *get_r_store(ir_graph *irg);
 
 /** Remark a new definition of the memory state.
  *
@@ -4578,16 +4171,13 @@ FIRM_API ir_node *get_store(void);
  * @param *store The new memory state.
  */
 FIRM_API void set_store(ir_node *store);
+FIRM_API void set_r_store(ir_graph *irg, ir_node *store);
 
 /** keep this node alive even if End is not control-reachable from it
  *
  * @param ka The node to keep alive.
  */
 FIRM_API void keep_alive(ir_node *ka);
-
-/** Returns the frame type of the current graph */
-FIRM_API ir_type *get_cur_frame_type(void);
-
 
 /* --- initialize and finalize IR construction --- */
 

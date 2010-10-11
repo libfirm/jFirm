@@ -21,7 +21,7 @@
  * @file
  * @brief   Representation of opcode of intermediate operation.
  * @author  Christian Schaefer, Goetz Lindenmaier, Michael Beck
- * @version $Id$
+ * @version $Id: irop.h 28062 2010-10-08 13:36:56Z matze $
  * @brief
  *  Operators of firm nodes.
  *
@@ -36,6 +36,7 @@
 #include "firm_types.h"
 #include "ident.h"
 #include "begin.h"
+#include "opcodes.h"
 
 /** The allowed arities. */
 typedef enum {
@@ -55,202 +56,28 @@ typedef enum {
 
 /** The irop flags */
 typedef enum {
-	irop_flag_none         = 0x00000000, /**< Nothing. */
-	irop_flag_labeled      = 0x00000001, /**< If set, output edge labels on in-edges in vcg graph. */
-	irop_flag_commutative  = 0x00000002, /**< This operation is commutative. */
-	irop_flag_cfopcode     = 0x00000004, /**< This operation is a control flow operation. */
-	irop_flag_ip_cfopcode  = 0x00000008, /**< This operation manipulates the interprocedural control flow. */
-	irop_flag_fragile      = 0x00000010, /**< Set if the operation can change the control flow because
-	                                          of an exception. */
-	irop_flag_forking      = 0x00000020, /**< Forking control flow at this operation. */
-	irop_flag_highlevel    = 0x00000040, /**< This operation is a pure high-level one and can be
-	                                          skipped in low-level optimizations. */
-	irop_flag_constlike    = 0x00000080, /**< This operation has no arguments and is some
-	                                          kind of a constant. */
-	irop_flag_always_opt   = 0x00000100, /**< This operation must always be optimized .*/
-	irop_flag_keep         = 0x00000200, /**< This operation can be kept in End's keep-alive list. */
-	irop_flag_start_block  = 0x00000400, /**< This operation is always placed in the Start block. */
-	irop_flag_uses_memory  = 0x00000800, /**< This operation has a memory input and may change the memory state. */
-	irop_flag_dump_noblock = 0x00001000, /**< node should be dumped outside any blocks */
-	irop_flag_dump_noinput = 0x00002000, /**< node is a placeholder for "no input" */
-	irop_flag_machine      = 0x00010000, /**< This operation is a machine operation. */
-	irop_flag_machine_op   = 0x00020000, /**< This operation is a machine operand. */
-	irop_flag_cse_neutral  = 0x00040000, /**< This operation is CSE neutral to its users. */
-	irop_flag_user         = 0x00080000  /**< This flag and all higher ones are free for machine user. */
+	irop_flag_none         = 0, /**< Nothing. */
+	irop_flag_labeled      = 1U << 0, /**< If set, output edge labels on in-edges in vcg graph. */
+	irop_flag_commutative  = 1U << 1, /**< This operation is commutative. */
+	irop_flag_cfopcode     = 1U << 2, /**< This operation is a control flow operation. */
+	irop_flag_fragile      = 1U << 3, /**< Set if the operation can change the control flow because
+	                               of an exception. */
+	irop_flag_forking      = 1U << 4, /**< Forking control flow at this operation. */
+	irop_flag_highlevel    = 1U << 5, /**< This operation is a pure high-level one and can be
+	                                      skipped in low-level optimizations. */
+	irop_flag_constlike    = 1U << 6, /**< This operation has no arguments and is some
+	                                       kind of a constant. */
+	irop_flag_always_opt   = 1U << 7, /**< This operation must always be optimized .*/
+	irop_flag_keep         = 1U << 8, /**< This operation can be kept in End's keep-alive list. */
+	irop_flag_start_block  = 1U << 9, /**< This operation is always placed in the Start block. */
+	irop_flag_uses_memory  = 1U << 10, /**< This operation has a memory input and may change the memory state. */
+	irop_flag_dump_noblock = 1U << 11, /**< node should be dumped outside any blocks */
+	irop_flag_dump_noinput = 1U << 12, /**< node is a placeholder for "no input" */
+	irop_flag_machine      = 1U << 13, /**< This operation is a machine operation. */
+	irop_flag_machine_op   = 1U << 14, /**< This operation is a machine operand. */
+	irop_flag_cse_neutral  = 1U << 15, /**< This operation is CSE neutral to its users. */
+	irop_flag_user         = 1U << 16, /**< This flag and all higher ones are free for machine user. */
 } irop_flags;
-
-/** The opcodes of the libFirm predefined operations. */
-typedef enum {
-	iro_Block,
-	iro_First = iro_Block,
-	iro_Start, iro_End, iro_Jmp, iro_IJmp, iro_Cond, iro_Return,
-	iro_Const, iro_SymConst,
-	iro_Sel,
-	iro_Call, iro_Add, iro_Sub, iro_Minus, iro_Mul, iro_Mulh, iro_Quot, iro_DivMod,
-	iro_Div,  iro_Mod, iro_Abs, iro_And, iro_Or, iro_Eor, iro_Not,
-	iro_Cmp,  iro_Shl, iro_Shr, iro_Shrs, iro_Rotl, iro_Conv, iro_Cast,
-	iro_Carry, iro_Borrow,
-	iro_Phi,
-	iro_Load, iro_Store, iro_Alloc, iro_Free, iro_Sync,
-	iro_Proj, iro_Tuple, iro_Id, iro_Bad, iro_Confirm,
-	iro_Unknown, iro_Filter, iro_Break, iro_CallBegin, iro_EndReg, iro_EndExcept,
-	iro_NoMem, iro_Mux, iro_CopyB,
-	iro_InstOf, iro_Raise, iro_Bound,
-	iro_Pin,
-	iro_ASM, iro_Builtin,
-	iro_Dummy,
-	iro_Anchor,
-	/* first not middleend node number */
-	iro_Last = iro_Anchor,
-	/* first backend node number */
-	beo_First,
-	/* backend specific nodes */
-	beo_Spill = beo_First,
-	beo_Reload,
-	beo_Perm,
-	beo_MemPerm,
-	beo_Copy,
-	beo_Keep,
-	beo_CopyKeep,
-	beo_Call,
-	beo_Return,
-	beo_AddSP,
-	beo_SubSP,
-	beo_IncSP,
-	beo_Start,
-	beo_FrameAddr,
-	beo_Barrier,
-	/* last backend node number */
-	beo_Last = beo_Barrier,
-	/* first unfixed number. Dynamic node numbers start here */
-	iro_MaxOpcode
-} ir_opcode;
-
-FIRM_API ir_op *op_Abs;
-FIRM_API ir_op *op_Add;
-FIRM_API ir_op *op_Alloc;
-FIRM_API ir_op *op_Anchor;
-FIRM_API ir_op *op_And;
-FIRM_API ir_op *op_ASM;
-FIRM_API ir_op *op_Bad;
-FIRM_API ir_op *op_Block;
-FIRM_API ir_op *op_Borrow;
-FIRM_API ir_op *op_Bound;
-FIRM_API ir_op *op_Break;
-FIRM_API ir_op *op_Builtin;
-FIRM_API ir_op *op_Call;
-FIRM_API ir_op *op_CallBegin;
-FIRM_API ir_op *op_Carry;
-FIRM_API ir_op *op_Cast;
-FIRM_API ir_op *op_Cmp;
-FIRM_API ir_op *op_Cond;
-FIRM_API ir_op *op_Confirm;
-FIRM_API ir_op *op_Const;
-FIRM_API ir_op *op_Conv;
-FIRM_API ir_op *op_CopyB;
-FIRM_API ir_op *op_Div;
-FIRM_API ir_op *op_DivMod;
-FIRM_API ir_op *op_Dummy;
-FIRM_API ir_op *op_End;
-FIRM_API ir_op *op_EndExcept;
-FIRM_API ir_op *op_EndReg;
-FIRM_API ir_op *op_Eor;
-FIRM_API ir_op *op_Filter;
-FIRM_API ir_op *op_Free;
-FIRM_API ir_op *op_Id;
-FIRM_API ir_op *op_IJmp;
-FIRM_API ir_op *op_InstOf;
-FIRM_API ir_op *op_Jmp;
-FIRM_API ir_op *op_Load;
-FIRM_API ir_op *op_Minus;
-FIRM_API ir_op *op_Mod;
-FIRM_API ir_op *op_Mul;
-FIRM_API ir_op *op_Mulh;
-FIRM_API ir_op *op_Mux;
-FIRM_API ir_op *op_NoMem;
-FIRM_API ir_op *op_Not;
-FIRM_API ir_op *op_Or;
-FIRM_API ir_op *op_Phi;
-FIRM_API ir_op *op_Pin;
-FIRM_API ir_op *op_Proj;
-FIRM_API ir_op *op_Quot;
-FIRM_API ir_op *op_Raise;
-FIRM_API ir_op *op_Return;
-FIRM_API ir_op *op_Rotl;
-FIRM_API ir_op *op_Sel;
-FIRM_API ir_op *op_Shl;
-FIRM_API ir_op *op_Shrs;
-FIRM_API ir_op *op_Shr;
-FIRM_API ir_op *op_Start;
-FIRM_API ir_op *op_Store;
-FIRM_API ir_op *op_Sub;
-FIRM_API ir_op *op_SymConst;
-FIRM_API ir_op *op_Sync;
-FIRM_API ir_op *op_Tuple;
-FIRM_API ir_op *op_Unknown;
-
-FIRM_API ir_op *get_op_Abs       (void);
-FIRM_API ir_op *get_op_Add       (void);
-FIRM_API ir_op *get_op_Alloc     (void);
-FIRM_API ir_op *get_op_Anchor    (void);
-FIRM_API ir_op *get_op_And       (void);
-FIRM_API ir_op *get_op_ASM       (void);
-FIRM_API ir_op *get_op_Bad       (void);
-FIRM_API ir_op *get_op_Block     (void);
-FIRM_API ir_op *get_op_Borrow    (void);
-FIRM_API ir_op *get_op_Bound     (void);
-FIRM_API ir_op *get_op_Break     (void);
-FIRM_API ir_op *get_op_Builtin   (void);
-FIRM_API ir_op *get_op_CallBegin (void);
-FIRM_API ir_op *get_op_Call      (void);
-FIRM_API ir_op *get_op_Carry     (void);
-FIRM_API ir_op *get_op_Cast      (void);
-FIRM_API ir_op *get_op_Cmp       (void);
-FIRM_API ir_op *get_op_Cond      (void);
-FIRM_API ir_op *get_op_Confirm   (void);
-FIRM_API ir_op *get_op_Const     (void);
-FIRM_API ir_op *get_op_Conv      (void);
-FIRM_API ir_op *get_op_CopyB     (void);
-FIRM_API ir_op *get_op_DivMod    (void);
-FIRM_API ir_op *get_op_Div       (void);
-FIRM_API ir_op *get_op_Dummy     (void);
-FIRM_API ir_op *get_op_EndExcept (void);
-FIRM_API ir_op *get_op_EndReg    (void);
-FIRM_API ir_op *get_op_End       (void);
-FIRM_API ir_op *get_op_Eor       (void);
-FIRM_API ir_op *get_op_Filter    (void);
-FIRM_API ir_op *get_op_Free      (void);
-FIRM_API ir_op *get_op_Id        (void);
-FIRM_API ir_op *get_op_IJmp      (void);
-FIRM_API ir_op *get_op_InstOf    (void);
-FIRM_API ir_op *get_op_Jmp       (void);
-FIRM_API ir_op *get_op_Load      (void);
-FIRM_API ir_op *get_op_Minus     (void);
-FIRM_API ir_op *get_op_Mod       (void);
-FIRM_API ir_op *get_op_Mulh      (void);
-FIRM_API ir_op *get_op_Mul       (void);
-FIRM_API ir_op *get_op_Mux       (void);
-FIRM_API ir_op *get_op_NoMem     (void);
-FIRM_API ir_op *get_op_Not       (void);
-FIRM_API ir_op *get_op_Or        (void);
-FIRM_API ir_op *get_op_Phi       (void);
-FIRM_API ir_op *get_op_Pin       (void);
-FIRM_API ir_op *get_op_Proj      (void);
-FIRM_API ir_op *get_op_Quot      (void);
-FIRM_API ir_op *get_op_Raise     (void);
-FIRM_API ir_op *get_op_Return    (void);
-FIRM_API ir_op *get_op_Rotl      (void);
-FIRM_API ir_op *get_op_Sel       (void);
-FIRM_API ir_op *get_op_Shl       (void);
-FIRM_API ir_op *get_op_Shrs      (void);
-FIRM_API ir_op *get_op_Shr       (void);
-FIRM_API ir_op *get_op_Start     (void);
-FIRM_API ir_op *get_op_Store     (void);
-FIRM_API ir_op *get_op_Sub       (void);
-FIRM_API ir_op *get_op_SymConst  (void);
-FIRM_API ir_op *get_op_Sync      (void);
-FIRM_API ir_op *get_op_Tuple     (void);
-FIRM_API ir_op *get_op_Unknown   (void);
 
 /** Returns the ident for the opcode name */
 FIRM_API ident *get_op_ident(const ir_op *op);
@@ -311,7 +138,7 @@ typedef unsigned (*hash_func)(const ir_node *self);
  * This operation evaluates an IR node into a tarval if possible,
  * returning tarval_bad otherwise.
  */
-typedef tarval *(*computed_value_func)(const ir_node *self);
+typedef ir_tarval *(*computed_value_func)(const ir_node *self);
 
 /**
  * The equivalent node operation.
@@ -354,12 +181,6 @@ typedef int (*reassociate_func)(ir_node **n);
  * Copy the node attributes from an 'old' node to a 'new' one.
  */
 typedef void (*copy_attr_func)(ir_graph *irg, const ir_node *old_node, ir_node *new_node);
-
-/**
- * The get_type operation.
- * Return the type of the node self.
- */
-typedef ir_type *(*get_type_func)(const ir_node *self);
 
 /**
  * The get_type_attr operation. Used to traverse all types that can be
@@ -424,7 +245,6 @@ typedef struct {
 	node_cmp_attr_func    node_cmp_attr;        /**< Compares two node attributes. */
 	reassociate_func      reassociate;          /**< Reassociate a tree. */
 	copy_attr_func        copy_attr;            /**< Copy node attributes. */
-	get_type_func         get_type;             /**< Return the type of a node. */
 	get_type_attr_func    get_type_attr;        /**< Return the type attribute of a node. */
 	get_entity_attr_func  get_entity_attr;      /**< Return the entity attribute of a node. */
 	verify_node_func      verify_node;          /**< Verify the node. */

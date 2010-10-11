@@ -3,6 +3,12 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_ircons;
+import firm.bindings.binding_irnode;
+/* There are "unused" warnings in some classes,
+	but suppressing these, emits warnings, because
+	of useless suppress in others. Just ignore this! */
+
 public class Pin extends Node {
 
 	public Pin(Pointer ptr) {
@@ -12,12 +18,12 @@ public class Pin extends Node {
 	
 	
 	public Node getOp() {
-		return createWrapper(binding.get_Pin_op(ptr));
+		return createWrapper(binding_irnode.get_Pin_op(ptr));
 	}
 
 	
 	public void setOp(Node op) {
-		binding.set_Pin_op(this.ptr, op.ptr);
+		binding_irnode.set_Pin_op(this.ptr, op.ptr);
 	}
 	
 

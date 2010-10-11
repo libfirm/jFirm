@@ -21,7 +21,7 @@
  * @file
  * @brief       Generic backend types and interfaces.
  * @author      Sebastian Hack
- * @version     $Id$
+ * @version     $Id: be.h 28012 2010-09-22 14:07:35Z matze $
  */
 #ifndef FIRM_BE_MAIN_H
 #define FIRM_BE_MAIN_H
@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include "irarch.h"
 #include "lowering.h"
+#include "iroptimize.h"
 #include "begin.h"
 
 typedef enum {
@@ -57,27 +58,34 @@ typedef enum {
  */
 typedef ir_node *(create_trampoline_fkt)(ir_node *block, ir_node *mem, ir_node *trampoline, ir_node *env, ir_node *callee);
 
+/** callback where the backend performs required lowering for the target
+ * architecture. Typical examples are transforming doubleword operations into
+ * sequences of word operations. The callback should be invoked before the
+ * frontend, because it is usually a good idea to perform other optimisations
+ * after the lowering
+ */
+typedef void (*lower_for_target_func)(void);
+
 /**
  * This structure contains parameters that should be
  * propagated to the libFirm parameter set.
  */
 typedef struct backend_params {
-	/** If set, the backend cannot handle DWORD access. */
-	unsigned do_dw_lowering:1;
 	/** If set, the backend supports inline assembly. */
 	unsigned support_inline_asm:1;
+	/** If set, the backend supports Rotl nodes */
+	unsigned support_rotl:1;
+	/** the backend uses big-endian byte ordering if set, else little endian */
+	unsigned byte_order_big_endian:1;
+
+	/** callback that performs lowerings required for target architecture */
+	lower_for_target_func lower_for_target;
 
 	/** Settings for architecture dependent optimizations. */
 	const ir_settings_arch_dep_t *dep_param;
 
-	/** The architecture specific intrinsic function creator. */
-	create_intrinsic_fkt *arch_create_intrinsic_fkt;
-
-	/** The context parameter for the create intrinsic function. */
-	void *create_intrinsic_ctx;
-
 	/** Backend settings for if-conversion. */
-	const ir_settings_if_conv_t *if_conv_info;
+	arch_allow_ifconv_func allow_ifconv;
 
 	/**
 	 * some backends like x87 can only do arithmetic in a specific float
@@ -117,6 +125,12 @@ FIRM_API int be_parse_arg(const char *arg);
 FIRM_API const backend_params *be_get_backend_param(void);
 
 /**
+ * Creates an ir_prog pass which performs lowerings necessary for the target
+ * architecture. (Calling backend_params->lower_for_target)
+ */
+FIRM_API ir_prog_pass_t *lower_for_target_pass(const char *name);
+
+/**
  * Main interface to the frontend.
  */
 FIRM_API void be_main(FILE *output, const char *compilation_unit_name);
@@ -131,9 +145,6 @@ FIRM_API asm_constraint_flags_t be_parse_asm_constraints(const char *constraints
  * tests whether a string is a valid clobber in an ASM instruction
  */
 FIRM_API int be_is_valid_clobber(const char *clobber);
-
-typedef struct be_main_env_t be_main_env_t;
-typedef struct be_options_t  be_options_t;
 
 #include "end.h"
 

@@ -8,8 +8,6 @@ import firm.nodes.Const;
 import firm.nodes.Node;
 
 public class Initializer extends JNAWrapper {
-
-	protected final static binding_typerep binding = Entity.binding; 
 	
 	Initializer(Pointer ptr) {
 		super(ptr);
@@ -18,7 +16,7 @@ public class Initializer extends JNAWrapper {
 	/** Creates an simple initializer with a value constructed
 	 * in the const-graph */ 
 	public Initializer(Node node) {
-		super(binding.create_initializer_const(node.ptr));
+		super(binding_typerep.create_initializer_const(node.ptr));
 	}
 
 	/**
@@ -27,7 +25,7 @@ public class Initializer extends JNAWrapper {
 	 * @param tarval   initializer value
 	 */
 	public Initializer(TargetValue tarval) {
-		super(binding.create_initializer_tarval(tarval.ptr));
+		super(binding_typerep.create_initializer_tarval(tarval.ptr));
 	}
 
 	/**
@@ -37,11 +35,11 @@ public class Initializer extends JNAWrapper {
 	 * @param entries    Number of sub-initializers
 	 */
 	public Initializer(int n_entries) {
-		super(binding.create_initializer_compound(n_entries));
+		super(binding_typerep.create_initializer_compound(n_entries));
 	}
 	
 	public final ir_initializer_kind_t getKind() {
-		int val = binding.get_initializer_kind(ptr);
+		int val = binding_typerep.get_initializer_kind(ptr);
 		return ir_initializer_kind_t.getEnum(val);
 	}
 	
@@ -50,30 +48,30 @@ public class Initializer extends JNAWrapper {
 	 * with null-bits
 	 */
 	public final static Initializer getNull() {
-		Pointer p = binding.get_initializer_null();
+		Pointer p = binding_typerep.get_initializer_null();
 		return new Initializer(p);
 	}
 	
 	public final Const getConstValue() {
-		Pointer p = binding.get_initializer_const_value(ptr);
+		Pointer p = binding_typerep.get_initializer_const_value(ptr);
 		return new Const(p);
 	}
 	
 	public final TargetValue getTarvalValue() {
-		Pointer p = binding.get_initializer_tarval_value(ptr);
+		Pointer p = binding_typerep.get_initializer_tarval_value(ptr);
 		return new TargetValue(p);
 	}
 	
 	public final int getCompoundNEntries() {
-		return binding.get_initializer_compound_n_entries(ptr);
+		return binding_typerep.get_initializer_compound_n_entries(ptr);
 	}
 	
 	public final void setCompoundValue(int index, Initializer value) {
-		binding.set_initializer_compound_value(ptr, index, value.ptr);
+		binding_typerep.set_initializer_compound_value(ptr, index, value.ptr);
 	}
 
 	public final Initializer getCompoundValue(int index) {
-		Pointer p = binding.get_initializer_compound_value(ptr, index);
+		Pointer p = binding_typerep.get_initializer_compound_value(ptr, index);
 		return new Initializer(p);
 	}
 	

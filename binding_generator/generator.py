@@ -9,9 +9,18 @@ java_keywords = [ "public", "private", "protected", "true", "false" ]
 
 nodes = []
 for node in ir_spec.nodes:
-	# Some nodes need special constructors for now...
-	if node.name in ["SymConst", "End", "Start", "Dummy", "Anchor"]:
-		node.noconstr = True
+	# the symconst value is a union and is not generated automatically
+	if node.name == "SymConst":
+		node.noconstructor = True
+	# Op is an abstract base
+	if node.name == "Op":
+		continue
+	# ASM n_clobbers has no setter, currently
+	if node.name == "ASM":
+		continue
+	# TODO short workaround
+	if node.name in ("End"):
+		node.noconstructor = True
 	nodes.append(node)
 
 def format_filter_keywords(arg):
@@ -182,6 +191,11 @@ def get_java_type(type):
 		wrap_type    = "Pointer"
 		to_wrapper   = "%s.ptr"
 		from_wrapper = "new firm.Ident(%s)"
+	elif type == "ident**":
+		java_type    = "Pointer[]"
+		wrap_type    = "Pointer[]"
+		to_wrapper   = "%s"
+		from_wrapper = "%s"
 	elif type == "pn_Cmp":
 		java_type    = "int"
 		wrap_type    = "int"
@@ -359,6 +373,12 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_ircons;
+import firm.bindings.binding_irnode;
+/* There are "unused" warnings in some classes,
+	but suppressing these, emits warnings, because
+	of useless suppress in others. Just ignore this! */
+
 public {{"abstract "|ifabstract(node)}}class {{node.classname}} extends {{node.parent.classname}} {
 
 	public {{node.classname}}(Pointer ptr) {
@@ -368,23 +388,23 @@ public {{"abstract "|ifabstract(node)}}class {{node.classname}} extends {{node.p
 	{% for input in node.ins %}
 	{{"@Override"|if(node.parent.name != "Op")}}
 	public Node get{{input|CamelCase}}() {
-		return createWrapper(binding.get_{{node.name}}_{{input}}(ptr));
+		return createWrapper(binding_irnode.get_{{node.name}}_{{input}}(ptr));
 	}
 
 	{{"@Override"|if(node.parent.name != "Op")}}
 	public void set{{input|CamelCase}}(Node {{input|filterkeywords}}) {
-		binding.set_{{node.name}}_{{input}}(this.ptr, {{input|filterkeywords}}.ptr);
+		binding_irnode.set_{{node.name}}_{{input}}(this.ptr, {{input|filterkeywords}}.ptr);
 	}
 	{% endfor %}
 
 	{% for attr in node.attrs %}
 	public {{attr.java_type}} get{{attr.java_name|CamelCase}}() {
-		{{attr.wrap_type}} _res = binding.get_{{node.name}}_{{attr.name}}(ptr);
+		{{attr.wrap_type}} _res = binding_irnode.get_{{node.name}}_{{attr.name}}(ptr);
 		return {{attr.from_wrapper % "_res"}};
 	}
 
 	public void set{{attr.java_name|CamelCase}}({{attr.java_type}} _val) {
-		binding.set_{{node.name}}_{{attr.name}}(this.ptr, {{attr.to_wrapper % "_val"}});
+		binding_irnode.set_{{node.name}}_{{attr.name}}(this.ptr, {{attr.to_wrapper % "_val"}});
 	}
 	{% endfor %}
 
@@ -414,22 +434,17 @@ package firm;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_ircons;
-import firm.bindings.binding_irnode;
-import firm.bindings.Bindings;
 import firm.nodes.Node;
 
 class ConstructionBase {
-
-	protected static final binding_ircons binding_cons = Bindings.getIrConsBinding();
-	protected static final binding_irnode binding = Bindings.getIrNodeBinding();
 
 	protected ConstructionBase() {
 	}
 
 	{% for node in nodes %}
-	{% if not isAbstract(node) and not node.noconstr %}
+	{% if not isAbstract(node) and not node.noconstructor %}
 	public Node new{{node.classname}}({{node.arguments|argdecls}}) {
-		Pointer result_ptr = binding_cons.new_{{node.name}}({{node.arguments|bindingargs}});
+		Pointer result_ptr = binding_ircons.new_{{node.name}}({{node.arguments|bindingargs}});
 		return Node.createWrapper(result_ptr);
 	}
 	{% endif %}
@@ -451,7 +466,7 @@ class NodeWrapperConstruction {
 
 	public static Node createWrapper(Pointer ptr) {
 		final binding_irnode.ir_opcode opcode = 
-			binding_irnode.ir_opcode.getEnum(Node.binding.get_irn_opcode(ptr));
+			binding_irnode.ir_opcode.getEnum(binding_irnode.get_irn_opcode(ptr));
 
 		switch (opcode) {
 		{% for node in nodes %}
@@ -515,6 +530,8 @@ package firm;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_irgraph;
+import firm.bindings.binding_ircons;
 import firm.nodes.Node;
 
 /**
@@ -539,18 +556,18 @@ public class Graph extends GraphBase {
 	 * @param nLocalVars  number of local variables during graph construction
 	 */
 	public Graph(Entity entity, int nLocalVars) {
-		this(binding.new_ir_graph(entity.ptr, nLocalVars));
+		this(binding_irgraph.new_ir_graph(entity.ptr, nLocalVars));
 	}
 
 	{% for node in nodes -%}
-	{% if not isAbstract(node) and not node.noconstr %}
+	{% if not isAbstract(node) and not node.noconstructor %}
 	/** Create a new {{node.name}} node */
 	public final Node new{{node.classname}}(
 		{%- filter parameters %}
 			{{node|blockparameter}}
 			{{node|nodeparameters}}
 		{%- endfilter %}) {
-		return Node.createWrapper(binding_cons.new_r_{{node.name}}(
+		return Node.createWrapper(binding_ircons.new_r_{{node.name}}(
 			{%- filter arguments %}
 				{{node|blockargument}}
 				{{node|nodearguments}}

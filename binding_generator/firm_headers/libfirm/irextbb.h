@@ -22,7 +22,7 @@
  * @brief   Extended basis block support.
  * @author  Michael Beck
  * @date    5.2005
- * @version $Id$
+ * @version $Id: irextbb.h 28060 2010-10-08 13:36:52Z matze $
  */
 #ifndef FIRM_ANA_IREXTBB_H
 #define FIRM_ANA_IREXTBB_H
@@ -30,13 +30,6 @@
 #include "firm_types.h"
 #include "execfreq.h"
 #include "begin.h"
-
-/** Flags for extended basic block state. */
-typedef enum {
-  ir_extblk_info_none    = 0,  /**< No extended basic block information is constructed. Default. */
-  ir_extblk_info_valid   = 1,  /**< Extended basic block information is valid. */
-  ir_extblk_info_invalid = 2   /**< Extended basic block information is constructed but invalid. */
-} irg_extblk_info_state;
 
 /* type of callback function for ir_graph walk */
 #ifndef _EXTBB_WALK_FUNC_TYPEDEF_

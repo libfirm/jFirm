@@ -3,6 +3,12 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_ircons;
+import firm.bindings.binding_irnode;
+/* There are "unused" warnings in some classes,
+	but suppressing these, emits warnings, because
+	of useless suppress in others. Just ignore this! */
+
 public class Const extends Node {
 
 	public Const(Pointer ptr) {
@@ -13,12 +19,12 @@ public class Const extends Node {
 
 	
 	public firm.TargetValue getTarval() {
-		Pointer _res = binding.get_Const_tarval(ptr);
+		Pointer _res = binding_irnode.get_Const_tarval(ptr);
 		return new firm.TargetValue(_res);
 	}
 
 	public void setTarval(firm.TargetValue _val) {
-		binding.set_Const_tarval(this.ptr, _val.ptr);
+		binding_irnode.set_Const_tarval(this.ptr, _val.ptr);
 	}
 	
 

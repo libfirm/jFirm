@@ -2,6 +2,8 @@ package firm;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_tv;
+
 public class PrimitiveType extends Type {
 
 	PrimitiveType(Pointer ptr) {
@@ -9,19 +11,19 @@ public class PrimitiveType extends Type {
 	}
 	
 	public PrimitiveType(Mode mode) {
-		super(binding.new_type_primitive(mode.ptr));
+		super(binding_tv.new_type_primitive(mode.ptr));
 	}
 	
 	Type getBaseType() {
-		return Type.createWrapper(binding.get_primitive_base_type(ptr));
+		return Type.createWrapper(binding_tv.get_primitive_base_type(ptr));
 	}
 	
 	public void setBaseType(Type type) {
-		binding.set_primitive_base_type(ptr, type.ptr);
+		binding_tv.set_primitive_base_type(ptr, type.ptr);
 	}
 	
 	public void setMode(Mode mode) {
-		binding.set_type_mode(ptr, mode.ptr);
+		binding_tv.set_type_mode(ptr, mode.ptr);
 	}
 	
 	@Override

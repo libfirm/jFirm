@@ -53,6 +53,7 @@ class Anchor(Op):
 	attr_struct = "irg_attr"
 	knownBlock  = True
 	singleton   = True
+	noconstructor = True
 
 class And(Binop):
 	flags    = [ "commutative" ]
@@ -93,7 +94,6 @@ class ASM(Op):
 			type = "ident*",
 		),
 	]
-	java_noconstr = True
 
 class Bad(Op):
 	mode        = "mode_Bad"
@@ -112,6 +112,7 @@ class Deleted(Op):
 	pinned      = "yes"
 	knownBlock  = True
 	singleton   = True
+	noconstructor = True
 
 class Block(Op):
 	mode        = "mode_BB"
@@ -122,7 +123,6 @@ class Block(Op):
 	arity       = "variable"
 	flags       = [ "labeled" ]
 	attr_struct = "block_attr"
-	java_noconstr = True
 
 	init = '''
 	res->attr.block.is_dead     = 0;
@@ -564,7 +564,6 @@ class Phi(Op):
 	arity         = "variable"
 	flags         = []
 	attr_struct   = "phi_attr"
-	java_noconstr = True
 	init = '''
 	/* Memory Phis in endless loops must be kept alive.
 	   As we can't distinguish these easily we keep all of them alive. */
@@ -706,7 +705,6 @@ class SymConst(Op):
 		)
 	]
 	attr_struct = "symconst_attr"
-	java_noconstr = True
 
 class Sync(Op):
 	mode     = "mode_M"
@@ -720,7 +718,6 @@ class Tuple(Op):
 	mode   = "mode_T"
 	pinned = "no"
 	flags  = [ "labeled" ]
-	java_noconstr = True
 
 class Unknown(Op):
 	knownBlock = True

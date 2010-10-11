@@ -21,7 +21,7 @@
  * @file
  * @brief    Support for ir graph modification.
  * @author   Martin Trapp, Christian Schaefer, Goetz Lindenmaier
- * @version  $Id$
+ * @version  $Id: irgmod.h 28022 2010-09-22 14:07:43Z matze $
  */
 #ifndef FIRM_IR_IRGMOD_H
 #define FIRM_IR_IRGMOD_H
@@ -29,8 +29,12 @@
 #include "firm_types.h"
 #include "begin.h"
 
-/** Exchanges two nodes by conserving edges leaving old (i.e.,
-   pointers pointing to old).  Turns the old node into an Id. */
+/**
+ * Exchanges two nodes by conserving edges leaving old (i.e.,
+ * pointers pointing to old).
+ * The nodes op will be changed to op_Deleted and you must not do anything with
+ * the node anymore except testing its op.
+ */
 FIRM_API void exchange(ir_node *old, ir_node *nw);
 
 /** Turns a node into a "useless" Tuple.
@@ -51,7 +55,6 @@ FIRM_API void turn_into_tuple(ir_node *node, int arity);
   * Further it collects all Proj nodes in a list of the node producing
   * the tuple. In case of nested tuples the Projs are collected in the
   * node producing the outermost Tuple.
-  * All partBlocks are linked to its macroblock header.
   * All other link fields are cleared afterwards.
   */
 FIRM_API void collect_phiprojs(ir_graph *irg);
@@ -63,15 +66,24 @@ FIRM_API void collect_phiprojs(ir_graph *irg);
  * (old_block) of node.  Moves node and its predecessors from old_block to
  * new_block.  Moves all Projs that depend on moved nodes and are in old_block
  * to new_block. Moves all Phi nodes from old_block to new_block.  To achieve
- * this the routine assumes that all Phi nodes are in the Phi list (see get_Block_phis())
- * of old_block.  Further it assumes that all Proj nodes are accessible by the link field
- * of the nodes producing the Tuple and all partBlocks are linked to its MacroBlock header.
- * This can be established by collect_phiprojs().  part_block() conserves this property.
+ * this the routine assumes that all Phi nodes are in the Phi list (see
+ * get_Block_phis()) of old_block.
+ * Further it assumes that all Proj nodes are accessible by the link field of
+ * the nodes producing the Tuple. This can be established by collect_phiprojs().
+ * part_block() conserves this property.
  * Adds a Jmp node to new_block that jumps to old_block.
  *
  * @param node   The node were to break the block
  */
 FIRM_API void part_block(ir_node *node);
+
+/**
+ * Same as part_block() but works with out-edges so you don't have to call
+ * collect_phiprojs.
+ * This variant also removes all predecessors of the old block and returns
+ * it. You are responsible to add control flow predecessors to it.
+ */
+FIRM_API ir_node *part_block_edges(ir_node *node);
 
 /**
  * Kill a node by setting its predecessors to Bad and finally

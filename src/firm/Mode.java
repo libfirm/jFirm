@@ -2,8 +2,7 @@ package firm;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.Bindings;
-import firm.bindings.ModeBinding;
+import firm.bindings.binding_irmode;
 
 /**
  * Mode represents values that can be produced by firm nodes.
@@ -15,8 +14,6 @@ import firm.bindings.ModeBinding;
  *  in the static getX() functions.
  */
 public final class Mode extends JNAWrapper {
-
-	private static final ModeBinding b = Bindings.getModeBinding();
 	
 	public Mode(Pointer p) {
 		super(p);
@@ -147,17 +144,17 @@ public final class Mode extends JNAWrapper {
 	
 	public Mode(String name, ir_mode_sort sort, int bitSize, 
 			int sign, ir_mode_arithmetic arithmetic, int moduloShift) {
-		this(b.new_ir_mode(name, sort.val, bitSize, sign, arithmetic.val, moduloShift));
+		this(binding_irmode.new_ir_mode(name, sort.val, bitSize, sign, arithmetic.val, moduloShift));
 	}
 	
 	public Mode(String name, ir_mode_sort sort, 
 			int bitSize, int numOfElem, int sign, ir_mode_arithmetic arithmetic, 
 			int moduloShift) {
-		this(b.new_ir_vector_mode(name, sort.val, bitSize, numOfElem, sign, arithmetic.val, moduloShift));
+		this(binding_irmode.new_ir_vector_mode(name, sort.val, bitSize, numOfElem, sign, arithmetic.val, moduloShift));
 	}
 	
 	public final String getName() {
-		return b.get_mode_name(ptr);
+		return binding_irmode.get_mode_name(ptr);
 	}
 	
 	@Override
@@ -166,285 +163,285 @@ public final class Mode extends JNAWrapper {
 	}
 	
 	public final ir_mode_sort getSort() {
-		int sort = b.get_mode_sort(ptr);
+		int sort = binding_irmode.get_mode_sort(ptr);
 		return ir_mode_sort.getEnum(sort);
 	}
 	
 	public final int getSizeBits() {
-		return b.get_mode_size_bits(ptr);
+		return binding_irmode.get_mode_size_bits(ptr);
 	}
 	
 	public final int getSizeBytes() {
-		return b.get_mode_size_bytes(ptr);
+		return binding_irmode.get_mode_size_bytes(ptr);
 	}
 	
 	public final int getSign() {
-		return b.get_mode_sign(ptr);
+		return binding_irmode.get_mode_sign(ptr);
 	}
 	
 	public final ir_mode_arithmetic getArithmetic() {
-		int val = b.get_mode_arithmetic(ptr);
+		int val = binding_irmode.get_mode_arithmetic(ptr);
 		return ir_mode_arithmetic.getEnum(val);
 	}
 	
 	public final int getModuloShift() {
-		return b.get_mode_modulo_shift(ptr);
+		return binding_irmode.get_mode_modulo_shift(ptr);
 	}
 	
 	public final int getNVectorElements() {
-		return b.get_mode_n_vector_elems(ptr);
+		return binding_irmode.get_mode_n_vector_elems(ptr);
 	}
 	
 	/** returns the smallest representable value of a mode */
 	public final TargetValue getMin() {
-		Pointer tarval = b.get_mode_min(ptr);
+		Pointer tarval = binding_irmode.get_mode_min(ptr);
 		return new TargetValue(tarval);
 	}
 
 	/** returns the biggest representable value of a mode */
 	public final TargetValue getMax() {
-		Pointer tarval = b.get_mode_max(ptr);
+		Pointer tarval = binding_irmode.get_mode_max(ptr);
 		return new TargetValue(tarval);
 	}
 	
 	/** returns the neutral element of the addition (aka 0) */
 	public final TargetValue getNull() {
-		Pointer tarval = b.get_mode_null(ptr);
+		Pointer tarval = binding_irmode.get_mode_null(ptr);
 		return new TargetValue(tarval);
 	}
 	
 	/** returns the neutral element of multiplication (aka 1) */
 	public final TargetValue getOne() {
-		Pointer tarval = b.get_mode_one(ptr);
+		Pointer tarval = binding_irmode.get_mode_one(ptr);
 		return new TargetValue(tarval);
 	}
 	
 	/** returns a -1 (if the mode has one) */
 	public final TargetValue getMinusOne() {
-		Pointer tarval = b.get_mode_minus_one(ptr);
+		Pointer tarval = binding_irmode.get_mode_minus_one(ptr);
 		return new TargetValue(tarval);
 	}
 	
 	/** return the value where all bits are set to 1 */
 	public final TargetValue getAllOne() {
-		Pointer tarval = b.get_mode_all_one(ptr);
+		Pointer tarval = binding_irmode.get_mode_all_one(ptr);
 		return new TargetValue(tarval);
 	}
 	
 	/** returns infinite (for float modes) */
 	public final TargetValue getInfinite() {
-		Pointer tarval = b.get_mode_infinite(ptr);
+		Pointer tarval = binding_irmode.get_mode_infinite(ptr);
 		return new TargetValue(tarval);
 	}
 	
 	/** returns Not A Number (for float modes) */
 	public final TargetValue getNAN() {
-		Pointer tarval = b.get_mode_NAN(ptr);
+		Pointer tarval = binding_irmode.get_mode_NAN(ptr);
 		return new TargetValue(tarval);
 	}
 
 	public static final Mode getF() {
-		Pointer modePtr = b.get_modeF();
+		Pointer modePtr = binding_irmode.get_modeF();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getD() {
-		Pointer modePtr = b.get_modeD();
+		Pointer modePtr = binding_irmode.get_modeD();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getE() {
-		Pointer modePtr = b.get_modeE();
+		Pointer modePtr = binding_irmode.get_modeE();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getBs() {
-		Pointer modePtr = b.get_modeBs();
+		Pointer modePtr = binding_irmode.get_modeBs();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getBu() {
-		Pointer modePtr = b.get_modeBu();
+		Pointer modePtr = binding_irmode.get_modeBu();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getHs() {
-		Pointer modePtr = b.get_modeHs();
+		Pointer modePtr = binding_irmode.get_modeHs();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getHu() {
-		Pointer modePtr = b.get_modeHu();
+		Pointer modePtr = binding_irmode.get_modeHu();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getIs() {
-		Pointer modePtr = b.get_modeIs();
+		Pointer modePtr = binding_irmode.get_modeIs();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getIu() {
-		Pointer modePtr = b.get_modeIu();
+		Pointer modePtr = binding_irmode.get_modeIu();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getLs() {
-		Pointer modePtr = b.get_modeLs();
+		Pointer modePtr = binding_irmode.get_modeLs();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getLu() {
-		Pointer modePtr = b.get_modeLu();
+		Pointer modePtr = binding_irmode.get_modeLu();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getLLs() {
-		Pointer modePtr = b.get_modeLLs();
+		Pointer modePtr = binding_irmode.get_modeLLs();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getLLu() {
-		Pointer modePtr = b.get_modeLLu();
+		Pointer modePtr = binding_irmode.get_modeLLu();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getP() {
-		Pointer modePtr = b.get_modeP();
+		Pointer modePtr = binding_irmode.get_modeP();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getb() {
-		Pointer modePtr = b.get_modeb();
+		Pointer modePtr = binding_irmode.get_modeb();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getX() {
-		Pointer modePtr = b.get_modeX();
+		Pointer modePtr = binding_irmode.get_modeX();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getBB() {
-		Pointer modePtr = b.get_modeBB();
+		Pointer modePtr = binding_irmode.get_modeBB();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getM() {
-		Pointer modePtr = b.get_modeM();
+		Pointer modePtr = binding_irmode.get_modeM();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getT() {
-		Pointer modePtr = b.get_modeT();
+		Pointer modePtr = binding_irmode.get_modeT();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getANY() {
-		Pointer modePtr = b.get_modeANY();
+		Pointer modePtr = binding_irmode.get_modeANY();
 		return new Mode(modePtr);
 	}
 
 	public static final Mode getBAD() {
-		Pointer modePtr = b.get_modeBAD();
+		Pointer modePtr = binding_irmode.get_modeBAD();
 		return new Mode(modePtr);
 	}
 
 	public final boolean isSigned() {
-		return 0 != b.mode_is_signed(ptr);
+		return 0 != binding_irmode.mode_is_signed(ptr);
 	}
 
 	public final boolean isFloat() {
-		return 0 != b.mode_is_float(ptr);
+		return 0 != binding_irmode.mode_is_float(ptr);
 	}
 
 	public final boolean isInt() {
-		return 0 != b.mode_is_int(ptr);
+		return 0 != binding_irmode.mode_is_int(ptr);
 	}
 
 	public final boolean isReference() {
-		return 0 != b.mode_is_reference(ptr);
+		return 0 != binding_irmode.mode_is_reference(ptr);
 	}
 
 	public final boolean isNum() {
-		return 0 != b.mode_is_num(ptr);
+		return 0 != binding_irmode.mode_is_num(ptr);
 	}
 
 	public final boolean isData() {
-		return 0 != b.mode_is_data(ptr);
+		return 0 != binding_irmode.mode_is_data(ptr);
 	}
 
 	public final boolean isDatab() {
-		return 0 != b.mode_is_datab(ptr);
+		return 0 != binding_irmode.mode_is_datab(ptr);
 	}
 
 	public final boolean isDataM() {
-		return 0 != b.mode_is_dataM(ptr);
+		return 0 != binding_irmode.mode_is_dataM(ptr);
 	}
 
 	public final boolean isFloatVector() {
-		return 0 != b.mode_is_float_vector(ptr);
+		return 0 != binding_irmode.mode_is_float_vector(ptr);
 	}
 
 	public final boolean isIntVector() {
-		return 0 != b.mode_is_int_vector(ptr);
+		return 0 != binding_irmode.mode_is_int_vector(ptr);
 	}
 
 	public final boolean isSmallerThan(Mode compareTo) {
-		int val = b.smaller_mode(ptr, compareTo.ptr);
+		int val = binding_irmode.smaller_mode(ptr, compareTo.ptr);
 		return 0 != val;
 	}
 	
 	public final boolean isValuesInMode(Mode compareTo) {
-		int val = b.values_in_mode(ptr, compareTo.ptr);
+		int val = binding_irmode.values_in_mode(ptr, compareTo.ptr);
 		return 0 != val;
 	}
 	
 	public final Mode findUnsigned() {
-		Pointer modep = b.find_unsigned_mode(ptr);
+		Pointer modep = binding_irmode.find_unsigned_mode(ptr);
 		return new Mode(modep);
 	}
 	
 	public final Mode findSigned() {
-		Pointer modep = b.find_signed_mode(ptr);
+		Pointer modep = binding_irmode.find_signed_mode(ptr);
 		return new Mode(modep);
 	}
 	
 	public final Mode findDoubleBitsInt() {
-		Pointer modep = b.find_double_bits_int_mode(ptr);
+		Pointer modep = binding_irmode.find_double_bits_int_mode(ptr);
 		return new Mode(modep);
 	}
 	
 	public final boolean honorSignedZeros() {
-		return 0 != b.mode_honor_signed_zeros(ptr);
+		return 0 != binding_irmode.mode_honor_signed_zeros(ptr);
 	}
 
 	public final boolean overflowOnUnaryMinus() {
-		return 0 != b.mode_overflow_on_unary_Minus(ptr);
+		return 0 != binding_irmode.mode_overflow_on_unary_Minus(ptr);
 	}
 
 	public final boolean wrapAround() {
-		return 0 != b.mode_wrap_around(ptr);
+		return 0 != binding_irmode.mode_wrap_around(ptr);
 	}
 
 	public final Mode getReferenceSignedEq() {
-		Pointer modep = b.get_reference_mode_signed_eq(ptr);
+		Pointer modep = binding_irmode.get_reference_mode_signed_eq(ptr);
 		return new Mode(modep);
 	}
 
 	public final void setReferenceSignedEq(Mode intMode) {
-		b.set_reference_mode_signed_eq(ptr, intMode.ptr);
+		binding_irmode.set_reference_mode_signed_eq(ptr, intMode.ptr);
 	}
 	
 	public final Mode getReferenceUnsignedEq() {
-		Pointer modep = b.get_reference_mode_unsigned_eq(ptr);
+		Pointer modep = binding_irmode.get_reference_mode_unsigned_eq(ptr);
 		return new Mode(modep);
 	}
 
 	public final void setReferenceUnsignedEq(Mode intMode) {
-		b.set_reference_mode_signed_eq(ptr, intMode.ptr);
+		binding_irmode.set_reference_mode_signed_eq(ptr, intMode.ptr);
 	}
 
 	public final boolean isReinterpretCast(Mode castTo) {
-		return 0 != b.is_reinterpret_cast(ptr, castTo.ptr);
+		return 0 != binding_irmode.is_reinterpret_cast(ptr, castTo.ptr);
 	}
 
 }

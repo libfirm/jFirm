@@ -3,6 +3,12 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_ircons;
+import firm.bindings.binding_irnode;
+/* There are "unused" warnings in some classes,
+	but suppressing these, emits warnings, because
+	of useless suppress in others. Just ignore this! */
+
 public class Minus extends Unop {
 
 	public Minus(Pointer ptr) {
@@ -12,12 +18,12 @@ public class Minus extends Unop {
 	
 	@Override
 	public Node getOp() {
-		return createWrapper(binding.get_Minus_op(ptr));
+		return createWrapper(binding_irnode.get_Minus_op(ptr));
 	}
 
 	@Override
 	public void setOp(Node op) {
-		binding.set_Minus_op(this.ptr, op.ptr);
+		binding_irnode.set_Minus_op(this.ptr, op.ptr);
 	}
 	
 

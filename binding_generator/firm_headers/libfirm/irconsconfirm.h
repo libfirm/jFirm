@@ -22,7 +22,7 @@
  * @brief    Construction of Confirm nodes
  * @author   Michael Beck
  * @date     6.2005
- * @version  $Id$
+ * @version  $Id: irconsconfirm.h 27575 2010-05-21 21:55:10Z beck $
  */
 #ifndef FIRM_ANA_IRCONSCONFIRM_H
 #define FIRM_ANA_IRCONSCONFIRM_H

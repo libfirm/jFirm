@@ -3,6 +3,12 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_ircons;
+import firm.bindings.binding_irnode;
+/* There are "unused" warnings in some classes,
+	but suppressing these, emits warnings, because
+	of useless suppress in others. Just ignore this! */
+
 public class IJmp extends Node {
 
 	public IJmp(Pointer ptr) {
@@ -12,12 +18,12 @@ public class IJmp extends Node {
 	
 	
 	public Node getTarget() {
-		return createWrapper(binding.get_IJmp_target(ptr));
+		return createWrapper(binding_irnode.get_IJmp_target(ptr));
 	}
 
 	
 	public void setTarget(Node target) {
-		binding.set_IJmp_target(this.ptr, target.ptr);
+		binding_irnode.set_IJmp_target(this.ptr, target.ptr);
 	}
 	
 

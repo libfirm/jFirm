@@ -21,7 +21,7 @@
  * @file
  * @brief    Data type for unique names.
  * @author   Goetz Lindenmaier
- * @version  $Id$
+ * @version  $Id: ident.h 27596 2010-05-28 10:46:29Z matze $
  * @brief
  *  Declarations for identifiers in the firm library
  */

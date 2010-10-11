@@ -2,6 +2,7 @@ package firm;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_ircons;
 import firm.bindings.binding_ircons.ir_cons_flags;
 import firm.bindings.binding_irgraph.irg_phase_state;
 import firm.bindings.binding_typerep.ir_type_state;
@@ -45,7 +46,7 @@ public class Construction extends ConstructionBase {
 	}
 	
 	public Block newBlock() {
-		return new Block(binding_cons.new_immBlock());
+		return new Block(binding_ircons.new_immBlock());
 	}
 	
 	public Node newSymConst(Entity entity) {
@@ -77,7 +78,7 @@ public class Construction extends ConstructionBase {
 	 * @param block
 	 */
 	public void setCurrentBlock(Block block) {
-		binding_cons.set_cur_block(block.ptr);
+		binding_ircons.set_cur_block(block.ptr);
 	}
 	
 	/** sets current block to bad, this will result in all
@@ -85,17 +86,17 @@ public class Construction extends ConstructionBase {
 	 * You should use this after generating Jmp or
 	 * Return nodes. */
 	public void setCurrentBlockBad() {
-		binding_cons.set_cur_block(newBad().ptr);
+		binding_ircons.set_cur_block(newBad().ptr);
 	}
 	
 	/**
 	 * returns the current block
 	 */
 	public Block getCurrentBlock() {
-		Pointer ptr = binding_cons.get_cur_block();
+		Pointer ptr = binding_ircons.get_cur_block();
 		if (ptr == null)
 			return null;
-		return new Block(binding_cons.get_cur_block());
+		return new Block(binding_ircons.get_cur_block());
 	}
 
 	/**
@@ -103,14 +104,14 @@ public class Construction extends ConstructionBase {
 	 */
 	public Node getCurrentMem() {
 		assert !getCurrentBlock().isBad();
-		return Node.createWrapper(binding_cons.get_store());
+		return Node.createWrapper(binding_ircons.get_store());
 	}
 	
 	/**
 	 * sets the current memory node
 	 */
 	public void setCurrentMem(Node node) {
-		binding_cons.set_store(node.ptr);
+		binding_ircons.set_store(node.ptr);
 	}
 
 	/**
@@ -119,7 +120,7 @@ public class Construction extends ConstructionBase {
 	 * @param value  new variable value
 	 */
 	public void setVariable(int num, Node value) {
-		binding_cons.set_value(num, value.ptr);
+		binding_ircons.set_value(num, value.ptr);
 	}
 	
 	/**
@@ -134,7 +135,7 @@ public class Construction extends ConstructionBase {
 	 */
 	public Node getVariable(int num, Mode mode) {
 		assert num < graph.getnLocalVars();
-		return Node.createWrapper(binding_cons.get_value(num, mode.ptr));
+		return Node.createWrapper(binding_ircons.get_value(num, mode.ptr));
 	}
 	
 	/**

@@ -22,7 +22,7 @@
  * @brief    Interprocedural analysis to improve the call graph estimate.
  * @author   Florian
  * @date     09.06.2002
- * @version  $Id$
+ * @version  $Id: rta.h 27575 2010-05-21 21:55:10Z beck $
  * @brief
  * (TODO translate to english)
  * Intraprozedurale Analyse zur Absch�tzung der Aufrufrelation. Es wird

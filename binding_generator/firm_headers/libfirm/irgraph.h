@@ -21,7 +21,7 @@
  * @file
  * @brief    Entry point to the representation of procedure code.
  * @author   Martin Trapp, Christian Schaefer, Goetz Lindenmaier
- * @version  $Id$
+ * @version  $Id: irgraph.h 28060 2010-10-08 13:36:52Z matze $
  */
 #ifndef FIRM_IR_IRGRAPH_H
 #define FIRM_IR_IRGRAPH_H
@@ -122,13 +122,6 @@ FIRM_API ir_graph *current_ir_graph;
 FIRM_API ir_graph *get_current_ir_graph(void);
 FIRM_API void set_current_ir_graph(ir_graph *graph);
 
-#ifdef INTERPROCEDURAL_VIEW
-/** This flag indicate the current view. The behavior of some methods
- * (get_irn_*, set_irn_*) is influenced by this flag. */
-FIRM_API int get_interprocedural_view(void);
-FIRM_API void set_interprocedural_view(int state);
-#endif
-
 /**
  * Create a new ir graph to build ir for a procedure.
  *
@@ -142,9 +135,8 @@ FIRM_API void set_interprocedural_view(int state);
  * represent a procedure in FIRM.
  *
  * It allocates an ir_graph and sets the field irg of the entity ent
- * as well as current_ir_graph to point to this graph.
- * Further it allocates the following nodes needed for every
- * procedure:
+ * to point to this graph. Further it allocates the following nodes needed
+ * for every procedure:
  *
  * - The start block containing a start node and Proj nodes for it's
  *   seven results (X, M, P, P, P, T, P).
@@ -224,15 +216,6 @@ FIRM_API ir_node *get_irg_end(const ir_graph *irg);
 /** Sets the End node of an IR graph. */
 FIRM_API void set_irg_end(ir_graph *irg, ir_node *node);
 
-/* The fields end_reg and end_except contain the end nodes of the
-   interprocedural view.  If the view is not constructed they contain
-   the normal end node. */
-FIRM_API ir_node *get_irg_end_reg(const ir_graph *irg);
-FIRM_API void set_irg_end_reg(ir_graph *irg, ir_node *node);
-
-FIRM_API ir_node *get_irg_end_except(const ir_graph *irg);
-FIRM_API void set_irg_end_except(ir_graph *irg, ir_node *node);
-
 /** Returns the node that represents the initial control flow of the given
  * IR graph. */
 FIRM_API ir_node *get_irg_initial_exec(const ir_graph *irg);
@@ -258,11 +241,6 @@ FIRM_API void set_irg_initial_mem(ir_graph *irg, ir_node *node);
 FIRM_API ir_node *get_irg_args(const ir_graph *irg);
 /** Sets the node that represents the argument pointer of the given IR graph. */
 FIRM_API void set_irg_args(ir_graph *irg, ir_node *node);
-
-/** Returns the current block of an IR graph. */
-FIRM_API ir_node *get_irg_current_block(const ir_graph *irg);
-/** Sets the current block of an IR graph. */
-FIRM_API void set_irg_current_block(ir_graph *irg, ir_node *node);
 
 /** Returns the Bad node of the given IR graph.  Use new_Bad() instead!! */
 FIRM_API ir_node *get_irg_bad(const ir_graph *irg);
@@ -335,9 +313,6 @@ FIRM_API irg_phase_state get_irg_phase_state(const ir_graph *irg);
 /** Sets the phase state of an IR graph. */
 FIRM_API void set_irg_phase_state(ir_graph *irg, irg_phase_state state);
 
-/** Sets the phase of the given IR graph to low. */
-#define set_irg_phase_low(irg)	set_irg_phase_state(irg, phase_low)
-
 /** state: op_pin_state_pinned
    The graph is "op_pin_state_pinned" if all nodes are associated with a basic block.
    It is in state "op_pin_state_floats" if nodes are in arbitrary blocks.  In state
@@ -361,11 +336,11 @@ FIRM_API void set_irg_outs_inconsistent(ir_graph *irg);
 
 /** state:  extended basic block state. */
 typedef enum {
-	extblk_none    = 0,  /**< No extended basic block information is constructed. Default. */
-	extblk_valid   = 1,  /**< Extended basic block information is valid. */
-	extblk_invalid = 2   /**< Extended basic block information is constructed but invalid. */
-} irg_extblk_state;
-FIRM_API irg_extblk_state get_irg_extblk_state(const ir_graph *irg);
+	ir_extblk_info_none    = 0,  /**< No extended basic block information is constructed. Default. */
+	ir_extblk_info_valid   = 1,  /**< Extended basic block information is valid. */
+	ir_extblk_info_invalid = 2   /**< Extended basic block information is constructed but invalid. */
+} irg_extblk_info_state;
+FIRM_API irg_extblk_info_state get_irg_extblk_state(const ir_graph *irg);
 FIRM_API void set_irg_extblk_inconsistent(ir_graph *irg);
 
 /** state: dom_state
@@ -546,8 +521,9 @@ FIRM_API ir_resources_t ir_resources_reserved(const ir_graph *irg);
  * Graph State
  */
 typedef enum {
-	IR_GRAPH_STATE_KEEP_MUX = 1 << 0,  /**< should perform no further optimisations on Mux nodes */
-	IR_GRAPH_STATE_ARCH_DEP = 1 << 1,  /**< should not construct more nodes which irarch potentially breaks down */
+	IR_GRAPH_STATE_KEEP_MUX      = 1U << 0,  /**< should perform no further optimisations on Mux nodes */
+	IR_GRAPH_STATE_ARCH_DEP      = 1U << 1,  /**< should not construct more nodes which irarch potentially breaks down */
+	IR_GRAPH_STATE_BCONV_ALLOWED = 1U << 2,  /**< Conv(mode_b) to Iu is allowed as set command */
 } ir_graph_state_t;
 
 /** set some state flags on the graph (this does not clear the other flags) */
@@ -556,9 +532,6 @@ FIRM_API void set_irg_state(ir_graph *irg, ir_graph_state_t state);
 FIRM_API void clear_irg_state(ir_graph *irg, ir_graph_state_t state);
 /** query wether a set of graph state flags are activated */
 FIRM_API int is_irg_state(const ir_graph *irg, ir_graph_state_t state);
-
-/** Normalization: Move Proj nodes into the same block as its predecessors */
-FIRM_API void normalize_proj_nodes(ir_graph *irg);
 
 /** Set a description for local value n. */
 FIRM_API void set_irg_loc_description(ir_graph *irg, int n, void *description);

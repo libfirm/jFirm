@@ -9,14 +9,9 @@ class NodeWrapperConstruction {
 
 	public static Node createWrapper(Pointer ptr) {
 		final binding_irnode.ir_opcode opcode = 
-			binding_irnode.ir_opcode.getEnum(Node.binding.get_irn_opcode(ptr));
+			binding_irnode.ir_opcode.getEnum(binding_irnode.get_irn_opcode(ptr));
 
 		switch (opcode) {
-		
-		
-			case iro_Abs:
-				return new Abs(ptr);
-		
 		
 		
 			case iro_Add:
@@ -49,13 +44,13 @@ class NodeWrapperConstruction {
 		
 		
 		
+			case iro_Borrow:
+				return new Borrow(ptr);
+		
+		
+		
 			case iro_Bound:
 				return new Bound(ptr);
-		
-		
-		
-			case iro_Break:
-				return new Break(ptr);
 		
 		
 		
@@ -66,6 +61,11 @@ class NodeWrapperConstruction {
 		
 			case iro_Call:
 				return new Call(ptr);
+		
+		
+		
+			case iro_Carry:
+				return new Carry(ptr);
 		
 		
 		
@@ -104,6 +104,11 @@ class NodeWrapperConstruction {
 		
 		
 		
+			case iro_Deleted:
+				return new Deleted(ptr);
+		
+		
+		
 			case iro_Div:
 				return new Div(ptr);
 		
@@ -126,11 +131,6 @@ class NodeWrapperConstruction {
 		
 			case iro_Eor:
 				return new Eor(ptr);
-		
-		
-		
-			case iro_Filter:
-				return new Filter(ptr);
 		
 		
 		

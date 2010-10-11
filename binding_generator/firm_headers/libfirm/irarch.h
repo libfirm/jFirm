@@ -22,7 +22,7 @@
  * @brief  Some machine dependent optimizations.
  * @date   1.10.2004
  * @author Sebastian Hack
- * @version $Id$
+ * @version $Id: irarch.h 28081 2010-10-08 20:51:37Z beck $
  */
 #ifndef FIRM_IR_IRARCH_H
 #define FIRM_IR_IRARCH_H
@@ -47,11 +47,12 @@ typedef enum instr {
  * A Callback for evaluating the costs of an instruction.
  *
  * @param kind   the instruction
+ * @param mode   the mode of the instruction
  * @param tv     for MUL instruction, the multiplication constant
  *
  * @return the costs of this instruction
  */
-typedef int (*evaluate_costs_func)(insn_kind kind, tarval *tv);
+typedef int (*evaluate_costs_func)(insn_kind kind, const ir_mode *mode, ir_tarval *tv);
 
 /**
  * A parameter structure that drives the machine dependent Firm
@@ -60,7 +61,7 @@ typedef int (*evaluate_costs_func)(insn_kind kind, tarval *tv);
 struct ir_settings_arch_dep_t {
 	/* Mul optimization */
 	unsigned also_use_subs : 1;    /**< Use also Subs when resolving Muls to shifts */
-	unsigned maximum_shifts;            /**< The maximum number of shifts that shall be inserted for a mul. */
+	unsigned maximum_shifts;       /**< The maximum number of shifts that shall be inserted for a mul. */
 	unsigned highest_shift_amount; /**< The highest shift amount you want to
 	                                    tolerate. Muls which would require a higher
 	                                    shift constant are left. */
@@ -69,7 +70,7 @@ struct ir_settings_arch_dep_t {
 	/* Div/Mod optimization */
 	unsigned allow_mulhs   : 1;    /**< Use the Mulhs operation for division by constant */
 	unsigned allow_mulhu   : 1;    /**< Use the Mulhu operation for division by constant */
-	unsigned max_bits_for_mulh;         /**< Maximum number of bits the Mulh operation can take.
+	unsigned max_bits_for_mulh;    /**< Maximum number of bits the Mulh operation can take.
 	                                    Modes with higher amount of bits will use Mulh */
 };
 
@@ -80,11 +81,6 @@ struct ir_settings_arch_dep_t {
 typedef const ir_settings_arch_dep_t *(*arch_dep_params_factory_t)(void);
 
 /**
- * A default parameter factory for testing purposes.
- */
-FIRM_API const ir_settings_arch_dep_t *arch_dep_default_factory(void);
-
-/**
  * Optimization flags.
  */
 typedef enum {
@@ -93,15 +89,6 @@ typedef enum {
 	arch_dep_div_by_const = 2,  /**< optimize Div into Shift/Add/Mulh */
 	arch_dep_mod_by_const = 4   /**< optimize Mod into Shift/Add/Mulh */
 } arch_dep_opts_t;
-
-/**
- * Initialize the machine dependent optimizations.
- * @param factory   A factory that delivers parameters for these
- *                  optimizations. If NULL is passed, or this method
- *                  is not called, the machine dependent optimizations
- *                  are not enabled at all.
- */
-FIRM_API void arch_dep_init(arch_dep_params_factory_t factory);
 
 /**
  * Set the optimizations that shall be applied.

@@ -22,7 +22,7 @@
  * @brief     Construct and access dominator tree.
  * @author    Goetz Lindenmaier
  * @date      2.2002
- * @version   $Id$
+ * @version   $Id: irdom.h 27575 2010-05-21 21:55:10Z beck $
  * @brief
  *   This file contains routines to construct and access dominator information.
  *

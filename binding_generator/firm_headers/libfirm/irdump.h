@@ -21,7 +21,7 @@
  * @file
  * @brief   Write vcg representation of firm to file.
  * @author  Martin Trapp, Christian Schaefer, Goetz Lindenmaier, Hubert Schmidt
- * @version $Id$
+ * @version $Id: irdump.h 28020 2010-09-22 14:07:42Z matze $
  * @brief
  *  Dump routines for the ir graph and all type information.
  *
@@ -66,7 +66,7 @@ typedef void (*ir_prog_dump_func)(FILE *out);
  * at @p mime_type.
  * The file is stored into the directory specified by #ir_set_dump_path
  *
- * @param func       Dumper. Usualle one of #dump_callgraph, #dump_type_graph,
+ * @param func       Dumper. Usualle one of #dump_callgraph, #dump_typegraph,
  *                   #dump_class_hierarchy, #dump_types_as_text,
  *                   #dump_globals_as_text
  * @param suffix     Suffix to append to the name
@@ -86,7 +86,7 @@ typedef void (*ir_graph_dump_func)(FILE *out, ir_graph *graph);
  * The file is stored into the directory specified by #ir_set_dump_path
  *
  * @param func      Dumper. Usually one of #dump_cfg, #dump_loop_tree,
- *                  #dump_graph_to_file
+ *                  #dump_ir_graph_file
  * @param graph     the graph to dump
  * @param suffix    suffix
  */
@@ -126,7 +126,6 @@ FIRM_API int ir_should_dump(const char *name);
  * Creates an ir_prog pass for dump_all_ir_graphs().
  *
  * @param name          the name of this pass or NULL
- * @param dump_graph    The dumper to be used for dumping.
  * @param suffix        A suffix for the file name.
  *
  * @return  the newly created ir_prog pass
@@ -185,7 +184,6 @@ FIRM_API void dump_typegraph(FILE *out);
  * Dumps the class hierarchy with or without entities.
  *
  * @param out         Output stream
- * @param entities    Flag whether to dump the entities.
  *
  * Does not dump the global type.
  * Dumps a node for all classes and the sub/supertype relations.  If
@@ -225,7 +223,6 @@ FIRM_API void dump_types_as_text(FILE *out);
  * Dumps all global variables as text.
  *
  * @param out         Output stream
- * @param verbosity   verbosity flag
  *
  * Dumps a text representation of the entities in the global type.
  */
@@ -235,7 +232,7 @@ FIRM_API void dump_globals_as_text(FILE *out);
  * Dumps the firm nodes in the sub-loop-tree of loop to a vcg file.
  *
  * @param out     Output stream
- * @param l       Dump the loop tree for this loop.
+ * @param loop    Dump the loop tree for this loop.
  */
 FIRM_API void dump_loop(FILE *out, ir_loop *loop);
 
@@ -313,7 +310,7 @@ typedef enum {
 	 * edges from constant to block are skipped.  Vcg then layouts the graphs
 	 * more compact, this makes them better readable. */
 	ir_dump_flag_consts_local          = 1U << 4,
- 	/** if set node idx will be added to node labels */
+	/** if set node idx will be added to node labels */
 	ir_dump_flag_idx_label             = 1U << 5,
 	/** if set node number will be added to node labels */
 	ir_dump_flag_number_label          = 1U << 6,
@@ -324,7 +321,7 @@ typedef enum {
 	/** if set dumps edges from blocks to their immediate dominator */
 	ir_dump_flag_dominance             = 1U << 9,
 	/** If set the dumper dumps loop nodes and edges from these nodes to the
-	 * contained ir nodes. Nodes can be missing for interprocedural loops */
+	 * contained ir nodes. */
 	ir_dump_flag_loops                 = 1U << 10,
 	/** if set (and backedge info is computed) dump backedges */
 	ir_dump_flag_back_edges            = 1U << 11,
@@ -336,10 +333,8 @@ typedef enum {
 	ir_dump_flag_node_addresses        = 1U << 14,
 	/** dump all anchor nodes, even the unused ones */
 	ir_dump_flag_all_anchors           = 1U << 15,
-	/** dumps macroblock edges from every block to its macroblock */
-	ir_dump_flag_macroblock_edges      = 1U << 16,
 	/** dumps marked blocks with an asterisk in the label */
-	ir_dump_flag_show_marks            = 1U << 17,
+	ir_dump_flag_show_marks            = 1U << 16,
 
 	/** turns of dumping of constant entity values in typegraphs */
 	ir_dump_flag_no_entity_values      = 1U << 20,

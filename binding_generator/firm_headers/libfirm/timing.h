@@ -29,7 +29,7 @@
 
 #include "begin.h"
 
-typedef struct _ir_timer_t ir_timer_t;
+typedef struct ir_timer_t ir_timer_t;
 
 /**
  * Switch to real-time scheduling.
@@ -119,20 +119,6 @@ FIRM_API unsigned long ir_timer_elapsed_msec(const ir_timer_t *timer);
  * @return The number of milliseconds the timer is (was) running.
  */
 FIRM_API unsigned long ir_timer_elapsed_usec(const ir_timer_t *timer);
-
-/**
- * Get name of given timer.
- * @param timer The timer.
- * @return The name of the timer.
- */
-FIRM_API const char *ir_timer_get_name(const ir_timer_t *timer);
-
-/**
- * Get description of given timer.
- * @param timer The timer.
- * @return The description of the timer.
- */
-FIRM_API const char *ir_timer_get_description(const ir_timer_t *timer);
 
 #include "end.h"
 

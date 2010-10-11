@@ -1,17 +1,18 @@
 package firm.bindings;
 
 import com.sun.jna.Callback;
-import com.sun.jna.Library;
+import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
-public interface binding_libc extends Library {
-
-	Pointer fopen(String name, String mode);
-	void fclose(Pointer file);
+public class binding_libc {
+	static { Native.register("firm"); }
 	
-	interface SigHandler extends Callback {
+	public static native Pointer fopen(String name, String mode);
+	public static native void fclose(Pointer file);
+	
+	public interface SigHandler extends Callback {
 		void callback(int arg);
 	}
 	
-	SigHandler signal(int signum, SigHandler handler);
+	public static native SigHandler signal(int signum, SigHandler handler);
 }

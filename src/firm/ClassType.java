@@ -4,6 +4,8 @@ import java.util.Iterator;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_tv;
+
 public class ClassType extends Type {
 	
 	ClassType(Pointer ptr) {
@@ -11,7 +13,7 @@ public class ClassType extends Type {
 	}
 	
 	public ClassType(Ident name) {
-		super(binding.new_type_class(name.ptr));
+		super(binding_tv.new_type_class(name.ptr));
 	}
 	
 	public ClassType(String name) {
@@ -19,7 +21,7 @@ public class ClassType extends Type {
 	}
 	
 	public Ident getIdent() {
-		return new Ident(binding.get_class_ident(ptr));
+		return new Ident(binding_tv.get_class_ident(ptr));
 	}
 	
 	public String getName() {
@@ -27,11 +29,11 @@ public class ClassType extends Type {
 	}
 	
 	public int getNMembers() {
-		return binding.get_class_n_members(ptr);
+		return binding_tv.get_class_n_members(ptr);
 	}
 	
 	public Entity getMember(int n) {
-		return new Entity(binding.get_class_member(ptr, n));
+		return new Entity(binding_tv.get_class_member(ptr, n));
 	}
 	
 	public Iterable<Entity> getMembers() {
@@ -60,7 +62,7 @@ public class ClassType extends Type {
 	}
 	
 	public Entity getMemberByName(Ident name) {
-		return new Entity(binding.get_class_member_by_name(ptr, name.ptr));
+		return new Entity(binding_tv.get_class_member_by_name(ptr, name.ptr));
 	}
 	
 	public Entity getMemberByName(String name) {
@@ -68,15 +70,15 @@ public class ClassType extends Type {
 	}
 
 	public void addSubtype(Type subType) {
-		binding.add_class_subtype(ptr, subType.ptr);
+		binding_tv.add_class_subtype(ptr, subType.ptr);
 	}
 	
 	public int getNSubTypes() {
-		return binding.get_class_n_subtypes(ptr);
+		return binding_tv.get_class_n_subtypes(ptr);
 	}
 	
 	public Type getSubType(int n) {
-		return Type.createWrapper(binding.get_class_subtype(ptr, n));
+		return Type.createWrapper(binding_tv.get_class_subtype(ptr, n));
 	}
 	
 	public Iterable<Type> getSubTypes() {
@@ -105,19 +107,19 @@ public class ClassType extends Type {
 	}
 	
 	public void removeSubType(Type subType) {
-		binding.remove_class_subtype(ptr, subType.ptr);
+		binding_tv.remove_class_subtype(ptr, subType.ptr);
 	}
 	
 	public void addSuperType(Type superType) {
-		binding.add_class_supertype(ptr, superType.ptr);
+		binding_tv.add_class_supertype(ptr, superType.ptr);
 	}
 	
 	public int getNSuperTypes() {
-		return binding.get_class_n_supertypes(ptr);
+		return binding_tv.get_class_n_supertypes(ptr);
 	}
 	
 	public Type getSuperType(int n) {
-		return Type.createWrapper(binding.get_class_supertype(ptr, n));
+		return Type.createWrapper(binding_tv.get_class_supertype(ptr, n));
 	}
 	
 	public Iterable<Type> getSuperTypes() {
@@ -146,7 +148,7 @@ public class ClassType extends Type {
 	}
 	
 	public void removeSuperType(Type superType) {
-		binding.remove_class_supertype(ptr, superType.ptr);
+		binding_tv.remove_class_supertype(ptr, superType.ptr);
 	}
 	
 	/**
@@ -154,7 +156,7 @@ public class ClassType extends Type {
 	 * which should be okay for most languages.
 	 */
 	public void layoutFields() {
-		binding.default_layout_compound_type(ptr);
+		binding_tv.default_layout_compound_type(ptr);
 	}
 	
 	@Override

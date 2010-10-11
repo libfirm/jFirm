@@ -2,7 +2,6 @@ package firm;
 
 import java.util.Iterator;
 
-import firm.bindings.Bindings;
 import firm.bindings.binding_irprog;
 
 /**
@@ -11,8 +10,6 @@ import firm.bindings.binding_irprog;
  * so this is class only contains static utility functions.  
  */
 public class Program {
-	
-	private static final binding_irprog binding = Bindings.getIrProgBinding();
 	
 	private Program() {
 		/* Program should not be instantiated currently
@@ -24,35 +21,35 @@ public class Program {
 	 * Note that this does not free the memory of the previous program.
 	 */
 	public static void newProgram(String name) {
-		binding.new_ir_prog(name);
+		binding_irprog.new_ir_prog(name);
 	}
 	
 	/**
 	 * Set name of the currently active program/compilation unit
 	 */
 	public static void setName(String name) {
-		binding.set_irp_prog_name(new Ident(name).ptr);
+		binding_irprog.set_irp_prog_name(new Ident(name).ptr);
 	}
 	
 	/**
 	 * Get name of the currently active program/compilation unit
 	 */
 	public static String getName() {
-		return binding.get_irp_name();
+		return binding_irprog.get_irp_name();
 	}
 	
 	public static ClassType getGlobalType() {
-		Type type = Type.createWrapper(binding.get_glob_type());
+		Type type = Type.createWrapper(binding_irprog.get_glob_type());
 		assert type instanceof ClassType;
 		return (ClassType) type;
 	}
 	
 	public static Graph getConstCodeGraph() {
-		return new Graph(binding.get_const_code_irg());
+		return new Graph(binding_irprog.get_const_code_irg());
 	}
 	
 	public static int getNGraphs() {
-		return binding.get_irp_n_irgs();
+		return binding_irprog.get_irp_n_irgs();
 	}
 	
 	public static Iterable<Graph> getGraphs() {
@@ -81,15 +78,15 @@ public class Program {
 	}
 	
 	public static Graph getGraph(int n) {
-		return new Graph(binding.get_irp_irg(n));
+		return new Graph(binding_irprog.get_irp_irg(n));
 	}
 	
 	public static int getNTypes() {
-		return binding.get_irp_n_types();
+		return binding_irprog.get_irp_n_types();
 	}
 		
 	public static Type getType(int n) {
-		return Type.createWrapper(binding.get_irp_type(n));
+		return Type.createWrapper(binding_irprog.get_irp_type(n));
 	}
 	
 	public static Iterable<Type> getTypes() {
@@ -119,11 +116,11 @@ public class Program {
 
 	
 	public static int getNModes() {
-		return binding.get_irp_n_modes();
+		return binding_irprog.get_irp_n_modes();
 	}
 	
 	public static Mode getMode(int n) {
-		return new Mode(binding.get_irp_mode(n));
+		return new Mode(binding_irprog.get_irp_mode(n));
 	}
 	
 	public static Iterable<Mode> getModes() {

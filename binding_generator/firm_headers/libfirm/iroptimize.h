@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1995-2008 University of Karlsruhe.  All right reserved.
+ * Copyright (C) 1995-2010 University of Karlsruhe.  All right reserved.
  *
  * This file is part of libFirm.
  *
@@ -20,12 +20,13 @@
 /**
  * @file
  * @brief   Available Optimisations of libFirm.
- * @version $Id$
+ * @version $Id: iroptimize.h 28076 2010-10-08 19:29:19Z beck $
  */
 #ifndef FIRM_IROPTIMIZE_H
 #define FIRM_IROPTIMIZE_H
 
 #include "firm_types.h"
+#include "nodeops.h"
 #include "begin.h"
 
 /**
@@ -178,7 +179,7 @@ FIRM_API void escape_analysis(int run_scalar_replace,
  * This is a rather strong criteria, so do not expect that a
  * lot of functions will be found. Moreover, all of them might
  * already be inlined if inlining is activated.
- * Anyway, it might be good for handling builtin's or pseudo-graphs,
+ * Anyway, it might be good for handling builtin's
  * even if the later read/write memory (but we know how).
  *
  * This optimizations read the irg_const_function property of
@@ -255,42 +256,28 @@ typedef int (*arch_allow_ifconv_func)(ir_node *sel, ir_node *mux_false,
                                       ir_node *mux_true);
 
 /**
- * The parameters structure.
- */
-struct ir_settings_if_conv_t {
-	int                 max_depth;       /**< The maximum depth up to which expressions
-	                                       are examined when it has to be decided if they
-	                                       can be placed into another block. */
-	arch_allow_ifconv_func allow_ifconv; /**< Evaluator function, if not set all possible Psi
-	                                       nodes will be created. */
-};
-
-/**
  * Perform If conversion on a graph.
  *
  * @param irg The graph.
- * @param params The parameters for the if conversion.
  *
  * Cannot handle blocks with Bad control predecessors, so call it after control
  * flow optimization.
  */
-FIRM_API void opt_if_conv(ir_graph *irg, const ir_settings_if_conv_t *params);
+FIRM_API void opt_if_conv(ir_graph *irg);
 
 /**
  * Creates an ir_graph pass for opt_if_conv().
  *
  * @param name     the name of this pass or NULL
- * @param params   The parameters for the if conversion.
  *
  * @return  the newly created ir_graph pass
  */
-FIRM_API ir_graph_pass_t *opt_if_conv_pass(
-	const char *name, const ir_settings_if_conv_t *params);
+FIRM_API ir_graph_pass_t *opt_if_conv_pass(const char *name);
 
 /**
- * Tries to reduce dependencies for memory nodes where possible by parllelizing
- * them and synchronising with Sync nodes
- * @param irg   the graph where memory operations should be parallelised
+ * Tries to reduce dependencies for memory nodes where possible by parallelizing
+ * them and synchronizing with Sync nodes
+ * @param irg   the graph where memory operations should be parallelized
  */
 FIRM_API void opt_parallelize_mem(ir_graph *irg);
 
@@ -543,7 +530,7 @@ FIRM_API ir_prog_pass_t *proc_cloning_pass(const char *name, float threshold);
  * and for address expression.
  * Works only if Constant folding is activated.
  *
- * Uses loop information to detect loop-invariant (ie contant
+ * Uses loop information to detect loop-invariant (i.e. contant
  * inside the loop) values.
  *
  * See Muchnik 12.3.1 Algebraic Simplification and Reassociation of
@@ -792,7 +779,7 @@ FIRM_API ir_graph_pass_t *combo_pass(const char *name);
  * size are inlined.  Further only a limited number of calls are inlined.
  * If the method contains more than 1024 inlineable calls none will be
  * inlined.
- * Inlining is only performed if flags `optimize' and `inlineing' are set.
+ * Inlining is only performed if flags `optimize' and `inlining' are set.
  * The graph may not be in state phase_building.
  * It is recommended to call local_optimize_graph() after inlining as this
  * function leaves a set of obscure Tuple nodes, e.g. a Proj-Tuple-Jmp
@@ -813,20 +800,20 @@ FIRM_API ir_graph_pass_t *inline_small_irgs_pass(const char *name, int size);
 /**
  * Inlineing with a different heuristic than inline_small_irgs().
  *
- * Inlines leave functions.  If inlinening creates new leave
+ * Inlines leave functions.  If inlining creates new leave
  * function inlines these, too. (If g calls f, and f calls leave h,
  * h is first inlined in f and then f in g.)
  *
  * Then inlines all small functions (this is not recursive).
  *
- * For a heuristic this inlineing uses firm node counts.  It does
+ * For a heuristic this inlining uses firm node counts.  It does
  * not count auxiliary nodes as Proj, Tuple, End, Start, Id, Sync.
  * If the ignore_runtime flag is set, calls to functions marked with the
  * mtp_property_runtime property are ignored.
  *
  * @param maxsize         Do not inline any calls if a method has more than
  *                        maxsize firm nodes.  It may reach this limit by
- *                        inlineing.
+ *                        inlining.
  * @param leavesize       Inline leave functions if they have less than leavesize
  *                        nodes.
  * @param size            Inline all function smaller than size.
@@ -842,7 +829,7 @@ FIRM_API void inline_leave_functions(unsigned maxsize, unsigned leavesize,
  * @param name            the name of this pass or NULL
  * @param maxsize         Do not inline any calls if a method has more than
  *                        maxsize firm nodes.  It may reach this limit by
- *                        inlineing.
+ *                        inlining.
  * @param leavesize       Inline leave functions if they have less than leavesize
  *                        nodes.
  * @param size            Inline all function smaller than size.
@@ -991,7 +978,7 @@ FIRM_API ir_prog_pass_t *garbage_collect_entities_pass(const char *name);
  *
  *  Dead_node_elimination is only performed if options `optimize' and
  *  `opt_dead_node_elimination' are set.  The graph may
- *  not be in state phase_building.  The outs datasturcture is freed,
+ *  not be in state phase_building.  The outs datastructure is freed,
  *  the outs state set to outs_none.  Backedge information is conserved.
  *  Removes old attributes of nodes.  Sets link field to NULL.
  *  Callee information must be freed (irg_callee_info_none).
@@ -1073,7 +1060,7 @@ FIRM_API void place_code(ir_graph *irg);
 FIRM_API ir_graph_pass_t *place_code_pass(const char *name);
 
 /**
- * Determine information about the values of nodes and perform simplications
+ * Determine information about the values of nodes and perform simplifications
  * using this information.  This optimization performs a data-flow analysis to
  * find the minimal fixpoint.
  */
@@ -1082,7 +1069,7 @@ FIRM_API void fixpoint_vrp(ir_graph*);
 /**
  * Creates an ir_graph pass for fixpoint_vrp().
  * This pass dDetermines information about the values of nodes
- * and perform simplications using this information.
+ * and perform simplifications using this information.
  * This optimization performs a data-flow analysis to
  * find the minimal fixpoint.
  *
@@ -1091,6 +1078,54 @@ FIRM_API void fixpoint_vrp(ir_graph*);
  * @return  the newly created ir_graph pass
  */
 FIRM_API ir_graph_pass_t *fixpoint_vrp_irg_pass(const char *name);
+
+/**
+ * Check, if the value of a node is != 0.
+ *
+ * This is a often needed case, so we handle here Confirm
+ * nodes too.
+ *
+ * @param n        a node representing the value
+ * @param confirm  if n is confirmed to be != 0, returns
+ *                 the the Confirm-node, else NULL
+ */
+FIRM_API int value_not_zero(const ir_node *n, ir_node_cnst_ptr *confirm);
+
+/**
+ * Check, if the value of a node cannot represent a NULL pointer.
+ *
+ * - If option sel_based_null_check_elim is enabled, all
+ *   Sel nodes can be skipped.
+ * - A SymConst(entity) is NEVER a NULL pointer
+ * - A Const != NULL is NEVER a NULL pointer
+ * - Confirms are evaluated
+ *
+ * @param n        a node representing the value
+ * @param confirm  if n is confirmed to be != NULL, returns
+ *                 the the Confirm-node, else NULL
+ */
+FIRM_API int value_not_null(const ir_node *n, ir_node_cnst_ptr *confirm);
+
+/**
+ * Check, if the value of a node can be confirmed >= 0 or <= 0,
+ * If the mode of the value did not honor signed zeros, else
+ * check for >= 0 or < 0.
+ *
+ * @param n  a node representing the value
+ */
+FIRM_API ir_value_classify_sign classify_value_sign(ir_node *n);
+
+/**
+ * Return the value of a Cmp if one or both predecessors
+ * are Confirm nodes.
+ *
+ * @param cmp    the compare node that will be evaluated
+ * @param left   the left operand of the Cmp
+ * @param right  the right operand of the Cmp
+ * @param pnc    the compare relation
+ */
+FIRM_API ir_tarval *computed_value_Cmp_Confirm(
+	ir_node *cmp, ir_node *left, ir_node *right, pn_Cmp pnc);
 
 #include "end.h"
 

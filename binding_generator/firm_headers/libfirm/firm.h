@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1995-2008 University of Karlsruhe.  All right reserved.
+ * Copyright (C) 1995-2010 University of Karlsruhe.  All right reserved.
  *
  * This file is part of libFirm.
  *
@@ -21,7 +21,7 @@
  * @file
  * @brief     Central firm header.
  * @author    Martin Trapp, Christian Schaefer, Goetz Lindenmaier
- * @version   $Id$
+ * @version   $Id: firm.h 28075 2010-10-08 19:20:35Z beck $
  * @brief
  *  Central FIRM header.
  *
@@ -71,11 +71,10 @@
 #include "firm_common.h"
 #include "firmstat.h"
 #include "firm_types.h"
-#include "height.h"
+#include "heights.h"
 #include "ident.h"
 #include "interval_analysis.h"
 #include "irarch.h"
-#include "ircgcons.h"
 #include "ircgopt.h"
 #include "irconsconfirm.h"
 #include "ircons.h"
@@ -103,11 +102,9 @@
 #include "irpass.h"
 #include "irprintf.h"
 #include "irprog.h"
-#include "irsimpletype.h"
 #include "irtypeinfo.h"
-#include "irvrfy.h"
+#include "irverify.h"
 #include "lowering.h"
-#include "pseudo_irg.h"
 #include "rta.h"
 #include "seqnumbers.h"
 #include "structure.h"
