@@ -172,7 +172,7 @@ def get_java_type(type):
 		wrap_type    = "Pointer"
 		to_wrapper   = "%s.ptr"
 		from_wrapper = "new firm.Mode(%s)"
-	elif type == "tarval*":
+	elif type == "ir_tarval*":
 		java_type    = "firm.TargetValue"
 		wrap_type    = "Pointer"
 		to_wrapper   = "%s.ptr"

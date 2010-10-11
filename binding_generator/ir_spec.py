@@ -20,15 +20,17 @@ class Binop(Op):
 	pinned   = "no"
 abstract(Binop)
 
-class Abs(Unop):
-	flags = []
-
 class Add(Binop):
 	flags = ["commutative"]
 
 class Alloc(Op):
 	ins   = [ "mem", "count" ]
-	outs  = [ "M", "X_regular", "X_except", "res" ]
+	outs  = [
+		("M",         "memory result",                         "pn_Generic_M"),
+		("X_regular", "control flow when no exception occurs", "pn_Generic_X_regular"),
+		("X_except",  "control flow when exception occured",   "pn_Generic_X_except"),
+		("res",       "pointer to newly allocated memory",     "pn_Generic_other"),
+	]
 	flags = [ "fragile", "uses_memory" ]
 	attrs = [
 		dict(
@@ -42,15 +44,13 @@ class Alloc(Op):
 	]
 	pinned      = "yes"
 	attr_struct = "alloc_attr"
-	d_post = '''
-	firm_alloc_frag_arr(res, op_Alloc, &res->attr.alloc.exc.frag_arr);
-	'''
 
 class Anchor(Op):
 	mode        = "mode_ANY"
 	arity       = "variable"
 	flags       = [ "dump_noblock" ]
 	pinned      = "yes"
+	attr_struct = "irg_attr"
 	knownBlock  = True
 	singleton   = True
 
@@ -97,14 +97,21 @@ class ASM(Op):
 
 class Bad(Op):
 	mode        = "mode_Bad"
-	flags       = [ "cfopcode", "fragile", "start_block", "dump_noblock" ]
+	flags       = [ "cfopcode", "start_block", "dump_noblock" ]
 	pinned      = "yes"
 	knownBlock  = True
 	singleton   = True
-	attr_struct = "irg_attr"
+	attr_struct = "bad_attr"
 	init = '''
 	res->attr.irg.irg = irg;
 	'''
+
+class Deleted(Op):
+	mode        = "mode_Bad"
+	flags       = [ ]
+	pinned      = "yes"
+	knownBlock  = True
+	singleton   = True
 
 class Block(Op):
 	mode        = "mode_BB"
@@ -118,17 +125,12 @@ class Block(Op):
 	java_noconstr = True
 
 	init = '''
-	/* macroblock header */
-	res->in[0] = res;
-
 	res->attr.block.is_dead     = 0;
-	res->attr.block.is_mb_head  = 1;
 	res->attr.block.irg.irg     = irg;
 	res->attr.block.backedge    = new_backedge_arr(irg->obst, arity);
 	res->attr.block.in_cg       = NULL;
 	res->attr.block.cg_backedge = NULL;
 	res->attr.block.extblk      = NULL;
-	res->attr.block.mb_depth    = 0;
 	res->attr.block.entity      = NULL;
 
 	set_Block_matured(res, 1);
@@ -143,11 +145,11 @@ class Block(Op):
 
 	java_add   = '''
 	public void addPred(Node node) {
-		binding_cons.add_immBlock_pred(ptr, node.ptr);
+		binding_ircons.add_immBlock_pred(ptr, node.ptr);
 	}
 
 	public void mature() {
-		binding_cons.mature_immBlock(ptr);
+		binding_ircons.mature_immBlock(ptr);
 	}
 
 	@Override
@@ -156,15 +158,15 @@ class Block(Op):
 	}
 
 	public boolean blockVisited() {
-		return 0 != binding.Block_block_visited(ptr);
+		return 0 != binding_irnode.Block_block_visited(ptr);
 	}
 
 	public void markBlockVisited() {
-		binding.mark_Block_block_visited(ptr);
+		binding_irnode.mark_Block_block_visited(ptr);
 	}
 
 	public boolean isBad() {
-		return binding.is_Bad(ptr) != 0;
+		return binding_irnode.is_Bad(ptr) != 0;
 	}
 	'''
 
@@ -173,25 +175,25 @@ class Borrow(Binop):
 
 class Bound(Op):
 	ins    = [ "mem", "index", "lower", "upper" ]
- 	outs   = [ "M", "X_regular", "X_except", "res" ]
+	outs  = [
+		("M",         "memory result",                         "pn_Generic_M"),
+		("X_regular", "control flow when no exception occurs", "pn_Generic_X_regular"),
+		("X_except",  "control flow when exception occured",   "pn_Generic_X_except"),
+		("res",       "the checked index",                     "pn_Generic_other"),
+	]
  	flags  = [ "fragile", "highlevel" ]
 	pinned = "exception"
 	pinned_init = "op_pin_state_pinned"
 	attr_struct = "bound_attr"
 	attrs_name  = "bound"
-	d_post = '''
-	firm_alloc_frag_arr(res, op_Bound, &res->attr.bound.exc.frag_arr);
-	'''
-
-class Break(Op):
-	mode   = "mode_X"
-	flags  = [ "cfopcode" ]
-	pinned = "yes"
 
 class Builtin(Op):
 	ins      = [ "mem" ]
 	arity    = "variable"
-	outs     = [ "M", "X_regular", "X_except", "T_result", "P_value_res_base" ]
+	outs     = [
+		("M",        "memory result", "pn_Generic_M"),
+		("1_result", "first result",  "pn_Generic_other"),
+	]
 	flags    = [ "uses_memory" ]
 	attrs    = [
 		dict(
@@ -213,7 +215,13 @@ class Builtin(Op):
 class Call(Op):
 	ins      = [ "mem", "ptr" ]
 	arity    = "variable"
-	outs     = [ "M", "X_regular", "X_except", "T_result", "P_value_res_base" ]
+	outs     = [
+		("M",                "memory result",                         "pn_Generic_M"),
+		("X_regular",        "control flow when no exception occurs", "pn_Generic_X_regular"),
+		("X_except",         "control flow when exception occured",   "pn_Generic_X_except"),
+		("T_result",         "tuple containing all results",          "pn_Generic_other"),
+		("P_value_res_base", "pointer to memory register containing copied results passed by value"),
+	]
 	flags    = [ "fragile", "uses_memory" ]
 	attrs    = [
 		dict(
@@ -233,24 +241,6 @@ class Call(Op):
 	init = '''
 	assert((get_unknown_type() == type) || is_Method_type(type));
 	'''
-	d_post = '''
-	firm_alloc_frag_arr(res, op_Call, &res->attr.call.exc.frag_arr);
-	'''
-
-class CallBegin(Op):
-	ins   = [ "ptr" ]
-	outs  = [ "" ] # TODO
-	flags         = [ "cfopcode", "ip_cfopcode" ]
-	pinned        = "yes"
-	# TODO: attribute with call...
-	attr_struct   = "callbegin_attr"
-	attrs         = [
-		dict(
-			type = "ir_node*",
-			name = "call"
-		)
-	]
-	java_noconstr = True
 
 class Carry(Binop):
 	flags = [ "commutative" ]
@@ -269,28 +259,31 @@ class Cast(Unop):
 
 class Cmp(Binop):
 	outs  = [ 
-		("False", "always false"),
-		("Eq",    "equal"),
-		("Lt",    "less"),
-		("Le",    "less or equal"),
-		("Gt",    "greater"),
-		("Ge",    "greater or equal"),
-		("Lg",    "less or greater"),
-		("Leg",   "less, equal or greater ('not equal' for integer numbers)"),
-		("Uo",    "unordered"),
-		("Ue",    "unordered or equal"),
-		("Ul",    "unordered or less"),
-		("Ule",   "unordered, less or equal"),
-		("Ug",    "unordered or greater"),
-		("Uge",   "onordered, greater or equal"),
-		("Ne",    "unordered, less, greater or equal ('not equal' for floatingpoint numbers)"),
-		("True",  "always true"),
+		("False", "always false",                            "0"),
+		("Eq",    "equal",                                   "1"),
+		("Lt",    "less",                                    "2"),
+		("Le",    "less or equal",                           "pn_Cmp_Eq|pn_Cmp_Lt"),
+		("Gt",    "greater",                                 "4"),
+		("Ge",    "greater or equal",                        "pn_Cmp_Eq|pn_Cmp_Gt"),
+		("Lg",    "less or greater ('not equal' for integer numbers)", "pn_Cmp_Lt|pn_Cmp_Gt"),
+		("Leg",   "less, equal or greater ('not unordered')", "pn_Cmp_Lt|pn_Cmp_Eq|pn_Cmp_Gt"),
+		("Uo",    "unordered",                               "8"),
+		("Ue",    "unordered or equal",                      "pn_Cmp_Uo|pn_Cmp_Eq"),
+		("Ul",    "unordered or less",                       "pn_Cmp_Uo|pn_Cmp_Lt"),
+		("Ule",   "unordered, less or equal",                "pn_Cmp_Uo|pn_Cmp_Lt|pn_Cmp_Eq"),
+		("Ug",    "unordered or greater",                    "pn_Cmp_Uo|pn_Cmp_Gt"),
+		("Uge",   "onordered, greater or equal",             "pn_Cmp_Uo|pn_Cmp_Gt|pn_Cmp_Eq"),
+		("Ne",    "unordered, less or greater ('not equal' for floatingpoint numbers)", "pn_Cmp_Uo|pn_Cmp_Lt|pn_Cmp_Gt"),
+		("True",  "always true",                             "15"),
 	]
 	flags = []
 
 class Cond(Op):
 	ins      = [ "selector" ]
-	outs     = [ "false", "true" ]
+	outs     = [
+		("false", "control flow if operand is \"false\""),
+		("true",  "control flow if operand is \"true\""),
+	]
 	flags    = [ "cfopcode", "forking" ]
 	pinned   = "yes"
 	attrs    = [
@@ -329,7 +322,7 @@ class Const(Op):
 	attrs_name = "con"
 	attrs      = [
 		dict(
-			type = "tarval*",
+			type = "ir_tarval*",
 			name = "tarval",
 		)
 	]
@@ -353,7 +346,11 @@ class Conv(Unop):
 
 class CopyB(Op):
 	ins   = [ "mem", "dst", "src" ]
-	outs  = [ "M", "X_regular", "X_except" ]
+	outs  = [
+		("M",         "memory result",                         "pn_Generic_M"),
+		("X_regular", "control flow when no exception occurs", "pn_Generic_X_regular"),
+		("X_except",  "control flow when exception occured",   "pn_Generic_X_except"),
+	]
 	flags = [ "fragile", "highlevel", "uses_memory" ]
 	attrs = [
 		dict(
@@ -365,13 +362,15 @@ class CopyB(Op):
 	attrs_name  = "copyb"
 	pinned      = "memory"
 	pinned_init = "op_pin_state_pinned"
-	d_post = '''
-	firm_alloc_frag_arr(res, op_CopyB, &res->attr.copyb.exc.frag_arr);
-	'''
 
 class Div(Op):
 	ins   = [ "mem", "left", "right" ]
-	outs  = [ "M", "X_regular", "X_except", "res" ]
+	outs  = [
+		("M",         "memory result",                         "pn_Generic_M"),
+		("X_regular", "control flow when no exception occurs", "pn_Generic_X_regular"),
+		("X_except",  "control flow when exception occured",   "pn_Generic_X_except"),
+		("res",       "result of computation",                 "pn_Generic_other"),
+	]
 	flags = [ "fragile", "uses_memory" ]
 	attrs_name = "divmod"
 	attrs = [
@@ -393,13 +392,16 @@ class Div(Op):
 	pinned      = "exception"
 	op_index    = 1
 	arity_override = "oparity_binary"
-	d_post = '''
-	firm_alloc_frag_arr(res, op_Div, &res->attr.except.frag_arr);
-	'''
 
 class DivMod(Op):
 	ins   = [ "mem", "left", "right" ]
-	outs  = [ "M", "X_regular", "X_except", "res_div", "res_mod" ]
+	outs  = [
+		("M",         "memory result",                         "pn_Generic_M"),
+		("X_regular", "control flow when no exception occurs", "pn_Generic_X_regular"),
+		("X_except",  "control flow when exception occured",   "pn_Generic_X_except"),
+		("res_div",   "result of computation a/b",             "pn_Generic_other"),
+		("res_mod",   "result of computation a%b"),
+	]
 	flags = [ "fragile", "uses_memory" ]
 	attrs_name = "divmod"
 	attrs = [
@@ -412,14 +414,10 @@ class DivMod(Op):
 	pinned      = "exception"
 	op_index    = 1
 	arity_override = "oparity_binary"
-	d_post = '''
-	firm_alloc_frag_arr(res, op_DivMod, &res->attr.except.frag_arr);
-	'''
 
 class Dummy(Op):
 	ins   = []
-	flags = [ "cfopcode", "fragile", "start_block", "constlike",
-	          "dump_noblock" ]
+	flags = [ "cfopcode", "start_block", "constlike", "dump_noblock" ]
 	knownBlock = True
 	pinned     = "yes"
 	block      = "get_irg_start_block(irg)"
@@ -431,36 +429,8 @@ class End(Op):
 	flags      = [ "cfopcode" ]
 	singleton  = True
 
-class EndExcept(Op):
-	mode      = "mode_X"
-	pinned    = "yes"
-	arity     = "dynamic"
-	flags     = [ "cfopcode", "ip_cfopcode" ]
-	singleton = True
-
-class EndReg(Op):
-	mode      = "mode_X"
-	pinned    = "yes"
-	arity     = "dynamic"
-	flags     = [ "cfopcode", "ip_cfopcode" ]
-	singleton = True
-
 class Eor(Binop):
 	flags    = [ "commutative" ]
-
-class Filter(Op):
-	ins   = [ "pred" ]
-	flags = []
-	attrs = [
-		dict(
-			name = "proj",
-			type = "long"
-		)
-	]
-	pinned      = "yes"
-	attr_struct = "filter_attr"
-	attrs_name  = "filter"
-	java_noconstr = True
 
 class Free(Op):
 	ins    = [ "mem", "ptr", "size" ]
@@ -492,7 +462,12 @@ class IJmp(Op):
 
 class InstOf(Op):
 	ins   = [ "store", "obj" ]
-	outs  = [ "M", "X_regular", "X_except", "res" ]
+	outs  = [
+		("M",         "memory result",                         "pn_Generic_M"),
+		("X_regular", "control flow when no exception occurs", "pn_Generic_X_regular"),
+		("X_except",  "control flow when exception occured",   "pn_Generic_X_except"),
+		("res",       "checked object pointer",                "pn_Generic_other"),
+	]
 	flags = [ "highlevel" ]
 	attrs = [
 		dict(
@@ -512,7 +487,12 @@ class Jmp(Op):
 
 class Load(Op):
 	ins      = [ "mem", "ptr" ]
-	outs     = [ "M", "X_regular", "X_except", "res" ]
+	outs  = [
+		("M",         "memory result",                         "pn_Generic_M"),
+		("X_regular", "control flow when no exception occurs", "pn_Generic_X_regular"),
+		("X_except",  "control flow when exception occured",   "pn_Generic_X_except"),
+		("res",       "result of load operation",              "pn_Generic_other"),
+	]
 	flags    = [ "fragile", "uses_memory" ]
 	pinned   = "exception"
 	pinned_init = "flags & cons_floats ? op_pin_state_floats : op_pin_state_pinned"
@@ -530,16 +510,18 @@ class Load(Op):
 			name = "flags",
 		),
 	]
-	d_post = '''
-	firm_alloc_frag_arr(res, op_Load, &res->attr.load.exc.frag_arr);
-	'''
 
 class Minus(Unop):
 	flags = []
 
 class Mod(Op):
 	ins   = [ "mem", "left", "right" ]
-	outs  = [ "M", "X_regular", "X_except", "res" ]
+	outs  = [
+		("M",         "memory result",                         "pn_Generic_M"),
+		("X_regular", "control flow when no exception occurs", "pn_Generic_X_regular"),
+		("X_except",  "control flow when exception occured",   "pn_Generic_X_except"),
+		("res",       "result of computation",                 "pn_Generic_other"),
+	]
 	flags = [ "fragile", "uses_memory" ]
 	attrs_name = "divmod"
 	attrs = [
@@ -552,9 +534,6 @@ class Mod(Op):
 	pinned      = "exception"
 	op_index    = 1
 	arity_override = "oparity_binary"
-	d_post = '''
-	firm_alloc_frag_arr(res, op_Mod, &res->attr.except.frag_arr);
-	'''
 
 class Mul(Binop):
 	flags = [ "commutative" ]
@@ -585,7 +564,6 @@ class Phi(Op):
 	arity         = "variable"
 	flags         = []
 	attr_struct   = "phi_attr"
-	custom_is     = True
 	java_noconstr = True
 	init = '''
 	/* Memory Phis in endless loops must be kept alive.
@@ -617,11 +595,15 @@ class Proj(Op):
 		)
 	]
 	attr_struct = "long"
-	custom_is   = True
 
 class Quot(Op):
 	ins   = [ "mem", "left", "right" ]
-	outs  = [ "M", "X_regular", "X_except", "res" ]
+	outs  = [
+		("M",         "memory result",                         "pn_Generic_M"),
+		("X_regular", "control flow when no exception occurs", "pn_Generic_X_regular"),
+		("X_except",  "control flow when exception occured",   "pn_Generic_X_except"),
+		("res",       "result of computation",                 "pn_Generic_other"),
+	]
 	flags = [ "fragile", "uses_memory" ]
 	attrs_name = "divmod"
 	attrs = [
@@ -634,13 +616,13 @@ class Quot(Op):
 	pinned      = "exception"
 	op_index    = 1
 	arity_override = "oparity_binary"
-	d_post = '''
-	firm_alloc_frag_arr(res, op_Quot, &res->attr.except.frag_arr);
-	'''
 
 class Raise(Op):
 	ins    = [ "mem", "exo_ptr" ]
-	outs   = [ "M", "X" ]
+	outs  = [
+		("M", "memory result",                     "pn_Generic_M"),
+		("X", "control flow to exception handler", "pn_Generic_X_regular"),
+	]
 	flags  = [ "highlevel", "cfopcode" ]
 	pinned = "yes"
 
@@ -678,6 +660,13 @@ class Shrs(Binop):
 	flags = []
 
 class Start(Op):
+	outs       = [
+		("X_initial_exec", "control flow"),
+		("M",              "initial memory"),
+		("P_frame_base",   "frame base pointer"),
+		("P_tls",          "pointer to thread local storage segment"),
+		("T_args",         "function arguments")
+	]
 	mode       = "mode_T"
 	pinned     = "yes"
 	flags      = [ "cfopcode" ]
@@ -685,7 +674,11 @@ class Start(Op):
 
 class Store(Op):
 	ins      = [ "mem", "ptr", "value" ]
-	outs     = [ "M", "X_regular", "X_except" ]
+	outs  = [
+		("M",         "memory result",                         "pn_Generic_M"),
+		("X_regular", "control flow when no exception occurs", "pn_Generic_X_regular"),
+		("X_except",  "control flow when exception occured",   "pn_Generic_X_except"),
+	]
 	flags    = [ "fragile", "uses_memory" ]
 	pinned   = "exception"
 	attr_struct = "store_attr"
@@ -696,9 +689,6 @@ class Store(Op):
 			name = "flags",
 		),
 	]
-	d_post = '''
-	firm_alloc_frag_arr(res, op_Store, &res->attr.store.exc.frag_arr);
-	'''
 
 class Sub(Binop):
 	flags = []
@@ -736,8 +726,7 @@ class Unknown(Op):
 	knownBlock = True
 	pinned     = "yes"
 	block      = "get_irg_start_block(irg)"
-	flags      = [ "cfopcode", "fragile", "start_block", "constlike",
-	               "dump_noblock" ]
+	flags      = [ "cfopcode", "start_block", "constlike", "dump_noblock" ]
 
 # Prepare node list
 
