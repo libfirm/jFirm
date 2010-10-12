@@ -96,22 +96,22 @@ class ASM(Op):
 	]
 
 class Bad(Op):
-	mode        = "mode_Bad"
-	flags       = [ "cfopcode", "start_block", "dump_noblock" ]
-	pinned      = "yes"
-	knownBlock  = True
-	singleton   = True
-	attr_struct = "bad_attr"
+	mode          = "mode_Bad"
+	flags         = [ "cfopcode", "start_block", "dump_noblock" ]
+	pinned        = "yes"
+	knownBlock    = True
+	singleton     = True
+	attr_struct   = "bad_attr"
+	noconstructor = True
 	init = '''
 	res->attr.irg.irg = irg;
 	'''
 
 class Deleted(Op):
-	mode        = "mode_Bad"
-	flags       = [ ]
-	pinned      = "yes"
-	knownBlock  = True
-	singleton   = True
+	mode          = "mode_Bad"
+	flags         = [ ]
+	pinned        = "yes"
+	noconstructor = True
 	noconstructor = True
 
 class Block(Op):
@@ -119,22 +119,14 @@ class Block(Op):
 	knownBlock  = True
 	block       = "NULL"
 	pinned      = "yes"
-	optimize    = False
 	arity       = "variable"
 	flags       = [ "labeled" ]
 	attr_struct = "block_attr"
 
 	init = '''
-	res->attr.block.is_dead     = 0;
 	res->attr.block.irg.irg     = irg;
 	res->attr.block.backedge    = new_backedge_arr(irg->obst, arity);
-	res->attr.block.in_cg       = NULL;
-	res->attr.block.cg_backedge = NULL;
-	res->attr.block.extblk      = NULL;
-	res->attr.block.entity      = NULL;
-
 	set_Block_matured(res, 1);
-	set_Block_block_visited(res, 0);
 
 	/* Create and initialize array for Phi-node construction. */
 	if (get_irg_phase_state(irg) == phase_building) {
@@ -427,6 +419,8 @@ class End(Op):
 	pinned     = "yes"
 	arity      = "dynamic"
 	flags      = [ "cfopcode" ]
+	knownBlock = True
+	block      = "get_irg_end_block(irg)"
 	singleton  = True
 
 class Eor(Binop):
@@ -547,11 +541,12 @@ class Mux(Op):
 	pinned = "no"
 
 class NoMem(Op):
-	mode       = "mode_M"
-	flags      = [ "dump_noblock", "dump_noinput" ]
-	pinned     = "yes"
-	knownBlock = True
-	singleton  = True
+	mode          = "mode_M"
+	flags         = [ "dump_noblock", "dump_noinput" ]
+	pinned        = "yes"
+	knownBlock    = True
+	singleton     = True
+	noconstructor = True
 
 class Not(Unop):
 	flags = []
@@ -670,6 +665,8 @@ class Start(Op):
 	pinned     = "yes"
 	flags      = [ "cfopcode" ]
 	singleton  = True
+	knownBlock = True
+	block      = "get_irg_start_block(irg)"
 
 class Store(Op):
 	ins      = [ "mem", "ptr", "value" ]
@@ -710,7 +707,6 @@ class Sync(Op):
 	mode     = "mode_M"
 	flags    = []
 	pinned   = "no"
-	optimize = False
 	arity    = "dynamic"
 
 class Tuple(Op):
