@@ -13,9 +13,6 @@ void __dummy__(void) {
 }
 __EOF__
 CC=gcc
-if which apgcc > /dev/null; then
-	CC=apgcc
-fi
 CMD="$CC ${GCC_SHARED} /tmp/dummy.c -o ${GOAL} -I${FIRM_INC} ${FIRM_LFLAGS}"
 echo $CMD
 $CMD
