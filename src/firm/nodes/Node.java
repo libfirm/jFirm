@@ -37,7 +37,7 @@ public abstract class Node extends JNAWrapper {
 	}
 	
 	public static IntBuffer getBufferFromNodeList(Node[] list) {
-		// TODO assumes 32-bit int and pointer
+		assert Pointer.SIZE == 4; // There is no PointerBuffer...
 		IntBuffer buf = IntBuffer.allocate(list.length);
 		for (int i = 0; i < list.length; ++i) {
 			buf.put(i, (int) Pointer.nativeValue(list[i].ptr));
