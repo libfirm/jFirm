@@ -96,7 +96,7 @@ def format_binding_args(arglist, need_graph = False):
 			res += arg["name"] + ".length, Node.getBufferFromNodeList(" + arg["name"] + ")"
 			continue
 		name = format_filter_keywords(arg["name"])
-		if "to_Wrapper" in arg:
+		if "to_wrapper" in arg:
 			res += arg["to_wrapper"] % name
 		else:
 			res += name + ".ptr"
