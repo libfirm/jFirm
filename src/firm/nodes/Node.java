@@ -1,6 +1,5 @@
 package firm.nodes;
 
-import java.nio.Buffer;
 import java.nio.IntBuffer;
 import java.util.Iterator;
 
