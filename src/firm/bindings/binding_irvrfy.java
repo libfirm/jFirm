@@ -2,6 +2,7 @@ package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import java.nio.Buffer;
 
 
 public class binding_irvrfy {
@@ -263,7 +264,7 @@ public class binding_irvrfy {
 	}
 	public static native int irn_vrfy(Pointer checknode);
 	public static native int irn_vrfy_irg(Pointer checknode, Pointer irg);
-	public static native int irn_vrfy_irg_dump(Pointer checknode, Pointer irg, Pointer[] bad_string);
+	public static native int irn_vrfy_irg_dump(Pointer checknode, Pointer irg, Buffer bad_string);
 	public static native int irg_verify(Pointer irg, int flags);
 	public static native Pointer irg_verify_pass(String name, int flags);
 	public static native int irg_vrfy_bads(Pointer irg, int flags);

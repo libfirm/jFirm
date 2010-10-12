@@ -2,6 +2,7 @@ package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import java.nio.Buffer;
 
 
 public class binding_iroptimize {
@@ -707,8 +708,8 @@ public class binding_iroptimize {
 	public static native void set_ASM_input_constraints(Pointer node, Pointer input_constraints);
 	public static native Pointer get_ASM_output_constraints(Pointer node);
 	public static native void set_ASM_output_constraints(Pointer node, Pointer output_constraints);
-	public static native Pointer[] get_ASM_clobbers(Pointer node);
-	public static native void set_ASM_clobbers(Pointer node, Pointer[] clobbers);
+	public static native Buffer get_ASM_clobbers(Pointer node);
+	public static native void set_ASM_clobbers(Pointer node, Buffer clobbers);
 	public static native Pointer get_ASM_text(Pointer node);
 	public static native void set_ASM_text(Pointer node, Pointer text);
 	public static native Pointer get_Add_left(Pointer node);
@@ -923,12 +924,10 @@ public class binding_iroptimize {
 	public static native Pointer optimize_cf_pass(String name);
 	public static native void opt_jumpthreading(Pointer irg);
 	public static native Pointer opt_jumpthreading_pass(String name);
-	public static native Pointer opt_loopunroll_pass(String name);
 	public static native void opt_bool(Pointer irg);
 	public static native Pointer opt_bool_pass(String name);
 	public static native int conv_opt(Pointer irg);
 	public static native Pointer conv_opt_pass(String name);
-	public static native void data_flow_scalar_replacement_opt(Pointer irg);
 	public static native void escape_enalysis_irg(Pointer irg, Pointer callback);
 	public static native void escape_analysis(int run_scalar_replace, Pointer callback);
 	public static native void optimize_funccalls(int force_run, Pointer callback);
@@ -961,7 +960,6 @@ public class binding_iroptimize {
 	public static native Pointer normalize_n_returns_pass(String name);
 	public static native int scalar_replacement_opt(Pointer irg);
 	public static native Pointer scalar_replacement_opt_pass(String name);
-	public static native void reduce_strength(Pointer irg);
 	public static native int opt_tail_rec_irg(Pointer irg);
 	public static native Pointer opt_tail_rec_irg_pass(String name);
 	public static native void opt_tail_recursion();
@@ -996,8 +994,8 @@ public class binding_iroptimize {
 	public static native Pointer place_code_pass(String name);
 	public static native void fixpoint_vrp(Pointer _0);
 	public static native Pointer fixpoint_vrp_irg_pass(String name);
-	public static native int value_not_zero(Pointer n, Pointer[] confirm);
-	public static native int value_not_null(Pointer n, Pointer[] confirm);
+	public static native int value_not_zero(Pointer n, Buffer confirm);
+	public static native int value_not_null(Pointer n, Buffer confirm);
 	public static native /* ir_value_classify_sign */int classify_value_sign(Pointer n);
 	public static native Pointer computed_value_Cmp_Confirm(Pointer cmp, Pointer left, Pointer right, /* pn_Cmp */int pnc);
 }

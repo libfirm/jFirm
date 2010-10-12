@@ -70,7 +70,7 @@ public class Construction extends ConstructionBase {
 	}
 	
 	public Node newSel(Node ptr, Entity entity) {
-		return newSel(newNoMem(), ptr, new Node[] {}, entity);
+		return newSel(Node.createWrapper(binding_ircons.new_NoMem()), ptr, new Node[] {}, entity);
 	}
 	
 	/**
@@ -86,7 +86,7 @@ public class Construction extends ConstructionBase {
 	 * You should use this after generating Jmp or
 	 * Return nodes. */
 	public void setCurrentBlockBad() {
-		binding_ircons.set_cur_block(newBad().ptr);
+		binding_ircons.set_cur_block(binding_ircons.new_Bad());
 	}
 	
 	/**

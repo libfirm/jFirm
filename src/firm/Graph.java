@@ -48,14 +48,9 @@ public class Graph extends GraphBase {
 		return Node.createWrapper(binding_ircons.new_r_And(block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 	
-	/** Create a new Bad node */
-	public final Node newBad() {
-		return Node.createWrapper(binding_ircons.new_r_Bad(this.ptr));
-	}
-	
 	/** Create a new Block node */
 	public final Node newBlock(Node[] ins) {
-		return Node.createWrapper(binding_ircons.new_r_Block(this.ptr, ins.length, Node.getPointerListFromNodeList(ins)));
+		return Node.createWrapper(binding_ircons.new_r_Block(this.ptr, ins.length, Node.getBufferFromNodeList(ins)));
 	}
 	
 	/** Create a new Borrow node */
@@ -70,12 +65,12 @@ public class Graph extends GraphBase {
 	
 	/** Create a new Builtin node */
 	public final Node newBuiltin(Node block, Node mem, Node[] ins, firm.bindings.binding_ircons.ir_builtin_kind kind, firm.Type type) {
-		return Node.createWrapper(binding_ircons.new_r_Builtin(block.ptr, mem.ptr, ins.length, Node.getPointerListFromNodeList(ins), kind.val, type.ptr));
+		return Node.createWrapper(binding_ircons.new_r_Builtin(block.ptr, mem.ptr, ins.length, Node.getBufferFromNodeList(ins), kind.val, type.ptr));
 	}
 	
 	/** Create a new Call node */
 	public final Node newCall(Node block, Node mem, Node ptr, Node[] ins, firm.Type type) {
-		return Node.createWrapper(binding_ircons.new_r_Call(block.ptr, mem.ptr, ptr.ptr, ins.length, Node.getPointerListFromNodeList(ins), type.ptr));
+		return Node.createWrapper(binding_ircons.new_r_Call(block.ptr, mem.ptr, ptr.ptr, ins.length, Node.getBufferFromNodeList(ins), type.ptr));
 	}
 	
 	/** Create a new Carry node */
@@ -193,11 +188,6 @@ public class Graph extends GraphBase {
 		return Node.createWrapper(binding_ircons.new_r_Mux(block.ptr, sel.ptr, _false.ptr, _true.ptr, mode.ptr));
 	}
 	
-	/** Create a new NoMem node */
-	public final Node newNoMem() {
-		return Node.createWrapper(binding_ircons.new_r_NoMem(this.ptr));
-	}
-	
 	/** Create a new Not node */
 	public final Node newNot(Node block, Node op, firm.Mode mode) {
 		return Node.createWrapper(binding_ircons.new_r_Not(block.ptr, op.ptr, mode.ptr));
@@ -210,7 +200,7 @@ public class Graph extends GraphBase {
 	
 	/** Create a new Phi node */
 	public final Node newPhi(Node block, Node[] ins, firm.Mode mode) {
-		return Node.createWrapper(binding_ircons.new_r_Phi(block.ptr, ins.length, Node.getPointerListFromNodeList(ins), mode.ptr));
+		return Node.createWrapper(binding_ircons.new_r_Phi(block.ptr, ins.length, Node.getBufferFromNodeList(ins), mode.ptr));
 	}
 	
 	/** Create a new Pin node */
@@ -235,7 +225,7 @@ public class Graph extends GraphBase {
 	
 	/** Create a new Return node */
 	public final Node newReturn(Node block, Node mem, Node[] ins) {
-		return Node.createWrapper(binding_ircons.new_r_Return(block.ptr, mem.ptr, ins.length, Node.getPointerListFromNodeList(ins)));
+		return Node.createWrapper(binding_ircons.new_r_Return(block.ptr, mem.ptr, ins.length, Node.getBufferFromNodeList(ins)));
 	}
 	
 	/** Create a new Rotl node */
@@ -245,7 +235,7 @@ public class Graph extends GraphBase {
 	
 	/** Create a new Sel node */
 	public final Node newSel(Node block, Node mem, Node ptr, Node[] ins, firm.Entity entity) {
-		return Node.createWrapper(binding_ircons.new_r_Sel(block.ptr, mem.ptr, ptr.ptr, ins.length, Node.getPointerListFromNodeList(ins), entity.ptr));
+		return Node.createWrapper(binding_ircons.new_r_Sel(block.ptr, mem.ptr, ptr.ptr, ins.length, Node.getBufferFromNodeList(ins), entity.ptr));
 	}
 	
 	/** Create a new Shl node */
@@ -264,8 +254,8 @@ public class Graph extends GraphBase {
 	}
 	
 	/** Create a new Start node */
-	public final Node newStart(Node block) {
-		return Node.createWrapper(binding_ircons.new_r_Start(block.ptr));
+	public final Node newStart() {
+		return Node.createWrapper(binding_ircons.new_r_Start(this.ptr));
 	}
 	
 	/** Create a new Store node */
@@ -280,12 +270,12 @@ public class Graph extends GraphBase {
 	
 	/** Create a new Sync node */
 	public final Node newSync(Node block, Node[] ins) {
-		return Node.createWrapper(binding_ircons.new_r_Sync(block.ptr, ins.length, Node.getPointerListFromNodeList(ins)));
+		return Node.createWrapper(binding_ircons.new_r_Sync(block.ptr, ins.length, Node.getBufferFromNodeList(ins)));
 	}
 	
 	/** Create a new Tuple node */
 	public final Node newTuple(Node block, Node[] ins) {
-		return Node.createWrapper(binding_ircons.new_r_Tuple(block.ptr, ins.length, Node.getPointerListFromNodeList(ins)));
+		return Node.createWrapper(binding_ircons.new_r_Tuple(block.ptr, ins.length, Node.getBufferFromNodeList(ins)));
 	}
 	
 	/** Create a new Unknown node */

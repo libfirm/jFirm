@@ -1,5 +1,7 @@
 package firm;
 
+import java.nio.IntBuffer;
+
 import com.sun.jna.Callback;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
@@ -408,9 +410,8 @@ public abstract class GraphBase extends JNAWrapper {
 	public static Node turnIntoTuple(Node node, int outArity) {
 		binding_irgmod.turn_into_tuple(node.ptr, outArity);
 		Node tuple = Node.createWrapper(node.ptr);
-		Graph graph = node.getGraph();
 		for (int i = 0; i < outArity; ++i) {
-			tuple.setPred(i, graph.newBad());
+			tuple.setPred(i, Node.createWrapper(binding_ircons.new_Bad()));
 		}
 		return tuple;
 	}
@@ -483,9 +484,10 @@ public abstract class GraphBase extends JNAWrapper {
 		Pointer op = binding_irnode.get_irn_op(node.ptr);
 		Pointer mode = binding_irnode.get_irn_mode(node.ptr);
 		int arity = binding_irnode.get_irn_arity(node.ptr);
-		Pointer[] ins = new Pointer[arity];
+		IntBuffer ins = IntBuffer.allocate(arity);
 		for (int i = 0; i < arity; ++i) {
-			ins[i] = node.getPred(i).ptr;
+			assert Pointer.SIZE == 4; // There is no PointerBuffer...
+			ins.put(i, (int) Pointer.nativeValue(node.getPred(i).ptr));
 		}
 		Pointer block;
 		if (node.getOpCode() == ir_opcode.iro_Block) {

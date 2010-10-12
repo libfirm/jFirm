@@ -23,7 +23,7 @@
  *          representation.
  * @author  Martin Trapp, Christian Schaefer, Goetz Lindenmaier, Boris Boesler,
  *          Michael Beck
- * @version $Id: ircons.h 28062 2010-10-08 13:36:56Z matze $
+ * @version $Id: ircons.h 28097 2010-10-11 16:52:36Z matze $
  */
 
 /**
@@ -1134,7 +1134,7 @@ typedef enum ir_cons_flags {
 
 /** Constructor for a Block node.
  *
- * Constructs a mature block with the given predecessors. 
+ * Constructs a mature block with the given predecessors.
  *
  * @param *db    A Pointer for  debug information.
  * @param irg    The IR graph the block belongs to.
@@ -1156,7 +1156,7 @@ FIRM_API ir_node *new_rd_Start(dbg_info *db, ir_graph *irg);
  * @param *db    A pointer for  debug information.
  * @param *irg   The IR graph the node  belongs to.
  */
-FIRM_API ir_node *new_rd_End(dbg_info *db, ir_graph *irg);
+FIRM_API ir_node *new_rd_End(dbg_info *db, ir_graph *irg, int arity, ir_node *in[]);
 
 /** Constructor for a Jmp node.
  *
@@ -1947,7 +1947,7 @@ FIRM_API ir_node *new_r_Block(ir_graph *irg, int arity, ir_node *in[]);
 FIRM_API ir_node *new_r_Start(ir_graph *irg);
 
 /** Constructor for a End node. */
-FIRM_API ir_node *new_r_End(ir_graph *irg);
+FIRM_API ir_node *new_r_End(ir_graph *irg, int arity, ir_node *in[]);
 
 /** Constructor for a Jmp node.
  *
@@ -2662,7 +2662,7 @@ FIRM_API ir_node *new_d_Start(dbg_info *db);
  *
  * @param *db     A pointer for debug information.
  */
-FIRM_API ir_node *new_d_End(dbg_info *db);
+FIRM_API ir_node *new_d_End(dbg_info *db, int arity, ir_node *in[]);
 
 /** Constructor for a Jmp node.
  *
@@ -3401,7 +3401,7 @@ FIRM_API ir_node *new_Start(void);
  *
  * Adds the node to the block in current_ir_block.
  */
-FIRM_API ir_node *new_End(void);
+FIRM_API ir_node *new_End(int arity, ir_node *in[]);
 
 /** Constructor for a Jump node.
  *

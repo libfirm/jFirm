@@ -21,7 +21,7 @@
  * @file
  * @brief   Flags to control optimizations.
  * @author  Christian Schaefer, Goetz Lindenmaier, Michael Beck
- * @version $Id: irflag.h 28021 2010-09-22 14:07:43Z matze $
+ * @version $Id: irflag.h 28096 2010-10-11 15:00:10Z zwinkau $
  * @brief
  * Flags to customize the behavior of libfirm.
  *

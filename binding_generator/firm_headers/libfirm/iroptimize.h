@@ -20,7 +20,7 @@
 /**
  * @file
  * @brief   Available Optimisations of libFirm.
- * @version $Id: iroptimize.h 28076 2010-10-08 19:29:19Z beck $
+ * @version $Id: iroptimize.h 28104 2010-10-12 10:25:56Z zwinkau $
  */
 #ifndef FIRM_IROPTIMIZE_H
 #define FIRM_IROPTIMIZE_H
@@ -72,16 +72,6 @@ FIRM_API void opt_jumpthreading(ir_graph* irg);
 FIRM_API ir_graph_pass_t *opt_jumpthreading_pass(const char *name);
 
 /**
- * Creates an ir_graph pass for opt_loopunroll().
- *
- * @param name     the name of this pass or NULL
- *
- * @return  the newly created ir_graph pass
- */
-FIRM_API ir_graph_pass_t *opt_loopunroll_pass(const char *name);
-
-
-/**
  * Try to simplify boolean expression in the given ir graph.
  * eg. x < 5 && x < 6 becomes x < 5
  *
@@ -115,15 +105,6 @@ FIRM_API int conv_opt(ir_graph *irg);
  * @return  the newly created ir_graph pass
  */
 FIRM_API ir_graph_pass_t *conv_opt_pass(const char *name);
-
-/**
- * Do the scalar replacement optimization.
- * Make a date flow analyze and split the
- * data flow edges.
- *
- * @param irg  the graph which should be optimized
- */
-FIRM_API void data_flow_scalar_replacement_opt(ir_graph *irg);
 
 /**
  * A callback that checks whether a entity is an allocation
@@ -630,9 +611,6 @@ FIRM_API int scalar_replacement_opt(ir_graph *irg);
  * @return  the newly created ir_graph pass
  */
 FIRM_API ir_graph_pass_t *scalar_replacement_opt_pass(const char *name);
-
-/** Performs strength reduction for the passed graph. */
-FIRM_API void reduce_strength(ir_graph *irg);
 
 /**
  * Optimizes tail-recursion calls by converting them into loops.

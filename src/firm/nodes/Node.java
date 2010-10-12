@@ -1,5 +1,7 @@
 package firm.nodes;
 
+import java.nio.Buffer;
+import java.nio.IntBuffer;
 import java.util.Iterator;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -33,6 +35,15 @@ public abstract class Node extends JNAWrapper {
 			ptrlist[i] = list[i].ptr;
 		}
 		return ptrlist;
+	}
+	
+	public static IntBuffer getBufferFromNodeList(Node[] list) {
+		// TODO assumes 32-bit int and pointer
+		IntBuffer buf = IntBuffer.allocate(list.length);
+		for (int i = 0; i < list.length; ++i) {
+			buf.put(i, (int) Pointer.nativeValue(list[i].ptr));
+		}
+		return buf;
 	}
 	
 	public Mode getMode() {

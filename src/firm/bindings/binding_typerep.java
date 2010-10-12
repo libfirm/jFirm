@@ -2,6 +2,7 @@ package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import java.nio.Buffer;
 
 
 public class binding_typerep {
@@ -638,7 +639,6 @@ public class binding_typerep {
 	public static native void set_entity_linkage(Pointer entity, /* ir_linkage */int linkage);
 	public static native void add_entity_linkage(Pointer entity, /* ir_linkage */int linkage);
 	public static native void remove_entity_linkage(Pointer entity, /* ir_linkage */int linkage);
-	public static native int is_entity_constant(Pointer ent);
 	public static native /* ir_volatility */int get_entity_volatility(Pointer ent);
 	public static native void set_entity_volatility(Pointer ent, /* ir_volatility */int vol);
 	public static native String get_volatility_name(/* ir_volatility */int var);
@@ -791,7 +791,7 @@ public class binding_typerep {
 	public static native int get_class_member_index(Pointer clss, Pointer mem);
 	public static native Pointer get_class_member_by_name(Pointer clss, Pointer name);
 	public static native void set_class_member(Pointer clss, Pointer member, int pos);
-	public static native void set_class_members(Pointer clss, Pointer[] members, int arity);
+	public static native void set_class_members(Pointer clss, Buffer members, int arity);
 	public static native void add_class_subtype(Pointer clss, Pointer subtype);
 	public static native int get_class_n_subtypes(Pointer clss);
 	public static native Pointer get_class_subtype(Pointer clss, int pos);
@@ -932,12 +932,6 @@ public class binding_typerep {
 	public static native Pointer get_associated_type(Pointer tp);
 	public static native Pointer frame_alloc_area(Pointer frame_type, int size, int alignment, int at_start);
 	public static native com.sun.jna.NativeLong get_type_nr(Pointer tp);
-	public static native int compare_names(Pointer tp1, Pointer tp2);
-	public static native int compare_strict(Pointer tp1, Pointer tp2);
-	public static native int firm_hash_name(Pointer tp);
-	public static native Pointer mature_type(Pointer tp);
-	public static native Pointer mature_type_free(Pointer tp);
-	public static native Pointer mature_type_free_entities(Pointer tp);
 	public static native void type_walk(Pointer pre, Pointer post, Pointer env);
 	public static native void type_walk_prog(Pointer pre, Pointer post, Pointer env);
 	public static native void type_walk_irg(Pointer irg, Pointer pre, Pointer post, Pointer env);

@@ -2,6 +2,7 @@ package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import java.nio.Buffer;
 
 
 public class binding_irop {

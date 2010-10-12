@@ -38,7 +38,7 @@ def format_parameterlist(parameterlist):
 def format_nodearguments(node):
 	def format_argument(arg):
 		if arg['type'] == "Node[]":
-			return arg["name"] + ".length, Node.getPointerListFromNodeList(" + arg["name"] + ")"
+			return arg["name"] + ".length, Node.getBufferFromNodeList(" + arg["name"] + ")"
 		elif "to_wrapper" in arg:
 			return arg["to_wrapper"] % arg['name']
 		else:
@@ -93,10 +93,10 @@ def format_binding_args(arglist, need_graph = False):
 			res += ", "
 		first = False
 		if arg["type"] == "Node[]":
-			res += arg["name"] + ".length, Node.getPointerListFromNodeList(" + arg["name"] + ")"
+			res += arg["name"] + ".length, Node.getBufferFromNodeList(" + arg["name"] + ")"
 			continue
 		name = format_filter_keywords(arg["name"])
-		if "to_wrapper" in arg:
+		if "to_Wrapper" in arg:
 			res += arg["to_wrapper"] % name
 		else:
 			res += name + ".ptr"
@@ -191,11 +191,6 @@ def get_java_type(type):
 		wrap_type    = "Pointer"
 		to_wrapper   = "%s.ptr"
 		from_wrapper = "new firm.Ident(%s)"
-	elif type == "ident**":
-		java_type    = "Pointer[]"
-		wrap_type    = "Pointer[]"
-		to_wrapper   = "%s"
-		from_wrapper = "%s"
 	elif type == "pn_Cmp":
 		java_type    = "int"
 		wrap_type    = "int"
@@ -266,7 +261,7 @@ def get_java_type(type):
 		wrap_type    = "int"
 		to_wrapper   = "%s.val"
 		from_wrapper = "firm.bindings.binding_irnode.cond_jmp_predicate.getEnum(%s)"
-	elif type == "ident**" or type == "ir_asm_constraint*":
+	elif type in ("ir_node**", "ident**", "ir_asm_constraint*"):
 		# cheat...
 		java_type    = "Pointer"
 		wrap_type    = "Pointer"

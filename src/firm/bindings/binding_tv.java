@@ -2,6 +2,7 @@ package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import java.nio.Buffer;
 
 
 public class binding_tv {
@@ -1432,7 +1433,6 @@ public class binding_tv {
 	public static native void set_entity_linkage(Pointer entity, /* ir_linkage */int linkage);
 	public static native void add_entity_linkage(Pointer entity, /* ir_linkage */int linkage);
 	public static native void remove_entity_linkage(Pointer entity, /* ir_linkage */int linkage);
-	public static native int is_entity_constant(Pointer ent);
 	public static native /* ir_volatility */int get_entity_volatility(Pointer ent);
 	public static native void set_entity_volatility(Pointer ent, /* ir_volatility */int vol);
 	public static native String get_volatility_name(/* ir_volatility */int var);
@@ -1585,7 +1585,7 @@ public class binding_tv {
 	public static native int get_class_member_index(Pointer clss, Pointer mem);
 	public static native Pointer get_class_member_by_name(Pointer clss, Pointer name);
 	public static native void set_class_member(Pointer clss, Pointer member, int pos);
-	public static native void set_class_members(Pointer clss, Pointer[] members, int arity);
+	public static native void set_class_members(Pointer clss, Buffer members, int arity);
 	public static native void add_class_subtype(Pointer clss, Pointer subtype);
 	public static native int get_class_n_subtypes(Pointer clss);
 	public static native Pointer get_class_subtype(Pointer clss, int pos);
@@ -1726,12 +1726,6 @@ public class binding_tv {
 	public static native Pointer get_associated_type(Pointer tp);
 	public static native Pointer frame_alloc_area(Pointer frame_type, int size, int alignment, int at_start);
 	public static native com.sun.jna.NativeLong get_type_nr(Pointer tp);
-	public static native int compare_names(Pointer tp1, Pointer tp2);
-	public static native int compare_strict(Pointer tp1, Pointer tp2);
-	public static native int firm_hash_name(Pointer tp);
-	public static native Pointer mature_type(Pointer tp);
-	public static native Pointer mature_type_free(Pointer tp);
-	public static native Pointer mature_type_free_entities(Pointer tp);
 	public static native void type_walk(Pointer pre, Pointer post, Pointer env);
 	public static native void type_walk_prog(Pointer pre, Pointer post, Pointer env);
 	public static native void type_walk_irg(Pointer irg, Pointer pre, Pointer post, Pointer env);
@@ -1967,8 +1961,8 @@ public class binding_tv {
 	public static native void set_ASM_input_constraints(Pointer node, Pointer input_constraints);
 	public static native Pointer get_ASM_output_constraints(Pointer node);
 	public static native void set_ASM_output_constraints(Pointer node, Pointer output_constraints);
-	public static native Pointer[] get_ASM_clobbers(Pointer node);
-	public static native void set_ASM_clobbers(Pointer node, Pointer[] clobbers);
+	public static native Buffer get_ASM_clobbers(Pointer node);
+	public static native void set_ASM_clobbers(Pointer node, Buffer clobbers);
 	public static native Pointer get_ASM_text(Pointer node);
 	public static native void set_ASM_text(Pointer node, Pointer text);
 	public static native Pointer get_Add_left(Pointer node);
@@ -2181,7 +2175,7 @@ public class binding_tv {
 	public static native void set_Sub_right(Pointer node, Pointer right);
 	public static native int is_ir_node(Pointer thing);
 	public static native int get_irn_arity(Pointer node);
-	public static native void set_irn_in(Pointer node, int arity, Pointer[] in);
+	public static native void set_irn_in(Pointer node, int arity, Buffer in);
 	public static native Pointer get_irn_n(Pointer node, int n);
 	public static native int add_irn_dep(Pointer node, Pointer dep);
 	public static native void add_irn_deps(Pointer tgt, Pointer src);
@@ -2213,7 +2207,7 @@ public class binding_tv {
 	public static native /* op_pin_state */int get_irn_pinned(Pointer node);
 	public static native void set_irn_pinned(Pointer node, /* op_pin_state */int state);
 	public static native /* op_pin_state */int is_irn_pinned_in_irg(Pointer node);
-	public static native Pointer new_ir_node(Pointer db, Pointer irg, Pointer block, Pointer op, Pointer mode, int arity, Pointer[] in);
+	public static native Pointer new_ir_node(Pointer db, Pointer irg, Pointer block, Pointer op, Pointer mode, int arity, Buffer in);
 	public static native Pointer get_nodes_block(Pointer node);
 	public static native void set_nodes_block(Pointer node, Pointer block);
 	public static native Pointer is_frame_pointer(Pointer n);
@@ -2247,11 +2241,11 @@ public class binding_tv {
 	public static native Pointer get_End_keepalive(Pointer end, int pos);
 	public static native void add_End_keepalive(Pointer end, Pointer ka);
 	public static native void set_End_keepalive(Pointer end, int pos, Pointer ka);
-	public static native void set_End_keepalives(Pointer end, int n, Pointer[] in);
+	public static native void set_End_keepalives(Pointer end, int n, Buffer in);
 	public static native void remove_End_keepalive(Pointer end, Pointer irn);
 	public static native void remove_End_Bads_and_doublets(Pointer end);
 	public static native void free_End(Pointer end);
-	public static native Pointer[] get_Return_res_arr(Pointer node);
+	public static native Buffer get_Return_res_arr(Pointer node);
 	public static native int get_Return_n_ress(Pointer node);
 	public static native Pointer get_Return_res(Pointer node, int pos);
 	public static native void set_Return_res(Pointer node, int pos, Pointer res);
@@ -2268,11 +2262,11 @@ public class binding_tv {
 	public static native void set_SymConst_entity(Pointer node, Pointer ent);
 	public static native Pointer get_SymConst_enum(Pointer node);
 	public static native void set_SymConst_enum(Pointer node, Pointer ec);
-	public static native Pointer[] get_Sel_index_arr(Pointer node);
+	public static native Buffer get_Sel_index_arr(Pointer node);
 	public static native int get_Sel_n_indexs(Pointer node);
 	public static native Pointer get_Sel_index(Pointer node, int pos);
 	public static native void set_Sel_index(Pointer node, int pos, Pointer index);
-	public static native Pointer[] get_Call_param_arr(Pointer node);
+	public static native Buffer get_Call_param_arr(Pointer node);
 	public static native int get_Call_n_params(Pointer node);
 	public static native Pointer get_Call_param(Pointer node, int pos);
 	public static native void set_Call_param(Pointer node, int pos, Pointer param);
@@ -2280,9 +2274,9 @@ public class binding_tv {
 	public static native int Call_has_callees(Pointer node);
 	public static native int get_Call_n_callees(Pointer node);
 	public static native Pointer get_Call_callee(Pointer node, int pos);
-	public static native void set_Call_callee_arr(Pointer node, int n, Pointer[] arr);
+	public static native void set_Call_callee_arr(Pointer node, int n, Buffer arr);
 	public static native void remove_Call_callee_arr(Pointer node);
-	public static native Pointer[] get_Builtin_param_arr(Pointer node);
+	public static native Buffer get_Builtin_param_arr(Pointer node);
 	public static native int get_Builtin_n_params(Pointer node);
 	public static native Pointer get_Builtin_param(Pointer node, int pos);
 	public static native void set_Builtin_param(Pointer node, int pos, Pointer param);
@@ -2301,7 +2295,7 @@ public class binding_tv {
 	public static native int is_Cast_upcast(Pointer node);
 	public static native int is_Cast_downcast(Pointer node);
 	public static native int is_Phi0(Pointer n);
-	public static native Pointer[] get_Phi_preds_arr(Pointer node);
+	public static native Buffer get_Phi_preds_arr(Pointer node);
 	public static native int get_Phi_n_preds(Pointer node);
 	public static native Pointer get_Phi_pred(Pointer node, int pos);
 	public static native void set_Phi_pred(Pointer node, int pos, Pointer pred);
@@ -2320,7 +2314,7 @@ public class binding_tv {
 	public static native void set_Store_volatility(Pointer node, /* ir_volatility */int volatility);
 	public static native /* ir_align */int get_Store_align(Pointer node);
 	public static native void set_Store_align(Pointer node, /* ir_align */int align);
-	public static native Pointer[] get_Sync_preds_arr(Pointer node);
+	public static native Buffer get_Sync_preds_arr(Pointer node);
 	public static native int get_Sync_n_preds(Pointer node);
 	public static native Pointer get_Sync_pred(Pointer node, int pos);
 	public static native void set_Sync_pred(Pointer node, int pos, Pointer pred);
@@ -2328,7 +2322,7 @@ public class binding_tv {
 	public static native com.sun.jna.NativeLong get_Proj_proj(Pointer node);
 	public static native void set_Proj_proj(Pointer node, com.sun.jna.NativeLong proj);
 	public static native int is_arg_Proj(Pointer node);
-	public static native Pointer[] get_Tuple_preds_arr(Pointer node);
+	public static native Buffer get_Tuple_preds_arr(Pointer node);
 	public static native int get_Tuple_n_preds(Pointer node);
 	public static native Pointer get_Tuple_pred(Pointer node, int pos);
 	public static native void set_Tuple_pred(Pointer node, int pos, Pointer pred);
@@ -2353,7 +2347,6 @@ public class binding_tv {
 	public static native Pointer get_irn_type_attr(Pointer n);
 	public static native Pointer get_irn_entity_attr(Pointer n);
 	public static native int is_irn_constlike(Pointer node);
-	public static native int is_irn_always_opt(Pointer node);
 	public static native int is_irn_keep(Pointer node);
 	public static native int is_irn_start_block_placed(Pointer node);
 	public static native int is_irn_machine_op(Pointer node);
@@ -2413,7 +2406,7 @@ public class binding_tv {
 	public static native Pointer tarval_quo(Pointer a, Pointer b);
 	public static native Pointer tarval_div(Pointer a, Pointer b);
 	public static native Pointer tarval_mod(Pointer a, Pointer b);
-	public static native Pointer tarval_divmod(Pointer a, Pointer b, Pointer[] mod_res);
+	public static native Pointer tarval_divmod(Pointer a, Pointer b, Buffer mod_res);
 	public static native Pointer tarval_abs(Pointer a);
 	public static native Pointer tarval_and(Pointer a, Pointer b);
 	public static native Pointer tarval_andnot(Pointer a, Pointer b);
