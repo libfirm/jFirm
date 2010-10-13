@@ -3,12 +3,6 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.binding_ircons;
-import firm.bindings.binding_irnode;
-/* There are "unused" warnings in some classes,
-	but suppressing these, emits warnings, because
-	of useless suppress in others. Just ignore this! */
-
 public class Store extends Node {
 
 	public Store(Pointer ptr) {
@@ -18,32 +12,32 @@ public class Store extends Node {
 	
 	
 	public Node getMem() {
-		return createWrapper(binding_irnode.get_Store_mem(ptr));
+		return createWrapper(firm.bindings.binding_irnode.get_Store_mem(ptr));
 	}
 
 	
 	public void setMem(Node mem) {
-		binding_irnode.set_Store_mem(this.ptr, mem.ptr);
+		firm.bindings.binding_irnode.set_Store_mem(this.ptr, mem.ptr);
 	}
 	
 	
 	public Node getPtr() {
-		return createWrapper(binding_irnode.get_Store_ptr(ptr));
+		return createWrapper(firm.bindings.binding_irnode.get_Store_ptr(ptr));
 	}
 
 	
 	public void setPtr(Node ptr) {
-		binding_irnode.set_Store_ptr(this.ptr, ptr.ptr);
+		firm.bindings.binding_irnode.set_Store_ptr(this.ptr, ptr.ptr);
 	}
 	
 	
 	public Node getValue() {
-		return createWrapper(binding_irnode.get_Store_value(ptr));
+		return createWrapper(firm.bindings.binding_irnode.get_Store_value(ptr));
 	}
 
 	
 	public void setValue(Node value) {
-		binding_irnode.set_Store_value(this.ptr, value.ptr);
+		firm.bindings.binding_irnode.set_Store_value(this.ptr, value.ptr);
 	}
 	
 

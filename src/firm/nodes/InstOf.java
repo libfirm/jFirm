@@ -3,12 +3,6 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.binding_ircons;
-import firm.bindings.binding_irnode;
-/* There are "unused" warnings in some classes,
-	but suppressing these, emits warnings, because
-	of useless suppress in others. Just ignore this! */
-
 public class InstOf extends Node {
 
 	public InstOf(Pointer ptr) {
@@ -18,33 +12,33 @@ public class InstOf extends Node {
 	
 	
 	public Node getStore() {
-		return createWrapper(binding_irnode.get_InstOf_store(ptr));
+		return createWrapper(firm.bindings.binding_irnode.get_InstOf_store(ptr));
 	}
 
 	
 	public void setStore(Node store) {
-		binding_irnode.set_InstOf_store(this.ptr, store.ptr);
+		firm.bindings.binding_irnode.set_InstOf_store(this.ptr, store.ptr);
 	}
 	
 	
 	public Node getObj() {
-		return createWrapper(binding_irnode.get_InstOf_obj(ptr));
+		return createWrapper(firm.bindings.binding_irnode.get_InstOf_obj(ptr));
 	}
 
 	
 	public void setObj(Node obj) {
-		binding_irnode.set_InstOf_obj(this.ptr, obj.ptr);
+		firm.bindings.binding_irnode.set_InstOf_obj(this.ptr, obj.ptr);
 	}
 	
 
 	
 	public firm.Type getType() {
-		Pointer _res = binding_irnode.get_InstOf_type(ptr);
+		Pointer _res = firm.bindings.binding_irnode.get_InstOf_type(ptr);
 		return firm.Type.createWrapper(_res);
 	}
 
 	public void setType(firm.Type _val) {
-		binding_irnode.set_InstOf_type(this.ptr, _val.ptr);
+		firm.bindings.binding_irnode.set_InstOf_type(this.ptr, _val.ptr);
 	}
 	
 

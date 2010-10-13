@@ -2,7 +2,6 @@ package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
-import java.nio.Buffer;
 
 
 public class binding_iroptimize {
@@ -708,8 +707,8 @@ public class binding_iroptimize {
 	public static native void set_ASM_input_constraints(Pointer node, Pointer input_constraints);
 	public static native Pointer get_ASM_output_constraints(Pointer node);
 	public static native void set_ASM_output_constraints(Pointer node, Pointer output_constraints);
-	public static native Buffer get_ASM_clobbers(Pointer node);
-	public static native void set_ASM_clobbers(Pointer node, Buffer clobbers);
+	public static native java.nio.Buffer get_ASM_clobbers(Pointer node);
+	public static native void set_ASM_clobbers(Pointer node, java.nio.Buffer clobbers);
 	public static native Pointer get_ASM_text(Pointer node);
 	public static native void set_ASM_text(Pointer node, Pointer text);
 	public static native Pointer get_Add_left(Pointer node);
@@ -994,8 +993,8 @@ public class binding_iroptimize {
 	public static native Pointer place_code_pass(String name);
 	public static native void fixpoint_vrp(Pointer _0);
 	public static native Pointer fixpoint_vrp_irg_pass(String name);
-	public static native int value_not_zero(Pointer n, Buffer confirm);
-	public static native int value_not_null(Pointer n, Buffer confirm);
+	public static native int value_not_zero(Pointer n, java.nio.Buffer confirm);
+	public static native int value_not_null(Pointer n, java.nio.Buffer confirm);
 	public static native /* ir_value_classify_sign */int classify_value_sign(Pointer n);
 	public static native Pointer computed_value_Cmp_Confirm(Pointer cmp, Pointer left, Pointer right, /* pn_Cmp */int pnc);
 }

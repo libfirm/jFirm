@@ -2,10 +2,9 @@ package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
-import java.nio.Buffer;
 
 
-public class binding_irvrfy {
+public class binding_irverify {
 	static { Native.register("firm"); }
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
@@ -217,8 +216,8 @@ public class binding_irvrfy {
 		}
 	}
 	public static enum irg_verify_flags_t {
-		VRFY_NORMAL(0),
-		VRFY_ENFORCE_SSA(1);
+		VERIFY_NORMAL(0),
+		VERIFY_ENFORCE_SSA(1);
 		public final int val;
 		private static class C { static int next_val; }
 
@@ -262,11 +261,11 @@ public class binding_irvrfy {
 			return null;
 		}
 	}
-	public static native int irn_vrfy(Pointer checknode);
-	public static native int irn_vrfy_irg(Pointer checknode, Pointer irg);
-	public static native int irn_vrfy_irg_dump(Pointer checknode, Pointer irg, Buffer bad_string);
+	public static native int irn_verify(Pointer checknode);
+	public static native int irn_verify_irg(Pointer checknode, Pointer irg);
+	public static native int irn_verify_irg_dump(Pointer checknode, Pointer irg, java.nio.Buffer bad_string);
 	public static native int irg_verify(Pointer irg, int flags);
 	public static native Pointer irg_verify_pass(String name, int flags);
-	public static native int irg_vrfy_bads(Pointer irg, int flags);
-	public static native void vrfy_enable_entity_tests(int enable);
+	public static native int irg_verify_bads(Pointer irg, int flags);
+	public static native void verify_enable_entity_tests(int enable);
 }

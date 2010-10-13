@@ -2,7 +2,6 @@ package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
-import java.nio.Buffer;
 
 
 public class binding_typerep {
@@ -791,7 +790,7 @@ public class binding_typerep {
 	public static native int get_class_member_index(Pointer clss, Pointer mem);
 	public static native Pointer get_class_member_by_name(Pointer clss, Pointer name);
 	public static native void set_class_member(Pointer clss, Pointer member, int pos);
-	public static native void set_class_members(Pointer clss, Buffer members, int arity);
+	public static native void set_class_members(Pointer clss, java.nio.Buffer members, int arity);
 	public static native void add_class_subtype(Pointer clss, Pointer subtype);
 	public static native int get_class_n_subtypes(Pointer clss);
 	public static native Pointer get_class_subtype(Pointer clss, int pos);

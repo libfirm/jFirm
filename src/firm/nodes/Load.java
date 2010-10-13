@@ -3,12 +3,6 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.binding_ircons;
-import firm.bindings.binding_irnode;
-/* There are "unused" warnings in some classes,
-	but suppressing these, emits warnings, because
-	of useless suppress in others. Just ignore this! */
-
 public class Load extends Node {
 
 	public Load(Pointer ptr) {
@@ -18,33 +12,33 @@ public class Load extends Node {
 	
 	
 	public Node getMem() {
-		return createWrapper(binding_irnode.get_Load_mem(ptr));
+		return createWrapper(firm.bindings.binding_irnode.get_Load_mem(ptr));
 	}
 
 	
 	public void setMem(Node mem) {
-		binding_irnode.set_Load_mem(this.ptr, mem.ptr);
+		firm.bindings.binding_irnode.set_Load_mem(this.ptr, mem.ptr);
 	}
 	
 	
 	public Node getPtr() {
-		return createWrapper(binding_irnode.get_Load_ptr(ptr));
+		return createWrapper(firm.bindings.binding_irnode.get_Load_ptr(ptr));
 	}
 
 	
 	public void setPtr(Node ptr) {
-		binding_irnode.set_Load_ptr(this.ptr, ptr.ptr);
+		firm.bindings.binding_irnode.set_Load_ptr(this.ptr, ptr.ptr);
 	}
 	
 
 	
 	public firm.Mode getLoadMode() {
-		Pointer _res = binding_irnode.get_Load_mode(ptr);
+		Pointer _res = firm.bindings.binding_irnode.get_Load_mode(ptr);
 		return new firm.Mode(_res);
 	}
 
 	public void setLoadMode(firm.Mode _val) {
-		binding_irnode.set_Load_mode(this.ptr, _val.ptr);
+		firm.bindings.binding_irnode.set_Load_mode(this.ptr, _val.ptr);
 	}
 	
 

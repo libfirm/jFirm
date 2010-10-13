@@ -18,6 +18,33 @@ for node in ir_spec.nodes:
 	# ASM n_clobbers has no setter, currently
 	if node.name == "ASM":
 		continue
+	if node.name == "Block":
+		node.java_add = '''
+	public void addPred(Node node) {
+		firm.bindings.binding_ircons.add_immBlock_pred(ptr, node.ptr);
+	}
+
+	public void mature() {
+		firm.bindings.binding_ircons.mature_immBlock(ptr);
+	}
+
+	@Override
+	public Block getBlock() {
+		return null;
+	}
+
+	public boolean blockVisited() {
+		return 0 != firm.bindings.binding_irnode.Block_block_visited(ptr);
+	}
+
+	public void markBlockVisited() {
+		firm.bindings.binding_irnode.mark_Block_block_visited(ptr);
+	}
+
+	public boolean isBad() {
+		return firm.bindings.binding_irnode.is_Bad(ptr) != 0;
+	}
+'''
 	# TODO short workaround
 	if node.name in ("End"):
 		node.noconstructor = True
@@ -368,12 +395,6 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.binding_ircons;
-import firm.bindings.binding_irnode;
-/* There are "unused" warnings in some classes,
-	but suppressing these, emits warnings, because
-	of useless suppress in others. Just ignore this! */
-
 public {{"abstract "|ifabstract(node)}}class {{node.classname}} extends {{node.parent.classname}} {
 
 	public {{node.classname}}(Pointer ptr) {
@@ -383,23 +404,23 @@ public {{"abstract "|ifabstract(node)}}class {{node.classname}} extends {{node.p
 	{% for input in node.ins %}
 	{{"@Override"|if(node.parent.name != "Op")}}
 	public Node get{{input|CamelCase}}() {
-		return createWrapper(binding_irnode.get_{{node.name}}_{{input}}(ptr));
+		return createWrapper(firm.bindings.binding_irnode.get_{{node.name}}_{{input}}(ptr));
 	}
 
 	{{"@Override"|if(node.parent.name != "Op")}}
 	public void set{{input|CamelCase}}(Node {{input|filterkeywords}}) {
-		binding_irnode.set_{{node.name}}_{{input}}(this.ptr, {{input|filterkeywords}}.ptr);
+		firm.bindings.binding_irnode.set_{{node.name}}_{{input}}(this.ptr, {{input|filterkeywords}}.ptr);
 	}
 	{% endfor %}
 
 	{% for attr in node.attrs %}
 	public {{attr.java_type}} get{{attr.java_name|CamelCase}}() {
-		{{attr.wrap_type}} _res = binding_irnode.get_{{node.name}}_{{attr.name}}(ptr);
+		{{attr.wrap_type}} _res = firm.bindings.binding_irnode.get_{{node.name}}_{{attr.name}}(ptr);
 		return {{attr.from_wrapper % "_res"}};
 	}
 
 	public void set{{attr.java_name|CamelCase}}({{attr.java_type}} _val) {
-		binding_irnode.set_{{node.name}}_{{attr.name}}(this.ptr, {{attr.to_wrapper % "_val"}});
+		firm.bindings.binding_irnode.set_{{node.name}}_{{attr.name}}(this.ptr, {{attr.to_wrapper % "_val"}});
 	}
 	{% endfor %}
 
@@ -428,7 +449,6 @@ package firm;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.binding_ircons;
 import firm.nodes.Node;
 
 class ConstructionBase {
@@ -439,7 +459,7 @@ class ConstructionBase {
 	{% for node in nodes %}
 	{% if not isAbstract(node) and not node.noconstructor %}
 	public Node new{{node.classname}}({{node.arguments|argdecls}}) {
-		Pointer result_ptr = binding_ircons.new_{{node.name}}({{node.arguments|bindingargs}});
+		Pointer result_ptr = firm.bindings.binding_ircons.new_{{node.name}}({{node.arguments|bindingargs}});
 		return Node.createWrapper(result_ptr);
 	}
 	{% endif %}
@@ -526,7 +546,6 @@ package firm;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_irgraph;
-import firm.bindings.binding_ircons;
 import firm.nodes.Node;
 
 /**
@@ -562,7 +581,7 @@ public class Graph extends GraphBase {
 			{{node|blockparameter}}
 			{{node|nodeparameters}}
 		{%- endfilter %}) {
-		return Node.createWrapper(binding_ircons.new_r_{{node.name}}(
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_{{node.name}}(
 			{%- filter arguments %}
 				{{node|blockargument}}
 				{{node|nodearguments}}

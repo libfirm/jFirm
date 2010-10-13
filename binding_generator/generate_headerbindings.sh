@@ -6,7 +6,7 @@
 
 FIRM_INC=firm_headers
 
-for i in lowering irgmod iredges irmode tv ircons irnode firm_common irdump iroptimize irgraph typerep ident irprog be irvrfy irflag irop irgopt irconsconfirm; do
+for i in lowering irgmod iredges irmode tv ircons irnode firm_common irdump iroptimize irgraph typerep ident irprog be irverify irflag irop irgopt irconsconfirm; do
 	RES="../src/firm/bindings/binding_$i.java"
 	TMP="/tmp/tmp.java"
 	echo " * Creating $RES"

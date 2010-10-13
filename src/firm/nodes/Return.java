@@ -3,12 +3,6 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.binding_ircons;
-import firm.bindings.binding_irnode;
-/* There are "unused" warnings in some classes,
-	but suppressing these, emits warnings, because
-	of useless suppress in others. Just ignore this! */
-
 public class Return extends Node {
 
 	public Return(Pointer ptr) {
@@ -18,12 +12,12 @@ public class Return extends Node {
 	
 	
 	public Node getMem() {
-		return createWrapper(binding_irnode.get_Return_mem(ptr));
+		return createWrapper(firm.bindings.binding_irnode.get_Return_mem(ptr));
 	}
 
 	
 	public void setMem(Node mem) {
-		binding_irnode.set_Return_mem(this.ptr, mem.ptr);
+		firm.bindings.binding_irnode.set_Return_mem(this.ptr, mem.ptr);
 	}
 	
 

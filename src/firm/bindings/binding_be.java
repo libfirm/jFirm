@@ -2,7 +2,6 @@ package firm.bindings;
 /* WARNING: Automatically generated file */
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
-import java.nio.Buffer;
 
 
 public class binding_be {
@@ -827,7 +826,7 @@ public class binding_be {
 	public static native Pointer arch_dep_replace_mul_with_shifts(Pointer irn);
 	public static native Pointer arch_dep_replace_div_by_const(Pointer irn);
 	public static native Pointer arch_dep_replace_mod_by_const(Pointer irn);
-	public static native void arch_dep_replace_divmod_by_const(Buffer div, Buffer mod, Pointer irn);
+	public static native void arch_dep_replace_divmod_by_const(java.nio.Buffer div, java.nio.Buffer mod, Pointer irn);
 	public static native void lower_calls_with_compounds(Pointer params);
 	public static native void lower_CopyB(Pointer irg, int max_size, int native_mode_bytes);
 	public static native void lower_switch(Pointer irg, int spare_size, int allow_out_of_bounds);
@@ -933,8 +932,8 @@ public class binding_be {
 	public static native void set_ASM_input_constraints(Pointer node, Pointer input_constraints);
 	public static native Pointer get_ASM_output_constraints(Pointer node);
 	public static native void set_ASM_output_constraints(Pointer node, Pointer output_constraints);
-	public static native Buffer get_ASM_clobbers(Pointer node);
-	public static native void set_ASM_clobbers(Pointer node, Buffer clobbers);
+	public static native java.nio.Buffer get_ASM_clobbers(Pointer node);
+	public static native void set_ASM_clobbers(Pointer node, java.nio.Buffer clobbers);
 	public static native Pointer get_ASM_text(Pointer node);
 	public static native void set_ASM_text(Pointer node, Pointer text);
 	public static native Pointer get_Add_left(Pointer node);
@@ -1219,8 +1218,8 @@ public class binding_be {
 	public static native Pointer place_code_pass(String name);
 	public static native void fixpoint_vrp(Pointer _0);
 	public static native Pointer fixpoint_vrp_irg_pass(String name);
-	public static native int value_not_zero(Pointer n, Buffer confirm);
-	public static native int value_not_null(Pointer n, Buffer confirm);
+	public static native int value_not_zero(Pointer n, java.nio.Buffer confirm);
+	public static native int value_not_null(Pointer n, java.nio.Buffer confirm);
 	public static native /* ir_value_classify_sign */int classify_value_sign(Pointer n);
 	public static native Pointer computed_value_Cmp_Confirm(Pointer cmp, Pointer left, Pointer right, /* pn_Cmp */int pnc);
 	public static native void be_opt_register();

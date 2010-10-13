@@ -3,12 +3,6 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.binding_ircons;
-import firm.bindings.binding_irnode;
-/* There are "unused" warnings in some classes,
-	but suppressing these, emits warnings, because
-	of useless suppress in others. Just ignore this! */
-
 public class Borrow extends Binop {
 
 	public Borrow(Pointer ptr) {
@@ -18,22 +12,22 @@ public class Borrow extends Binop {
 	
 	@Override
 	public Node getLeft() {
-		return createWrapper(binding_irnode.get_Borrow_left(ptr));
+		return createWrapper(firm.bindings.binding_irnode.get_Borrow_left(ptr));
 	}
 
 	@Override
 	public void setLeft(Node left) {
-		binding_irnode.set_Borrow_left(this.ptr, left.ptr);
+		firm.bindings.binding_irnode.set_Borrow_left(this.ptr, left.ptr);
 	}
 	
 	@Override
 	public Node getRight() {
-		return createWrapper(binding_irnode.get_Borrow_right(ptr));
+		return createWrapper(firm.bindings.binding_irnode.get_Borrow_right(ptr));
 	}
 
 	@Override
 	public void setRight(Node right) {
-		binding_irnode.set_Borrow_right(this.ptr, right.ptr);
+		firm.bindings.binding_irnode.set_Borrow_right(this.ptr, right.ptr);
 	}
 	
 

@@ -12,9 +12,9 @@ import firm.bindings.binding_irgmod;
 import firm.bindings.binding_irgraph;
 import firm.bindings.binding_irnode;
 import firm.bindings.binding_irop;
-import firm.bindings.binding_irvrfy;
+import firm.bindings.binding_irverify;
 import firm.bindings.binding_irnode.ir_opcode;
-import firm.bindings.binding_irvrfy.irg_verify_flags_t;
+import firm.bindings.binding_irverify.irg_verify_flags_t;
 import firm.nodes.Bad;
 import firm.nodes.Block;
 import firm.nodes.End;
@@ -392,7 +392,7 @@ public abstract class GraphBase extends JNAWrapper {
 	 * @param graph   the graph to check
 	 */
 	public void check() {
-		binding_irvrfy.irg_verify(ptr, irg_verify_flags_t.VRFY_ENFORCE_SSA.val);
+		binding_irverify.irg_verify(ptr, irg_verify_flags_t.VERIFY_ENFORCE_SSA.val);
 	}
 
 	/** 
