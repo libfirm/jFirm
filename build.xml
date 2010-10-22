@@ -1,26 +1,45 @@
-<project name="JFirm" default="zip" basedir=".">
-  <description>
-    JFirm release
-  </description>
-
-  <!-- set global properties for this build -->
-  <property name="projectname" value="jfirm" />
-  <property name="version" value="0.3.2" />
-  <property name="srcdir" location="src"/>
-  <property name="workdir" location="release"/>
-  <property name="releasename" value="${projectname}-${version}"/>
-  <property name="fullreleasedir" location="${workdir}/${releasename}"/>
-  <property name="releasefile" location="${workdir}/${projectname}-${version}.zip"/>
-  <property name="releasefile-tgz" location="${workdir}/${projectname}-${version}.tgz"/>
+<project name="jfirm" default="jar" basedir=".">
+	<description>jfirm release</description>
 	
+	<!-- set global properties for this build -->
+	<property name="projectname" value="jfirm" />
+	<property name="version" value="0.3.2" />
+	<property name="src" location="src"/>
+	<property name="jar" value="jfirm.jar"/>
+	<property name="workdir" location="release"/>
+	<property name="releasename" value="${projectname}-${version}"/>
+	<property name="fullreleasedir" location="${workdir}/${releasename}"/>
+	<property name="releasefile" location="${workdir}/${projectname}-${version}.zip"/>
+	<property name="releasefile-tgz" location="${workdir}/${projectname}-${version}.tgz"/>
+	<property name="build" location="${basedir}/classes"/>
+	<path id="project.classpath">
+		<pathelement location="${basedir}/lib/jna.jar"/>
+	</path>
+
+	<target name="init">
+		<mkdir dir="${build}"/>
+	</target>
+
+	<target name="build" depends="init">
+		<javac destdir="${build}" source="1.6" target="1.6" debug="on">
+			<src path="${src}"/>
+			<classpath refid="project.classpath"/>
+		</javac>
+	</target>
+
+	<target name="jar" depends="build">
+		<jar jarfile="${build}/${jar}">
+			<fileset dir="${build}" excludes="${jar},examples/**"/>
+		</jar>
+	</target>
 	
 	<target name="clean" description="clean up" >
-        <delete dir="${fullreleasedir}"/>
-    </target>
+		<delete dir="${fullreleasedir}"/>
+	</target>
 
-    <target name="complete_clean" description="clean up complete" depends="clean" >
-        <delete dir="${workdir}"/>
-    </target>
+	<target name="complete_clean" description="clean up complete" depends="clean" >
+		<delete dir="${workdir}"/>
+	</target>
 
 	<target name="zip" depends="copy_stuff" description="pack everything to a zip file">
 		<zip destfile="${releasefile}">
@@ -38,29 +57,29 @@
 		</tar>
 	</target>
 
-  <target name="create_dirs">
-    <mkdir dir="${workdir}"/>
-    <mkdir dir="${fullreleasedir}"/>
-  </target>
-	
-  <target name="copy_stuff" depends="create_dirs">
-  	<copy todir="${fullreleasedir}">
-	    <fileset dir=".">
-	    	<or>
-			   	<filename name="README"/>
-			   	<filename name="README.OSX"/>
-	    		<filename name="NEWS"/>
-			   	<filename name="bf_examples/*.bf"/>
-			   	<filename name="lib/jna.jar"/>
-			   	<filename name="lib/libfirm.so"/>
+	<target name="create_dirs">
+		<mkdir dir="${workdir}"/>
+		<mkdir dir="${fullreleasedir}"/>
+	</target>
+
+	<target name="copy_stuff" depends="create_dirs">
+		<copy todir="${fullreleasedir}">
+			<fileset dir=".">
+				<or>
+					<filename name="README"/>
+					<filename name="README.OSX"/>
+					<filename name="NEWS"/>
+					<filename name="bf_examples/*.bf"/>
+					<filename name="lib/jna.jar"/>
+					<filename name="lib/libfirm.so"/>
 					<filename name="lib/libfirm.dylib"/>
 					<filename name="lib/firm.dll"/>
 					<filename name="lib/64/libfirm.so"/>
 					<filename name="lib/64/libfirm.dylib"/>
-				<filename name="src/**/*" />
-	    	</or>
-	    </fileset>
-	</copy>
-  </target>
+					<filename name="src/**/*" />
+				</or>
+			</fileset>
+		</copy>
+	</target>
 
 </project>
