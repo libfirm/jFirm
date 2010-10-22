@@ -3,8 +3,6 @@ package firm.nodes;
 import java.nio.IntBuffer;
 import java.util.Iterator;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
@@ -89,7 +87,7 @@ public abstract class Node extends JNAWrapper {
 
 		@Override
 		public void remove() {
-			throw new NotImplementedException();
+			throw new RuntimeException("Not implemented");
 		}
 	}
 	
