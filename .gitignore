@@ -1,3 +1,6 @@
 *.pyc
 *.class
-release/
+/release/
+/classes/
+/binding_generator/config
+/lib/libfirm.so
