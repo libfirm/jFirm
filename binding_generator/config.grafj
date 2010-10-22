@@ -1,6 +1,0 @@
-GCC_SHARED="-shared"
-FIRM_TARGET_LIB="libfirm.so"
-FIRM_HOME="${HOME}/Firm/firm"
-FIRM_INC="${FIRM_HOME}/libfirm/include"
-FIRM_BUILD="${FIRM_HOME}/build/i686-pc-linux-gnu/debug/"
-FIRM_LFLAGS="-L${FIRM_BUILD} -lfirm -llpp -lcore -lm -lz -ldl"

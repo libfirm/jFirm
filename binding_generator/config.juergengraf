@@ -1,6 +1,0 @@
-GCC_SHARED="-dynamiclib -arch x86_64 -flat_namespace -undefined suppress"
-FIRM_TARGET_LIB="libfirm.dylib"
-FIRM_HOME="${HOME}/Firm/firm"
-FIRM_INC="${FIRM_HOME}/include"
-FIRM_BUILD="${FIRM_HOME}/lib/"
-FIRM_LFLAGS="-L${FIRM_BUILD} -lfirm -lm -lz -ldl"

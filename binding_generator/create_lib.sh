@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. config"."${USER}
+. config
 
 GOAL="../lib/${FIRM_TARGET_LIB}"
 cat > /tmp/dummy.c << __EOF__
