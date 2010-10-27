@@ -45,6 +45,10 @@ public class Construction extends ConstructionBase {
 		Graph.setCurrent(graph);
 	}
 	
+	public Graph getGraph() {
+		return graph;
+	}
+
 	public Block newBlock() {
 		return new Block(binding_ircons.new_immBlock());
 	}
