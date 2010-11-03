@@ -1557,8 +1557,6 @@ public class binding_ircons {
 	public static native Pointer get_class_member(Pointer clss, int pos);
 	public static native int get_class_member_index(Pointer clss, Pointer mem);
 	public static native Pointer get_class_member_by_name(Pointer clss, Pointer name);
-	public static native void set_class_member(Pointer clss, Pointer member, int pos);
-	public static native void set_class_members(Pointer clss, java.nio.Buffer members, int arity);
 	public static native void add_class_subtype(Pointer clss, Pointer subtype);
 	public static native int get_class_n_subtypes(Pointer clss);
 	public static native Pointer get_class_subtype(Pointer clss, int pos);
@@ -1589,7 +1587,6 @@ public class binding_ircons {
 	public static native int get_struct_n_members(Pointer strct);
 	public static native Pointer get_struct_member(Pointer strct, int pos);
 	public static native int get_struct_member_index(Pointer strct, Pointer member);
-	public static native void set_struct_member(Pointer strct, int pos, Pointer member);
 	public static native int is_Struct_type(Pointer strct);
 	public static native Pointer new_type_method(int n_param, int n_res);
 	public static native Pointer new_d_type_method(int n_param, int n_res, Pointer db);
@@ -1627,7 +1624,6 @@ public class binding_ircons {
 	public static native int get_union_n_members(Pointer uni);
 	public static native Pointer get_union_member(Pointer uni, int pos);
 	public static native int get_union_member_index(Pointer uni, Pointer member);
-	public static native void set_union_member(Pointer uni, int pos, Pointer member);
 	public static native int is_Union_type(Pointer uni);
 	public static native Pointer new_type_array(int n_dims, Pointer element_type);
 	public static native Pointer new_d_type_array(int n_dims, Pointer element_type, Pointer db);
@@ -2389,8 +2385,10 @@ public class binding_ircons {
 	public static native Pointer new_rd_defaultProj(Pointer db, Pointer arg, com.sun.jna.NativeLong max_proj);
 	public static native Pointer new_rd_Tuple(Pointer db, Pointer block, int arity, java.nio.Buffer in);
 	public static native Pointer new_rd_Id(Pointer db, Pointer block, Pointer val, Pointer mode);
+	public static native Pointer new_rd_Bad(Pointer db, Pointer irg);
 	public static native Pointer new_rd_Confirm(Pointer db, Pointer block, Pointer val, Pointer bound, /* pn_Cmp */int cmp);
 	public static native Pointer new_rd_Unknown(Pointer db, Pointer irg, Pointer m);
+	public static native Pointer new_rd_NoMem(Pointer db, Pointer irg);
 	public static native Pointer new_rd_Mux(Pointer db, Pointer block, Pointer sel, Pointer ir_false, Pointer ir_true, Pointer mode);
 	public static native Pointer new_rd_CopyB(Pointer db, Pointer block, Pointer store, Pointer dst, Pointer src, Pointer data_type);
 	public static native Pointer new_rd_InstOf(Pointer db, Pointer block, Pointer store, Pointer objptr, Pointer type);
@@ -2507,8 +2505,10 @@ public class binding_ircons {
 	public static native Pointer new_d_defaultProj(Pointer db, Pointer arg, com.sun.jna.NativeLong max_proj);
 	public static native Pointer new_d_Tuple(Pointer db, int arity, java.nio.Buffer in);
 	public static native Pointer new_d_Id(Pointer db, Pointer val, Pointer mode);
+	public static native Pointer new_d_Bad(Pointer db);
 	public static native Pointer new_d_Confirm(Pointer db, Pointer val, Pointer bound, /* pn_Cmp */int cmp);
 	public static native Pointer new_d_Unknown(Pointer db, Pointer m);
+	public static native Pointer new_d_NoMem(Pointer db);
 	public static native Pointer new_d_Mux(Pointer db, Pointer sel, Pointer ir_false, Pointer ir_true, Pointer mode);
 	public static native Pointer new_d_CopyB(Pointer db, Pointer store, Pointer dst, Pointer src, Pointer data_type);
 	public static native Pointer new_d_InstOf(Pointer db, Pointer store, Pointer objptr, Pointer type);

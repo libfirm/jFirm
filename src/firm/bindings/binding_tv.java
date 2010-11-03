@@ -1583,8 +1583,6 @@ public class binding_tv {
 	public static native Pointer get_class_member(Pointer clss, int pos);
 	public static native int get_class_member_index(Pointer clss, Pointer mem);
 	public static native Pointer get_class_member_by_name(Pointer clss, Pointer name);
-	public static native void set_class_member(Pointer clss, Pointer member, int pos);
-	public static native void set_class_members(Pointer clss, java.nio.Buffer members, int arity);
 	public static native void add_class_subtype(Pointer clss, Pointer subtype);
 	public static native int get_class_n_subtypes(Pointer clss);
 	public static native Pointer get_class_subtype(Pointer clss, int pos);
@@ -1615,7 +1613,6 @@ public class binding_tv {
 	public static native int get_struct_n_members(Pointer strct);
 	public static native Pointer get_struct_member(Pointer strct, int pos);
 	public static native int get_struct_member_index(Pointer strct, Pointer member);
-	public static native void set_struct_member(Pointer strct, int pos, Pointer member);
 	public static native int is_Struct_type(Pointer strct);
 	public static native Pointer new_type_method(int n_param, int n_res);
 	public static native Pointer new_d_type_method(int n_param, int n_res, Pointer db);
@@ -1653,7 +1650,6 @@ public class binding_tv {
 	public static native int get_union_n_members(Pointer uni);
 	public static native Pointer get_union_member(Pointer uni, int pos);
 	public static native int get_union_member_index(Pointer uni, Pointer member);
-	public static native void set_union_member(Pointer uni, int pos, Pointer member);
 	public static native int is_Union_type(Pointer uni);
 	public static native Pointer new_type_array(int n_dims, Pointer element_type);
 	public static native Pointer new_d_type_array(int n_dims, Pointer element_type, Pointer db);

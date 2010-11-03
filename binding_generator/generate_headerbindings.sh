@@ -2,9 +2,7 @@
 #
 # You need a new version cparser (with jna backend) and firm headers
 
-. config.${USER}
-
-FIRM_INC=firm_headers
+. config
 
 for i in lowering irgmod iredges irmode tv ircons irnode firm_common irdump iroptimize irgraph typerep ident irprog be irverify irflag irop irgopt irconsconfirm; do
 	RES="../src/firm/bindings/binding_$i.java"
