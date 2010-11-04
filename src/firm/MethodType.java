@@ -4,7 +4,7 @@ import com.sun.jna.Pointer;
 
 import firm.bindings.binding_tv;
 import firm.bindings.binding_typerep.ir_variadicity;
-import firm.bindings.binding_typerep.mtp_additional_property;
+import firm.bindings.binding_typerep.mtp_additional_properties;
 
 public class MethodType extends Type {
 
@@ -108,12 +108,12 @@ public class MethodType extends Type {
 		return binding_tv.get_method_additional_properties(ptr);
 	}
 
-	public final void setAdditionalProperties(int propertyMask) {
-		binding_tv.set_method_additional_properties(ptr, propertyMask);
+	public final void setAdditionalProperties(mtp_additional_properties properties) {
+		binding_tv.set_method_additional_properties(ptr, properties.val);
 	}
 
-	public final void setAdditionalProperty(mtp_additional_property flag) {
-		binding_tv.set_method_additional_property(ptr, flag.val);
+	public final void addAdditionalProperties(mtp_additional_properties properties) {
+		binding_tv.add_method_additional_properties(ptr, properties.val);
 	}
 
 	public final int getNRegparams() {
