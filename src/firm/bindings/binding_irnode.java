@@ -53,7 +53,7 @@ public class binding_irnode {
 			return null;
 		}
 	}
-	public static enum mtp_additional_property {
+	public static enum mtp_additional_properties {
 		mtp_no_property(0x00000000),
 		mtp_property_const(0x00000001),
 		mtp_property_pure(0x00000002),
@@ -70,16 +70,16 @@ public class binding_irnode {
 		public final int val;
 		private static class C { static int next_val; }
 
-		mtp_additional_property(int val) {
+		mtp_additional_properties(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		mtp_additional_property() {
+		mtp_additional_properties() {
 			this.val = C.next_val++;
 		}
 		
-		public static mtp_additional_property getEnum(int val) {
-			for(mtp_additional_property entry : values()) {
+		public static mtp_additional_properties getEnum(int val) {
+			for(mtp_additional_properties entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -1357,8 +1357,6 @@ public class binding_irnode {
 	public static native String ir_get_version_revision();
 	public static native String ir_get_version_build();
 	public static native /* firm_kind */int get_kind(Pointer firm_thing);
-	public static native String print_firm_kind(Pointer firm_thing);
-	public static native void firm_identify_thing(Pointer X);
 	public static native /* ir_visibility */int get_entity_visibility(Pointer entity);
 	public static native void set_entity_visibility(Pointer entity, /* ir_visibility */int visibility);
 	public static native int entity_is_externally_visible(Pointer entity);
@@ -1447,9 +1445,9 @@ public class binding_irnode {
 	public static native void mark_entity_visited(Pointer ent);
 	public static native int entity_visited(Pointer ent);
 	public static native int entity_not_visited(Pointer ent);
-	public static native int get_entity_additional_properties(Pointer ent);
-	public static native void set_entity_additional_properties(Pointer ent, int property_mask);
-	public static native void set_entity_additional_property(Pointer ent, /* mtp_additional_property */int flag);
+	public static native /* mtp_additional_properties */int get_entity_additional_properties(Pointer ent);
+	public static native void set_entity_additional_properties(Pointer ent, /* mtp_additional_properties */int prop);
+	public static native void add_entity_additional_properties(Pointer ent, /* mtp_additional_properties */int flag);
 	public static native Pointer get_entity_repr_class(Pointer ent);
 	public static native Pointer get_unknown_entity();
 	public static native String get_tpop_name(Pointer op);
@@ -1585,9 +1583,9 @@ public class binding_irnode {
 	public static native void set_method_variadicity(Pointer method, /* ir_variadicity */int vari);
 	public static native int get_method_first_variadic_param_index(Pointer method);
 	public static native void set_method_first_variadic_param_index(Pointer method, int index);
-	public static native int get_method_additional_properties(Pointer method);
-	public static native void set_method_additional_properties(Pointer method, int property_mask);
-	public static native void set_method_additional_property(Pointer method, /* mtp_additional_property */int flag);
+	public static native /* mtp_additional_properties */int get_method_additional_properties(Pointer method);
+	public static native void set_method_additional_properties(Pointer method, /* mtp_additional_properties */int property_mask);
+	public static native void add_method_additional_properties(Pointer method, /* mtp_additional_properties */int flag);
 	public static native int get_method_calling_convention(Pointer method);
 	public static native void set_method_calling_convention(Pointer method, int cc_mask);
 	public static native int get_method_n_regparams(Pointer method);
@@ -2266,6 +2264,7 @@ public class binding_irnode {
 	public static native void add_Sync_pred(Pointer node, Pointer pred);
 	public static native com.sun.jna.NativeLong get_Proj_proj(Pointer node);
 	public static native void set_Proj_proj(Pointer node, com.sun.jna.NativeLong proj);
+	public static native /* pn_Cmp */int get_Proj_pn_cmp(Pointer _0);
 	public static native int is_arg_Proj(Pointer node);
 	public static native java.nio.Buffer get_Tuple_preds_arr(Pointer node);
 	public static native int get_Tuple_n_preds(Pointer node);

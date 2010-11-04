@@ -53,7 +53,7 @@ public class binding_iredges {
 			return null;
 		}
 	}
-	public static enum mtp_additional_property {
+	public static enum mtp_additional_properties {
 		mtp_no_property(0x00000000),
 		mtp_property_const(0x00000001),
 		mtp_property_pure(0x00000002),
@@ -70,16 +70,16 @@ public class binding_iredges {
 		public final int val;
 		private static class C { static int next_val; }
 
-		mtp_additional_property(int val) {
+		mtp_additional_properties(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		mtp_additional_property() {
+		mtp_additional_properties() {
 			this.val = C.next_val++;
 		}
 		
-		public static mtp_additional_property getEnum(int val) {
-			for(mtp_additional_property entry : values()) {
+		public static mtp_additional_properties getEnum(int val) {
+			for(mtp_additional_properties entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -216,7 +216,8 @@ public class binding_iredges {
 		}
 	}
 	public static enum ir_edge_kind_t {
-		EDGE_KIND_NORMAL(),
+		EDGE_KIND_FIRST(),
+		EDGE_KIND_NORMAL(ir_edge_kind_t.EDGE_KIND_FIRST.val),
 		EDGE_KIND_BLOCK(),
 		EDGE_KIND_DEP(),
 		EDGE_KIND_LAST();

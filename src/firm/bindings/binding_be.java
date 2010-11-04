@@ -77,7 +77,7 @@ public class binding_be {
 			return null;
 		}
 	}
-	public static enum mtp_additional_property {
+	public static enum mtp_additional_properties {
 		mtp_no_property(0x00000000),
 		mtp_property_const(0x00000001),
 		mtp_property_pure(0x00000002),
@@ -94,16 +94,16 @@ public class binding_be {
 		public final int val;
 		private static class C { static int next_val; }
 
-		mtp_additional_property(int val) {
+		mtp_additional_properties(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		mtp_additional_property() {
+		mtp_additional_properties() {
 			this.val = C.next_val++;
 		}
 		
-		public static mtp_additional_property getEnum(int val) {
-			for(mtp_additional_property entry : values()) {
+		public static mtp_additional_properties getEnum(int val) {
+			for(mtp_additional_properties entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -792,17 +792,18 @@ public class binding_be {
 		}
 	}
 	public static enum asm_constraint_flags_t {
-		ASM_CONSTRAINT_FLAG_SUPPORTS_REGISTER(0x0001),
-		ASM_CONSTRAINT_FLAG_SUPPORTS_MEMOP(0x0002),
-		ASM_CONSTRAINT_FLAG_SUPPORTS_IMMEDIATE(0x0004),
-		ASM_CONSTRAINT_FLAG_NO_SUPPORT(0x0008),
-		ASM_CONSTRAINT_FLAG_MODIFIER_WRITE(0x0010),
-		ASM_CONSTRAINT_FLAG_MODIFIER_NO_WRITE(0x0020),
-		ASM_CONSTRAINT_FLAG_MODIFIER_READ(0x0040),
-		ASM_CONSTRAINT_FLAG_MODIFIER_NO_READ(0x0080),
-		ASM_CONSTRAINT_FLAG_MODIFIER_EARLYCLOBBER(0x0100),
-		ASM_CONSTRAINT_FLAG_MODIFIER_COMMUTATIVE(0x0200),
-		ASM_CONSTRAINT_FLAG_INVALID(0x8000);
+		ASM_CONSTRAINT_FLAG_NONE(0),
+		ASM_CONSTRAINT_FLAG_SUPPORTS_REGISTER((1<<0)),
+		ASM_CONSTRAINT_FLAG_SUPPORTS_MEMOP((1<<1)),
+		ASM_CONSTRAINT_FLAG_SUPPORTS_IMMEDIATE((1<<2)),
+		ASM_CONSTRAINT_FLAG_NO_SUPPORT((1<<3)),
+		ASM_CONSTRAINT_FLAG_MODIFIER_WRITE((1<<4)),
+		ASM_CONSTRAINT_FLAG_MODIFIER_NO_WRITE((1<<5)),
+		ASM_CONSTRAINT_FLAG_MODIFIER_READ((1<<6)),
+		ASM_CONSTRAINT_FLAG_MODIFIER_NO_READ((1<<7)),
+		ASM_CONSTRAINT_FLAG_MODIFIER_EARLYCLOBBER((1<<8)),
+		ASM_CONSTRAINT_FLAG_MODIFIER_COMMUTATIVE((1<<9)),
+		ASM_CONSTRAINT_FLAG_INVALID((1<<10));
 		public final int val;
 		private static class C { static int next_val; }
 

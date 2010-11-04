@@ -53,7 +53,7 @@ public class binding_irprog {
 			return null;
 		}
 	}
-	public static enum mtp_additional_property {
+	public static enum mtp_additional_properties {
 		mtp_no_property(0x00000000),
 		mtp_property_const(0x00000001),
 		mtp_property_pure(0x00000002),
@@ -70,16 +70,16 @@ public class binding_irprog {
 		public final int val;
 		private static class C { static int next_val; }
 
-		mtp_additional_property(int val) {
+		mtp_additional_properties(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		mtp_additional_property() {
+		mtp_additional_properties() {
 			this.val = C.next_val++;
 		}
 		
-		public static mtp_additional_property getEnum(int val) {
-			for(mtp_additional_property entry : values()) {
+		public static mtp_additional_properties getEnum(int val) {
+			for(mtp_additional_properties entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -389,7 +389,8 @@ public class binding_irprog {
 			return null;
 		}
 	}
-	public static enum ir_resources_enum_t {
+	public static enum ir_resources_t {
+		IR_RESOURCE_NONE(0),
 		IR_RESOURCE_BLOCK_VISITED((1<<0)),
 		IR_RESOURCE_BLOCK_MARK((1<<1)),
 		IR_RESOURCE_IRN_VISITED((1<<2)),
@@ -404,16 +405,16 @@ public class binding_irprog {
 		public final int val;
 		private static class C { static int next_val; }
 
-		ir_resources_enum_t(int val) {
+		ir_resources_t(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
-		ir_resources_enum_t() {
+		ir_resources_t() {
 			this.val = C.next_val++;
 		}
 		
-		public static ir_resources_enum_t getEnum(int val) {
-			for(ir_resources_enum_t entry : values()) {
+		public static ir_resources_t getEnum(int val) {
+			for(ir_resources_t entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -523,9 +524,9 @@ public class binding_irprog {
 	public static native void set_irg_callee_info_state(Pointer irg, /* irg_callee_info_state */int s);
 	public static native /* irg_inline_property */int get_irg_inline_property(Pointer irg);
 	public static native void set_irg_inline_property(Pointer irg, /* irg_inline_property */int s);
-	public static native int get_irg_additional_properties(Pointer irg);
-	public static native void set_irg_additional_properties(Pointer irg, int property_mask);
-	public static native void set_irg_additional_property(Pointer irg, /* mtp_additional_property */int flag);
+	public static native /* mtp_additional_properties */int get_irg_additional_properties(Pointer irg);
+	public static native void set_irg_additional_properties(Pointer irg, /* mtp_additional_properties */int property_mask);
+	public static native void add_irg_additional_properties(Pointer irg, /* mtp_additional_properties */int flag);
 	public static native void set_irg_link(Pointer irg, Pointer thing);
 	public static native Pointer get_irg_link(Pointer irg);
 	public static native void inc_irg_visited(Pointer irg);
@@ -537,9 +538,9 @@ public class binding_irprog {
 	public static native void inc_irg_block_visited(Pointer irg);
 	public static native com.sun.jna.NativeLong get_irg_block_visited(Pointer irg);
 	public static native void set_irg_block_visited(Pointer irg, com.sun.jna.NativeLong i);
-	public static native void ir_reserve_resources(Pointer irg, int resources);
-	public static native void ir_free_resources(Pointer irg, int resources);
-	public static native int ir_resources_reserved(Pointer irg);
+	public static native void ir_reserve_resources(Pointer irg, /* ir_resources_t */int resources);
+	public static native void ir_free_resources(Pointer irg, /* ir_resources_t */int resources);
+	public static native /* ir_resources_t */int ir_resources_reserved(Pointer irg);
 	public static native void set_irg_state(Pointer irg, /* ir_graph_state_t */int state);
 	public static native void clear_irg_state(Pointer irg, /* ir_graph_state_t */int state);
 	public static native int is_irg_state(Pointer irg, /* ir_graph_state_t */int state);
@@ -550,9 +551,9 @@ public class binding_irprog {
 	public static native int get_irg_fp_model(Pointer irg);
 	public static native void set_irg_fp_model(Pointer irg, int model);
 	public static native com.sun.jna.NativeLong register_additional_graph_data(com.sun.jna.NativeLong size);
-	public static native void irp_reserve_resources(Pointer irp, int resources);
-	public static native void irp_free_resources(Pointer irp, int resources);
-	public static native int irp_resources_reserved(Pointer irp);
+	public static native void irp_reserve_resources(Pointer irp, /* ir_resources_t */int resources);
+	public static native void irp_free_resources(Pointer irp, /* ir_resources_t */int resources);
+	public static native /* ir_resources_t */int irp_resources_reserved(Pointer irp);
 	public static native Pointer get_irp();
 	public static native void set_irp(Pointer irp);
 	public static native Pointer new_ir_prog(String name);
