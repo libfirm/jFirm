@@ -4,3 +4,5 @@
 /classes/
 /binding_generator/config
 /lib/libfirm.so
+/a.out
+*.s

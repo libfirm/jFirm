@@ -12,12 +12,15 @@
 	<property name="releasefile" location="${workdir}/${projectname}-${version}.zip"/>
 	<property name="releasefile-tgz" location="${workdir}/${projectname}-${version}.tgz"/>
 	<property name="build" location="${basedir}/classes"/>
+	<property name="lib" location="${basedir}/lib"/>
+	<property name="make.exe" value="make"/>
 	<path id="project.classpath">
 		<pathelement location="${basedir}/lib/jna.jar"/>
 	</path>
 
 	<target name="init">
 		<mkdir dir="${build}"/>
+		<available property="libfirm.exists" file="${basedir}/../libfirm"/>
 	</target>
 
 	<target name="build" depends="init">
@@ -27,13 +30,30 @@
 		</javac>
 	</target>
 
-	<target name="jar" depends="build">
+	<target name="jar" depends="build, libfirm.so">
 		<jar jarfile="${build}/${jar}">
 			<fileset dir="${build}" excludes="${jar},examples/**"/>
 		</jar>
 	</target>
+
+	<target name="libfirm.so" depends="init" if="libfirm.exists">
+		<exec executable="${make.exe}" failonerror="true" dir="${basedir}/../libfirm">
+			<arg value="-j2"/>
+		</exec>
+		<copy todir="${lib}" flatten="true">
+			<fileset dir="${basedir}/../libfirm">
+				<include name="build/debug/libfirm.so"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="clean-libfirm.so">
+		<exec executable="${make.exe}" failonerror="true" dir="${basedir}/../libfirm">
+			<arg value="clean"/>
+		</exec>
+	</target>
 	
-	<target name="clean" description="clean up" >
+	<target name="clean" description="clean up" depends="clean-libfirm.so">
 		<delete dir="${fullreleasedir}"/>
 	</target>
 
