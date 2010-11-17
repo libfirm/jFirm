@@ -4,9 +4,9 @@
 	<!-- set global properties for this build -->
 	<property name="projectname" value="jfirm" />
 	<property name="version" value="0.3.2" />
-	<property name="src" location="src"/>
+	<property name="src" location="${basedir}/src"/>
 	<property name="jar" value="jfirm.jar"/>
-	<property name="workdir" location="release"/>
+	<property name="workdir" location="${basedir}/release"/>
 	<property name="releasename" value="${projectname}-${version}"/>
 	<property name="fullreleasedir" location="${workdir}/${releasename}"/>
 	<property name="releasefile" location="${workdir}/${projectname}-${version}.zip"/>
@@ -24,7 +24,7 @@
 	</target>
 
 	<target name="build" depends="init">
-		<javac destdir="${build}" source="1.6" target="1.6" debug="on">
+		<javac destdir="${build}" source="1.6" target="1.6" debug="on" includeantruntime="false">
 			<src path="${src}"/>
 			<classpath refid="project.classpath"/>
 		</javac>
