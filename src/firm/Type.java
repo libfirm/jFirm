@@ -2,6 +2,7 @@ package firm;
 
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_irnode;
 import firm.bindings.binding_tv;
 import firm.bindings.binding_typerep;
 import firm.bindings.binding_typerep.ir_type_state;
@@ -66,5 +67,9 @@ public class Type extends JNAWrapper {
 	/** you must call this function when you are finished constructing a type */
 	public void finishLayout() {
 		setTypeState(ir_type_state.layout_fixed);
+	}
+
+	public String toString() {
+		return binding_irnode.gdb_node_helper(ptr);
 	}
 }
