@@ -16,12 +16,15 @@ public class Backend {
 			throw new IOException("Couldn't open output file (write access): " + outputFileName);
 		}
 		
-		/* just to be sure we have no bad blocks left... */
-		for (Graph graph : Program.getGraphs()) {
-			binding_iroptimize.optimize_cf(graph.ptr);			
+		try {
+			/* just to be sure we have no bad blocks left... */
+			for (Graph graph : Program.getGraphs()) {
+				binding_iroptimize.optimize_cf(graph.ptr);
+			}
+			binding_be.be_main(file, compilationUnitName);
+		} finally {
+			binding_libc.fclose(file);
 		}
-		binding_be.be_main(file, compilationUnitName);
-		binding_libc.fclose(file);
 	}
 	
 	public static void option(String option) {
