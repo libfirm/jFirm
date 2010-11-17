@@ -1,6 +1,11 @@
 package firm;
 
+import java.io.IOException;
+
+import com.sun.jna.Pointer;
+
 import firm.bindings.binding_irdump;
+import firm.bindings.binding_libc;
 
 /**
  * Utility class containing various functions for dumping firm graphs
@@ -15,7 +20,18 @@ public final class Dump {
 		binding_irdump.dump_ir_graph(graph.ptr, suffix);
 	}
 	
-	/** TODO: bring back dumpers from new dumping API */
+	public static void dumpTypeGraph(String outputFileName) throws IOException {
+		Pointer file = binding_libc.fopen(outputFileName, "w");
+		if (file == null) {
+			throw new IOException("Couldn't open output file (write access): " + outputFileName);
+		}
+
+		try {
+			binding_irdump.dump_typegraph(file);
+		} finally {
+			binding_libc.fclose(file);
+		}
+	}
 	
 	public static void addDumpFlags(int flags) {
 		binding_irdump.ir_add_dump_flags(flags);
