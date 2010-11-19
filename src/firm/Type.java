@@ -8,11 +8,11 @@ import firm.bindings.binding_typerep;
 import firm.bindings.binding_typerep.ir_type_state;
 
 public class Type extends JNAWrapper {
-	
+
 	protected Type(Pointer ptr) {
 		super(ptr);
 	}
-	
+
 	public static Type createWrapper(Pointer ptr) {
 		if (binding_tv.is_Primitive_type(ptr) != 0) {
 			return new PrimitiveType(ptr);
@@ -24,6 +24,10 @@ public class Type extends JNAWrapper {
 			return new ClassType(ptr);
 		} else if (binding_tv.is_Pointer_type(ptr) != 0) {
 			return new PointerType(ptr);
+		} else if (binding_tv.is_Struct_type(ptr) != 0) {
+			return new StructType(ptr);
+		} else if (binding_tv.is_Union_type(ptr) != 0) {
+			return new UnionType(ptr);
 		} else {
 			Type type = new Type(ptr);
 			if (binding_tv.is_Struct_type(ptr) == 0)
@@ -31,31 +35,31 @@ public class Type extends JNAWrapper {
 			return type;
 		}
 	}
-	
+
 	public void setSizeBytes(int size) {
 		binding_tv.set_type_size_bytes(ptr, size);
 	}
-	
+
 	public int getSizeBytes() {
 		return binding_tv.get_type_size_bytes(ptr);
 	}
-	
+
 	public void setAlignmentBytes(int alignment) {
 		binding_tv.set_type_alignment_bytes(ptr, alignment);
 	}
-	
+
 	public int getAlignmentBytes() {
 		return binding_tv.get_type_alignment_bytes(ptr);
 	}
-	
+
 	public void setTypeState(binding_typerep.ir_type_state state) {
 		binding_tv.set_type_state(ptr, state.val);
 	}
-	
+
 	public binding_typerep.ir_type_state getTypeState() {
 		return ir_type_state.getEnum(binding_tv.get_type_state(ptr));
 	}
-	
+
 	/** returns the mode of a type (or null for non-atomic types) */
 	public Mode getMode() {
 		Pointer mode_ptr = binding_tv.get_type_mode(ptr);
