@@ -8,28 +8,28 @@ import firm.bindings.binding_typerep.ir_visibility;
 import firm.nodes.Node;
 
 public class Entity extends JNAWrapper {
-	
+
 	public Entity(Pointer ptr) {
 		super(ptr);
 	}
-	
+
 	public Entity(Type owner, Ident name, Type type) {
 		this(binding_typerep.new_entity(owner.ptr, name.ptr, type.ptr));
 	}
-	
+
 	public Entity(Type owner, String name, Type type) {
 		this(owner, new Ident(name), type);
 	}
-	
+
 	public final void free() {
 		binding_typerep.free_entity(ptr);
 	}
-	
+
 	public final String getName() {
 		return binding_typerep.get_entity_name(ptr);
 	}
-	
-	
+
+
 	@Override
 	public String toString() {
 		return getName();
@@ -52,7 +52,7 @@ public class Entity extends JNAWrapper {
 	public final void setLdIdent(Ident ldIdent) {
 		binding_typerep.set_entity_ld_ident(ptr, ldIdent.ptr);
 	}
-	
+
 	public final void setLdIdent(String ldIdent) {
 		setLdIdent(new Ident(ldIdent));
 	}
@@ -78,19 +78,19 @@ public class Entity extends JNAWrapper {
 	public final void setType(Type tp) {
 		binding_typerep.set_entity_type(ptr, tp.ptr);
 	}
-	
+
 	public final int getLinkage() {
 		return binding_typerep.get_entity_linkage(ptr);
 	}
-	
+
 	public final void setLinkage(int linkage) {
 		binding_typerep.set_entity_linkage(ptr, linkage);
 	}
-	
+
 	public final void addLinkage(int linkage) {
 		binding_typerep.add_entity_linkage(ptr, linkage);
 	}
-	
+
 	public final void removeLinkage(int linkage) {
 		binding_typerep.remove_entity_linkage(ptr, linkage);
 	}
@@ -137,7 +137,7 @@ public class Entity extends JNAWrapper {
 		Pointer p = binding_typerep.get_entity_irg(ptr);
 		if (p == null)
 			return null;
-		
+
 		return new Graph(p);
 	}
 
@@ -157,9 +157,12 @@ public class Entity extends JNAWrapper {
 		Pointer node_ptr = binding_typerep.get_atomic_ent_value(ptr);
 		return Node.createWrapper(node_ptr);
 	}
-	
+
 	public final void setAtomicValue(Node val) {
 		binding_typerep.set_atomic_ent_value(ptr, val.ptr);
 	}
 
+	public final void setInitializer(Initializer initializer) {
+		binding_typerep.set_entity_initializer(ptr, initializer.ptr);
+	}
 }
