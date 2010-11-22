@@ -50,6 +50,14 @@ public class Program {
 		return new Graph(binding_irprog.get_const_code_irg());
 	}
 
+	/**
+	 * set the "main"-graph, the method which is called initially by the
+	 * runtime-/operating-system when the program starts.
+	 */
+	public static void setMainGraph(Graph graph) {
+		binding_irprog.set_irp_main_irg(graph.ptr);
+	}
+
 	public static int getNGraphs() {
 		return binding_irprog.get_irp_n_irgs();
 	}
