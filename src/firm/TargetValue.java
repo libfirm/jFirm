@@ -7,68 +7,65 @@ import firm.bindings.binding_tv;
 
 /**
  * Represents a (numeric) architecture independent value. This allows doing
- * arithmetic of the destination machine independent of the arithmetic of
- * the host machine where the compiler is running.
+ * arithmetic of the destination machine independent of the arithmetic of the
+ * host machine where the compiler is running.
  */
 public class TargetValue extends JNAWrapper {
-	
+
 	public TargetValue(Pointer ptr) {
 		super(ptr);
 	}
-	
-	
+
 	public TargetValue(String str, long len, Mode mode) {
 		this(binding_tv.new_tarval_from_str(str, new NativeLong(len), mode.ptr));
 	}
-	
+
 	public TargetValue(long l, Mode mode) {
 		this(binding_tv.new_tarval_from_long(new NativeLong(l), mode.ptr));
 	}
-	
+
 	public TargetValue(int i, Mode mode) {
 		this((long) i, mode);
 	}
-	
-	
+
 	/** return true if the value can be represented in a C long type */
 	public final boolean isLong() {
 		return 0 != binding_tv.tarval_is_long(ptr);
 	}
-	
+
 	/** return value as long */
 	public final long asLong() {
 		NativeLong l = binding_tv.get_tarval_long(ptr);
 		return l.longValue();
 	}
-	
+
 	/**
-	 * return value as int
-	 * Warning: there are no overflow checks in place here
+	 * return value as int Warning: there are no overflow checks in place here
 	 */
 	public final int asInt() {
 		return (int) asLong();
 	}
-	
+
 	public final static TargetValue newFromDouble(double d, Mode mode) {
 		Pointer ptr = binding_tv.new_tarval_from_double(d, mode.ptr);
 		return new TargetValue(ptr);
 	}
-	
+
 	public final double getDouble() {
 		return binding_tv.get_tarval_double(ptr);
 	}
-	
+
 	public final boolean isDouble() {
 		return 0 != binding_tv.tarval_is_double(ptr);
 	}
-	
+
 	public final Mode getMode() {
 		Pointer pmode = binding_tv.get_tarval_mode(ptr);
 		return new Mode(pmode);
 	}
-	
+
 	public final boolean isNegative() {
-		return 0 != binding_tv.tarval_is_negative(ptr); 
+		return 0 != binding_tv.tarval_is_negative(ptr);
 	}
 
 	public final boolean isNull() {
@@ -165,24 +162,31 @@ public class TargetValue extends JNAWrapper {
 		Pointer ptr = binding_tv.get_tarval_minus_inf(mode.ptr);
 		return new TargetValue(ptr);
 	}
-	
+
 	public static enum int_overflow_mode {
-		TV_OVERFLOW_BAD(),      /**< tarval module will return bad if a overflow occurs */
-		TV_OVERFLOW_WRAP(),     /**< tarval module will overflow will be ignored, wrap around occurs */
-		TV_OVERFLOW_SATURATE();  /**< tarval module will saturate the overflow */
+		TV_OVERFLOW_BAD(),
+		/** < tarval module will return bad if a overflow occurs */
+		TV_OVERFLOW_WRAP(),
+		/** < tarval module will overflow will be ignored, wrap around occurs */
+		TV_OVERFLOW_SATURATE();
+		/** < tarval module will saturate the overflow */
 		public final int val;
-		private static class C { static int next_val = 0; }
+
+		private static class C {
+			static int next_val = 0;
+		}
 
 		int_overflow_mode(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
+
 		int_overflow_mode() {
 			this.val = C.next_val++;
 		}
-		
+
 		public static int_overflow_mode getEnum(int val) {
-			for(int_overflow_mode entry : values()) {
+			for (int_overflow_mode entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -198,16 +202,16 @@ public class TargetValue extends JNAWrapper {
 		int val = binding_tv.tarval_get_integer_overflow_mode();
 		return int_overflow_mode.getEnum(val);
 	}
-	
+
 	public final CompareResult compare(TargetValue other) {
 		return CompareResult.fromProjNum(binding_tv.tarval_cmp(ptr, other.ptr));
 	}
-	
+
 	public final TargetValue convertTo(Mode mode) {
 		Pointer ptarval = binding_tv.tarval_convert_to(ptr, mode.ptr);
 		return new TargetValue(ptarval);
 	}
-	
+
 	public final TargetValue not() {
 		Pointer ptarval = binding_tv.tarval_not(ptr);
 		return new TargetValue(ptarval);
@@ -301,37 +305,42 @@ public class TargetValue extends JNAWrapper {
 		TVO_FLOAT(),
 		TVO_HEXFLOAT();
 		public final int val;
-		private static class C { static int next_val; }
+
+		private static class C {
+			static int next_val;
+		}
 
 		tv_output_mode(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
+
 		tv_output_mode() {
 			this.val = C.next_val++;
 		}
-		
+
 		public static tv_output_mode getEnum(int val) {
-			for(tv_output_mode entry : values()) {
+			for (tv_output_mode entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
 			return null;
 		}
 	}
-	
+
 	public static class ModeInfo extends JNAWrapper {
 		protected ModeInfo(Pointer ptr) {
 			super(ptr);
 		}
 	}
-	
+
 	/**
 	 * @return true on success
 	 */
 	public static final boolean setModeOutputOption(Mode mode, ModeInfo modeinfo) {
 		// returns 0 on success
-		int status = binding_tv.set_tarval_mode_output_option(mode.ptr, modeinfo.ptr);
+		int status = binding_tv.set_tarval_mode_output_option(mode.ptr,
+				modeinfo.ptr);
 		return status == 0;
 	}
 
@@ -396,7 +405,7 @@ public class TargetValue extends JNAWrapper {
 	public final boolean isFinite() {
 		return 0 != binding_tv.tarval_is_finite(ptr);
 	}
-	
+
 	@Override
 	public String toString() {
 		if (getMode().isInt()) {
@@ -405,7 +414,7 @@ public class TargetValue extends JNAWrapper {
 		} else if (getMode().equals(Mode.getb())) {
 			return (isNull() ? "false" : "true");
 		}
-		
+
 		return super.toString();
 	}
 }

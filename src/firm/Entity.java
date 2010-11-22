@@ -29,7 +29,6 @@ public class Entity extends JNAWrapper {
 		return binding_typerep.get_entity_name(ptr);
 	}
 
-
 	@Override
 	public String toString() {
 		return getName();

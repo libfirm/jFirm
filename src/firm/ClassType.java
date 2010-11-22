@@ -62,6 +62,7 @@ public class ClassType extends CompoundType {
 			public Iterator<Type> iterator() {
 				return new Iterator<Type>() {
 					int n;
+
 					@Override
 					public boolean hasNext() {
 						return n < getNSubTypes();
@@ -103,6 +104,7 @@ public class ClassType extends CompoundType {
 			public Iterator<Type> iterator() {
 				return new Iterator<Type>() {
 					int n;
+
 					@Override
 					public boolean hasNext() {
 						return n < getNSuperTypes();

@@ -2,6 +2,7 @@ package firm;
 
 /**
  * Helper class simplifying the handling of Cmp result (Proj-) numbers
+ * 
  * @author matze
  */
 public enum CompareResult {
@@ -20,41 +21,28 @@ public enum CompareResult {
 	UnorderedGreater(Unordered.num | Greater.num),
 	UnorderedGreaterEqual(Unordered.num | Greater.num | Equal.num),
 	UnorderedLessGreater(Unordered.num | Less.num | Greater.num),
-	UnorderedLessGreaterEqual(Unordered.num | Less.num | Greater.num | Equal.num)
-	;
-	
+	UnorderedLessGreaterEqual(Unordered.num | Less.num | Greater.num
+			| Equal.num);
+
 	private int num;
-	private static CompareResult[] fromInt = new CompareResult[] {
-		False,
-		Equal,
-		Less,
-		LessEqual,
-		Greater,
-		GreaterEqual,
-		LessGreater,
-		LessGreaterEqual,
-		Unordered,
-		UnorderedEqual,
-		UnorderedLess,
-		UnorderedLessEqual,
-		UnorderedGreater,
-		UnorderedGreaterEqual,
-		UnorderedLessGreater,
-		UnorderedLessGreaterEqual
-	};
-	
+	private static CompareResult[] fromInt = new CompareResult[] { False,
+			Equal, Less, LessEqual, Greater, GreaterEqual, LessGreater,
+			LessGreaterEqual, Unordered, UnorderedEqual, UnorderedLess,
+			UnorderedLessEqual, UnorderedGreater, UnorderedGreaterEqual,
+			UnorderedLessGreater, UnorderedLessGreaterEqual };
+
 	private CompareResult(int num) {
 		this.num = num;
 	}
-	
+
 	public int asProjNum() {
 		return num;
-	}	
-	
+	}
+
 	public static CompareResult fromProjNum(int pn) {
 		return fromInt[pn];
 	}
-	
+
 	/**
 	 * Calculates a negated pnc condition (ie. a&lt;b becomes a&gt;=b)
 	 */
@@ -64,7 +52,7 @@ public enum CompareResult {
 			newn &= ~Unordered.num;
 		return fromProjNum(newn);
 	}
-	
+
 	/**
 	 * Calculates the inversed pnc condition (ie. a&lt;b becomes a&gt;b)
 	 */
@@ -76,10 +64,10 @@ public enum CompareResult {
 			newn |= Less.num;
 		return fromProjNum(newn);
 	}
-	
+
 	/**
-	 * return true if the result fullfills all specifis of the other.
-	 * (ie. GreaterEqual.fullfills(Greater) gives true) 
+	 * return true if the result fullfills all specifis of the other. (ie.
+	 * GreaterEqual.fullfills(Greater) gives true)
 	 */
 	public boolean fullFills(CompareResult condition) {
 		return (condition.num & num) != 0;

@@ -9,7 +9,6 @@ public class Mulh extends Binop {
 		super(ptr);
 	}
 
-	
 	@Override
 	public Node getLeft() {
 		return createWrapper(firm.bindings.binding_irnode.get_Mulh_left(ptr));
@@ -19,7 +18,7 @@ public class Mulh extends Binop {
 	public void setLeft(Node left) {
 		firm.bindings.binding_irnode.set_Mulh_left(this.ptr, left.ptr);
 	}
-	
+
 	@Override
 	public Node getRight() {
 		return createWrapper(firm.bindings.binding_irnode.get_Mulh_right(ptr));
@@ -29,17 +28,10 @@ public class Mulh extends Binop {
 	public void setRight(Node right) {
 		firm.bindings.binding_irnode.set_Mulh_right(this.ptr, right.ptr);
 	}
-	
 
-	
-
-	
-
-	public static final int pnMax = 0;
-
-	
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
-	} 
-	
+	}
+
+	public static final int pnMax = 0;
 }

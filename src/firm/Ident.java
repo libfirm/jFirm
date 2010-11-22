@@ -5,36 +5,39 @@ import com.sun.jna.Pointer;
 import firm.bindings.binding_ident;
 
 public class Ident extends JNAWrapper {
-	
+
 	public Ident(Pointer ptr) {
 		super(ptr);
 	}
-	
+
 	public Ident(String string) {
 		this(binding_ident.new_id_from_str(string));
 	}
-	
+
 	public String getString() {
 		return binding_ident.get_id_str(ptr);
 	}
-	
+
 	@Override
 	public String toString() {
 		return getString();
 	}
-	
+
 	@Override
 	public boolean equals(Object object) {
-		/* this is to prevent you from doing stupid things, use toString() before
-		 * comparing with a string */
-		assert ! (object instanceof String);
+		/*
+		 * this is to prevent you from doing stupid things, use toString()
+		 * before comparing with a string
+		 */
+		assert !(object instanceof String);
 		return super.equals(object);
 	}
-	
+
 	/**
-	 * create an identifier that is different from any other identifier
-	 * created by createUnique. You must specify %u inside the tag which
-	 * is replaced by a unique number.
+	 * create an identifier that is different from any other identifier created
+	 * by createUnique. You must specify %u inside the tag which is replaced by
+	 * a unique number.
+	 * 
 	 * @param tag
 	 * @return
 	 */
@@ -42,7 +45,7 @@ public class Ident extends JNAWrapper {
 		Pointer pIdent = binding_ident.id_unique(tag);
 		return new Ident(pIdent);
 	}
-	
+
 	public final static Ident mangleEntity(Entity ent) {
 		Pointer pIdent = binding_ident.id_mangle_entity(ent.ptr);
 		return new Ident(pIdent);

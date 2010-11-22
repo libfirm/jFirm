@@ -33,6 +33,7 @@ public class CompoundType extends Type {
 			public Iterator<Entity> iterator() {
 				return new Iterator<Entity>() {
 					int n;
+
 					@Override
 					public boolean hasNext() {
 						return n < getNMembers();
@@ -53,8 +54,8 @@ public class CompoundType extends Type {
 	}
 
 	/**
-	 * Layout members of a compound type in a "default" way
-	 * which should be okay for most languages.
+	 * Layout members of a compound type in a "default" way which should be okay
+	 * for most languages.
 	 */
 	public void layoutFields() {
 		binding_tv.default_layout_compound_type(ptr);
@@ -62,9 +63,9 @@ public class CompoundType extends Type {
 
 	@Override
 	public void finishLayout() {
-		/* you have to layout the type first.
-		 * (for example by calling layoutFields)
-		 * layouting should also set the size of the class
+		/*
+		 * you have to layout the type first. (for example by calling
+		 * layoutFields) layouting should also set the size of the class
 		 */
 		assert getSizeBytes() >= 0;
 

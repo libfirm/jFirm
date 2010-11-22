@@ -401,19 +401,22 @@ public {{"abstract "|ifabstract(node)}}class {{node.classname}} extends {{node.p
 		super(ptr);
 	}
 
-	{% for input in node.ins %}
-	{{"@Override"|if(node.parent.name != "Op")}}
+	{% for input in node.ins -%}
+	{%if node.parent.name != "Op"%}@Override
+	{%endif-%}
 	public Node get{{input|CamelCase}}() {
 		return createWrapper(firm.bindings.binding_irnode.get_{{node.name}}_{{input}}(ptr));
 	}
 
-	{{"@Override"|if(node.parent.name != "Op")}}
+	{%if node.parent.name != "Op"%}@Override
+	{%endif-%}
 	public void set{{input|CamelCase}}(Node {{input|filterkeywords}}) {
 		firm.bindings.binding_irnode.set_{{node.name}}_{{input}}(this.ptr, {{input|filterkeywords}}.ptr);
 	}
-	{% endfor %}
 
-	{% for attr in node.attrs %}
+	{% endfor -%}
+
+	{%- for attr in node.attrs -%}
 	public {{attr.java_type}} get{{attr.java_name|CamelCase}}() {
 		{{attr.wrap_type}} _res = firm.bindings.binding_irnode.get_{{node.name}}_{{attr.name}}(ptr);
 		return {{attr.from_wrapper % "_res"}};
@@ -422,23 +425,25 @@ public {{"abstract "|ifabstract(node)}}class {{node.classname}} extends {{node.p
 	public void set{{attr.java_name|CamelCase}}({{attr.java_type}} _val) {
 		firm.bindings.binding_irnode.set_{{node.name}}_{{attr.name}}(this.ptr, {{attr.to_wrapper % "_val"}});
 	}
-	{% endfor %}
 
-	{{ node.java_add }}
+	{% endfor -%}
 
-	{% for out in node.outs -%}
-	{%- if out[1] != "" %}
+	{{- node.java_add -}}
+	{%- if not isAbstract(node) -%}
+	public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	}
+
+	{% endif -%}
+
+	{%- for out in node.outs -%}
+	{%- if out[1] != "" -%}
 	/** {{out[1]}} */
 	{% endif -%}
 	public static final int pn{{out[0]|CamelCase}} = {{loop.index0}};
+
 	{% endfor -%}
 	public static final int pnMax = {{len(node.outs)}};
-
-	{% if not isAbstract(node) %}
-	public void accept(NodeVisitor visitor) {
-		visitor.visit(this);
-	} 
-	{% endif %}
 }
 ''')
 	file.write(template.render(node = node, isAbstract = isAbstract, len=len))
@@ -480,18 +485,19 @@ import firm.bindings.binding_irnode;
 class NodeWrapperConstruction {
 
 	public static Node createWrapper(Pointer ptr) {
-		final binding_irnode.ir_opcode opcode = 
-			binding_irnode.ir_opcode.getEnum(binding_irnode.get_irn_opcode(ptr));
+		final binding_irnode.ir_opcode opcode = binding_irnode.ir_opcode
+				.getEnum(binding_irnode.get_irn_opcode(ptr));
 
 		switch (opcode) {
-		{% for node in nodes %}
-		{% if not isAbstract(node) %}
-			case iro_{{node.name}}:
-				return new {{node.classname}}(ptr);
-		{% endif %}
-		{% endfor %}
-			default:
-				throw new IllegalStateException("Unkown node type: " + opcode);
+		{% for node in nodes -%}
+		{% if not isAbstract(node) -%}
+		case iro_{{node.name}}:
+			return new {{node.classname}}(ptr);
+
+		{% endif -%}
+		{% endfor -%}
+		default:
+			throw new IllegalStateException("Unkown node type: " + opcode);
 		}
 	}
 }''')
@@ -507,33 +513,35 @@ package firm.nodes;
  */
 public interface NodeVisitor {
 
-	{% for node in nodes -%}
-	{% if not isAbstract(node) -%}
+	{%- for node in nodes -%}
+	{% if not isAbstract(node) %}
+
 	/** called when accept is called on a {{node.classname}} node */
 	void visit({{node.classname}} node);
-	{% endif %}
+	{%- endif %}
 	{%- endfor %}
 
 	/**
-	 * Default Visitor: A class which implements every visit function of
-	 * the NodeVisitor interface with a call to the defaultVisit function.
-	 * Usefull as base for own visitors which need to treat all nodes
-	 * equally or only need to override some visit functions.
+	 * Default Visitor: A class which implements every visit function of the
+	 * NodeVisitor interface with a call to the defaultVisit function. Usefull
+	 * as base for own visitors which need to treat all nodes equally or only
+	 * need to override some visit functions.
 	 */
 	public static abstract class Default implements NodeVisitor {
 
-		public void defaultVisit(Node n) {}
-		
-	{% for node in nodes -%}
-	{% if not isAbstract(node) %}
+		public void defaultVisit(Node n) {
+		}
+
+		{%- for node in nodes -%}
+		{% if not isAbstract(node) %}
+
 		@Override
 		public void visit({{node.classname}} node) {
 			defaultVisit(node);
 		}
-	{% endif %}
-	{%- endfor %}	
+		{%- endif -%}
+		{%- endfor %}
 	}
-
 }''')
 file = open("NodeVisitor.java", "w")
 file.write(template.render(nodes = nodes, isAbstract = isAbstract))

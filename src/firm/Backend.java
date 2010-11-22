@@ -9,13 +9,15 @@ import firm.bindings.binding_iroptimize;
 import firm.bindings.binding_libc;
 
 public class Backend {
-	
-	public static void createAssembler(String outputFileName, String compilationUnitName) throws IOException {
+
+	public static void createAssembler(String outputFileName,
+			String compilationUnitName) throws IOException {
 		Pointer file = binding_libc.fopen(outputFileName, "w");
 		if (file == null) {
-			throw new IOException("Couldn't open output file (write access): " + outputFileName);
+			throw new IOException("Couldn't open output file (write access): "
+					+ outputFileName);
 		}
-		
+
 		try {
 			/* just to be sure we have no bad blocks left... */
 			for (Graph graph : Program.getGraphs()) {
@@ -26,10 +28,11 @@ public class Backend {
 			binding_libc.fclose(file);
 		}
 	}
-	
+
 	public static void option(String option) {
 		if (binding_be.be_parse_arg(option) != 1) {
-			throw new IllegalArgumentException("Unknown option '" + option + "'");
+			throw new IllegalArgumentException("Unknown option '" + option
+					+ "'");
 		}
 	}
 }

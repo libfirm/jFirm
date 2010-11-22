@@ -9,19 +9,14 @@ public class Cond extends Node {
 		super(ptr);
 	}
 
-	
-	
 	public Node getSelector() {
 		return createWrapper(firm.bindings.binding_irnode.get_Cond_selector(ptr));
 	}
 
-	
 	public void setSelector(Node selector) {
 		firm.bindings.binding_irnode.set_Cond_selector(this.ptr, selector.ptr);
 	}
-	
 
-	
 	public int getDefaultProj() {
 		com.sun.jna.NativeLong _res = firm.bindings.binding_irnode.get_Cond_default_proj(ptr);
 		return _res.intValue();
@@ -30,7 +25,7 @@ public class Cond extends Node {
 	public void setDefaultProj(int _val) {
 		firm.bindings.binding_irnode.set_Cond_default_proj(this.ptr, new com.sun.jna.NativeLong(_val));
 	}
-	
+
 	public firm.bindings.binding_irnode.cond_jmp_predicate getJmpPred() {
 		int _res = firm.bindings.binding_irnode.get_Cond_jmp_pred(ptr);
 		return firm.bindings.binding_irnode.cond_jmp_predicate.getEnum(_res);
@@ -39,21 +34,16 @@ public class Cond extends Node {
 	public void setJmpPred(firm.bindings.binding_irnode.cond_jmp_predicate _val) {
 		firm.bindings.binding_irnode.set_Cond_jmp_pred(this.ptr, _val.val);
 	}
-	
 
-	
-
-	
-	/** control flow if operand is "false" */
-	public static final int pnFalse = 0;
-	
-	/** control flow if operand is "true" */
-	public static final int pnTrue = 1;
-	public static final int pnMax = 2;
-
-	
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
-	} 
-	
+	}
+
+	/** control flow if operand is "false" */
+	public static final int pnFalse = 0;
+
+	/** control flow if operand is "true" */
+	public static final int pnTrue = 1;
+
+	public static final int pnMax = 2;
 }

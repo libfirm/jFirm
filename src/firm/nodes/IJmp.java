@@ -9,27 +9,17 @@ public class IJmp extends Node {
 		super(ptr);
 	}
 
-	
-	
 	public Node getTarget() {
 		return createWrapper(firm.bindings.binding_irnode.get_IJmp_target(ptr));
 	}
 
-	
 	public void setTarget(Node target) {
 		firm.bindings.binding_irnode.set_IJmp_target(this.ptr, target.ptr);
 	}
-	
 
-	
-
-	
-
-	public static final int pnMax = 0;
-
-	
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
-	} 
-	
+	}
+
+	public static final int pnMax = 0;
 }

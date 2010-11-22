@@ -9,9 +9,6 @@ public class SymConst extends Node {
 		super(ptr);
 	}
 
-	
-
-	
 	public firm.Entity getEntity() {
 		Pointer _res = firm.bindings.binding_irnode.get_SymConst_entity(ptr);
 		return new firm.Entity(_res);
@@ -20,15 +17,10 @@ public class SymConst extends Node {
 	public void setEntity(firm.Entity _val) {
 		firm.bindings.binding_irnode.set_SymConst_entity(this.ptr, _val.ptr);
 	}
-	
 
-	
-
-	public static final int pnMax = 0;
-
-	
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
-	} 
-	
+	}
+
+	public static final int pnMax = 0;
 }

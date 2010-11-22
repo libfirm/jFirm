@@ -10,10 +10,6 @@ public class Block extends Node {
 	}
 
 	
-
-	
-
-	
 	public void addPred(Node node) {
 		firm.bindings.binding_ircons.add_immBlock_pred(ptr, node.ptr);
 	}
@@ -38,13 +34,9 @@ public class Block extends Node {
 	public boolean isBad() {
 		return firm.bindings.binding_irnode.is_Bad(ptr) != 0;
 	}
-
+public void accept(NodeVisitor visitor) {
+		visitor.visit(this);
+	}
 
 	public static final int pnMax = 0;
-
-	
-	public void accept(NodeVisitor visitor) {
-		visitor.visit(this);
-	} 
-	
 }

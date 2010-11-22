@@ -12,6 +12,7 @@ for i in lowering irgmod iredges irmode tv ircons irnode firm_common irdump irop
 	cparser --print-jna -I${FIRM_INC} ${FIRM_INC}/libfirm/$i.h > $TMP || exit $?
 	sed -e "s/class binding/class binding_$i/g" -i $TMP
 	echo "package firm.bindings;" > header
+	echo "" >> header
 	cat header $TMP > $RES
 done
 

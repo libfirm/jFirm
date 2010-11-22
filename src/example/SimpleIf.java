@@ -20,19 +20,11 @@ import firm.nodes.Node;
 /**
  * Simple example. Creating a firm equivalent to:
  * 
- *  public class A {
- *    public int calc(int x, int y) {
- *      int sum;
- *     
- *      if (x > y) {
- *        sum = x + y;
- *      } else {
- *        sum = x * y;
- *      }
- *    
- *      return sum;
- *    }
- *  }
+ * public class A { public int calc(int x, int y) { int sum;
+ * 
+ * if (x > y) { sum = x + y; } else { sum = x * y; }
+ * 
+ * return sum; } }
  */
 public class SimpleIf {
 	public static void main(String[] main_args) {
@@ -41,23 +33,25 @@ public class SimpleIf {
 		final int varNumY = 2;
 		final int varNumSum = 3;
 		final int numLocalVars = 3 + 1; /* 3 parameters + 1 local variable */
-		
+
 		// Initialize firm
 		Firm.init();
-		System.out.printf("Firm Version: %1s.%2s\n", Firm.getMinorVersion(), Firm.getMajorVersion());
-		
+		System.out.printf("Firm Version: %1s.%2s\n", Firm.getMinorVersion(),
+				Firm.getMajorVersion());
+
 		// decide which modes represent int and references
 		final Mode modeInt = Mode.getIs();
 		final Mode modeRef = Mode.getP();
 
 		// Create type and unique entity for class A
 		ClassType class_A = new ClassType("A");
-		
+
 		// Create method type for calc (first parameter is this-pointer)
 		Type intType = new PrimitiveType(modeInt);
 		Type reference_to_A = new PointerType(class_A);
-		Type calcMethodType = new MethodType(new Type[] {reference_to_A, intType, intType}, new Type[] {intType});
-		
+		Type calcMethodType = new MethodType(new Type[] { reference_to_A,
+				intType, intType }, new Type[] { intType });
+
 		// Create entity for calc method
 		Entity calcEnt = new Entity(class_A, "calc(II)I", calcMethodType);
 
@@ -67,7 +61,10 @@ public class SimpleIf {
 
 		// Initialize parameter "variables"
 		Node args = graph.getArgs();
-		Node projThis = cons.newProj(args, modeRef, 0); /* this is parameter number 0 */
+		Node projThis = cons.newProj(args, modeRef, 0); /*
+														 * this is parameter
+														 * number 0
+														 */
 		cons.setVariable(varNumThis, projThis);
 
 		Node projX = cons.newProj(args, modeInt, 1); /* x is parameter number 1 */
@@ -105,7 +102,7 @@ public class SimpleIf {
 
 		// Jump out of if-block
 		Node endIf = cons.newJmp();
-		
+
 		// Else-Block
 		Block bFalse = cons.newBlock();
 		bFalse.addPred(projFalse);
@@ -134,7 +131,7 @@ public class SimpleIf {
 		Node curMem = cons.getCurrentMem();
 		Node retn = cons.newReturn(curMem, new Node[] { sumVal });
 		graph.getEndBlock().addPred(retn);
-		
+
 		// No code should follow a return statement.
 		cons.setCurrentBlockBad();
 		// Done.

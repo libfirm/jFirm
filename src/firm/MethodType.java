@@ -11,11 +11,11 @@ public class MethodType extends Type {
 	MethodType(Pointer ptr) {
 		super(ptr);
 	}
-	
+
 	public MethodType(int nParameters, int nResults) {
 		super(binding_tv.new_type_method(nParameters, nResults));
 	}
-	
+
 	public MethodType(Type[] parameterTypes, Type[] resultTypes) {
 		this(parameterTypes.length, resultTypes.length);
 		for (int i = 0; i < parameterTypes.length; ++i)
@@ -23,7 +23,7 @@ public class MethodType extends Type {
 		for (int i = 0; i < resultTypes.length; ++i)
 			setResType(i, resultTypes[i]);
 	}
-	
+
 	public final int getNParams() {
 		return binding_tv.get_method_n_params(ptr);
 	}
@@ -32,16 +32,16 @@ public class MethodType extends Type {
 		Pointer p = binding_tv.get_method_param_type(ptr, pos);
 		return Type.createWrapper(p);
 	}
-	
+
 	public final void setParamType(int pos, Type tp) {
 		binding_tv.set_method_param_type(ptr, pos, tp.ptr);
 	}
-	
+
 	public final Entity getValueParamEnt(int pos) {
 		Pointer p = binding_tv.get_method_value_param_ent(ptr, pos);
 		return new Entity(p);
 	}
-	
+
 	public final Type getValueParamType() {
 		Pointer p = binding_tv.get_method_value_param_type(ptr);
 		return (p == null ? null : Type.createWrapper(p));
@@ -68,7 +68,7 @@ public class MethodType extends Type {
 		Pointer p = binding_tv.get_method_res_type(ptr, pos);
 		return Type.createWrapper(p);
 	}
-	
+
 	public final void setResType(int pos, Type tp) {
 		binding_tv.set_method_res_type(ptr, pos, tp.ptr);
 	}
@@ -86,12 +86,12 @@ public class MethodType extends Type {
 	public final static String getVariadicityName(ir_variadicity vari) {
 		return binding_tv.get_variadicity_name(vari.val);
 	}
-	
+
 	public final ir_variadicity getVariadicity() {
 		int val = binding_tv.get_method_variadicity(ptr);
 		return ir_variadicity.getEnum(val);
 	}
-	
+
 	public final void setVariadicity(ir_variadicity vari) {
 		binding_tv.set_method_variadicity(ptr, vari.val);
 	}
@@ -108,11 +108,13 @@ public class MethodType extends Type {
 		return binding_tv.get_method_additional_properties(ptr);
 	}
 
-	public final void setAdditionalProperties(mtp_additional_properties properties) {
+	public final void setAdditionalProperties(
+			mtp_additional_properties properties) {
 		binding_tv.set_method_additional_properties(ptr, properties.val);
 	}
 
-	public final void addAdditionalProperties(mtp_additional_properties properties) {
+	public final void addAdditionalProperties(
+			mtp_additional_properties properties) {
 		binding_tv.add_method_additional_properties(ptr, properties.val);
 	}
 
@@ -133,7 +135,7 @@ public class MethodType extends Type {
 		for (int p = 0; p < getNParams(); ++p) {
 			assert getParamType(p) != null;
 		}
-		
-		super.finishLayout();		
+
+		super.finishLayout();
 	}
 }

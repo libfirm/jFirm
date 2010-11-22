@@ -9,7 +9,6 @@ public class Conv extends Unop {
 		super(ptr);
 	}
 
-	
 	@Override
 	public Node getOp() {
 		return createWrapper(firm.bindings.binding_irnode.get_Conv_op(ptr));
@@ -19,9 +18,7 @@ public class Conv extends Unop {
 	public void setOp(Node op) {
 		firm.bindings.binding_irnode.set_Conv_op(this.ptr, op.ptr);
 	}
-	
 
-	
 	public int getStrict() {
 		int _res = firm.bindings.binding_irnode.get_Conv_strict(ptr);
 		return _res;
@@ -30,15 +27,10 @@ public class Conv extends Unop {
 	public void setStrict(int _val) {
 		firm.bindings.binding_irnode.set_Conv_strict(this.ptr, _val);
 	}
-	
 
-	
-
-	public static final int pnMax = 0;
-
-	
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
-	} 
-	
+	}
+
+	public static final int pnMax = 0;
 }
