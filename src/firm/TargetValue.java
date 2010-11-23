@@ -28,6 +28,10 @@ public class TargetValue extends JNAWrapper {
 		this((long) i, mode);
 	}
 
+	public TargetValue(double d, Mode mode) {
+		this(binding_tv.new_tarval_from_double(d, mode.ptr));
+	}
+
 	/** return true if the value can be represented in a C long type */
 	public final boolean isLong() {
 		return 0 != binding_tv.tarval_is_long(ptr);
@@ -44,11 +48,6 @@ public class TargetValue extends JNAWrapper {
 	 */
 	public final int asInt() {
 		return (int) asLong();
-	}
-
-	public final static TargetValue newFromDouble(double d, Mode mode) {
-		Pointer ptr = binding_tv.new_tarval_from_double(d, mode.ptr);
-		return new TargetValue(ptr);
 	}
 
 	public final double getDouble() {
