@@ -54,6 +54,7 @@
 	</target>
 	
 	<target name="clean" description="clean up" depends="clean-libfirm.so">
+		<delete dir="${build}"/>
 		<delete dir="${fullreleasedir}"/>
 	</target>
 
