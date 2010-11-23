@@ -1,6 +1,8 @@
 package firm.nodes;
 
+import java.nio.Buffer;
 import java.nio.IntBuffer;
+import java.nio.LongBuffer;
 import java.util.Iterator;
 
 import com.sun.jna.NativeLong;
@@ -34,13 +36,24 @@ public abstract class Node extends JNAWrapper {
 		return ptrlist;
 	}
 
-	public static IntBuffer getBufferFromNodeList(Node[] list) {
-		assert Pointer.SIZE == 4; // There is no PointerBuffer...
-		IntBuffer buf = IntBuffer.allocate(list.length);
-		for (int i = 0; i < list.length; ++i) {
-			buf.put(i, (int) Pointer.nativeValue(list[i].ptr));
+	public static Buffer getBufferFromNodeList(Node[] list) {
+		if (Pointer.SIZE == 4) {
+			// There is no PointerBuffer...
+			IntBuffer buf = IntBuffer.allocate(list.length);
+			for (int i = 0; i < list.length; ++i) {
+				buf.put(i, (int) Pointer.nativeValue(list[i].ptr));
+			}
+			return buf;
+		} else if (Pointer.SIZE == 8) {
+			LongBuffer buf = LongBuffer.allocate(list.length);
+			for (int i = 0; i < list.length; ++i) {
+				buf.put(i, Pointer.nativeValue(list[i].ptr));
+			}
+			return buf;
+		} else {
+			/* no 32- or 64-bit architecture, strange... */
+			throw new RuntimeException("Unsupported architecture");
 		}
-		return buf;
 	}
 
 	public Mode getMode() {
