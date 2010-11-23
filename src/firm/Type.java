@@ -68,6 +68,21 @@ public class Type extends JNAWrapper {
 		return new Mode(mode_ptr);
 	}
 
+	public static Type getUnknown() {
+		Pointer ptr = binding_typerep.get_unknown_type();
+		return new Type(ptr);
+	}
+
+	public static Type getNone() {
+		Pointer ptr = binding_typerep.get_none_type();
+		return new Type(ptr);
+	}
+
+	public static Type getCode() {
+		Pointer ptr = binding_typerep.get_code_type();
+		return new Type(ptr);
+	}
+
 	/** you must call this function when you are finished constructing a type */
 	public void finishLayout() {
 		setTypeState(ir_type_state.layout_fixed);
