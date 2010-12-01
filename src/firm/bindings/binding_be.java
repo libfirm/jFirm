@@ -1793,6 +1793,8 @@ public class binding_be {
 
 	public static native Pointer be_get_backend_param();
 
+	public static native void be_lower_for_target();
+
 	public static native Pointer lower_for_target_pass(String name);
 
 	public static native void be_main(Pointer output, String compilation_unit_name);

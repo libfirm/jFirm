@@ -37,6 +37,15 @@ public final class Backend {
 		}
 	}
 
+	/**
+	 * Target-lowering pass. This should be run once on a program before
+	 * using createAssembler. You can should perform other optimisations
+	 * after using this method and before using createAssembler!
+	 */
+	public static void lowerForTarget() {
+		binding_be.be_lower_for_target();
+	}
+
 	public static void option(String option) {
 		if (binding_be.be_parse_arg(option) != 1) {
 			throw new IllegalArgumentException("Unknown option '" + option
