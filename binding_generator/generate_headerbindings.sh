@@ -8,8 +8,12 @@ for i in lowering irgmod iredges irmode tv ircons irnode firm_common irdump irop
 	RES="../src/firm/bindings/binding_$i.java"
 	TMP="/tmp/tmp.java"
 	echo " * Creating $RES"
-	echo cparser --print-jna -I${FIRM_INC} ${FIRM_INC}/libfirm/$i.h
-	cparser --print-jna -I${FIRM_INC} ${FIRM_INC}/libfirm/$i.h > $TMP || exit $?
+	CMD="cparser --print-jna --jna-libname firm -I${FIRM_INC} ${FIRM_INC}/libfirm/$i.h --jna-limit ${FIRM_INC}/libfirm/$i.h"
+	if [ $i = "irnode" ]; then
+		CMD="$CMD --jna-limit ${FIRM_INC}/libfirm/nodeops.h"
+	fi
+	echo "$CMD"
+	$CMD > $TMP || exit $?
 	sed -e "s/class binding/class binding_$i/g" -i $TMP
 	echo "package firm.bindings;" > header
 	echo "" >> header

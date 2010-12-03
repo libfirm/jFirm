@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.binding_tv;
+import firm.bindings.binding_typerep;
 
 public class ClassType extends CompoundType {
 
@@ -13,7 +13,7 @@ public class ClassType extends CompoundType {
 	}
 
 	public ClassType(Ident name) {
-		super(binding_tv.new_type_class(name.ptr));
+		super(binding_typerep.new_type_class(name.ptr));
 	}
 
 	public ClassType(String name) {
@@ -21,7 +21,7 @@ public class ClassType extends CompoundType {
 	}
 
 	public Ident getIdent() {
-		return new Ident(binding_tv.get_class_ident(ptr));
+		return new Ident(binding_typerep.get_class_ident(ptr));
 	}
 
 	public String getName() {
@@ -29,15 +29,15 @@ public class ClassType extends CompoundType {
 	}
 
 	public int getNMembers() {
-		return binding_tv.get_class_n_members(ptr);
+		return binding_typerep.get_class_n_members(ptr);
 	}
 
 	public Entity getMember(int n) {
-		return new Entity(binding_tv.get_class_member(ptr, n));
+		return new Entity(binding_typerep.get_class_member(ptr, n));
 	}
 
 	public Entity getMemberByName(Ident name) {
-		return new Entity(binding_tv.get_class_member_by_name(ptr, name.ptr));
+		return new Entity(binding_typerep.get_class_member_by_name(ptr, name.ptr));
 	}
 
 	public Entity getMemberByName(String name) {
@@ -45,15 +45,15 @@ public class ClassType extends CompoundType {
 	}
 
 	public void addSubtype(Type subType) {
-		binding_tv.add_class_subtype(ptr, subType.ptr);
+		binding_typerep.add_class_subtype(ptr, subType.ptr);
 	}
 
 	public int getNSubTypes() {
-		return binding_tv.get_class_n_subtypes(ptr);
+		return binding_typerep.get_class_n_subtypes(ptr);
 	}
 
 	public Type getSubType(int n) {
-		return Type.createWrapper(binding_tv.get_class_subtype(ptr, n));
+		return Type.createWrapper(binding_typerep.get_class_subtype(ptr, n));
 	}
 
 	public Iterable<Type> getSubTypes() {
@@ -83,19 +83,19 @@ public class ClassType extends CompoundType {
 	}
 
 	public void removeSubType(Type subType) {
-		binding_tv.remove_class_subtype(ptr, subType.ptr);
+		binding_typerep.remove_class_subtype(ptr, subType.ptr);
 	}
 
 	public void addSuperType(Type superType) {
-		binding_tv.add_class_supertype(ptr, superType.ptr);
+		binding_typerep.add_class_supertype(ptr, superType.ptr);
 	}
 
 	public int getNSuperTypes() {
-		return binding_tv.get_class_n_supertypes(ptr);
+		return binding_typerep.get_class_n_supertypes(ptr);
 	}
 
 	public Type getSuperType(int n) {
-		return Type.createWrapper(binding_tv.get_class_supertype(ptr, n));
+		return Type.createWrapper(binding_typerep.get_class_supertype(ptr, n));
 	}
 
 	public Iterable<Type> getSuperTypes() {
@@ -125,6 +125,6 @@ public class ClassType extends CompoundType {
 	}
 
 	public void removeSuperType(Type superType) {
-		binding_tv.remove_class_supertype(ptr, superType.ptr);
+		binding_typerep.remove_class_supertype(ptr, superType.ptr);
 	}
 }

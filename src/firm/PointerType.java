@@ -2,7 +2,7 @@ package firm;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.binding_tv;
+import firm.bindings.binding_typerep;
 
 public class PointerType extends Type {
 
@@ -11,15 +11,15 @@ public class PointerType extends Type {
 	}
 
 	public PointerType(Type pointsTo) {
-		super(binding_tv.new_type_pointer(pointsTo.ptr));
+		super(binding_typerep.new_type_pointer(pointsTo.ptr));
 	}
 
 	public Type getPointsTo() {
-		return Type.createWrapper(binding_tv.get_pointer_points_to_type(ptr));
+		return Type.createWrapper(binding_typerep.get_pointer_points_to_type(ptr));
 	}
 
 	public void setPointsTo(Type type) {
-		binding_tv.set_pointer_points_to_type(ptr, type.ptr);
+		binding_typerep.set_pointer_points_to_type(ptr, type.ptr);
 	}
 
 	@Override

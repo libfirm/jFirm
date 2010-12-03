@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.binding_tv;
+import firm.bindings.binding_typerep;
 
 public class CompoundType extends Type {
 	CompoundType(Pointer ptr) {
@@ -12,7 +12,7 @@ public class CompoundType extends Type {
 	}
 
 	public Ident getIdent() {
-		return new Ident(binding_tv.get_compound_ident(ptr));
+		return new Ident(binding_typerep.get_compound_ident(ptr));
 	}
 
 	public String getName() {
@@ -20,11 +20,11 @@ public class CompoundType extends Type {
 	}
 
 	public int getNMembers() {
-		return binding_tv.get_compound_n_members(ptr);
+		return binding_typerep.get_compound_n_members(ptr);
 	}
 
 	public Entity getMember(int n) {
-		return new Entity(binding_tv.get_compound_member(ptr, n));
+		return new Entity(binding_typerep.get_compound_member(ptr, n));
 	}
 
 	public Iterable<Entity> getMembers() {
@@ -58,7 +58,7 @@ public class CompoundType extends Type {
 	 * for most languages.
 	 */
 	public void layoutFields() {
-		binding_tv.default_layout_compound_type(ptr);
+		binding_typerep.default_layout_compound_type(ptr);
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package firm;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.binding_tv;
+import firm.bindings.binding_typerep;
 
 public class UnionType extends CompoundType {
 	UnionType(Pointer ptr) {
@@ -10,7 +10,7 @@ public class UnionType extends CompoundType {
 	}
 
 	public UnionType(Ident name) {
-		super(binding_tv.new_type_union(name.ptr));
+		super(binding_typerep.new_type_union(name.ptr));
 	}
 
 	public UnionType(String name) {

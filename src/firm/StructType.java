@@ -2,7 +2,7 @@ package firm;
 
 import com.sun.jna.Pointer;
 
-import firm.bindings.binding_tv;
+import firm.bindings.binding_typerep;
 
 public class StructType extends CompoundType {
 	StructType(Pointer ptr) {
@@ -10,7 +10,7 @@ public class StructType extends CompoundType {
 	}
 
 	public StructType(Ident name) {
-		super(binding_tv.new_type_struct(name.ptr));
+		super(binding_typerep.new_type_struct(name.ptr));
 	}
 
 	public StructType(String name) {
