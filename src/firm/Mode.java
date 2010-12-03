@@ -9,7 +9,7 @@ import firm.bindings.binding_irmode;
  * describing numbers and their arithmetic operations on them. As well as some
  * special nodes for representing control-flow, memory/side-effects, or
  * (internal) truth-values.
- * 
+ *
  * There are a number of predefined modes available in the static getX()
  * functions.
  */
@@ -466,4 +466,7 @@ public final class Mode extends JNAWrapper {
 		return 0 != binding_irmode.is_reinterpret_cast(ptr, castTo.ptr);
 	}
 
+	public final Type getType() {
+		return Type.createWrapper(binding_irmode.get_type_for_mode(ptr));
+	}
 }
