@@ -73,7 +73,6 @@ def format_nodearguments(node):
 	arguments = map(format_argument, node.arguments)
 	return format_parameterlist(arguments)
 
-
 def format_nodeparameters(node):
 	parameters = map(lambda arg: arg["type"] + " " + arg["name"], node.arguments)
 	return format_parameterlist(parameters)
@@ -94,6 +93,14 @@ def format_blockargument(node):
 		return "this.ptr"
 	else:
 		return "block.ptr"
+
+def format_block_construction(node):
+	if hasattr(node, "knownBlock"):
+		if hasattr(node, "knownGraph"):
+			return ""
+		return "graph.ptr"
+	else:
+		return "binding_ircons.get_r_cur_block(graph.ptr)"
 
 def format_arguments(string, voidwhenempty = False):
 	args = re.split('\s*\n\s*', string)
@@ -185,12 +192,13 @@ env.filters['ifabstract']  = format_ifabstract
 env.filters['key']         = format_key
 env.filters['filterkeywords'] = format_filter_keywords
 
-env.filters['arguments']      = format_arguments
-env.filters['parameters']     = format_parameters
-env.filters['nodeparameters'] = format_nodeparameters
-env.filters['nodearguments']  = format_nodearguments
-env.filters['blockparameter'] = format_blockparameter
-env.filters['blockargument']  = format_blockargument
+env.filters['arguments']          = format_arguments
+env.filters['parameters']         = format_parameters
+env.filters['nodeparameters']     = format_nodeparameters
+env.filters['nodearguments']      = format_nodearguments
+env.filters['blockparameter']     = format_blockparameter
+env.filters['blockargument']      = format_blockargument
+env.filters['block_construction'] = format_block_construction
 
 def get_java_type(type):
 	if type == "ir_type*":
@@ -455,20 +463,29 @@ package firm;
 import com.sun.jna.Pointer;
 
 import firm.nodes.Node;
+import firm.bindings.binding_ircons;
 
 class ConstructionBase {
 
-	protected ConstructionBase() {
+	protected final Graph graph;
+
+	protected ConstructionBase(Graph graph) {
+		this.graph = graph;
 	}
 
-	{% for node in nodes %}
-	{% if not isAbstract(node) and not node.noconstructor %}
+	{%- for node in nodes -%}
+	{%- if not isAbstract(node) and not node.noconstructor %}
+
 	public Node new{{node.classname}}({{node.arguments|argdecls}}) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_{{node.name}}({{node.arguments|bindingargs}});
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_{{node.name}}(
+			{%- filter parameters %}
+			{{node|block_construction}}
+			{{node.arguments|bindingargs}}
+			{%- endfilter %});
 		return Node.createWrapper(result_ptr);
 	}
-	{% endif %}
-	{% endfor %}
+	{%- endif %}
+	{%- endfor %}
 }''')
 
 file = open("ConstructionBase.java", "w")
@@ -583,6 +600,7 @@ public class Graph extends GraphBase {
 
 	{% for node in nodes -%}
 	{% if not isAbstract(node) and not node.noconstructor %}
+
 	/** Create a new {{node.name}} node */
 	public final Node new{{node.classname}}(
 		{%- filter parameters %}
@@ -595,7 +613,7 @@ public class Graph extends GraphBase {
 				{{node|nodearguments}}
 			{%- endfilter %}));
 	}
-	{% endif %}
+	{%- endif %}
 	{%- endfor %}
 }''')
 file = open("Graph.java", "w")

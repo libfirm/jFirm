@@ -2136,11 +2136,15 @@ public class binding_ircons {
 
 	public static native Pointer ir_guess_mode(int pos);
 
+	public static native Pointer ir_r_guess_mode(Pointer irg, int pos);
+
 	public static native void set_value(int pos, Pointer value);
 
 	public static native void set_r_value(Pointer irg, int pos, Pointer value);
 
 	public static native int find_value(Pointer value);
+
+	public static native int r_find_value(Pointer irg, Pointer value);
 
 	public static native Pointer get_store();
 
@@ -2151,6 +2155,8 @@ public class binding_ircons {
 	public static native void set_r_store(Pointer irg, Pointer store);
 
 	public static native void keep_alive(Pointer ka);
+
+	public static native void r_keep_alive(Pointer irg, Pointer ka);
 
 	public static native void irg_finalize_cons(Pointer irg);
 

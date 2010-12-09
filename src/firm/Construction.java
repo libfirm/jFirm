@@ -15,37 +15,20 @@ import firm.nodes.Node;
  */
 public class Construction extends ConstructionBase {
 
-	private final Graph graph;
-
-	private static boolean constructionActive = false;
-
 	/**
 	 * Start construction of a graph
-	 * 
+	 *
 	 * @param graph
 	 *            the graph to construct
 	 */
 	public Construction(Graph graph) {
-		/*
-		 * well firm can only support 1 active graph construction. you have to
-		 * call Construction.finish() to start another one.
-		 */
-		if (constructionActive) {
-			throw new IllegalStateException(
-					"Another construction is currently in progress."
-							+ " Don't forget to call Constuction.finish() when done...");
-		}
-
-		constructionActive = true;
+		super(graph);
 
 		/* backedges interfere with construction somehow... */
 		if (BackEdges.enabled(graph)) {
 			throw new IllegalStateException(
 					"Backedges must be disabled while building the graph");
 		}
-
-		this.graph = graph;
-		Graph.setCurrent(graph);
 	}
 
 	public Graph getGraph() {
@@ -53,7 +36,7 @@ public class Construction extends ConstructionBase {
 	}
 
 	public Block newBlock() {
-		return new Block(binding_ircons.new_immBlock());
+		return new Block(binding_ircons.new_r_immBlock(graph.ptr));
 	}
 
 	public Node newSymConst(Entity entity) {
@@ -77,17 +60,17 @@ public class Construction extends ConstructionBase {
 	}
 
 	public Node newSel(Node ptr, Entity entity) {
-		return newSel(Node.createWrapper(binding_ircons.new_NoMem()), ptr,
-				new Node[] {}, entity);
+		Node noMem = newNoMem();
+		return newSel(noMem, ptr, new Node[] {}, entity);
 	}
 
 	/**
 	 * sets the current block
-	 * 
+	 *
 	 * @param block
 	 */
 	public void setCurrentBlock(Block block) {
-		binding_ircons.set_cur_block(block.ptr);
+		binding_ircons.set_r_cur_block(graph.ptr, block.ptr);
 	}
 
 	/**
@@ -96,17 +79,17 @@ public class Construction extends ConstructionBase {
 	 * nodes.
 	 */
 	public void setCurrentBlockBad() {
-		binding_ircons.set_cur_block(binding_ircons.new_Bad());
+		binding_ircons.set_r_cur_block(graph.ptr, binding_ircons.new_Bad());
 	}
 
 	/**
 	 * returns the current block
 	 */
 	public Block getCurrentBlock() {
-		Pointer ptr = binding_ircons.get_cur_block();
+		Pointer ptr = binding_ircons.get_r_cur_block(graph.ptr);
 		if (ptr == null)
 			return null;
-		return new Block(binding_ircons.get_cur_block());
+		return new Block(binding_ircons.get_r_cur_block(graph.ptr));
 	}
 
 	/**
@@ -114,26 +97,26 @@ public class Construction extends ConstructionBase {
 	 */
 	public Node getCurrentMem() {
 		assert !getCurrentBlock().isBad();
-		return Node.createWrapper(binding_ircons.get_store());
+		return Node.createWrapper(binding_ircons.get_r_store(graph.ptr));
 	}
 
 	/**
 	 * sets the current memory node
 	 */
 	public void setCurrentMem(Node node) {
-		binding_ircons.set_store(node.ptr);
+		binding_ircons.set_r_store(graph.ptr, node.ptr);
 	}
 
 	/**
 	 * sets the (current) value of a variable
-	 * 
+	 *
 	 * @param num
 	 *            number of the variable
 	 * @param value
 	 *            new variable value
 	 */
 	public void setVariable(int num, Node value) {
-		binding_ircons.set_value(num, value.ptr);
+		binding_ircons.set_r_value(graph.ptr, num, value.ptr);
 	}
 
 	/**
@@ -141,7 +124,7 @@ public class Construction extends ConstructionBase {
 	 * set by setVariable or in case of control flow join, construct Phi nodes.
 	 * If no previous value has been set then an unknown node with the specified
 	 * mode is created.
-	 * 
+	 *
 	 * @param num
 	 *            number of the variable
 	 * @param mode
@@ -149,27 +132,22 @@ public class Construction extends ConstructionBase {
 	 */
 	public Node getVariable(int num, Mode mode) {
 		assert num < graph.getnLocalVars();
-		return Node.createWrapper(binding_ircons.get_value(num, mode.ptr));
+		return Node.createWrapper(binding_ircons.get_r_value(graph.ptr, num, mode.ptr));
 	}
 
 	/**
 	 * must be called when graph construction has finished.
-	 * 
+	 *
 	 * This replaces Phi0 placeholders with real phi nodes, constructs a frame
 	 * type and sets graph phase to high (which means construction has finished
 	 * and the graph should be well formed).
 	 */
 	public void finish() {
-		if (!constructionActive) {
-			throw new IllegalStateException("Construciton is not active.");
-		}
 		/* backedges interfere with construction somehow... */
 		if (BackEdges.enabled(graph)) {
 			throw new IllegalStateException(
 					"Backedges must not be enabled while building the graph");
 		}
-
-		constructionActive = false;
 
 		/* mature blocks */
 		graph.walkBlocks(new BlockWalker() {
