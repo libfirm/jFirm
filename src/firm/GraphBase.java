@@ -282,8 +282,7 @@ public abstract class GraphBase extends JNAWrapper {
 		node.markVisited();
 	}
 
-	private void blockWalkHelper(BlockWalker walker, Node node) {
-		Node nodeBlock = node.getBlock();
+	private void blockWalkHelper(BlockWalker walker, Node nodeBlock) {
 		if (nodeBlock.getClass() == Bad.class)
 			return;
 
@@ -294,12 +293,12 @@ public abstract class GraphBase extends JNAWrapper {
 
 		walker.visitBlock(block);
 		for (Node pred : block.getPreds()) {
-			blockWalkHelper(walker, pred);
+			Node predNodeBlock = pred.getBlock();
+			blockWalkHelper(walker, predNodeBlock);
 		}
 	}
 
-	private void blockWalkHelperPostorder(BlockWalker walker, Node node) {
-		Node nodeBlock = node.getBlock();
+	private void blockWalkHelperPostorder(BlockWalker walker, Node nodeBlock) {
 		if (nodeBlock.getClass() == Bad.class)
 			return;
 
@@ -309,7 +308,8 @@ public abstract class GraphBase extends JNAWrapper {
 		block.markBlockVisited();
 
 		for (Node pred : block.getPreds()) {
-			blockWalkHelperPostorder(walker, pred);
+			Node predNodeBlock = pred.getBlock();
+			blockWalkHelperPostorder(walker, predNodeBlock);
 		}
 		walker.visitBlock(block);
 	}
@@ -358,7 +358,15 @@ public abstract class GraphBase extends JNAWrapper {
 	 */
 	public void walkBlocks(BlockWalker walker) {
 		incrementBlockVisited();
-		blockWalkHelper(walker, getEnd());
+		Node end = getEnd();
+		blockWalkHelper(walker, end.getBlock());
+		/* we might have more code reachable by keepalive edges */
+		for(Node pred : getEnd().getPreds()) {
+			if (pred.getClass() != Block.class)
+				pred = pred.getBlock();
+			
+			blockWalkHelper(walker, pred);
+		}
 	}
 
 	/**
@@ -366,7 +374,15 @@ public abstract class GraphBase extends JNAWrapper {
 	 */
 	public void walkBlocksPostorder(BlockWalker walker) {
 		incrementBlockVisited();
-		blockWalkHelperPostorder(walker, getEnd());
+		Node end = getEnd();
+		blockWalkHelperPostorder(walker, end.getBlock());
+		/* we might have more code reachable by keepalive edges */
+		for(Node pred : getEnd().getPreds()) {
+			if (pred.getClass() != Block.class)
+				pred = pred.getBlock();
+			
+			blockWalkHelper(walker, pred);
+		}
 	}
 
 	public void setPhaseState(binding_irgraph.irg_phase_state state) {
