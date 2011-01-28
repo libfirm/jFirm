@@ -164,4 +164,16 @@ public class Entity extends JNAWrapper {
 	public final void setInitializer(Initializer initializer) {
 		binding_typerep.set_entity_initializer(ptr, initializer.ptr);
 	}
+
+	public final void addEntityOverwrites(Entity overwritten) {
+		binding_typerep.add_entity_overwrites(ptr, overwritten.ptr);
+	}
+
+	public final int getNOverwrites() {
+		return binding_typerep.get_entity_n_overwrites(ptr);
+	}
+
+	public final Entity getOverwrites(int index) {
+		return new Entity(binding_typerep.get_entity_overwrites(ptr, index));
+	}
 }
