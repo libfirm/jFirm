@@ -9,6 +9,76 @@ public class binding_irprog {
 		Native.register("firm");
 	}
 
+	public static enum ir_relation {
+		ir_relation_false(0),
+		ir_relation_equal((1 << 0)),
+		ir_relation_less((1 << 1)),
+		ir_relation_greater((1 << 2)),
+		ir_relation_unordered((1 << 3)),
+		ir_relation_less_equal((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val)),
+		ir_relation_greater_equal((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_less_greater((ir_relation.ir_relation_less.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_less_equal_greater(((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val)),
+		ir_relation_unordered_equal((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_less((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val)),
+		ir_relation_unordered_less_equal(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_greater((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_unordered_greater_equal(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_greater.val) | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_less_greater(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val)),
+		ir_relation_true((((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val) | ir_relation.ir_relation_unordered.val));
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_relation(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_relation() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_relation getEnum(int val) {
+			for (ir_relation entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum ir_cons_flags {
+		cons_none(0),
+		cons_volatile((1 << 0)),
+		cons_unaligned((1 << 1)),
+		cons_floats((1 << 2));
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_cons_flags(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_cons_flags() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_cons_flags getEnum(int val) {
+			for (ir_cons_flags entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
@@ -598,11 +668,11 @@ public class binding_irprog {
 
 	public static native int get_irp_last_idx();
 
-	public static native int get_irp_n_irgs();
+	public static native com.sun.jna.NativeLong get_irp_n_irgs();
 
-	public static native Pointer get_irp_irg(int pos);
+	public static native Pointer get_irp_irg(com.sun.jna.NativeLong pos);
 
-	public static native void set_irp_irg(int pos, Pointer irg);
+	public static native void set_irp_irg(com.sun.jna.NativeLong pos, Pointer irg);
 
 	public static native Pointer get_segment_type(/* ir_segment_t */int segment);
 
@@ -616,23 +686,23 @@ public class binding_irprog {
 
 	public static native void remove_irp_type(Pointer typ);
 
-	public static native int get_irp_n_types();
+	public static native com.sun.jna.NativeLong get_irp_n_types();
 
-	public static native Pointer get_irp_type(int pos);
+	public static native Pointer get_irp_type(com.sun.jna.NativeLong pos);
 
-	public static native void set_irp_type(int pos, Pointer typ);
+	public static native void set_irp_type(com.sun.jna.NativeLong pos, Pointer typ);
 
-	public static native int get_irp_n_modes();
+	public static native com.sun.jna.NativeLong get_irp_n_modes();
 
-	public static native Pointer get_irp_mode(int pos);
+	public static native Pointer get_irp_mode(com.sun.jna.NativeLong pos);
 
 	public static native void add_irp_opcode(Pointer opcode);
 
 	public static native void remove_irp_opcode(Pointer opcode);
 
-	public static native int get_irp_n_opcodes();
+	public static native com.sun.jna.NativeLong get_irp_n_opcodes();
 
-	public static native Pointer get_irp_opcode(int pos);
+	public static native Pointer get_irp_opcode(com.sun.jna.NativeLong pos);
 
 	public static native void clear_irp_opcodes_generic_func();
 
@@ -658,7 +728,7 @@ public class binding_irprog {
 
 	public static native void add_irp_asm(Pointer asm_string);
 
-	public static native int get_irp_n_asms();
+	public static native com.sun.jna.NativeLong get_irp_n_asms();
 
-	public static native Pointer get_irp_asm(int pos);
+	public static native Pointer get_irp_asm(com.sun.jna.NativeLong pos);
 }

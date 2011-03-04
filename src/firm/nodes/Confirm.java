@@ -25,13 +25,13 @@ public class Confirm extends Node {
 		firm.bindings.binding_irnode.set_Confirm_bound(this.ptr, bound.ptr);
 	}
 
-	public int getCmp() {
-		int _res = firm.bindings.binding_irnode.get_Confirm_cmp(ptr);
-		return _res;
+	public firm.Relation getRelation() {
+		int _res = firm.bindings.binding_irnode.get_Confirm_relation(ptr);
+		return firm.Relation.fromValue(_res);
 	}
 
-	public void setCmp(int _val) {
-		firm.bindings.binding_irnode.set_Confirm_cmp(this.ptr, _val);
+	public void setRelation(firm.Relation _val) {
+		firm.bindings.binding_irnode.set_Confirm_relation(this.ptr, _val.value());
 	}
 
 	public void accept(NodeVisitor visitor) {

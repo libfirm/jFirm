@@ -11,19 +11,19 @@ import firm.Mode;
 import firm.PointerType;
 import firm.PrimitiveType;
 import firm.Program;
+import firm.Relation;
 import firm.Type;
 import firm.nodes.Block;
-import firm.nodes.Cmp;
 import firm.nodes.Cond;
 import firm.nodes.Node;
 
 /**
  * Simple example. Creating a firm equivalent to:
- * 
+ *
  * public class A { public int calc(int x, int y) { int sum;
- * 
+ *
  * if (x > y) { sum = x + y; } else { sum = x * y; }
- * 
+ *
  * return sum; } }
  */
 public class SimpleIf {
@@ -79,11 +79,10 @@ public class SimpleIf {
 		// Get value of y
 		Node yVal = cons.getVariable(varNumY, modeInt);
 		// Compare x,y with <
-		Node cmp = cons.newCmp(xVal, yVal);
-		Node projLt = cons.newProj(cmp, Mode.getb(), Cmp.pnLt);
+		Node cmp = cons.newCmp(xVal, yVal, Relation.Less);
 
 		// Conditional Jump Node with the True+False Proj
-		Node cond = cons.newCond(projLt);
+		Node cond = cons.newCond(cmp);
 		Node projTrue = cons.newProj(cond, Mode.getX(), Cond.pnTrue);
 		Node projFalse = cons.newProj(cond, Mode.getX(), Cond.pnFalse);
 

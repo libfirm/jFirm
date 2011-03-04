@@ -38,6 +38,76 @@ public class binding_irop {
 		}
 	}
 
+	public static enum ir_relation {
+		ir_relation_false(0),
+		ir_relation_equal((1 << 0)),
+		ir_relation_less((1 << 1)),
+		ir_relation_greater((1 << 2)),
+		ir_relation_unordered((1 << 3)),
+		ir_relation_less_equal((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val)),
+		ir_relation_greater_equal((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_less_greater((ir_relation.ir_relation_less.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_less_equal_greater(((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val)),
+		ir_relation_unordered_equal((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_less((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val)),
+		ir_relation_unordered_less_equal(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_greater((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_unordered_greater_equal(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_greater.val) | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_less_greater(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val)),
+		ir_relation_true((((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val) | ir_relation.ir_relation_unordered.val));
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_relation(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_relation() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_relation getEnum(int val) {
+			for (ir_relation entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum ir_cons_flags {
+		cons_none(0),
+		cons_volatile((1 << 0)),
+		cons_unaligned((1 << 1)),
+		cons_floats((1 << 2));
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_cons_flags(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_cons_flags() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_cons_flags getEnum(int val) {
+			for (ir_cons_flags entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
@@ -309,7 +379,6 @@ public class binding_irop {
 		iro_CopyB(),
 		iro_Deleted(),
 		iro_Div(),
-		iro_DivMod(),
 		iro_Dummy(),
 		iro_End(),
 		iro_Eor(),
@@ -330,7 +399,6 @@ public class binding_irop {
 		iro_Phi(),
 		iro_Pin(),
 		iro_Proj(),
-		iro_Quot(),
 		iro_Raise(),
 		iro_Return(),
 		iro_Rotl(),

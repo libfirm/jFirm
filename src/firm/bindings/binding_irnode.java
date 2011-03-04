@@ -9,6 +9,76 @@ public class binding_irnode {
 		Native.register("firm");
 	}
 
+	public static enum ir_relation {
+		ir_relation_false(0),
+		ir_relation_equal((1 << 0)),
+		ir_relation_less((1 << 1)),
+		ir_relation_greater((1 << 2)),
+		ir_relation_unordered((1 << 3)),
+		ir_relation_less_equal((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val)),
+		ir_relation_greater_equal((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_less_greater((ir_relation.ir_relation_less.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_less_equal_greater(((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val)),
+		ir_relation_unordered_equal((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_less((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val)),
+		ir_relation_unordered_less_equal(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_greater((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_unordered_greater_equal(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_greater.val) | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_less_greater(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val)),
+		ir_relation_true((((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val) | ir_relation.ir_relation_unordered.val));
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_relation(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_relation() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_relation getEnum(int val) {
+			for (ir_relation entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum ir_cons_flags {
+		cons_none(0),
+		cons_volatile((1 << 0)),
+		cons_unaligned((1 << 1)),
+		cons_floats((1 << 2));
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_cons_flags(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_cons_flags() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_cons_flags getEnum(int val) {
+			for (ir_cons_flags entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
@@ -832,7 +902,6 @@ public class binding_irnode {
 		iro_CopyB(),
 		iro_Deleted(),
 		iro_Div(),
-		iro_DivMod(),
 		iro_Dummy(),
 		iro_End(),
 		iro_Eor(),
@@ -853,7 +922,6 @@ public class binding_irnode {
 		iro_Phi(),
 		iro_Pin(),
 		iro_Proj(),
-		iro_Quot(),
 		iro_Raise(),
 		iro_Return(),
 		iro_Rotl(),
@@ -1230,48 +1298,6 @@ public class binding_irnode {
 		}
 	}
 
-	public static enum pn_Cmp {
-		pn_Cmp_False(0),
-		pn_Cmp_Eq(1),
-		pn_Cmp_Lt(2),
-		pn_Cmp_Le((pn_Cmp.pn_Cmp_Eq.val | pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Gt(4),
-		pn_Cmp_Ge((pn_Cmp.pn_Cmp_Eq.val | pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Lg((pn_Cmp.pn_Cmp_Lt.val | pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Leg(((pn_Cmp.pn_Cmp_Lt.val | pn_Cmp.pn_Cmp_Eq.val) | pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uo(8),
-		pn_Cmp_Ue((pn_Cmp.pn_Cmp_Uo.val | pn_Cmp.pn_Cmp_Eq.val)),
-		pn_Cmp_Ul((pn_Cmp.pn_Cmp_Uo.val | pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Ule(((pn_Cmp.pn_Cmp_Uo.val | pn_Cmp.pn_Cmp_Lt.val) | pn_Cmp.pn_Cmp_Eq.val)),
-		pn_Cmp_Ug((pn_Cmp.pn_Cmp_Uo.val | pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uge(((pn_Cmp.pn_Cmp_Uo.val | pn_Cmp.pn_Cmp_Gt.val) | pn_Cmp.pn_Cmp_Eq.val)),
-		pn_Cmp_Ne(((pn_Cmp.pn_Cmp_Uo.val | pn_Cmp.pn_Cmp_Lt.val) | pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_True(15),
-		pn_Cmp_max();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		pn_Cmp(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		pn_Cmp() {
-			this.val = C.next_val++;
-		}
-
-		public static pn_Cmp getEnum(int val) {
-			for (pn_Cmp entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum pn_Cond {
 		pn_Cond_false(),
 		pn_Cond_true(),
@@ -1352,37 +1378,6 @@ public class binding_irnode {
 
 		public static pn_Div getEnum(int val) {
 			for (pn_Div entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum pn_DivMod {
-		pn_DivMod_M(pn_generic.pn_Generic_M.val),
-		pn_DivMod_X_regular(pn_generic.pn_Generic_X_regular.val),
-		pn_DivMod_X_except(pn_generic.pn_Generic_X_except.val),
-		pn_DivMod_res_div(pn_generic.pn_Generic_other.val),
-		pn_DivMod_res_mod(),
-		pn_DivMod_max();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		pn_DivMod(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		pn_DivMod() {
-			this.val = C.next_val++;
-		}
-
-		public static pn_DivMod getEnum(int val) {
-			for (pn_DivMod entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -1480,36 +1475,6 @@ public class binding_irnode {
 		}
 	}
 
-	public static enum pn_Quot {
-		pn_Quot_M(pn_generic.pn_Generic_M.val),
-		pn_Quot_X_regular(pn_generic.pn_Generic_X_regular.val),
-		pn_Quot_X_except(pn_generic.pn_Generic_X_except.val),
-		pn_Quot_res(pn_generic.pn_Generic_other.val),
-		pn_Quot_max();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		pn_Quot(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		pn_Quot() {
-			this.val = C.next_val++;
-		}
-
-		public static pn_Quot getEnum(int val) {
-			for (pn_Quot entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum pn_Raise {
 		pn_Raise_M(pn_generic.pn_Generic_M.val),
 		pn_Raise_X(pn_generic.pn_Generic_X_regular.val),
@@ -1599,6 +1564,414 @@ public class binding_irnode {
 	}
 
 
+	public static native Pointer new_rd_Add(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_r_Add(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_d_Add(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_Add(Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_rd_Alloc(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_count, Pointer type, /* ir_where_alloc */int where);
+
+	public static native Pointer new_r_Alloc(Pointer block, Pointer irn_mem, Pointer irn_count, Pointer type, /* ir_where_alloc */int where);
+
+	public static native Pointer new_d_Alloc(Pointer dbgi, Pointer irn_mem, Pointer irn_count, Pointer type, /* ir_where_alloc */int where);
+
+	public static native Pointer new_Alloc(Pointer irn_mem, Pointer irn_count, Pointer type, /* ir_where_alloc */int where);
+
+	public static native Pointer new_rd_And(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_r_And(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_d_And(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_And(Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_rd_Bad(Pointer dbgi, Pointer irg);
+
+	public static native Pointer new_r_Bad(Pointer irg);
+
+	public static native Pointer new_d_Bad(Pointer dbgi);
+
+	public static native Pointer new_Bad();
+
+	public static native Pointer new_rd_Block(Pointer dbgi, Pointer irg, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_r_Block(Pointer irg, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_d_Block(Pointer dbgi, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_Block(int arity, java.nio.Buffer in);
+
+	public static native Pointer new_rd_Borrow(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_r_Borrow(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_d_Borrow(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_Borrow(Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_rd_Bound(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_index, Pointer irn_lower, Pointer irn_upper);
+
+	public static native Pointer new_r_Bound(Pointer block, Pointer irn_mem, Pointer irn_index, Pointer irn_lower, Pointer irn_upper);
+
+	public static native Pointer new_d_Bound(Pointer dbgi, Pointer irn_mem, Pointer irn_index, Pointer irn_lower, Pointer irn_upper);
+
+	public static native Pointer new_Bound(Pointer irn_mem, Pointer irn_index, Pointer irn_lower, Pointer irn_upper);
+
+	public static native Pointer new_rd_Builtin(Pointer dbgi, Pointer block, Pointer irn_mem, int arity, java.nio.Buffer in, /* ir_builtin_kind */int kind, Pointer type);
+
+	public static native Pointer new_r_Builtin(Pointer block, Pointer irn_mem, int arity, java.nio.Buffer in, /* ir_builtin_kind */int kind, Pointer type);
+
+	public static native Pointer new_d_Builtin(Pointer dbgi, Pointer irn_mem, int arity, java.nio.Buffer in, /* ir_builtin_kind */int kind, Pointer type);
+
+	public static native Pointer new_Builtin(Pointer irn_mem, int arity, java.nio.Buffer in, /* ir_builtin_kind */int kind, Pointer type);
+
+	public static native Pointer new_rd_Call(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer type);
+
+	public static native Pointer new_r_Call(Pointer block, Pointer irn_mem, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer type);
+
+	public static native Pointer new_d_Call(Pointer dbgi, Pointer irn_mem, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer type);
+
+	public static native Pointer new_Call(Pointer irn_mem, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer type);
+
+	public static native Pointer new_rd_Carry(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_r_Carry(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_d_Carry(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_Carry(Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_rd_Cast(Pointer dbgi, Pointer block, Pointer irn_op, Pointer type);
+
+	public static native Pointer new_r_Cast(Pointer block, Pointer irn_op, Pointer type);
+
+	public static native Pointer new_d_Cast(Pointer dbgi, Pointer irn_op, Pointer type);
+
+	public static native Pointer new_Cast(Pointer irn_op, Pointer type);
+
+	public static native Pointer new_rd_Cmp(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, /* ir_relation */int relation);
+
+	public static native Pointer new_r_Cmp(Pointer block, Pointer irn_left, Pointer irn_right, /* ir_relation */int relation);
+
+	public static native Pointer new_d_Cmp(Pointer dbgi, Pointer irn_left, Pointer irn_right, /* ir_relation */int relation);
+
+	public static native Pointer new_Cmp(Pointer irn_left, Pointer irn_right, /* ir_relation */int relation);
+
+	public static native Pointer new_rd_Cond(Pointer dbgi, Pointer block, Pointer irn_selector);
+
+	public static native Pointer new_r_Cond(Pointer block, Pointer irn_selector);
+
+	public static native Pointer new_d_Cond(Pointer dbgi, Pointer irn_selector);
+
+	public static native Pointer new_Cond(Pointer irn_selector);
+
+	public static native Pointer new_rd_Confirm(Pointer dbgi, Pointer block, Pointer irn_value, Pointer irn_bound, /* ir_relation */int relation);
+
+	public static native Pointer new_r_Confirm(Pointer block, Pointer irn_value, Pointer irn_bound, /* ir_relation */int relation);
+
+	public static native Pointer new_d_Confirm(Pointer dbgi, Pointer irn_value, Pointer irn_bound, /* ir_relation */int relation);
+
+	public static native Pointer new_Confirm(Pointer irn_value, Pointer irn_bound, /* ir_relation */int relation);
+
+	public static native Pointer new_rd_Const(Pointer dbgi, Pointer irg, Pointer tarval);
+
+	public static native Pointer new_r_Const(Pointer irg, Pointer tarval);
+
+	public static native Pointer new_d_Const(Pointer dbgi, Pointer tarval);
+
+	public static native Pointer new_Const(Pointer tarval);
+
+	public static native Pointer new_rd_Conv(Pointer dbgi, Pointer block, Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_r_Conv(Pointer block, Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_d_Conv(Pointer dbgi, Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_Conv(Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_rd_CopyB(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type);
+
+	public static native Pointer new_r_CopyB(Pointer block, Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type);
+
+	public static native Pointer new_d_CopyB(Pointer dbgi, Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type);
+
+	public static native Pointer new_CopyB(Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type);
+
+	public static native Pointer new_rd_Div(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+
+	public static native Pointer new_r_Div(Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+
+	public static native Pointer new_d_Div(Pointer dbgi, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+
+	public static native Pointer new_Div(Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+
+	public static native Pointer new_rd_Dummy(Pointer dbgi, Pointer irg, Pointer mode);
+
+	public static native Pointer new_r_Dummy(Pointer irg, Pointer mode);
+
+	public static native Pointer new_d_Dummy(Pointer dbgi, Pointer mode);
+
+	public static native Pointer new_Dummy(Pointer mode);
+
+	public static native Pointer new_rd_End(Pointer dbgi, Pointer irg, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_r_End(Pointer irg, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_d_End(Pointer dbgi, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_End(int arity, java.nio.Buffer in);
+
+	public static native Pointer new_rd_Eor(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_r_Eor(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_d_Eor(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_Eor(Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_rd_Free(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer irn_size, Pointer type, /* ir_where_alloc */int where);
+
+	public static native Pointer new_r_Free(Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer irn_size, Pointer type, /* ir_where_alloc */int where);
+
+	public static native Pointer new_d_Free(Pointer dbgi, Pointer irn_mem, Pointer irn_ptr, Pointer irn_size, Pointer type, /* ir_where_alloc */int where);
+
+	public static native Pointer new_Free(Pointer irn_mem, Pointer irn_ptr, Pointer irn_size, Pointer type, /* ir_where_alloc */int where);
+
+	public static native Pointer new_rd_IJmp(Pointer dbgi, Pointer block, Pointer irn_target);
+
+	public static native Pointer new_r_IJmp(Pointer block, Pointer irn_target);
+
+	public static native Pointer new_d_IJmp(Pointer dbgi, Pointer irn_target);
+
+	public static native Pointer new_IJmp(Pointer irn_target);
+
+	public static native Pointer new_rd_Id(Pointer dbgi, Pointer block, Pointer irn_pred, Pointer mode);
+
+	public static native Pointer new_r_Id(Pointer block, Pointer irn_pred, Pointer mode);
+
+	public static native Pointer new_d_Id(Pointer dbgi, Pointer irn_pred, Pointer mode);
+
+	public static native Pointer new_Id(Pointer irn_pred, Pointer mode);
+
+	public static native Pointer new_rd_InstOf(Pointer dbgi, Pointer block, Pointer irn_store, Pointer irn_obj, Pointer type);
+
+	public static native Pointer new_r_InstOf(Pointer block, Pointer irn_store, Pointer irn_obj, Pointer type);
+
+	public static native Pointer new_d_InstOf(Pointer dbgi, Pointer irn_store, Pointer irn_obj, Pointer type);
+
+	public static native Pointer new_InstOf(Pointer irn_store, Pointer irn_obj, Pointer type);
+
+	public static native Pointer new_rd_Jmp(Pointer dbgi, Pointer block);
+
+	public static native Pointer new_r_Jmp(Pointer block);
+
+	public static native Pointer new_d_Jmp(Pointer dbgi);
+
+	public static native Pointer new_Jmp();
+
+	public static native Pointer new_rd_Load(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer mode, /* ir_cons_flags */int flags);
+
+	public static native Pointer new_r_Load(Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer mode, /* ir_cons_flags */int flags);
+
+	public static native Pointer new_d_Load(Pointer dbgi, Pointer irn_mem, Pointer irn_ptr, Pointer mode, /* ir_cons_flags */int flags);
+
+	public static native Pointer new_Load(Pointer irn_mem, Pointer irn_ptr, Pointer mode, /* ir_cons_flags */int flags);
+
+	public static native Pointer new_rd_Minus(Pointer dbgi, Pointer block, Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_r_Minus(Pointer block, Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_d_Minus(Pointer dbgi, Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_Minus(Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_rd_Mod(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+
+	public static native Pointer new_r_Mod(Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+
+	public static native Pointer new_d_Mod(Pointer dbgi, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+
+	public static native Pointer new_Mod(Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+
+	public static native Pointer new_rd_Mul(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_r_Mul(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_d_Mul(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_Mul(Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_rd_Mulh(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_r_Mulh(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_d_Mulh(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_Mulh(Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_rd_Mux(Pointer dbgi, Pointer block, Pointer irn_sel, Pointer irn_false, Pointer irn_true, Pointer mode);
+
+	public static native Pointer new_r_Mux(Pointer block, Pointer irn_sel, Pointer irn_false, Pointer irn_true, Pointer mode);
+
+	public static native Pointer new_d_Mux(Pointer dbgi, Pointer irn_sel, Pointer irn_false, Pointer irn_true, Pointer mode);
+
+	public static native Pointer new_Mux(Pointer irn_sel, Pointer irn_false, Pointer irn_true, Pointer mode);
+
+	public static native Pointer new_rd_NoMem(Pointer dbgi, Pointer irg);
+
+	public static native Pointer new_r_NoMem(Pointer irg);
+
+	public static native Pointer new_d_NoMem(Pointer dbgi);
+
+	public static native Pointer new_NoMem();
+
+	public static native Pointer new_rd_Not(Pointer dbgi, Pointer block, Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_r_Not(Pointer block, Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_d_Not(Pointer dbgi, Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_Not(Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_rd_Or(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_r_Or(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_d_Or(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_Or(Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_rd_Phi(Pointer dbgi, Pointer block, int arity, java.nio.Buffer in, Pointer mode);
+
+	public static native Pointer new_r_Phi(Pointer block, int arity, java.nio.Buffer in, Pointer mode);
+
+	public static native Pointer new_d_Phi(Pointer dbgi, int arity, java.nio.Buffer in, Pointer mode);
+
+	public static native Pointer new_Phi(int arity, java.nio.Buffer in, Pointer mode);
+
+	public static native Pointer new_rd_Pin(Pointer dbgi, Pointer block, Pointer irn_op);
+
+	public static native Pointer new_r_Pin(Pointer block, Pointer irn_op);
+
+	public static native Pointer new_d_Pin(Pointer dbgi, Pointer irn_op);
+
+	public static native Pointer new_Pin(Pointer irn_op);
+
+	public static native Pointer new_rd_Proj(Pointer dbgi, Pointer irn_pred, Pointer mode, com.sun.jna.NativeLong proj);
+
+	public static native Pointer new_r_Proj(Pointer irn_pred, Pointer mode, com.sun.jna.NativeLong proj);
+
+	public static native Pointer new_d_Proj(Pointer dbgi, Pointer irn_pred, Pointer mode, com.sun.jna.NativeLong proj);
+
+	public static native Pointer new_Proj(Pointer irn_pred, Pointer mode, com.sun.jna.NativeLong proj);
+
+	public static native Pointer new_rd_Raise(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_exo_ptr);
+
+	public static native Pointer new_r_Raise(Pointer block, Pointer irn_mem, Pointer irn_exo_ptr);
+
+	public static native Pointer new_d_Raise(Pointer dbgi, Pointer irn_mem, Pointer irn_exo_ptr);
+
+	public static native Pointer new_Raise(Pointer irn_mem, Pointer irn_exo_ptr);
+
+	public static native Pointer new_rd_Return(Pointer dbgi, Pointer block, Pointer irn_mem, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_r_Return(Pointer block, Pointer irn_mem, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_d_Return(Pointer dbgi, Pointer irn_mem, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_Return(Pointer irn_mem, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_rd_Rotl(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_r_Rotl(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_d_Rotl(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_Rotl(Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_rd_Sel(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
+
+	public static native Pointer new_r_Sel(Pointer block, Pointer irn_mem, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
+
+	public static native Pointer new_d_Sel(Pointer dbgi, Pointer irn_mem, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
+
+	public static native Pointer new_Sel(Pointer irn_mem, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
+
+	public static native Pointer new_rd_Shl(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_r_Shl(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_d_Shl(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_Shl(Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_rd_Shr(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_r_Shr(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_d_Shr(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_Shr(Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_rd_Shrs(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_r_Shrs(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_d_Shrs(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_Shrs(Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_rd_Start(Pointer dbgi, Pointer irg);
+
+	public static native Pointer new_r_Start(Pointer irg);
+
+	public static native Pointer new_d_Start(Pointer dbgi);
+
+	public static native Pointer new_Start();
+
+	public static native Pointer new_rd_Store(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer irn_value, /* ir_cons_flags */int flags);
+
+	public static native Pointer new_r_Store(Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer irn_value, /* ir_cons_flags */int flags);
+
+	public static native Pointer new_d_Store(Pointer dbgi, Pointer irn_mem, Pointer irn_ptr, Pointer irn_value, /* ir_cons_flags */int flags);
+
+	public static native Pointer new_Store(Pointer irn_mem, Pointer irn_ptr, Pointer irn_value, /* ir_cons_flags */int flags);
+
+	public static native Pointer new_rd_Sub(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_r_Sub(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_d_Sub(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_Sub(Pointer irn_left, Pointer irn_right, Pointer mode);
+
+	public static native Pointer new_rd_Sync(Pointer dbgi, Pointer block, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_r_Sync(Pointer block, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_d_Sync(Pointer dbgi, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_Sync(int arity, java.nio.Buffer in);
+
+	public static native Pointer new_rd_Tuple(Pointer dbgi, Pointer block, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_r_Tuple(Pointer block, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_d_Tuple(Pointer dbgi, int arity, java.nio.Buffer in);
+
+	public static native Pointer new_Tuple(int arity, java.nio.Buffer in);
+
+	public static native Pointer new_rd_Unknown(Pointer dbgi, Pointer irg, Pointer mode);
+
+	public static native Pointer new_r_Unknown(Pointer irg, Pointer mode);
+
+	public static native Pointer new_d_Unknown(Pointer dbgi, Pointer mode);
+
+	public static native Pointer new_Unknown(Pointer mode);
+
 	public static native int is_ASM(Pointer node);
 
 	public static native int is_Add(Pointer node);
@@ -1641,8 +2014,6 @@ public class binding_irnode {
 
 	public static native int is_Div(Pointer node);
 
-	public static native int is_DivMod(Pointer node);
-
 	public static native int is_Dummy(Pointer node);
 
 	public static native int is_End(Pointer node);
@@ -1682,8 +2053,6 @@ public class binding_irnode {
 	public static native int is_Pin(Pointer node);
 
 	public static native int is_Proj(Pointer node);
-
-	public static native int is_Quot(Pointer node);
 
 	public static native int is_Raise(Pointer node);
 
@@ -1837,6 +2206,10 @@ public class binding_irnode {
 
 	public static native void set_Cmp_right(Pointer node, Pointer right);
 
+	public static native /* ir_relation */int get_Cmp_relation(Pointer node);
+
+	public static native void set_Cmp_relation(Pointer node, /* ir_relation */int relation);
+
 	public static native Pointer get_Cond_selector(Pointer node);
 
 	public static native void set_Cond_selector(Pointer node, Pointer selector);
@@ -1857,9 +2230,9 @@ public class binding_irnode {
 
 	public static native void set_Confirm_bound(Pointer node, Pointer bound);
 
-	public static native /* pn_Cmp */int get_Confirm_cmp(Pointer node);
+	public static native /* ir_relation */int get_Confirm_relation(Pointer node);
 
-	public static native void set_Confirm_cmp(Pointer node, /* pn_Cmp */int cmp);
+	public static native void set_Confirm_relation(Pointer node, /* ir_relation */int relation);
 
 	public static native Pointer get_Const_tarval(Pointer node);
 
@@ -1908,22 +2281,6 @@ public class binding_irnode {
 	public static native int get_Div_no_remainder(Pointer node);
 
 	public static native void set_Div_no_remainder(Pointer node, int no_remainder);
-
-	public static native Pointer get_DivMod_mem(Pointer node);
-
-	public static native void set_DivMod_mem(Pointer node, Pointer mem);
-
-	public static native Pointer get_DivMod_left(Pointer node);
-
-	public static native void set_DivMod_left(Pointer node, Pointer left);
-
-	public static native Pointer get_DivMod_right(Pointer node);
-
-	public static native void set_DivMod_right(Pointer node, Pointer right);
-
-	public static native Pointer get_DivMod_resmode(Pointer node);
-
-	public static native void set_DivMod_resmode(Pointer node, Pointer resmode);
 
 	public static native Pointer get_Eor_left(Pointer node);
 
@@ -2053,21 +2410,9 @@ public class binding_irnode {
 
 	public static native void set_Proj_pred(Pointer node, Pointer pred);
 
-	public static native Pointer get_Quot_mem(Pointer node);
+	public static native com.sun.jna.NativeLong get_Proj_proj(Pointer node);
 
-	public static native void set_Quot_mem(Pointer node, Pointer mem);
-
-	public static native Pointer get_Quot_left(Pointer node);
-
-	public static native void set_Quot_left(Pointer node, Pointer left);
-
-	public static native Pointer get_Quot_right(Pointer node);
-
-	public static native void set_Quot_right(Pointer node, Pointer right);
-
-	public static native Pointer get_Quot_resmode(Pointer node);
-
-	public static native void set_Quot_resmode(Pointer node, Pointer resmode);
+	public static native void set_Proj_proj(Pointer node, com.sun.jna.NativeLong proj);
 
 	public static native Pointer get_Raise_mem(Pointer node);
 
@@ -2172,10 +2517,6 @@ public class binding_irnode {
 	public static native void set_irn_mode(Pointer node, Pointer mode);
 
 	public static native Pointer get_irn_mode(Pointer node);
-
-	public static native Pointer get_irn_modeident(Pointer node);
-
-	public static native String get_irn_modename(Pointer node);
 
 	public static native Pointer get_irn_op(Pointer node);
 
@@ -2291,7 +2632,7 @@ public class binding_irnode {
 
 	public static native java.nio.Buffer get_Return_res_arr(Pointer node);
 
-	public static native int get_Return_n_ress(Pointer node);
+	public static native com.sun.jna.NativeLong get_Return_n_ress(Pointer node);
 
 	public static native Pointer get_Return_res(Pointer node, int pos);
 
@@ -2333,7 +2674,7 @@ public class binding_irnode {
 
 	public static native java.nio.Buffer get_Call_param_arr(Pointer node);
 
-	public static native int get_Call_n_params(Pointer node);
+	public static native com.sun.jna.NativeLong get_Call_n_params(Pointer node);
 
 	public static native Pointer get_Call_param(Pointer node, int pos);
 
@@ -2343,11 +2684,11 @@ public class binding_irnode {
 
 	public static native int Call_has_callees(Pointer node);
 
-	public static native int get_Call_n_callees(Pointer node);
+	public static native com.sun.jna.NativeLong get_Call_n_callees(Pointer node);
 
-	public static native Pointer get_Call_callee(Pointer node, int pos);
+	public static native Pointer get_Call_callee(Pointer node, com.sun.jna.NativeLong pos);
 
-	public static native void set_Call_callee_arr(Pointer node, int n, java.nio.Buffer arr);
+	public static native void set_Call_callee_arr(Pointer node, com.sun.jna.NativeLong n, java.nio.Buffer arr);
 
 	public static native void remove_Call_callee_arr(Pointer node);
 
@@ -2377,11 +2718,11 @@ public class binding_irnode {
 
 	public static native void set_binop_right(Pointer node, Pointer right);
 
-	public static native String get_pnc_string(int pnc);
+	public static native String get_relation_string(/* ir_relation */int relation);
 
-	public static native /* pn_Cmp */int get_negated_pnc(com.sun.jna.NativeLong pnc, Pointer mode);
+	public static native /* ir_relation */int get_negated_relation(/* ir_relation */int relation);
 
-	public static native /* pn_Cmp */int get_inversed_pnc(com.sun.jna.NativeLong pnc);
+	public static native /* ir_relation */int get_inversed_relation(/* ir_relation */int relation);
 
 	public static native int is_Cast_upcast(Pointer node);
 
@@ -2437,12 +2778,6 @@ public class binding_irnode {
 
 	public static native void add_Sync_pred(Pointer node, Pointer pred);
 
-	public static native com.sun.jna.NativeLong get_Proj_proj(Pointer node);
-
-	public static native void set_Proj_proj(Pointer node, com.sun.jna.NativeLong proj);
-
-	public static native /* pn_Cmp */int get_Proj_pn_cmp(Pointer _0);
-
 	public static native int is_arg_Proj(Pointer node);
 
 	public static native java.nio.Buffer get_Tuple_preds_arr(Pointer node);
@@ -2482,8 +2817,6 @@ public class binding_irnode {
 	public static native int is_fragile_op(Pointer node);
 
 	public static native Pointer get_fragile_op_mem(Pointer node);
-
-	public static native Pointer get_divop_resmod(Pointer node);
 
 	public static native int is_irn_forking(Pointer node);
 

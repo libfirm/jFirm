@@ -2,6 +2,8 @@ package firm;
 
 import java.util.Iterator;
 
+import com.sun.jna.NativeLong;
+
 import firm.bindings.binding_irprog;
 
 /**
@@ -59,7 +61,7 @@ public class Program {
 	}
 
 	public static int getNGraphs() {
-		return binding_irprog.get_irp_n_irgs();
+		return binding_irprog.get_irp_n_irgs().intValue();
 	}
 
 	public static Iterable<Graph> getGraphs() {
@@ -90,15 +92,15 @@ public class Program {
 	}
 
 	public static Graph getGraph(int n) {
-		return new Graph(binding_irprog.get_irp_irg(n));
+		return new Graph(binding_irprog.get_irp_irg(new NativeLong(n)));
 	}
 
 	public static int getNTypes() {
-		return binding_irprog.get_irp_n_types();
+		return binding_irprog.get_irp_n_types().intValue();
 	}
 
 	public static Type getType(int n) {
-		return Type.createWrapper(binding_irprog.get_irp_type(n));
+		return Type.createWrapper(binding_irprog.get_irp_type(new NativeLong(n)));
 	}
 
 	public static Iterable<Type> getTypes() {
@@ -129,11 +131,11 @@ public class Program {
 	}
 
 	public static int getNModes() {
-		return binding_irprog.get_irp_n_modes();
+		return binding_irprog.get_irp_n_modes().intValue();
 	}
 
 	public static Mode getMode(int n) {
-		return new Mode(binding_irprog.get_irp_mode(n));
+		return new Mode(binding_irprog.get_irp_mode(new NativeLong(n)));
 	}
 
 	public static Iterable<Mode> getModes() {

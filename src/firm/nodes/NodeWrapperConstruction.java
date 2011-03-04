@@ -72,9 +72,6 @@ class NodeWrapperConstruction {
 		case iro_Div:
 			return new Div(ptr);
 
-		case iro_DivMod:
-			return new DivMod(ptr);
-
 		case iro_Dummy:
 			return new Dummy(ptr);
 
@@ -134,9 +131,6 @@ class NodeWrapperConstruction {
 
 		case iro_Proj:
 			return new Proj(ptr);
-
-		case iro_Quot:
-			return new Quot(ptr);
 
 		case iro_Raise:
 			return new Raise(ptr);

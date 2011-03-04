@@ -5,7 +5,6 @@ import com.sun.jna.Pointer;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_ircons.ir_cons_flags;
 import firm.bindings.binding_irgraph.irg_phase_state;
-import firm.bindings.binding_typerep.ir_type_state;
 import firm.nodes.Block;
 import firm.nodes.Node;
 
@@ -157,10 +156,8 @@ public class Construction extends ConstructionBase {
 		});
 
 		/* setup a minimal frame type... */
-		Type frameType = graph.getFrameType();
-		frameType.setSizeBytes(0);
-		frameType.setAlignmentBytes(4);
-		frameType.setTypeState(ir_type_state.layout_fixed);
+		CompoundType frameType = (CompoundType) graph.getFrameType();
+		frameType.layoutFields();
 
 		/* set graph to state high */
 		graph.setPhaseState(irg_phase_state.phase_high);

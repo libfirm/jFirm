@@ -14,12 +14,12 @@ import firm.MethodType;
 import firm.Mode;
 import firm.PrimitiveType;
 import firm.Program;
+import firm.Relation;
 import firm.Type;
 import firm.bindings.binding_typerep.ir_type_state;
 import firm.bindings.binding_typerep.ir_visibility;
 import firm.nodes.Block;
 import firm.nodes.Call;
-import firm.nodes.Cmp;
 import firm.nodes.Cond;
 import firm.nodes.Load;
 import firm.nodes.Node;
@@ -177,9 +177,8 @@ public class BrainFuck {
 		construction.setCurrentMem(loadMem);
 
 		Node zero = construction.newConst(0, Mode.getBu());
-		Node cmp = construction.newCmp(loadRes, zero);
-		Node pEqual = construction.newProj(cmp, Mode.getb(), Cmp.pnEq);
-		Node cond = construction.newCond(pEqual);
+		Node cmp = construction.newCmp(loadRes, zero, Relation.Equal);
+		Node cond = construction.newCond(cmp);
 
 		Node projTrue = construction.newProj(cond, Mode.getX(), Cond.pnTrue);
 		Node projFalse = construction.newProj(cond, Mode.getX(), Cond.pnFalse);

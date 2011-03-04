@@ -9,6 +9,76 @@ public class binding_typerep {
 		Native.register("firm");
 	}
 
+	public static enum ir_relation {
+		ir_relation_false(0),
+		ir_relation_equal((1 << 0)),
+		ir_relation_less((1 << 1)),
+		ir_relation_greater((1 << 2)),
+		ir_relation_unordered((1 << 3)),
+		ir_relation_less_equal((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val)),
+		ir_relation_greater_equal((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_less_greater((ir_relation.ir_relation_less.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_less_equal_greater(((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val)),
+		ir_relation_unordered_equal((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_less((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val)),
+		ir_relation_unordered_less_equal(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_greater((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_unordered_greater_equal(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_greater.val) | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_less_greater(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val)),
+		ir_relation_true((((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val) | ir_relation.ir_relation_unordered.val));
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_relation(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_relation() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_relation getEnum(int val) {
+			for (ir_relation entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum ir_cons_flags {
+		cons_none(0),
+		cons_volatile((1 << 0)),
+		cons_unaligned((1 << 1)),
+		cons_floats((1 << 2));
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_cons_flags(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_cons_flags() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_cons_flags getEnum(int val) {
+			for (ir_cons_flags entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
@@ -861,13 +931,13 @@ public class binding_typerep {
 
 	public static native Pointer get_initializer_tarval_value(Pointer initialzier);
 
-	public static native Pointer create_initializer_compound(int n_entries);
+	public static native Pointer create_initializer_compound(com.sun.jna.NativeLong n_entries);
 
-	public static native int get_initializer_compound_n_entries(Pointer initializer);
+	public static native com.sun.jna.NativeLong get_initializer_compound_n_entries(Pointer initializer);
 
-	public static native void set_initializer_compound_value(Pointer initializer, int index, Pointer value);
+	public static native void set_initializer_compound_value(Pointer initializer, com.sun.jna.NativeLong index, Pointer value);
 
-	public static native Pointer get_initializer_compound_value(Pointer initializer, int index);
+	public static native Pointer get_initializer_compound_value(Pointer initializer, com.sun.jna.NativeLong index);
 
 	public static native void set_entity_initializer(Pointer entity, Pointer initializer);
 
@@ -877,23 +947,23 @@ public class binding_typerep {
 
 	public static native void add_entity_overwrites(Pointer ent, Pointer overwritten);
 
-	public static native int get_entity_n_overwrites(Pointer ent);
+	public static native com.sun.jna.NativeLong get_entity_n_overwrites(Pointer ent);
 
-	public static native int get_entity_overwrites_index(Pointer ent, Pointer overwritten);
+	public static native com.sun.jna.NativeLong get_entity_overwrites_index(Pointer ent, Pointer overwritten);
 
-	public static native Pointer get_entity_overwrites(Pointer ent, int pos);
+	public static native Pointer get_entity_overwrites(Pointer ent, com.sun.jna.NativeLong pos);
 
-	public static native void set_entity_overwrites(Pointer ent, int pos, Pointer overwritten);
+	public static native void set_entity_overwrites(Pointer ent, com.sun.jna.NativeLong pos, Pointer overwritten);
 
 	public static native void remove_entity_overwrites(Pointer ent, Pointer overwritten);
 
-	public static native int get_entity_n_overwrittenby(Pointer ent);
+	public static native com.sun.jna.NativeLong get_entity_n_overwrittenby(Pointer ent);
 
-	public static native int get_entity_overwrittenby_index(Pointer ent, Pointer overwrites);
+	public static native com.sun.jna.NativeLong get_entity_overwrittenby_index(Pointer ent, Pointer overwrites);
 
-	public static native Pointer get_entity_overwrittenby(Pointer ent, int pos);
+	public static native Pointer get_entity_overwrittenby(Pointer ent, com.sun.jna.NativeLong pos);
 
-	public static native void set_entity_overwrittenby(Pointer ent, int pos, Pointer overwrites);
+	public static native void set_entity_overwrittenby(Pointer ent, com.sun.jna.NativeLong pos, Pointer overwrites);
 
 	public static native void remove_entity_overwrittenby(Pointer ent, Pointer overwrites);
 
@@ -1081,35 +1151,35 @@ public class binding_typerep {
 
 	public static native String get_class_name(Pointer clss);
 
-	public static native int get_class_n_members(Pointer clss);
+	public static native com.sun.jna.NativeLong get_class_n_members(Pointer clss);
 
-	public static native Pointer get_class_member(Pointer clss, int pos);
+	public static native Pointer get_class_member(Pointer clss, com.sun.jna.NativeLong pos);
 
-	public static native int get_class_member_index(Pointer clss, Pointer mem);
+	public static native com.sun.jna.NativeLong get_class_member_index(Pointer clss, Pointer mem);
 
 	public static native Pointer get_class_member_by_name(Pointer clss, Pointer name);
 
 	public static native void add_class_subtype(Pointer clss, Pointer subtype);
 
-	public static native int get_class_n_subtypes(Pointer clss);
+	public static native com.sun.jna.NativeLong get_class_n_subtypes(Pointer clss);
 
-	public static native Pointer get_class_subtype(Pointer clss, int pos);
+	public static native Pointer get_class_subtype(Pointer clss, com.sun.jna.NativeLong pos);
 
-	public static native int get_class_subtype_index(Pointer clss, Pointer subclass);
+	public static native com.sun.jna.NativeLong get_class_subtype_index(Pointer clss, Pointer subclass);
 
-	public static native void set_class_subtype(Pointer clss, Pointer subtype, int pos);
+	public static native void set_class_subtype(Pointer clss, Pointer subtype, com.sun.jna.NativeLong pos);
 
 	public static native void remove_class_subtype(Pointer clss, Pointer subtype);
 
 	public static native void add_class_supertype(Pointer clss, Pointer supertype);
 
-	public static native int get_class_n_supertypes(Pointer clss);
+	public static native com.sun.jna.NativeLong get_class_n_supertypes(Pointer clss);
 
-	public static native int get_class_supertype_index(Pointer clss, Pointer super_clss);
+	public static native com.sun.jna.NativeLong get_class_supertype_index(Pointer clss, Pointer super_clss);
 
-	public static native Pointer get_class_supertype(Pointer clss, int pos);
+	public static native Pointer get_class_supertype(Pointer clss, com.sun.jna.NativeLong pos);
 
-	public static native void set_class_supertype(Pointer clss, Pointer supertype, int pos);
+	public static native void set_class_supertype(Pointer clss, Pointer supertype, com.sun.jna.NativeLong pos);
 
 	public static native void remove_class_supertype(Pointer clss, Pointer supertype);
 
@@ -1143,43 +1213,43 @@ public class binding_typerep {
 
 	public static native String get_struct_name(Pointer strct);
 
-	public static native int get_struct_n_members(Pointer strct);
+	public static native com.sun.jna.NativeLong get_struct_n_members(Pointer strct);
 
-	public static native Pointer get_struct_member(Pointer strct, int pos);
+	public static native Pointer get_struct_member(Pointer strct, com.sun.jna.NativeLong pos);
 
-	public static native int get_struct_member_index(Pointer strct, Pointer member);
+	public static native com.sun.jna.NativeLong get_struct_member_index(Pointer strct, Pointer member);
 
 	public static native int is_Struct_type(Pointer strct);
 
-	public static native Pointer new_type_method(int n_param, int n_res);
+	public static native Pointer new_type_method(com.sun.jna.NativeLong n_param, com.sun.jna.NativeLong n_res);
 
-	public static native Pointer new_d_type_method(int n_param, int n_res, Pointer db);
+	public static native Pointer new_d_type_method(com.sun.jna.NativeLong n_param, com.sun.jna.NativeLong n_res, Pointer db);
 
-	public static native int get_method_n_params(Pointer method);
+	public static native com.sun.jna.NativeLong get_method_n_params(Pointer method);
 
-	public static native Pointer get_method_param_type(Pointer method, int pos);
+	public static native Pointer get_method_param_type(Pointer method, com.sun.jna.NativeLong pos);
 
-	public static native void set_method_param_type(Pointer method, int pos, Pointer tp);
+	public static native void set_method_param_type(Pointer method, com.sun.jna.NativeLong pos, Pointer tp);
 
-	public static native Pointer get_method_value_param_ent(Pointer method, int pos);
+	public static native Pointer get_method_value_param_ent(Pointer method, com.sun.jna.NativeLong pos);
 
 	public static native void set_method_value_param_type(Pointer method, Pointer tp);
 
 	public static native Pointer get_method_value_param_type(Pointer method);
 
-	public static native Pointer get_method_param_ident(Pointer method, int pos);
+	public static native Pointer get_method_param_ident(Pointer method, com.sun.jna.NativeLong pos);
 
-	public static native String get_method_param_name(Pointer method, int pos);
+	public static native String get_method_param_name(Pointer method, com.sun.jna.NativeLong pos);
 
-	public static native void set_method_param_ident(Pointer method, int pos, Pointer id);
+	public static native void set_method_param_ident(Pointer method, com.sun.jna.NativeLong pos, Pointer id);
 
-	public static native int get_method_n_ress(Pointer method);
+	public static native com.sun.jna.NativeLong get_method_n_ress(Pointer method);
 
-	public static native Pointer get_method_res_type(Pointer method, int pos);
+	public static native Pointer get_method_res_type(Pointer method, com.sun.jna.NativeLong pos);
 
-	public static native void set_method_res_type(Pointer method, int pos, Pointer tp);
+	public static native void set_method_res_type(Pointer method, com.sun.jna.NativeLong pos, Pointer tp);
 
-	public static native Pointer get_method_value_res_ent(Pointer method, int pos);
+	public static native Pointer get_method_value_res_ent(Pointer method, com.sun.jna.NativeLong pos);
 
 	public static native Pointer get_method_value_res_type(Pointer method);
 
@@ -1189,9 +1259,9 @@ public class binding_typerep {
 
 	public static native void set_method_variadicity(Pointer method, /* ir_variadicity */int vari);
 
-	public static native int get_method_first_variadic_param_index(Pointer method);
+	public static native com.sun.jna.NativeLong get_method_first_variadic_param_index(Pointer method);
 
-	public static native void set_method_first_variadic_param_index(Pointer method, int index);
+	public static native void set_method_first_variadic_param_index(Pointer method, com.sun.jna.NativeLong index);
 
 	public static native /* mtp_additional_properties */int get_method_additional_properties(Pointer method);
 
@@ -1217,11 +1287,11 @@ public class binding_typerep {
 
 	public static native String get_union_name(Pointer uni);
 
-	public static native int get_union_n_members(Pointer uni);
+	public static native com.sun.jna.NativeLong get_union_n_members(Pointer uni);
 
-	public static native Pointer get_union_member(Pointer uni, int pos);
+	public static native Pointer get_union_member(Pointer uni, com.sun.jna.NativeLong pos);
 
-	public static native int get_union_member_index(Pointer uni, Pointer member);
+	public static native com.sun.jna.NativeLong get_union_member_index(Pointer uni, Pointer member);
 
 	public static native int is_Union_type(Pointer uni);
 
@@ -1229,37 +1299,37 @@ public class binding_typerep {
 
 	public static native Pointer new_d_type_array(int n_dims, Pointer element_type, Pointer db);
 
-	public static native int get_array_n_dimensions(Pointer array);
+	public static native com.sun.jna.NativeLong get_array_n_dimensions(Pointer array);
 
-	public static native void set_array_bounds_int(Pointer array, int dimension, int lower_bound, int upper_bound);
+	public static native void set_array_bounds_int(Pointer array, com.sun.jna.NativeLong dimension, int lower_bound, int upper_bound);
 
-	public static native void set_array_bounds(Pointer array, int dimension, Pointer lower_bound, Pointer upper_bound);
+	public static native void set_array_bounds(Pointer array, com.sun.jna.NativeLong dimension, Pointer lower_bound, Pointer upper_bound);
 
-	public static native void set_array_lower_bound(Pointer array, int dimension, Pointer lower_bound);
+	public static native void set_array_lower_bound(Pointer array, com.sun.jna.NativeLong dimension, Pointer lower_bound);
 
-	public static native void set_array_lower_bound_int(Pointer array, int dimension, int lower_bound);
+	public static native void set_array_lower_bound_int(Pointer array, com.sun.jna.NativeLong dimension, int lower_bound);
 
-	public static native void set_array_upper_bound(Pointer array, int dimension, Pointer upper_bound);
+	public static native void set_array_upper_bound(Pointer array, com.sun.jna.NativeLong dimension, Pointer upper_bound);
 
-	public static native void set_array_upper_bound_int(Pointer array, int dimension, int upper_bound);
+	public static native void set_array_upper_bound_int(Pointer array, com.sun.jna.NativeLong dimension, int upper_bound);
 
-	public static native int has_array_lower_bound(Pointer array, int dimension);
+	public static native int has_array_lower_bound(Pointer array, com.sun.jna.NativeLong dimension);
 
-	public static native Pointer get_array_lower_bound(Pointer array, int dimension);
+	public static native Pointer get_array_lower_bound(Pointer array, com.sun.jna.NativeLong dimension);
 
-	public static native com.sun.jna.NativeLong get_array_lower_bound_int(Pointer array, int dimension);
+	public static native com.sun.jna.NativeLong get_array_lower_bound_int(Pointer array, com.sun.jna.NativeLong dimension);
 
-	public static native int has_array_upper_bound(Pointer array, int dimension);
+	public static native int has_array_upper_bound(Pointer array, com.sun.jna.NativeLong dimension);
 
-	public static native Pointer get_array_upper_bound(Pointer array, int dimension);
+	public static native Pointer get_array_upper_bound(Pointer array, com.sun.jna.NativeLong dimension);
 
-	public static native com.sun.jna.NativeLong get_array_upper_bound_int(Pointer array, int dimension);
+	public static native com.sun.jna.NativeLong get_array_upper_bound_int(Pointer array, com.sun.jna.NativeLong dimension);
 
-	public static native void set_array_order(Pointer array, int dimension, int order);
+	public static native void set_array_order(Pointer array, com.sun.jna.NativeLong dimension, int order);
 
-	public static native int get_array_order(Pointer array, int dimension);
+	public static native int get_array_order(Pointer array, com.sun.jna.NativeLong dimension);
 
-	public static native int find_array_dimension(Pointer array, int order);
+	public static native com.sun.jna.NativeLong find_array_dimension(Pointer array, int order);
 
 	public static native void set_array_element_type(Pointer array, Pointer tp);
 
@@ -1271,19 +1341,19 @@ public class binding_typerep {
 
 	public static native int is_Array_type(Pointer array);
 
-	public static native Pointer new_type_enumeration(Pointer name, int n_enums);
+	public static native Pointer new_type_enumeration(Pointer name, com.sun.jna.NativeLong n_enums);
 
-	public static native Pointer new_d_type_enumeration(Pointer name, int n_enums, Pointer db);
+	public static native Pointer new_d_type_enumeration(Pointer name, com.sun.jna.NativeLong n_enums, Pointer db);
 
 	public static native Pointer get_enumeration_ident(Pointer enumeration);
 
 	public static native String get_enumeration_name(Pointer enumeration);
 
-	public static native void set_enumeration_const(Pointer enumeration, int pos, Pointer nameid, Pointer con);
+	public static native void set_enumeration_const(Pointer enumeration, com.sun.jna.NativeLong pos, Pointer nameid, Pointer con);
 
-	public static native int get_enumeration_n_enums(Pointer enumeration);
+	public static native com.sun.jna.NativeLong get_enumeration_n_enums(Pointer enumeration);
 
-	public static native Pointer get_enumeration_const(Pointer enumeration, int pos);
+	public static native Pointer get_enumeration_const(Pointer enumeration, com.sun.jna.NativeLong pos);
 
 	public static native Pointer get_enumeration_owner(Pointer enum_cnst);
 
@@ -1333,11 +1403,11 @@ public class binding_typerep {
 
 	public static native String get_compound_name(Pointer tp);
 
-	public static native int get_compound_n_members(Pointer tp);
+	public static native com.sun.jna.NativeLong get_compound_n_members(Pointer tp);
 
-	public static native Pointer get_compound_member(Pointer tp, int pos);
+	public static native Pointer get_compound_member(Pointer tp, com.sun.jna.NativeLong pos);
 
-	public static native int get_compound_member_index(Pointer tp, Pointer member);
+	public static native com.sun.jna.NativeLong get_compound_member_index(Pointer tp, Pointer member);
 
 	public static native void default_layout_compound_type(Pointer tp);
 

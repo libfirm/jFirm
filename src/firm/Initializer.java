@@ -1,5 +1,6 @@
 package firm;
 
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_typerep;
@@ -22,7 +23,7 @@ public class Initializer extends JNAWrapper {
 
 	/**
 	 * Creates a simple initializer. The value is specified as a TargetValue
-	 * 
+	 *
 	 * @param tarval
 	 *            initializer value
 	 */
@@ -34,12 +35,12 @@ public class Initializer extends JNAWrapper {
 	 * Create a compound initializer (an initializer that contains a list of
 	 * sub-initializer). Compound initializers are used to initialize class,
 	 * struct and array types.
-	 * 
+	 *
 	 * @param entries
 	 *            Number of sub-initializers
 	 */
 	public Initializer(int n_entries) {
-		super(binding_typerep.create_initializer_compound(n_entries));
+		super(binding_typerep.create_initializer_compound(new NativeLong(n_entries)));
 	}
 
 	public final ir_initializer_kind_t getKind() {
@@ -66,15 +67,15 @@ public class Initializer extends JNAWrapper {
 	}
 
 	public final int getCompoundNEntries() {
-		return binding_typerep.get_initializer_compound_n_entries(ptr);
+		return binding_typerep.get_initializer_compound_n_entries(ptr).intValue();
 	}
 
 	public final void setCompoundValue(int index, Initializer value) {
-		binding_typerep.set_initializer_compound_value(ptr, index, value.ptr);
+		binding_typerep.set_initializer_compound_value(ptr, new NativeLong(index), value.ptr);
 	}
 
 	public final Initializer getCompoundValue(int index) {
-		Pointer p = binding_typerep.get_initializer_compound_value(ptr, index);
+		Pointer p = binding_typerep.get_initializer_compound_value(ptr, new NativeLong(index));
 		return new Initializer(p);
 	}
 

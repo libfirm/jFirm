@@ -22,52 +22,53 @@ public class ArrayType extends Type {
 	}
 
 	public int getNDimensions() {
-		return binding_typerep.get_array_n_dimensions(ptr);
+		return binding_typerep.get_array_n_dimensions(ptr).intValue();
 	}
 
 	public void setBounds(int dimension, int lowerBound, int upperBound) {
-		binding_typerep.set_array_bounds_int(ptr, dimension, lowerBound, upperBound);
+		binding_typerep.set_array_bounds_int(ptr, new NativeLong(dimension),
+				lowerBound, upperBound);
 	}
 
 	public void setBounds(int dimension, Node lowerBound, Node upperBound) {
-		binding_typerep.set_array_bounds(ptr, dimension, lowerBound.ptr,
-				upperBound.ptr);
+		binding_typerep.set_array_bounds(ptr, new NativeLong(dimension),
+				lowerBound.ptr, upperBound.ptr);
 	}
 
 	public void setLowerBound(int dimension, int lowerBound) {
-		binding_typerep.set_array_lower_bound_int(ptr, dimension, lowerBound);
+		binding_typerep.set_array_lower_bound_int(ptr, new NativeLong(dimension),
+				lowerBound);
 	}
 
 	public void setLowerBound(int dimension, Node lowerBound) {
-		binding_typerep.set_array_lower_bound(ptr, dimension, lowerBound.ptr);
+		binding_typerep.set_array_lower_bound(ptr, new NativeLong(dimension), lowerBound.ptr);
 	}
 
 	public int getLowerBoundInt(int dimension) {
-		NativeLong l = binding_typerep.get_array_lower_bound_int(ptr, dimension);
-		return l.intValue();
+		return binding_typerep.get_array_lower_bound_int(ptr, new NativeLong(dimension)).intValue();
 	}
 
 	public Node getLowerBound(int dimension) {
 		return Node.createWrapper(binding_typerep.get_array_lower_bound(ptr,
-				dimension));
+				new NativeLong(dimension)));
 	}
 
 	public void setUpperBound(int dimension, int upperBound) {
-		binding_typerep.set_array_upper_bound_int(ptr, dimension, upperBound);
+		binding_typerep.set_array_upper_bound_int(ptr, new NativeLong(dimension), upperBound);
 	}
 
 	public void setUpperBound(int dimension, Node upperBound) {
-		binding_typerep.set_array_upper_bound(ptr, dimension, upperBound.ptr);
+		binding_typerep.set_array_upper_bound(ptr, new NativeLong(dimension), upperBound.ptr);
 	}
 
 	public int getUpperBoundInt(int dimension) {
-		NativeLong l = binding_typerep.get_array_upper_bound_int(ptr, dimension);
+		NativeLong l = binding_typerep.get_array_upper_bound_int(ptr, new NativeLong(dimension));
 		return l.intValue();
 	}
 
 	public Node getUpperBound(int dimension) {
 		return Node.createWrapper(binding_typerep.get_array_upper_bound(ptr,
-				dimension));
+				new NativeLong(dimension)));
 	}
 
 	public Type getElementType() {

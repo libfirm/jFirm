@@ -38,6 +38,76 @@ public class binding_be {
 		}
 	}
 
+	public static enum ir_relation {
+		ir_relation_false(0),
+		ir_relation_equal((1 << 0)),
+		ir_relation_less((1 << 1)),
+		ir_relation_greater((1 << 2)),
+		ir_relation_unordered((1 << 3)),
+		ir_relation_less_equal((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val)),
+		ir_relation_greater_equal((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_less_greater((ir_relation.ir_relation_less.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_less_equal_greater(((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val)),
+		ir_relation_unordered_equal((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_less((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val)),
+		ir_relation_unordered_less_equal(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_greater((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_greater.val)),
+		ir_relation_unordered_greater_equal(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_greater.val) | ir_relation.ir_relation_equal.val)),
+		ir_relation_unordered_less_greater(((ir_relation.ir_relation_unordered.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val)),
+		ir_relation_true((((ir_relation.ir_relation_equal.val | ir_relation.ir_relation_less.val) | ir_relation.ir_relation_greater.val) | ir_relation.ir_relation_unordered.val));
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_relation(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_relation() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_relation getEnum(int val) {
+			for (ir_relation entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum ir_cons_flags {
+		cons_none(0),
+		cons_volatile((1 << 0)),
+		cons_unaligned((1 << 1)),
+		cons_floats((1 << 2));
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_cons_flags(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_cons_flags() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_cons_flags getEnum(int val) {
+			for (ir_cons_flags entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
@@ -552,48 +622,6 @@ public class binding_be {
 		}
 	}
 
-	public static enum pn_Cmp {
-		pn_Cmp_False(0),
-		pn_Cmp_Eq(1),
-		pn_Cmp_Lt(2),
-		pn_Cmp_Le((pn_Cmp.pn_Cmp_Eq.val | pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Gt(4),
-		pn_Cmp_Ge((pn_Cmp.pn_Cmp_Eq.val | pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Lg((pn_Cmp.pn_Cmp_Lt.val | pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Leg(((pn_Cmp.pn_Cmp_Lt.val | pn_Cmp.pn_Cmp_Eq.val) | pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uo(8),
-		pn_Cmp_Ue((pn_Cmp.pn_Cmp_Uo.val | pn_Cmp.pn_Cmp_Eq.val)),
-		pn_Cmp_Ul((pn_Cmp.pn_Cmp_Uo.val | pn_Cmp.pn_Cmp_Lt.val)),
-		pn_Cmp_Ule(((pn_Cmp.pn_Cmp_Uo.val | pn_Cmp.pn_Cmp_Lt.val) | pn_Cmp.pn_Cmp_Eq.val)),
-		pn_Cmp_Ug((pn_Cmp.pn_Cmp_Uo.val | pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_Uge(((pn_Cmp.pn_Cmp_Uo.val | pn_Cmp.pn_Cmp_Gt.val) | pn_Cmp.pn_Cmp_Eq.val)),
-		pn_Cmp_Ne(((pn_Cmp.pn_Cmp_Uo.val | pn_Cmp.pn_Cmp_Lt.val) | pn_Cmp.pn_Cmp_Gt.val)),
-		pn_Cmp_True(15),
-		pn_Cmp_max();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		pn_Cmp(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		pn_Cmp() {
-			this.val = C.next_val++;
-		}
-
-		public static pn_Cmp getEnum(int val) {
-			for (pn_Cmp entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum pn_Cond {
 		pn_Cond_false(),
 		pn_Cond_true(),
@@ -674,37 +702,6 @@ public class binding_be {
 
 		public static pn_Div getEnum(int val) {
 			for (pn_Div entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum pn_DivMod {
-		pn_DivMod_M(pn_generic.pn_Generic_M.val),
-		pn_DivMod_X_regular(pn_generic.pn_Generic_X_regular.val),
-		pn_DivMod_X_except(pn_generic.pn_Generic_X_except.val),
-		pn_DivMod_res_div(pn_generic.pn_Generic_other.val),
-		pn_DivMod_res_mod(),
-		pn_DivMod_max();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		pn_DivMod(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		pn_DivMod() {
-			this.val = C.next_val++;
-		}
-
-		public static pn_DivMod getEnum(int val) {
-			for (pn_DivMod entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -795,36 +792,6 @@ public class binding_be {
 
 		public static pn_Mod getEnum(int val) {
 			for (pn_Mod entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum pn_Quot {
-		pn_Quot_M(pn_generic.pn_Generic_M.val),
-		pn_Quot_X_regular(pn_generic.pn_Generic_X_regular.val),
-		pn_Quot_X_except(pn_generic.pn_Generic_X_except.val),
-		pn_Quot_res(pn_generic.pn_Generic_other.val),
-		pn_Quot_max();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		pn_Quot(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		pn_Quot() {
-			this.val = C.next_val++;
-		}
-
-		public static pn_Quot getEnum(int val) {
-			for (pn_Quot entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}

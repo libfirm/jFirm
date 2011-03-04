@@ -1,5 +1,6 @@
 package firm;
 
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_typerep;
@@ -170,10 +171,10 @@ public class Entity extends JNAWrapper {
 	}
 
 	public final int getNOverwrites() {
-		return binding_typerep.get_entity_n_overwrites(ptr);
+		return binding_typerep.get_entity_n_overwrites(ptr).intValue();
 	}
 
 	public final Entity getOverwrites(int index) {
-		return new Entity(binding_typerep.get_entity_overwrites(ptr, index));
+		return new Entity(binding_typerep.get_entity_overwrites(ptr, new NativeLong(index)));
 	}
 }

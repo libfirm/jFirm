@@ -69,8 +69,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newCmp(Node left, Node right) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Cmp(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr);
+	public Node newCmp(Node left, Node right, firm.Relation relation) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Cmp(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, relation.value());
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -79,8 +79,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newConfirm(Node value, Node bound, int cmp) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Confirm(binding_ircons.get_r_cur_block(graph.ptr), value.ptr, bound.ptr, cmp);
+	public Node newConfirm(Node value, Node bound, firm.Relation relation) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Confirm(binding_ircons.get_r_cur_block(graph.ptr), value.ptr, bound.ptr, relation.value());
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -101,11 +101,6 @@ class ConstructionBase {
 
 	public Node newDiv(Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Div(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val);
-		return Node.createWrapper(result_ptr);
-	}
-
-	public Node newDivMod(Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_DivMod(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val);
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -201,11 +196,6 @@ class ConstructionBase {
 
 	public Node newProj(Node pred, firm.Mode mode, int proj) {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Proj(pred.ptr, mode.ptr, new com.sun.jna.NativeLong(proj));
-		return Node.createWrapper(result_ptr);
-	}
-
-	public Node newQuot(Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Quot(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val);
 		return Node.createWrapper(result_ptr);
 	}
 

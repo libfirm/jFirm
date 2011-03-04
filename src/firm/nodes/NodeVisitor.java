@@ -66,9 +66,6 @@ public interface NodeVisitor {
 	/** called when accept is called on a Div node */
 	void visit(Div node);
 
-	/** called when accept is called on a DivMod node */
-	void visit(DivMod node);
-
 	/** called when accept is called on a Dummy node */
 	void visit(Dummy node);
 
@@ -128,9 +125,6 @@ public interface NodeVisitor {
 
 	/** called when accept is called on a Proj node */
 	void visit(Proj node);
-
-	/** called when accept is called on a Quot node */
-	void visit(Quot node);
 
 	/** called when accept is called on a Raise node */
 	void visit(Raise node);
@@ -286,11 +280,6 @@ public interface NodeVisitor {
 		}
 
 		@Override
-		public void visit(DivMod node) {
-			defaultVisit(node);
-		}
-
-		@Override
 		public void visit(Dummy node) {
 			defaultVisit(node);
 		}
@@ -387,11 +376,6 @@ public interface NodeVisitor {
 
 		@Override
 		public void visit(Proj node) {
-			defaultVisit(node);
-		}
-
-		@Override
-		public void visit(Quot node) {
 			defaultVisit(node);
 		}
 

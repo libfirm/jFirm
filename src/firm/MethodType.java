@@ -1,5 +1,6 @@
 package firm;
 
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_typerep;
@@ -13,7 +14,7 @@ public class MethodType extends Type {
 	}
 
 	public MethodType(int nParameters, int nResults) {
-		super(binding_typerep.new_type_method(nParameters, nResults));
+		super(binding_typerep.new_type_method(new NativeLong(nParameters), new NativeLong(nResults)));
 	}
 
 	public MethodType(Type[] parameterTypes, Type[] resultTypes) {
@@ -25,20 +26,20 @@ public class MethodType extends Type {
 	}
 
 	public final int getNParams() {
-		return binding_typerep.get_method_n_params(ptr);
+		return binding_typerep.get_method_n_params(ptr).intValue();
 	}
 
 	public final Type getParamType(int pos) {
-		Pointer p = binding_typerep.get_method_param_type(ptr, pos);
+		Pointer p = binding_typerep.get_method_param_type(ptr, new NativeLong(pos));
 		return Type.createWrapper(p);
 	}
 
 	public final void setParamType(int pos, Type tp) {
-		binding_typerep.set_method_param_type(ptr, pos, tp.ptr);
+		binding_typerep.set_method_param_type(ptr, new NativeLong(pos), tp.ptr);
 	}
 
 	public final Entity getValueParamEnt(int pos) {
-		Pointer p = binding_typerep.get_method_value_param_ent(ptr, pos);
+		Pointer p = binding_typerep.get_method_value_param_ent(ptr, new NativeLong(pos));
 		return new Entity(p);
 	}
 
@@ -48,33 +49,33 @@ public class MethodType extends Type {
 	}
 
 	public final Ident getParamIdent(int pos) {
-		Pointer p = binding_typerep.get_method_param_ident(ptr, pos);
+		Pointer p = binding_typerep.get_method_param_ident(ptr, new NativeLong(pos));
 		return new Ident(p);
 	}
 
 	public final String getParamName(int pos) {
-		return binding_typerep.get_method_param_name(ptr, pos);
+		return binding_typerep.get_method_param_name(ptr, new NativeLong(pos));
 	}
 
 	public final void setParamIdent(int pos, Ident id) {
-		binding_typerep.set_method_param_ident(ptr, pos, id.ptr);
+		binding_typerep.set_method_param_ident(ptr, new NativeLong(pos), id.ptr);
 	}
 
 	public final int getNRess() {
-		return binding_typerep.get_method_n_ress(ptr);
+		return binding_typerep.get_method_n_ress(ptr).intValue();
 	}
 
 	public final Type getResType(int pos) {
-		Pointer p = binding_typerep.get_method_res_type(ptr, pos);
+		Pointer p = binding_typerep.get_method_res_type(ptr, new NativeLong(pos));
 		return Type.createWrapper(p);
 	}
 
 	public final void setResType(int pos, Type tp) {
-		binding_typerep.set_method_res_type(ptr, pos, tp.ptr);
+		binding_typerep.set_method_res_type(ptr, new NativeLong(pos), tp.ptr);
 	}
 
 	public final Entity getValueResEnt(int pos) {
-		Pointer p = binding_typerep.get_method_value_res_ent(ptr, pos);
+		Pointer p = binding_typerep.get_method_value_res_ent(ptr, new NativeLong(pos));
 		return new Entity(p);
 	}
 
@@ -97,11 +98,11 @@ public class MethodType extends Type {
 	}
 
 	public final int getFirstVariadicParamIndex() {
-		return binding_typerep.get_method_first_variadic_param_index(ptr);
+		return binding_typerep.get_method_first_variadic_param_index(ptr).intValue();
 	}
 
 	public final void setFirstVariadicParamIndex(int index) {
-		binding_typerep.set_method_first_variadic_param_index(ptr, index);
+		binding_typerep.set_method_first_variadic_param_index(ptr, new NativeLong(index));
 	}
 
 	public final int getAdditionalProperties() {
@@ -119,7 +120,7 @@ public class MethodType extends Type {
 	}
 
 	public final int getNRegparams() {
-		return binding_typerep.get_method_n_params(ptr);
+		return binding_typerep.get_method_n_params(ptr).intValue();
 	}
 
 	public final void setNRegparams(int nRegs) {

@@ -48,6 +48,10 @@ for node in ir_spec.nodes:
 	# TODO short workaround
 	if node.name in ("End"):
 		node.noconstructor = True
+	if node.name == "Load":
+		for a in node.attrs:
+			if a["name"] == "mode":
+				a["java_name"] = "load_mode"
 	nodes.append(node)
 
 def format_filter_keywords(arg):
@@ -226,11 +230,11 @@ def get_java_type(type):
 		wrap_type    = "Pointer"
 		to_wrapper   = "%s.ptr"
 		from_wrapper = "new firm.Ident(%s)"
-	elif type == "pn_Cmp":
-		java_type    = "int"
+	elif type == "ir_relation":
+		java_type    = "firm.Relation"
 		wrap_type    = "int"
-		to_wrapper   = "%s"
-		from_wrapper = "%s"
+		to_wrapper   = "%s.value()"
+		from_wrapper = "firm.Relation.fromValue(%s)"
 	elif type == "int":
 		java_type    = "int"
 		wrap_type    = "int"
@@ -352,8 +356,9 @@ def preprocess_node(node):
 		arguments = [ ]
 		for input in node.ins:
 			arguments.append(dict(
-				name = input,
-				type = "Node"
+				type    = "Node",
+				name    = input[0],
+				comment = input[1]
 			))
 		if node.arity == "variable" or node.arity == "dynamic":
 			arguments.append(dict(
@@ -373,7 +378,8 @@ def preprocess_node(node):
 			arguments.append(dict(
 				name = attr["java_name"],
 				type = attr["java_type"],
-				to_wrapper = attr["to_wrapper"]
+				to_wrapper = attr["to_wrapper"],
+				comment = attr["comment"]
 			))
 		for arg in node.constructor_args:
 			old_type = arg["type"]
@@ -412,14 +418,14 @@ public {{"abstract "|ifabstract(node)}}class {{node.classname}} extends {{node.p
 	{% for input in node.ins -%}
 	{%if node.parent.name != "Op"%}@Override
 	{%endif-%}
-	public Node get{{input|CamelCase}}() {
-		return createWrapper(firm.bindings.binding_irnode.get_{{node.name}}_{{input}}(ptr));
+	public Node get{{input[0]|CamelCase}}() {
+		return createWrapper(firm.bindings.binding_irnode.get_{{node.name}}_{{input[0]}}(ptr));
 	}
 
 	{%if node.parent.name != "Op"%}@Override
 	{%endif-%}
-	public void set{{input|CamelCase}}(Node {{input|filterkeywords}}) {
-		firm.bindings.binding_irnode.set_{{node.name}}_{{input}}(this.ptr, {{input|filterkeywords}}.ptr);
+	public void set{{input[0]|CamelCase}}(Node {{input[0]|filterkeywords}}) {
+		firm.bindings.binding_irnode.set_{{node.name}}_{{input[0]}}(this.ptr, {{input[0]|filterkeywords}}.ptr);
 	}
 
 	{% endfor -%}

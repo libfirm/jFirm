@@ -2,6 +2,7 @@ package firm;
 
 import java.util.Iterator;
 
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_typerep;
@@ -20,11 +21,11 @@ public class CompoundType extends Type {
 	}
 
 	public int getNMembers() {
-		return binding_typerep.get_compound_n_members(ptr);
+		return binding_typerep.get_compound_n_members(ptr).intValue();
 	}
 
 	public Entity getMember(int n) {
-		return new Entity(binding_typerep.get_compound_member(ptr, n));
+		return new Entity(binding_typerep.get_compound_member(ptr, new NativeLong(n)));
 	}
 
 	public Iterable<Entity> getMembers() {

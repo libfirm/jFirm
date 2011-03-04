@@ -236,11 +236,6 @@ public class TargetValue extends JNAWrapper {
 		return new TargetValue(ptarval);
 	}
 
-	public final TargetValue quo(TargetValue other) {
-		Pointer ptarval = binding_tv.tarval_quo(ptr, other.ptr);
-		return new TargetValue(ptarval);
-	}
-
 	public final TargetValue div(TargetValue other) {
 		Pointer ptarval = binding_tv.tarval_div(ptr, other.ptr);
 		return new TargetValue(ptarval);

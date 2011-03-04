@@ -89,8 +89,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Cmp node */
-	public final Node newCmp(Node block, Node left, Node right) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Cmp(block.ptr, left.ptr, right.ptr));
+	public final Node newCmp(Node block, Node left, Node right, firm.Relation relation) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Cmp(block.ptr, left.ptr, right.ptr, relation.value()));
 	}
 
 	/** Create a new Cond node */
@@ -99,8 +99,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Confirm node */
-	public final Node newConfirm(Node block, Node value, Node bound, int cmp) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Confirm(block.ptr, value.ptr, bound.ptr, cmp));
+	public final Node newConfirm(Node block, Node value, Node bound, firm.Relation relation) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Confirm(block.ptr, value.ptr, bound.ptr, relation.value()));
 	}
 
 	/** Create a new Const node */
@@ -121,11 +121,6 @@ public class Graph extends GraphBase {
 	/** Create a new Div node */
 	public final Node newDiv(Node block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Div(block.ptr, mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val));
-	}
-
-	/** Create a new DivMod node */
-	public final Node newDivMod(Node block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_DivMod(block.ptr, mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val));
 	}
 
 	/** Create a new Dummy node */
@@ -221,11 +216,6 @@ public class Graph extends GraphBase {
 	/** Create a new Proj node */
 	public final Node newProj(Node pred, firm.Mode mode, int proj) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Proj(pred.ptr, mode.ptr, new com.sun.jna.NativeLong(proj)));
-	}
-
-	/** Create a new Quot node */
-	public final Node newQuot(Node block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Quot(block.ptr, mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val));
 	}
 
 	/** Create a new Raise node */
