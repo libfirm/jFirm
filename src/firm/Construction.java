@@ -155,10 +155,6 @@ public class Construction extends ConstructionBase {
 			}
 		});
 
-		/* setup a minimal frame type... */
-		CompoundType frameType = (CompoundType) graph.getFrameType();
-		frameType.layoutFields();
-
 		/* set graph to state high */
 		graph.setPhaseState(irg_phase_state.phase_high);
 	}
