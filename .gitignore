@@ -3,6 +3,7 @@
 /release/
 /classes/
 /binding_generator/config
+/binding_generator/ir_spec.py
 /lib/libfirm.so
 /a.out
 *.s
