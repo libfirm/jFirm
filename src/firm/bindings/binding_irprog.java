@@ -328,6 +328,60 @@ public class binding_irprog {
 		}
 	}
 
+	public static enum ir_volatility {
+		volatility_non_volatile(),
+		volatility_is_volatile();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_volatility(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_volatility() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_volatility getEnum(int val) {
+			for (ir_volatility entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum ir_align {
+		align_is_aligned(0),
+		align_non_aligned();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_align(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_align() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_align getEnum(int val) {
+			for (ir_align entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum irg_phase_state {
 		phase_building(),
 		phase_high(),
@@ -577,7 +631,8 @@ public class binding_irprog {
 	public static enum ir_graph_state_t {
 		IR_GRAPH_STATE_KEEP_MUX((1 << 0)),
 		IR_GRAPH_STATE_ARCH_DEP((1 << 1)),
-		IR_GRAPH_STATE_BCONV_ALLOWED((1 << 2));
+		IR_GRAPH_STATE_BCONV_ALLOWED((1 << 2)),
+		IR_GRAPH_STATE_BAD_BLOCK((1 << 3));
 		public final int val;
 
 		private static class C {
@@ -666,7 +721,7 @@ public class binding_irprog {
 
 	public static native void remove_irp_irg(Pointer irg);
 
-	public static native int get_irp_last_idx();
+	public static native com.sun.jna.NativeLong get_irp_last_idx();
 
 	public static native com.sun.jna.NativeLong get_irp_n_irgs();
 

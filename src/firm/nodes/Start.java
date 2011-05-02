@@ -22,11 +22,8 @@ public class Start extends Node {
 	/** frame base pointer */
 	public static final int pnPFrameBase = 2;
 
-	/** pointer to thread local storage segment */
-	public static final int pnPTls = 3;
-
 	/** function arguments */
-	public static final int pnTArgs = 4;
+	public static final int pnTArgs = 3;
 
-	public static final int pnMax = 5;
+	public static final int pnMax = 4;
 }

@@ -328,6 +328,60 @@ public class binding_typerep {
 		}
 	}
 
+	public static enum ir_volatility {
+		volatility_non_volatile(),
+		volatility_is_volatile();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_volatility(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_volatility() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_volatility getEnum(int val) {
+			for (ir_volatility entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum ir_align {
+		align_is_aligned(0),
+		align_non_aligned();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_align(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_align() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_align getEnum(int val) {
+			for (ir_align entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum ir_visibility {
 		ir_visibility_default(),
 		ir_visibility_local(),
@@ -381,60 +435,6 @@ public class binding_typerep {
 
 		public static ir_linkage getEnum(int val) {
 			for (ir_linkage entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_volatility {
-		volatility_non_volatile(),
-		volatility_is_volatile();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_volatility(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_volatility() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_volatility getEnum(int val) {
-			for (ir_volatility entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_align {
-		align_non_aligned(),
-		align_is_aligned();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_align(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_align() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_align getEnum(int val) {
-			for (ir_align entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -1237,31 +1237,17 @@ public class binding_typerep {
 
 	public static native Pointer get_method_value_param_type(Pointer method);
 
-	public static native Pointer get_method_param_ident(Pointer method, com.sun.jna.NativeLong pos);
-
-	public static native String get_method_param_name(Pointer method, com.sun.jna.NativeLong pos);
-
-	public static native void set_method_param_ident(Pointer method, com.sun.jna.NativeLong pos, Pointer id);
-
 	public static native com.sun.jna.NativeLong get_method_n_ress(Pointer method);
 
 	public static native Pointer get_method_res_type(Pointer method, com.sun.jna.NativeLong pos);
 
 	public static native void set_method_res_type(Pointer method, com.sun.jna.NativeLong pos, Pointer tp);
 
-	public static native Pointer get_method_value_res_ent(Pointer method, com.sun.jna.NativeLong pos);
-
-	public static native Pointer get_method_value_res_type(Pointer method);
-
 	public static native String get_variadicity_name(/* ir_variadicity */int vari);
 
 	public static native /* ir_variadicity */int get_method_variadicity(Pointer method);
 
 	public static native void set_method_variadicity(Pointer method, /* ir_variadicity */int vari);
-
-	public static native com.sun.jna.NativeLong get_method_first_variadic_param_index(Pointer method);
-
-	public static native void set_method_first_variadic_param_index(Pointer method, com.sun.jna.NativeLong index);
 
 	public static native /* mtp_additional_properties */int get_method_additional_properties(Pointer method);
 
@@ -1295,9 +1281,9 @@ public class binding_typerep {
 
 	public static native int is_Union_type(Pointer uni);
 
-	public static native Pointer new_type_array(int n_dims, Pointer element_type);
+	public static native Pointer new_type_array(com.sun.jna.NativeLong n_dims, Pointer element_type);
 
-	public static native Pointer new_d_type_array(int n_dims, Pointer element_type, Pointer db);
+	public static native Pointer new_d_type_array(com.sun.jna.NativeLong n_dims, Pointer element_type, Pointer db);
 
 	public static native com.sun.jna.NativeLong get_array_n_dimensions(Pointer array);
 
@@ -1325,11 +1311,11 @@ public class binding_typerep {
 
 	public static native com.sun.jna.NativeLong get_array_upper_bound_int(Pointer array, com.sun.jna.NativeLong dimension);
 
-	public static native void set_array_order(Pointer array, com.sun.jna.NativeLong dimension, int order);
+	public static native void set_array_order(Pointer array, com.sun.jna.NativeLong dimension, com.sun.jna.NativeLong order);
 
-	public static native int get_array_order(Pointer array, com.sun.jna.NativeLong dimension);
+	public static native com.sun.jna.NativeLong get_array_order(Pointer array, com.sun.jna.NativeLong dimension);
 
-	public static native com.sun.jna.NativeLong find_array_dimension(Pointer array, int order);
+	public static native com.sun.jna.NativeLong find_array_dimension(Pointer array, com.sun.jna.NativeLong order);
 
 	public static native void set_array_element_type(Pointer array, Pointer tp);
 
@@ -1409,6 +1395,8 @@ public class binding_typerep {
 
 	public static native com.sun.jna.NativeLong get_compound_member_index(Pointer tp, Pointer member);
 
+	public static native void remove_compound_member(Pointer compound, Pointer entity);
+
 	public static native void default_layout_compound_type(Pointer tp);
 
 	public static native int is_compound_type(Pointer tp);
@@ -1419,17 +1407,11 @@ public class binding_typerep {
 
 	public static native int is_value_param_type(Pointer tp);
 
-	public static native int is_lowered_type(Pointer tp);
-
 	public static native Pointer new_type_value();
 
 	public static native Pointer new_type_frame();
 
 	public static native Pointer clone_frame_type(Pointer type);
-
-	public static native void set_lowered_type(Pointer tp, Pointer lowered_type);
-
-	public static native Pointer get_associated_type(Pointer tp);
 
 	public static native Pointer frame_alloc_area(Pointer frame_type, int size, int alignment, int at_start);
 

@@ -48,19 +48,6 @@ public class MethodType extends Type {
 		return (p == null ? null : Type.createWrapper(p));
 	}
 
-	public final Ident getParamIdent(int pos) {
-		Pointer p = binding_typerep.get_method_param_ident(ptr, new NativeLong(pos));
-		return new Ident(p);
-	}
-
-	public final String getParamName(int pos) {
-		return binding_typerep.get_method_param_name(ptr, new NativeLong(pos));
-	}
-
-	public final void setParamIdent(int pos, Ident id) {
-		binding_typerep.set_method_param_ident(ptr, new NativeLong(pos), id.ptr);
-	}
-
 	public final int getNRess() {
 		return binding_typerep.get_method_n_ress(ptr).intValue();
 	}
@@ -74,16 +61,6 @@ public class MethodType extends Type {
 		binding_typerep.set_method_res_type(ptr, new NativeLong(pos), tp.ptr);
 	}
 
-	public final Entity getValueResEnt(int pos) {
-		Pointer p = binding_typerep.get_method_value_res_ent(ptr, new NativeLong(pos));
-		return new Entity(p);
-	}
-
-	public final Type getValueResType() {
-		Pointer p = binding_typerep.get_method_value_res_type(ptr);
-		return Type.createWrapper(p);
-	}
-
 	public final static String getVariadicityName(ir_variadicity vari) {
 		return binding_typerep.get_variadicity_name(vari.val);
 	}
@@ -95,14 +72,6 @@ public class MethodType extends Type {
 
 	public final void setVariadicity(ir_variadicity vari) {
 		binding_typerep.set_method_variadicity(ptr, vari.val);
-	}
-
-	public final int getFirstVariadicParamIndex() {
-		return binding_typerep.get_method_first_variadic_param_index(ptr).intValue();
-	}
-
-	public final void setFirstVariadicParamIndex(int index) {
-		binding_typerep.set_method_first_variadic_param_index(ptr, new NativeLong(index));
 	}
 
 	public final int getAdditionalProperties() {

@@ -11,9 +11,9 @@ import firm.bindings.binding_ircons;
 import firm.bindings.binding_irgmod;
 import firm.bindings.binding_irgraph;
 import firm.bindings.binding_irnode;
+import firm.bindings.binding_irnode.ir_opcode;
 import firm.bindings.binding_irop;
 import firm.bindings.binding_irverify;
-import firm.bindings.binding_irnode.ir_opcode;
 import firm.bindings.binding_irverify.irg_verify_flags_t;
 import firm.nodes.Bad;
 import firm.nodes.Block;
@@ -122,11 +122,6 @@ public abstract class GraphBase extends JNAWrapper {
 		return Node.createWrapper(binding_irgraph.get_irg_frame(ptr));
 	}
 
-	/** returns the pointer to the thread local storage area */
-	public Node getTls() {
-		return Node.createWrapper(binding_irgraph.get_irg_tls(ptr));
-	}
-
 	/** returns function arguments */
 	public Node getArgs() {
 		return Node.createWrapper(binding_irgraph.get_irg_args(ptr));
@@ -170,10 +165,6 @@ public abstract class GraphBase extends JNAWrapper {
 		binding_irgraph.set_irg_frame(ptr, node.ptr);
 	}
 
-	public void setTls(Node node) {
-		binding_irgraph.set_irg_tls(ptr, node.ptr);
-	}
-
 	public void setArgs(Node node) {
 		binding_irgraph.set_irg_args(ptr, node.ptr);
 	}
@@ -195,7 +186,7 @@ public abstract class GraphBase extends JNAWrapper {
 	}
 
 	public int getIdx() {
-		return binding_irgraph.get_irg_idx(ptr);
+		return binding_irgraph.get_irg_idx(ptr).intValue();
 	}
 
 	public void incVisited() {
@@ -324,7 +315,7 @@ public abstract class GraphBase extends JNAWrapper {
 
 	/**
 	 * visits all nodes of the graph, starting at the end node
-	 * 
+	 *
 	 * @param walker
 	 */
 	public void walk(NodeVisitor walker) {
@@ -335,7 +326,7 @@ public abstract class GraphBase extends JNAWrapper {
 	/**
 	 * visits all nodes of the graph in postorder. This means that except for
 	 * cycles all predecessors will have been visited before a node is visited.
-	 * 
+	 *
 	 * @param walker
 	 */
 	public void walkPostorder(NodeVisitor walker) {
@@ -364,7 +355,7 @@ public abstract class GraphBase extends JNAWrapper {
 		for(Node pred : getEnd().getPreds()) {
 			if (pred.getClass() != Block.class)
 				pred = pred.getBlock();
-			
+
 			blockWalkHelper(walker, pred);
 		}
 	}
@@ -380,7 +371,7 @@ public abstract class GraphBase extends JNAWrapper {
 		for(Node pred : getEnd().getPreds()) {
 			if (pred.getClass() != Block.class)
 				pred = pred.getBlock();
-			
+
 			blockWalkHelper(walker, pred);
 		}
 	}
@@ -409,7 +400,7 @@ public abstract class GraphBase extends JNAWrapper {
 
 	/**
 	 * Checks if a graph is well formed
-	 * 
+	 *
 	 * @param graph
 	 *            the graph to check
 	 */
@@ -420,13 +411,13 @@ public abstract class GraphBase extends JNAWrapper {
 
 	/**
 	 * Turns a node into a "useless" Tuple.
-	 * 
+	 *
 	 * Turns a node into a "useless" Tuple. The Tuple node just forms a tuple
 	 * from several inputs. The predecessors of the tuple have to be set by
 	 * hand. The block predecessor automatically remains the same. This is
 	 * useful if a node returning a tuple is removed, but the Projs extracting
 	 * values from the tuple are not available.
-	 * 
+	 *
 	 * @param node
 	 *            The node to be turned into a tuple.
 	 * @param outArity

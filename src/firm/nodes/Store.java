@@ -33,6 +33,24 @@ public class Store extends Node {
 		firm.bindings.binding_irnode.set_Store_value(this.ptr, value.ptr);
 	}
 
+	public firm.bindings.binding_irnode.ir_volatility getVolatility() {
+		int _res = firm.bindings.binding_irnode.get_Store_volatility(ptr);
+		return firm.bindings.binding_irnode.ir_volatility.getEnum(_res);
+	}
+
+	public void setVolatility(firm.bindings.binding_irnode.ir_volatility _val) {
+		firm.bindings.binding_irnode.set_Store_volatility(this.ptr, _val.val);
+	}
+
+	public firm.bindings.binding_irnode.ir_align getUnaligned() {
+		int _res = firm.bindings.binding_irnode.get_Store_unaligned(ptr);
+		return firm.bindings.binding_irnode.ir_align.getEnum(_res);
+	}
+
+	public void setUnaligned(firm.bindings.binding_irnode.ir_align _val) {
+		firm.bindings.binding_irnode.set_Store_unaligned(this.ptr, _val.val);
+	}
+
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

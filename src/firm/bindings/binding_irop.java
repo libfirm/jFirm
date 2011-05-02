@@ -357,6 +357,60 @@ public class binding_irop {
 		}
 	}
 
+	public static enum ir_volatility {
+		volatility_non_volatile(),
+		volatility_is_volatile();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_volatility(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_volatility() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_volatility getEnum(int val) {
+			for (ir_volatility entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum ir_align {
+		align_is_aligned(0),
+		align_non_aligned();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_align(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_align() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_align getEnum(int val) {
+			for (ir_align entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum ir_opcode {
 		iro_ASM(),
 		iro_Add(),
@@ -430,8 +484,7 @@ public class binding_irop {
 		beo_IncSP(),
 		beo_Start(),
 		beo_FrameAddr(),
-		beo_Barrier(),
-		beo_Last(ir_opcode.beo_Barrier.val),
+		beo_Last(ir_opcode.beo_FrameAddr.val),
 		iro_MaxOpcode();
 		public final int val;
 
@@ -508,7 +561,8 @@ public class binding_irop {
 		irop_flag_machine((1 << 13)),
 		irop_flag_machine_op((1 << 14)),
 		irop_flag_cse_neutral((1 << 15)),
-		irop_flag_user((1 << 16));
+		irop_flag_unknown_jump((1 << 16)),
+		irop_flag_user((1 << 17));
 		public final int val;
 
 		private static class C {

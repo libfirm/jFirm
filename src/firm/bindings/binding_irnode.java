@@ -328,6 +328,60 @@ public class binding_irnode {
 		}
 	}
 
+	public static enum ir_volatility {
+		volatility_non_volatile(),
+		volatility_is_volatile();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_volatility(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_volatility() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_volatility getEnum(int val) {
+			for (ir_volatility entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum ir_align {
+		align_is_aligned(0),
+		align_non_aligned();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_align(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_align() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_align getEnum(int val) {
+			for (ir_align entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum firm_kind {
 		k_BAD(0),
 		k_entity(),
@@ -424,60 +478,6 @@ public class binding_irnode {
 
 		public static ir_linkage getEnum(int val) {
 			for (ir_linkage entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_volatility {
-		volatility_non_volatile(),
-		volatility_is_volatile();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_volatility(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_volatility() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_volatility getEnum(int val) {
-			for (ir_volatility entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_align {
-		align_non_aligned(),
-		align_is_aligned();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_align(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_align() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_align getEnum(int val) {
-			for (ir_align entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -953,8 +953,7 @@ public class binding_irnode {
 		beo_IncSP(),
 		beo_Start(),
 		beo_FrameAddr(),
-		beo_Barrier(),
-		beo_Last(ir_opcode.beo_Barrier.val),
+		beo_Last(ir_opcode.beo_FrameAddr.val),
 		iro_MaxOpcode();
 		public final int val;
 
@@ -1031,7 +1030,8 @@ public class binding_irnode {
 		irop_flag_machine((1 << 13)),
 		irop_flag_machine_op((1 << 14)),
 		irop_flag_cse_neutral((1 << 15)),
-		irop_flag_user((1 << 16));
+		irop_flag_unknown_jump((1 << 16)),
+		irop_flag_user((1 << 17));
 		public final int val;
 
 		private static class C {
@@ -1272,7 +1272,6 @@ public class binding_irnode {
 		pn_Call_X_regular(pn_generic.pn_Generic_X_regular.val),
 		pn_Call_X_except(pn_generic.pn_Generic_X_except.val),
 		pn_Call_T_result(pn_generic.pn_Generic_other.val),
-		pn_Call_P_value_res_base(),
 		pn_Call_max();
 		public final int val;
 
@@ -1507,7 +1506,6 @@ public class binding_irnode {
 		pn_Start_X_initial_exec(),
 		pn_Start_M(),
 		pn_Start_P_frame_base(),
-		pn_Start_P_tls(),
 		pn_Start_T_args(),
 		pn_Start_max();
 		public final int val;
@@ -2342,6 +2340,14 @@ public class binding_irnode {
 
 	public static native void set_Load_mode(Pointer node, Pointer mode);
 
+	public static native /* ir_volatility */int get_Load_volatility(Pointer node);
+
+	public static native void set_Load_volatility(Pointer node, /* ir_volatility */int volatility);
+
+	public static native /* ir_align */int get_Load_unaligned(Pointer node);
+
+	public static native void set_Load_unaligned(Pointer node, /* ir_align */int unaligned);
+
 	public static native Pointer get_Minus_op(Pointer node);
 
 	public static native void set_Minus_op(Pointer node, Pointer op);
@@ -2482,6 +2488,14 @@ public class binding_irnode {
 
 	public static native void set_Store_value(Pointer node, Pointer value);
 
+	public static native /* ir_volatility */int get_Store_volatility(Pointer node);
+
+	public static native void set_Store_volatility(Pointer node, /* ir_volatility */int volatility);
+
+	public static native /* ir_align */int get_Store_unaligned(Pointer node);
+
+	public static native void set_Store_unaligned(Pointer node, /* ir_align */int unaligned);
+
 	public static native Pointer get_Sub_left(Pointer node);
 
 	public static native void set_Sub_left(Pointer node, Pointer left);
@@ -2562,8 +2576,6 @@ public class binding_irnode {
 
 	public static native Pointer is_frame_pointer(Pointer n);
 
-	public static native Pointer is_tls_pointer(Pointer n);
-
 	public static native int get_Block_n_cfgpreds(Pointer block);
 
 	public static native Pointer get_Block_cfgpred(Pointer block, int pos);
@@ -2581,10 +2593,6 @@ public class binding_irnode {
 	public static native com.sun.jna.NativeLong get_Block_block_visited(Pointer block);
 
 	public static native void set_Block_block_visited(Pointer block, com.sun.jna.NativeLong visit);
-
-	public static native Pointer set_Block_dead(Pointer block);
-
-	public static native int is_Block_dead(Pointer block);
 
 	public static native void mark_Block_block_visited(Pointer node);
 
@@ -2752,22 +2760,6 @@ public class binding_irnode {
 
 	public static native void set_memop_ptr(Pointer node, Pointer ptr);
 
-	public static native /* ir_volatility */int get_Load_volatility(Pointer node);
-
-	public static native void set_Load_volatility(Pointer node, /* ir_volatility */int volatility);
-
-	public static native /* ir_align */int get_Load_align(Pointer node);
-
-	public static native void set_Load_align(Pointer node, /* ir_align */int align);
-
-	public static native /* ir_volatility */int get_Store_volatility(Pointer node);
-
-	public static native void set_Store_volatility(Pointer node, /* ir_volatility */int volatility);
-
-	public static native /* ir_align */int get_Store_align(Pointer node);
-
-	public static native void set_Store_align(Pointer node, /* ir_align */int align);
-
 	public static native java.nio.Buffer get_Sync_preds_arr(Pointer node);
 
 	public static native int get_Sync_n_preds(Pointer node);
@@ -2813,6 +2805,8 @@ public class binding_irnode {
 	public static native Pointer skip_HighLevel_ops(Pointer node);
 
 	public static native int is_cfop(Pointer node);
+
+	public static native int is_unknown_jump(Pointer node);
 
 	public static native int is_fragile_op(Pointer node);
 

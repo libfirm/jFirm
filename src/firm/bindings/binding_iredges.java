@@ -328,6 +328,60 @@ public class binding_iredges {
 		}
 	}
 
+	public static enum ir_volatility {
+		volatility_non_volatile(),
+		volatility_is_volatile();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_volatility(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_volatility() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_volatility getEnum(int val) {
+			for (ir_volatility entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum ir_align {
+		align_is_aligned(0),
+		align_non_aligned();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_align(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_align() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_align getEnum(int val) {
+			for (ir_align entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum ir_edge_kind_t {
 		EDGE_KIND_FIRST(),
 		EDGE_KIND_NORMAL(ir_edge_kind_t.EDGE_KIND_FIRST.val),
@@ -367,7 +421,7 @@ public class binding_iredges {
 
 	public static native int get_edge_src_pos(Pointer edge);
 
-	public static native Pointer get_irn_edge_kind(Pointer irg, Pointer irn, int pos, /* ir_edge_kind_t */int kind);
+	public static native Pointer get_irn_edge_kind(Pointer irn, int pos, /* ir_edge_kind_t */int kind);
 
 	public static native int get_irn_n_edges_kind(Pointer irn, /* ir_edge_kind_t */int kind);
 
@@ -377,7 +431,7 @@ public class binding_iredges {
 
 	public static native void edges_deactivate_kind(Pointer irg, /* ir_edge_kind_t */int kind);
 
-	public static native void edges_reroute_kind(Pointer old, Pointer nw, /* ir_edge_kind_t */int kind, Pointer irg);
+	public static native void edges_reroute_kind(Pointer old, Pointer nw, /* ir_edge_kind_t */int kind);
 
 	public static native int edges_verify(Pointer irg);
 
@@ -395,9 +449,7 @@ public class binding_iredges {
 
 	public static native int edges_assure_kind(Pointer irg, /* ir_edge_kind_t */int kind);
 
-	public static native void edges_node_deleted(Pointer irn, Pointer irg);
-
-	public static native void edges_notify_edge(Pointer src, int pos, Pointer tgt, Pointer old_tgt, Pointer irg);
+	public static native void edges_node_deleted(Pointer irn);
 
 	public static native void irg_block_edges_walk(Pointer block, Pointer pre, Pointer post, Pointer env);
 

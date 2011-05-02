@@ -357,6 +357,60 @@ public class binding_be {
 		}
 	}
 
+	public static enum ir_volatility {
+		volatility_non_volatile(),
+		volatility_is_volatile();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_volatility(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_volatility() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_volatility getEnum(int val) {
+			for (ir_volatility entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum ir_align {
+		align_is_aligned(0),
+		align_non_aligned();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_align(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_align() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_align getEnum(int val) {
+			for (ir_align entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum insn_kind {
 		LEA(),
 		SHIFT(),
@@ -596,7 +650,6 @@ public class binding_be {
 		pn_Call_X_regular(pn_generic.pn_Generic_X_regular.val),
 		pn_Call_X_except(pn_generic.pn_Generic_X_except.val),
 		pn_Call_T_result(pn_generic.pn_Generic_other.val),
-		pn_Call_P_value_res_base(),
 		pn_Call_max();
 		public final int val;
 
@@ -831,7 +884,6 @@ public class binding_be {
 		pn_Start_X_initial_exec(),
 		pn_Start_M(),
 		pn_Start_P_frame_base(),
-		pn_Start_P_tls(),
 		pn_Start_T_args(),
 		pn_Start_max();
 		public final int val;

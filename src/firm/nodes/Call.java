@@ -59,8 +59,5 @@ public class Call extends Node {
 	/** tuple containing all results */
 	public static final int pnTResult = 3;
 
-	/** pointer to memory register containing copied results passed by value */
-	public static final int pnPValueResBase = 4;
-
-	public static final int pnMax = 5;
+	public static final int pnMax = 4;
 }
