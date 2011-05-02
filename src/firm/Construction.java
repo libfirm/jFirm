@@ -78,7 +78,7 @@ public class Construction extends ConstructionBase {
 	 * nodes.
 	 */
 	public void setCurrentBlockBad() {
-		binding_ircons.set_r_cur_block(graph.ptr, binding_ircons.new_Bad());
+		binding_ircons.set_r_cur_block(graph.ptr, graph.getBad().ptr);
 	}
 
 	/**
