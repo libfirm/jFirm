@@ -1281,9 +1281,9 @@ public class binding_typerep {
 
 	public static native int is_Union_type(Pointer uni);
 
-	public static native Pointer new_type_array(com.sun.jna.NativeLong n_dims, Pointer element_type);
+	public static native Pointer new_type_array(int n_dims, Pointer element_type);
 
-	public static native Pointer new_d_type_array(com.sun.jna.NativeLong n_dims, Pointer element_type, Pointer db);
+	public static native Pointer new_d_type_array(int n_dims, Pointer element_type, Pointer db);
 
 	public static native com.sun.jna.NativeLong get_array_n_dimensions(Pointer array);
 
@@ -1311,11 +1311,11 @@ public class binding_typerep {
 
 	public static native com.sun.jna.NativeLong get_array_upper_bound_int(Pointer array, com.sun.jna.NativeLong dimension);
 
-	public static native void set_array_order(Pointer array, com.sun.jna.NativeLong dimension, com.sun.jna.NativeLong order);
+	public static native void set_array_order(Pointer array, com.sun.jna.NativeLong dimension, int order);
 
-	public static native com.sun.jna.NativeLong get_array_order(Pointer array, com.sun.jna.NativeLong dimension);
+	public static native int get_array_order(Pointer array, com.sun.jna.NativeLong dimension);
 
-	public static native com.sun.jna.NativeLong find_array_dimension(Pointer array, com.sun.jna.NativeLong order);
+	public static native com.sun.jna.NativeLong find_array_dimension(Pointer array, int order);
 
 	public static native void set_array_element_type(Pointer array, Pointer tp);
 
@@ -1407,11 +1407,17 @@ public class binding_typerep {
 
 	public static native int is_value_param_type(Pointer tp);
 
+	public static native int is_lowered_type(Pointer tp);
+
 	public static native Pointer new_type_value();
 
 	public static native Pointer new_type_frame();
 
 	public static native Pointer clone_frame_type(Pointer type);
+
+	public static native void set_lowered_type(Pointer tp, Pointer lowered_type);
+
+	public static native Pointer get_associated_type(Pointer tp);
 
 	public static native Pointer frame_alloc_area(Pointer frame_type, int size, int alignment, int at_start);
 

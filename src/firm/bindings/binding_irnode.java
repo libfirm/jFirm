@@ -1030,8 +1030,7 @@ public class binding_irnode {
 		irop_flag_machine((1 << 13)),
 		irop_flag_machine_op((1 << 14)),
 		irop_flag_cse_neutral((1 << 15)),
-		irop_flag_unknown_jump((1 << 16)),
-		irop_flag_user((1 << 17));
+		irop_flag_user((1 << 16));
 		public final int val;
 
 		private static class C {
@@ -2594,6 +2593,10 @@ public class binding_irnode {
 
 	public static native void set_Block_block_visited(Pointer block, com.sun.jna.NativeLong visit);
 
+	public static native Pointer set_Block_dead(Pointer block);
+
+	public static native int is_Block_dead(Pointer block);
+
 	public static native void mark_Block_block_visited(Pointer node);
 
 	public static native int Block_block_visited(Pointer node);
@@ -2805,8 +2808,6 @@ public class binding_irnode {
 	public static native Pointer skip_HighLevel_ops(Pointer node);
 
 	public static native int is_cfop(Pointer node);
-
-	public static native int is_unknown_jump(Pointer node);
 
 	public static native int is_fragile_op(Pointer node);
 
