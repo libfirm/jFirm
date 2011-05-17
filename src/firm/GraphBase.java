@@ -186,7 +186,7 @@ public abstract class GraphBase extends JNAWrapper {
 	}
 
 	public int getIdx() {
-		return binding_irgraph.get_irg_idx(ptr).intValue();
+		return binding_irgraph.get_irg_idx(ptr);
 	}
 
 	public void incVisited() {

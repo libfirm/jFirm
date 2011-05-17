@@ -561,8 +561,7 @@ public class binding_irop {
 		irop_flag_machine((1 << 13)),
 		irop_flag_machine_op((1 << 14)),
 		irop_flag_cse_neutral((1 << 15)),
-		irop_flag_unknown_jump((1 << 16)),
-		irop_flag_user((1 << 17));
+		irop_flag_user((1 << 16));
 		public final int val;
 
 		private static class C {

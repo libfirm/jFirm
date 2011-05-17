@@ -14,7 +14,7 @@ public class ArrayType extends Type {
 	}
 
 	public ArrayType(int n_dims, Type elementType) {
-		super(binding_typerep.new_type_array(new NativeLong(n_dims), elementType.ptr));
+		super(binding_typerep.new_type_array(n_dims, elementType.ptr));
 	}
 
 	public ArrayType(Type elementType) {

@@ -631,8 +631,7 @@ public class binding_irgraph {
 	public static enum ir_graph_state_t {
 		IR_GRAPH_STATE_KEEP_MUX((1 << 0)),
 		IR_GRAPH_STATE_ARCH_DEP((1 << 1)),
-		IR_GRAPH_STATE_BCONV_ALLOWED((1 << 2)),
-		IR_GRAPH_STATE_BAD_BLOCK((1 << 3));
+		IR_GRAPH_STATE_BCONV_ALLOWED((1 << 2));
 		public final int val;
 
 		private static class C {
@@ -722,7 +721,7 @@ public class binding_irgraph {
 
 	public static native com.sun.jna.NativeLong get_irg_graph_nr(Pointer irg);
 
-	public static native com.sun.jna.NativeLong get_irg_idx(Pointer irg);
+	public static native int get_irg_idx(Pointer irg);
 
 	public static native Pointer get_idx_irn(Pointer irg, int idx);
 
