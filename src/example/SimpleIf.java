@@ -36,8 +36,8 @@ public class SimpleIf {
 
 		// Initialize firm
 		Firm.init();
-		System.out.printf("Firm Version: %1s.%2s\n", Firm.getMinorVersion(),
-				Firm.getMajorVersion());
+		System.out.printf("Firm Version: %1s.%2s\n", 
+				Firm.getMajorVersion(),	Firm.getMinorVersion());
 
 		// decide which modes represent int and references
 		final Mode modeInt = Mode.getIs();

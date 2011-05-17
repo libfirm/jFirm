@@ -13,7 +13,7 @@ public class Main {
 		Firm.finish();
 		Firm.init();
 		System.out.printf("Initialized Firm Version: %1s.%2s\n",
-				Firm.getMinorVersion(), Firm.getMajorVersion());
+				Firm.getMajorVersion(), Firm.getMinorVersion());
 
 		/* what is our input file? */
 		String input = "bf_examples/bockbeer.bf";
