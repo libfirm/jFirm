@@ -202,8 +202,8 @@ public class TargetValue extends JNAWrapper {
 		return int_overflow_mode.getEnum(val);
 	}
 
-	public final CompareResult compare(TargetValue other) {
-		return CompareResult.fromProjNum(binding_tv.tarval_cmp(ptr, other.ptr));
+	public final Relation compare(TargetValue other) {
+		return Relation.fromValue(binding_tv.tarval_cmp(ptr, other.ptr));
 	}
 
 	public final TargetValue convertTo(Mode mode) {
