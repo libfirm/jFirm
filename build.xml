@@ -2,7 +2,7 @@
 	<description>jfirm release</description>
 	
 	<!-- set global properties for this build -->
-	<property name="projectname" value="jfirm" />
+	<property name="projectname" value="jFirm" />
 	<property name="version" value="1.19.1" />
 	<property name="src" location="${basedir}/src"/>
 	<property name="jar" value="jfirm.jar"/>
@@ -91,6 +91,7 @@
 					<filename name="README"/>
 					<filename name="README.OSX"/>
 					<filename name="NEWS"/>
+					<filename name="build.xml"/>
 					<filename name="bf_examples/*.bf"/>
 					<filename name="lib/jna.jar"/>
 					<filename name="lib/libfirm.so"/>
