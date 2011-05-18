@@ -3,7 +3,7 @@
 	
 	<!-- set global properties for this build -->
 	<property name="projectname" value="jfirm" />
-	<property name="version" value="0.3.2" />
+	<property name="version" value="1.19.1" />
 	<property name="src" location="${basedir}/src"/>
 	<property name="jar" value="jfirm.jar"/>
 	<property name="workdir" location="${basedir}/release"/>
@@ -14,6 +14,7 @@
 	<property name="build" location="${basedir}/classes"/>
 	<property name="lib" location="${basedir}/lib"/>
 	<property name="make.exe" value="make"/>
+	<property name="bfmain" value="example.BrainFuck.Main"/>
 	<path id="project.classpath">
 		<pathelement location="${basedir}/lib/jna.jar"/>
 	</path>
@@ -101,6 +102,18 @@
 				</or>
 			</fileset>
 		</copy>
+	</target>
+
+	<target name="beertest" depends="build">
+		<java classname="${bfmain}">
+			<arg value="bf_examples/bockbeer.bf"/>
+			<jvmarg value="-ea"/>
+			<sysproperty key="jna.library.path" value="${lib}"/>
+			<classpath>
+				<path refid="project.classpath"/>
+				<dirset dir="${build}"/>
+			</classpath>
+		</java>
 	</target>
 
 </project>
