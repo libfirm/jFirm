@@ -7,6 +7,7 @@ import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_firm_common;
+import firm.bindings.binding_irflag;
 import firm.bindings.binding_libc;
 
 public final class Firm {
@@ -81,6 +82,9 @@ public final class Firm {
 
 		binding_firm_common.ir_init(Pointer.NULL);
 
+		/* disable automatic optimisations */
+		binding_irflag.set_optimize(0);
+
 		/* adapt backend to architecture */
 		if (Platform.isMac()) {
 			Backend.option("ia32-gasmode=macho");
@@ -91,6 +95,10 @@ public final class Firm {
 		} else {
 			Backend.option("ia32-gasmode=elf");
 		}
+	}
+
+	public void enableOptimisations() {
+		binding_irflag.set_optimize(1);
 	}
 
 	/**
