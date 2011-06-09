@@ -54,7 +54,8 @@ public class binding_irgopt {
 		cons_none(0),
 		cons_volatile((1 << 0)),
 		cons_unaligned((1 << 1)),
-		cons_floats((1 << 2));
+		cons_floats((1 << 2)),
+		cons_throws_exception((1 << 3));
 		public final int val;
 
 		private static class C {
@@ -271,35 +272,6 @@ public class binding_irgopt {
 		}
 	}
 
-	public static enum pn_generic {
-		pn_Generic_M(0),
-		pn_Generic_X_regular(1),
-		pn_Generic_X_except(2),
-		pn_Generic_other(3);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		pn_generic(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		pn_generic() {
-			this.val = C.next_val++;
-		}
-
-		public static pn_generic getEnum(int val) {
-			for (pn_generic entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_value_classify_sign {
 		value_classified_unknown(0),
 		value_classified_positive(1),
@@ -388,6 +360,8 @@ public class binding_irgopt {
 	public static native void local_optimize_graph(Pointer irg);
 
 	public static native int optimize_graph_df(Pointer irg);
+
+	public static native int remove_bads(Pointer irg);
 
 	public static native Pointer optimize_graph_df_pass(String name);
 

@@ -54,7 +54,8 @@ public class binding_lowering {
 		cons_none(0),
 		cons_volatile((1 << 0)),
 		cons_unaligned((1 << 1)),
-		cons_floats((1 << 2));
+		cons_floats((1 << 2)),
+		cons_throws_exception((1 << 3));
 		public final int val;
 
 		private static class C {
@@ -271,35 +272,6 @@ public class binding_lowering {
 		}
 	}
 
-	public static enum pn_generic {
-		pn_Generic_M(0),
-		pn_Generic_X_regular(1),
-		pn_Generic_X_except(2),
-		pn_Generic_other(3);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		pn_generic(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		pn_generic() {
-			this.val = C.next_val++;
-		}
-
-		public static pn_generic getEnum(int val) {
-			for (pn_generic entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_value_classify_sign {
 		value_classified_unknown(0),
 		value_classified_positive(1),
@@ -472,11 +444,7 @@ public class binding_lowering {
 
 	public static native void lower_CopyB(Pointer irg, int max_size, int native_mode_bytes);
 
-	public static native void lower_switch(Pointer irg, int spare_size, int allow_out_of_bounds);
-
-	public static native void lower_dw_ops(Pointer param);
-
-	public static native Pointer def_create_intrinsic_fkt(Pointer method, Pointer op, Pointer imode, Pointer omode, Pointer context);
+	public static native void lower_switch(Pointer irg, int small_switch, int spare_size, int allow_out_of_bounds);
 
 	public static native void lower_highlevel_graph(Pointer irg, int lower_bitfields);
 

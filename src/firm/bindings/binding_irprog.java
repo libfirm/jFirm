@@ -54,7 +54,8 @@ public class binding_irprog {
 		cons_none(0),
 		cons_volatile((1 << 0)),
 		cons_unaligned((1 << 1)),
-		cons_floats((1 << 2));
+		cons_floats((1 << 2)),
+		cons_throws_exception((1 << 3));
 		public final int val;
 
 		private static class C {
@@ -264,35 +265,6 @@ public class binding_irprog {
 
 		public static ir_builtin_kind getEnum(int val) {
 			for (ir_builtin_kind entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum pn_generic {
-		pn_Generic_M(0),
-		pn_Generic_X_regular(1),
-		pn_Generic_X_except(2),
-		pn_Generic_other(3);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		pn_generic(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		pn_generic() {
-			this.val = C.next_val++;
-		}
-
-		public static pn_generic getEnum(int val) {
-			for (pn_generic entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -632,7 +604,8 @@ public class binding_irprog {
 		IR_GRAPH_STATE_KEEP_MUX((1 << 0)),
 		IR_GRAPH_STATE_ARCH_DEP((1 << 1)),
 		IR_GRAPH_STATE_BCONV_ALLOWED((1 << 2)),
-		IR_GRAPH_STATE_BAD_BLOCK((1 << 3));
+		IR_GRAPH_STATE_BAD_BLOCK((1 << 3)),
+		IR_GRAPH_STATE_NORMALISATION2((1 << 4));
 		public final int val;
 
 		private static class C {
