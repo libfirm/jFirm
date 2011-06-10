@@ -460,7 +460,7 @@ public abstract class GraphBase extends JNAWrapper {
 		public Pointer reassociate;
 
 		private static interface CopyAttrCallback extends Callback {
-			void invoke(Pointer old_node, Pointer new_node);
+			void invoke(Pointer irg, Pointer old_node, Pointer new_node);
 		}
 
 		public CopyAttrCallback copy_attr;
@@ -476,7 +476,7 @@ public abstract class GraphBase extends JNAWrapper {
 	private void copyNodeAttr(Pointer old_node, Pointer new_node) {
 		Pointer op = binding_irnode.get_irn_op(old_node);
 		IrOpOps ops = new IrOpOps(binding_irop.get_op_ops(op));
-		ops.copy_attr.invoke(old_node, new_node);
+		ops.copy_attr.invoke(ptr, old_node, new_node);
 	}
 
 	/**
@@ -500,7 +500,7 @@ public abstract class GraphBase extends JNAWrapper {
 		}
 		Pointer block;
 		if (node.getOpCode() == ir_opcode.iro_Block) {
-			block = null;
+			block = Pointer.NULL;
 		} else {
 			block = binding_irnode.get_nodes_block(node.ptr);
 		}
