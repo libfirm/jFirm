@@ -58,14 +58,14 @@ public class Div extends Node {
 	/** memory result */
 	public static final int pnM = 0;
 
+	/** result of computation */
+	public static final int pnRes = 1;
+
 	/** control flow when no exception occurs */
-	public static final int pnXRegular = 1;
+	public static final int pnXRegular = 2;
 
 	/** control flow when exception occured */
-	public static final int pnXExcept = 2;
-
-	/** result of computation */
-	public static final int pnRes = 3;
+	public static final int pnXExcept = 3;
 
 	public static final int pnMax = 4;
 }

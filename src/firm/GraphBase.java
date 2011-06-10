@@ -127,11 +127,6 @@ public abstract class GraphBase extends JNAWrapper {
 		return Node.createWrapper(binding_irgraph.get_irg_args(ptr));
 	}
 
-	/** returns the Bad node */
-	public Bad getBad() {
-		return new Bad(binding_irgraph.get_irg_bad(ptr));
-	}
-
 	/** return the NoMem node */
 	public NoMem getNoMem() {
 		return new NoMem(binding_irgraph.get_irg_no_mem(ptr));
@@ -167,10 +162,6 @@ public abstract class GraphBase extends JNAWrapper {
 
 	public void setArgs(Node node) {
 		binding_irgraph.set_irg_args(ptr, node.ptr);
-	}
-
-	public void setBad(Node node) {
-		binding_irgraph.set_irg_bad(ptr, node.ptr);
 	}
 
 	public void setNoMem(Node node) {
@@ -426,8 +417,10 @@ public abstract class GraphBase extends JNAWrapper {
 	public static Node turnIntoTuple(Node node, int outArity) {
 		binding_irgmod.turn_into_tuple(node.ptr, outArity);
 		Node tuple = Node.createWrapper(node.ptr);
+		Graph graph = node.getGraph(); 
+		Node bad = Node.createWrapper(binding_ircons.new_r_Bad(graph.ptr, Mode.getANY().ptr)); 
 		for (int i = 0; i < outArity; ++i) {
-			tuple.setPred(i, Node.createWrapper(binding_ircons.new_Bad()));
+			tuple.setPred(i, bad);
 		}
 		return tuple;
 	}
@@ -471,7 +464,6 @@ public abstract class GraphBase extends JNAWrapper {
 		}
 
 		public CopyAttrCallback copy_attr;
-		public Pointer get_type;
 		public Pointer get_type_attr;
 		public Pointer get_entity_attr;
 		public Pointer verify_node;

@@ -49,8 +49,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Bad node */
-	public final Node newBad() {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Bad(this.ptr));
+	public final Node newBad(firm.Mode mode) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Bad(this.ptr, mode.ptr));
 	}
 
 	/** Create a new Block node */

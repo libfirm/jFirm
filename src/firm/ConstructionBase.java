@@ -29,8 +29,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newBad() {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Bad(graph.ptr);
+	public Node newBad(firm.Mode mode) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Bad(graph.ptr, mode.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
