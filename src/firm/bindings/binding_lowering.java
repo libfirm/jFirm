@@ -488,10 +488,6 @@ public class binding_lowering {
 
 	public static native Pointer lower_const_code_pass(String name);
 
-	public static native Pointer ir_create_mux_set(Pointer cond, Pointer dest_mode);
-
-	public static native Pointer ir_create_cond_set(Pointer cond, Pointer dest_mode);
-
 	public static native void ir_lower_mode_b(Pointer irg, Pointer config);
 
 	public static native void lower_mux(Pointer irg, Pointer cb_func);
