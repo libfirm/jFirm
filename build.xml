@@ -3,14 +3,14 @@
 	
 	<!-- set global properties for this build -->
 	<property name="projectname" value="jFirm" />
-	<property name="version" value="1.19.1" />
+	<property name="version" value="1.19.1.2" />
 	<property name="src" location="${basedir}/src"/>
 	<property name="jar" value="jfirm.jar"/>
 	<property name="workdir" location="${basedir}/release"/>
 	<property name="releasename" value="${projectname}-${version}"/>
 	<property name="fullreleasedir" location="${workdir}/${releasename}"/>
 	<property name="releasefile" location="${workdir}/${projectname}-${version}.zip"/>
-	<property name="releasefile-tgz" location="${workdir}/${projectname}-${version}.tgz"/>
+	<property name="releasefile-tgz" location="${workdir}/${projectname}-${version}.tar.gz"/>
 	<property name="build" location="${basedir}/classes"/>
 	<property name="lib" location="${basedir}/lib"/>
 	<property name="make.exe" value="make"/>
