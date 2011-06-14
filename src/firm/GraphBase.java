@@ -426,8 +426,10 @@ public abstract class GraphBase extends JNAWrapper {
 	public static Node turnIntoTuple(Node node, int outArity) {
 		binding_irgmod.turn_into_tuple(node.ptr, outArity);
 		Node tuple = Node.createWrapper(node.ptr);
+		Graph graph = node.getGraph();
+		Node bad = Node.createWrapper(binding_ircons.new_r_Bad(graph.ptr));
 		for (int i = 0; i < outArity; ++i) {
-			tuple.setPred(i, Node.createWrapper(binding_ircons.new_Bad()));
+			tuple.setPred(i, bad);
 		}
 		return tuple;
 	}
