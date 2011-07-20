@@ -208,6 +208,10 @@ public abstract class GraphBase extends JNAWrapper {
 		return binding_irgraph.get_irg_last_idx(ptr);
 	}
 
+	public void keepAlive(Node node) {
+		binding_ircons.keep_alive(node.ptr);
+	}
+
 	private void walkHelper(NodeVisitor walker, Node node) {
 		if (node.visited())
 			return;
