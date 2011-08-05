@@ -21,7 +21,7 @@ public class TargetValue extends JNAWrapper {
 	}
 
 	public TargetValue(long l, Mode mode) {
-		this(binding_tv.new_tarval_from_long(new NativeLong(l), mode.ptr));
+		this(binding_tv.new_tarval_from_str(Long.toString(l), new NativeLong(Long.toString(l).length()), mode.ptr));
 	}
 
 	public TargetValue(int i, Mode mode) {
