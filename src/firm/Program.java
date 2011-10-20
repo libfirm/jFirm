@@ -42,6 +42,12 @@ public class Program {
 		return binding_irprog.get_irp_name();
 	}
 
+	public static ClassType getSegmentType(int val) {
+		Type type = Type.createWrapper(binding_irprog.get_segment_type(val));
+		assert type instanceof ClassType;
+		return (ClassType) type;
+	}
+
 	public static ClassType getGlobalType() {
 		Type type = Type.createWrapper(binding_irprog.get_glob_type());
 		assert type instanceof ClassType;
