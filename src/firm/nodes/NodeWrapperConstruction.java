@@ -162,6 +162,9 @@ class NodeWrapperConstruction {
 		case iro_Sub:
 			return new Sub(ptr);
 
+		case iro_Switch:
+			return new Switch(ptr);
+
 		case iro_SymConst:
 			return new SymConst(ptr);
 

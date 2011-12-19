@@ -9,6 +9,15 @@ public class Block extends Node {
 		super(ptr);
 	}
 
+	public firm.Entity getEntity() {
+		Pointer _res = firm.bindings.binding_irnode.get_Block_entity(ptr);
+		return new firm.Entity(_res);
+	}
+
+	public void setEntity(firm.Entity _val) {
+		firm.bindings.binding_irnode.set_Block_entity(this.ptr, _val.ptr);
+	}
+
 	
 	public void addPred(Node node) {
 		firm.bindings.binding_ircons.add_immBlock_pred(ptr, node.ptr);

@@ -205,7 +205,6 @@ public class binding_irop {
 	}
 
 	public static enum symconst_kind {
-		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
@@ -276,7 +275,8 @@ public class binding_irop {
 		ir_bk_bswap(),
 		ir_bk_inport(),
 		ir_bk_outport(),
-		ir_bk_inner_trampoline();
+		ir_bk_inner_trampoline(),
+		ir_bk_last(ir_builtin_kind.ir_bk_inner_trampoline.val);
 		public final int val;
 
 		private static class C {
@@ -435,6 +435,7 @@ public class binding_irop {
 		iro_Start(),
 		iro_Store(),
 		iro_Sub(),
+		iro_Switch(),
 		iro_SymConst(),
 		iro_Sync(),
 		iro_Tuple(),
@@ -530,11 +531,8 @@ public class binding_irop {
 		irop_flag_uses_memory((1 << 10)),
 		irop_flag_dump_noblock((1 << 11)),
 		irop_flag_dump_noinput((1 << 12)),
-		irop_flag_machine((1 << 13)),
-		irop_flag_machine_op((1 << 14)),
-		irop_flag_cse_neutral((1 << 15)),
-		irop_flag_unknown_jump((1 << 16)),
-		irop_flag_user((1 << 17));
+		irop_flag_cse_neutral((1 << 13)),
+		irop_flag_unknown_jump((1 << 14));
 		public final int val;
 
 		private static class C {
@@ -613,7 +611,15 @@ public class binding_irop {
 
 	public static native Pointer new_ir_op(int code, String name, /* op_pin_state */int p, int flags, /* op_arity */int opar, int op_index, com.sun.jna.NativeLong attr_size, Pointer ops);
 
-	public static native void ir_op_set_fragile_indices(Pointer op, int fragile_mem_index, int pn_x_regular, int pn_x_except);
+	public static native int ir_get_n_opcodes();
+
+	public static native Pointer ir_get_opcode(int code);
+
+	public static native void ir_clear_opcodes_generic_func();
+
+	public static native void ir_op_set_memory_index(Pointer op, int memory_index);
+
+	public static native void ir_op_set_fragile_indices(Pointer op, int pn_x_regular, int pn_x_except);
 
 	public static native Pointer get_op_ops(Pointer op);
 }

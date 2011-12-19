@@ -205,7 +205,6 @@ public class binding_be {
 	}
 
 	public static enum symconst_kind {
-		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
@@ -276,7 +275,8 @@ public class binding_be {
 		ir_bk_bswap(),
 		ir_bk_inport(),
 		ir_bk_outport(),
-		ir_bk_inner_trampoline();
+		ir_bk_inner_trampoline(),
+		ir_bk_last(ir_builtin_kind.ir_bk_inner_trampoline.val);
 		public final int val;
 
 		private static class C {
@@ -444,64 +444,6 @@ public class binding_be {
 		}
 	}
 
-	public static enum add_hidden {
-		ADD_HIDDEN_ALWAYS_IN_FRONT(0),
-		ADD_HIDDEN_ALWAYS_LAST(1),
-		ADD_HIDDEN_SMART(2);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		add_hidden(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		add_hidden() {
-			this.val = C.next_val++;
-		}
-
-		public static add_hidden getEnum(int val) {
-			for (add_hidden entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum lowering_flags {
-		LF_NONE(0),
-		LF_COMPOUND_PARAM(1),
-		LF_COMPOUND_RETURN(2),
-		LF_RETURN_HIDDEN(4),
-		LF_SMALL_CMP_IN_REGS(8);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		lowering_flags(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		lowering_flags() {
-			this.val = C.next_val++;
-		}
-
-		public static lowering_flags getEnum(int val) {
-			for (lowering_flags entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ikind {
 		INTRINSIC_CALL(0),
 		INTRINSIC_INSTR();
@@ -522,6 +464,33 @@ public class binding_be {
 
 		public static ikind getEnum(int val) {
 			for (ikind entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum n_ASM {
+		n_ASM_mem(),
+		n_ASM_max(n_ASM.n_ASM_mem.val);
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		n_ASM(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		n_ASM() {
+			this.val = C.next_val++;
+		}
+
+		public static n_ASM getEnum(int val) {
+			for (n_ASM entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -760,8 +729,7 @@ public class binding_be {
 
 	public static enum pn_Builtin {
 		pn_Builtin_M(),
-		pn_Builtin_1_result(),
-		pn_Builtin_max(pn_Builtin.pn_Builtin_1_result.val);
+		pn_Builtin_max(pn_Builtin.pn_Builtin_M.val);
 		public final int val;
 
 		private static class C {
@@ -1185,8 +1153,8 @@ public class binding_be {
 	public static enum n_Free {
 		n_Free_mem(),
 		n_Free_ptr(),
-		n_Free_size(),
-		n_Free_max(n_Free.n_Free_size.val);
+		n_Free_count(),
+		n_Free_max(n_Free.n_Free_count.val);
 		public final int val;
 
 		private static class C {
@@ -2000,6 +1968,60 @@ public class binding_be {
 		}
 	}
 
+	public static enum n_Switch {
+		n_Switch_selector(),
+		n_Switch_max(n_Switch.n_Switch_selector.val);
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		n_Switch(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		n_Switch() {
+			this.val = C.next_val++;
+		}
+
+		public static n_Switch getEnum(int val) {
+			for (n_Switch entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum pn_Switch {
+		pn_Switch_default(),
+		pn_Switch_max(pn_Switch.pn_Switch_default.val);
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		pn_Switch(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		pn_Switch() {
+			this.val = C.next_val++;
+		}
+
+		public static pn_Switch getEnum(int val) {
+			for (pn_Switch entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum osr_flags {
 		osr_flag_none(0),
 		osr_flag_lftr_with_ov_check(1),
@@ -2066,8 +2088,6 @@ public class binding_be {
 		}
 	}
 
-
-	public static native void be_opt_register();
 
 	public static native int be_parse_arg(String arg);
 

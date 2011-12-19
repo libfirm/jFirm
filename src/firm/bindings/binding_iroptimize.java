@@ -176,7 +176,6 @@ public class binding_iroptimize {
 	}
 
 	public static enum symconst_kind {
-		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
@@ -247,7 +246,8 @@ public class binding_iroptimize {
 		ir_bk_bswap(),
 		ir_bk_inport(),
 		ir_bk_outport(),
-		ir_bk_inner_trampoline();
+		ir_bk_inner_trampoline(),
+		ir_bk_last(ir_builtin_kind.ir_bk_inner_trampoline.val);
 		public final int val;
 
 		private static class C {
@@ -347,6 +347,33 @@ public class binding_iroptimize {
 
 		public static ir_align getEnum(int val) {
 			for (ir_align entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum n_ASM {
+		n_ASM_mem(),
+		n_ASM_max(n_ASM.n_ASM_mem.val);
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		n_ASM(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		n_ASM() {
+			this.val = C.next_val++;
+		}
+
+		public static n_ASM getEnum(int val) {
+			for (n_ASM entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -585,8 +612,7 @@ public class binding_iroptimize {
 
 	public static enum pn_Builtin {
 		pn_Builtin_M(),
-		pn_Builtin_1_result(),
-		pn_Builtin_max(pn_Builtin.pn_Builtin_1_result.val);
+		pn_Builtin_max(pn_Builtin.pn_Builtin_M.val);
 		public final int val;
 
 		private static class C {
@@ -1010,8 +1036,8 @@ public class binding_iroptimize {
 	public static enum n_Free {
 		n_Free_mem(),
 		n_Free_ptr(),
-		n_Free_size(),
-		n_Free_max(n_Free.n_Free_size.val);
+		n_Free_count(),
+		n_Free_max(n_Free.n_Free_count.val);
 		public final int val;
 
 		private static class C {
@@ -1825,6 +1851,60 @@ public class binding_iroptimize {
 		}
 	}
 
+	public static enum n_Switch {
+		n_Switch_selector(),
+		n_Switch_max(n_Switch.n_Switch_selector.val);
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		n_Switch(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		n_Switch() {
+			this.val = C.next_val++;
+		}
+
+		public static n_Switch getEnum(int val) {
+			for (n_Switch entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum pn_Switch {
+		pn_Switch_default(),
+		pn_Switch_max(pn_Switch.pn_Switch_default.val);
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		pn_Switch(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		pn_Switch() {
+			this.val = C.next_val++;
+		}
+
+		public static pn_Switch getEnum(int val) {
+			for (pn_Switch entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum osr_flags {
 		osr_flag_none(0),
 		osr_flag_lftr_with_ov_check(1),
@@ -1981,8 +2061,6 @@ public class binding_iroptimize {
 
 	public static native Pointer loop_peeling_pass(String name);
 
-	public static native Pointer firm_set_Alloc_func(Pointer newf);
-
 	public static native Pointer set_vrp_pass(String name);
 
 	public static native void garbage_collect_entities();
@@ -2010,4 +2088,10 @@ public class binding_iroptimize {
 	public static native /* ir_value_classify_sign */int classify_value_sign(Pointer n);
 
 	public static native Pointer computed_value_Cmp_Confirm(Pointer cmp, Pointer left, Pointer right, /* ir_relation */int relation);
+
+	public static native void set_compilerlib_entity_creator(Pointer cb);
+
+	public static native Pointer get_compilerlib_entity_creator();
+
+	public static native Pointer create_compilerlib_entity(Pointer id, Pointer mt);
 }

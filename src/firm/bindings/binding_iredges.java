@@ -176,7 +176,6 @@ public class binding_iredges {
 	}
 
 	public static enum symconst_kind {
-		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
@@ -247,7 +246,8 @@ public class binding_iredges {
 		ir_bk_bswap(),
 		ir_bk_inport(),
 		ir_bk_outport(),
-		ir_bk_inner_trampoline();
+		ir_bk_inner_trampoline(),
+		ir_bk_last(ir_builtin_kind.ir_bk_inner_trampoline.val);
 		public final int val;
 
 		private static class C {
@@ -420,8 +420,6 @@ public class binding_iredges {
 	public static native int edges_assure(Pointer irg);
 
 	public static native int edges_assure_kind(Pointer irg, /* ir_edge_kind_t */int kind);
-
-	public static native void edges_node_deleted(Pointer irn);
 
 	public static native void irg_block_edges_walk(Pointer block, Pointer pre, Pointer post, Pointer env);
 

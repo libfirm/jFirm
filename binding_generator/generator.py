@@ -300,7 +300,7 @@ def get_java_type(type):
 		wrap_type    = "int"
 		to_wrapper   = "%s.val"
 		from_wrapper = "firm.bindings.binding_irnode.cond_jmp_predicate.getEnum(%s)"
-	elif type in ("ir_node**", "ident**", "ir_asm_constraint*"):
+	elif type in ("ir_node**", "ident**", "ir_asm_constraint*", "ir_switch_table*"):
 		# cheat...
 		java_type    = "Pointer"
 		wrap_type    = "Pointer"

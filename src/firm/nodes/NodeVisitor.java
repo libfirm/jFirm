@@ -156,6 +156,9 @@ public interface NodeVisitor {
 	/** called when accept is called on a Sub node */
 	void visit(Sub node);
 
+	/** called when accept is called on a Switch node */
+	void visit(Switch node);
+
 	/** called when accept is called on a SymConst node */
 	void visit(SymConst node);
 
@@ -426,6 +429,11 @@ public interface NodeVisitor {
 
 		@Override
 		public void visit(Sub node) {
+			defaultVisit(node);
+		}
+
+		@Override
+		public void visit(Switch node) {
 			defaultVisit(node);
 		}
 

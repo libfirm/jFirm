@@ -176,7 +176,6 @@ public class binding_tv {
 	}
 
 	public static enum symconst_kind {
-		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
@@ -247,7 +246,8 @@ public class binding_tv {
 		ir_bk_bswap(),
 		ir_bk_inport(),
 		ir_bk_outport(),
-		ir_bk_inner_trampoline();
+		ir_bk_inner_trampoline(),
+		ir_bk_last(ir_builtin_kind.ir_bk_inner_trampoline.val);
 		public final int val;
 
 		private static class C {
@@ -537,17 +537,13 @@ public class binding_tv {
 
 	public static native int tarval_printf(Pointer tv);
 
-	public static native int tarval_ieee754_zero_mantissa(Pointer tv);
+	public static native int tarval_zero_mantissa(Pointer tv);
 
-	public static native int tarval_ieee754_get_exponent(Pointer tv);
+	public static native int tarval_get_exponent(Pointer tv);
 
 	public static native int tarval_ieee754_can_conv_lossless(Pointer tv, Pointer mode);
 
-	public static native int tarval_ieee754_set_immediate_precision(int bits);
-
 	public static native int tarval_ieee754_get_exact();
-
-	public static native int tarval_ieee754_get_mantissa_size(Pointer mode);
 
 	public static native void tarval_enable_fp_ops(int enable);
 

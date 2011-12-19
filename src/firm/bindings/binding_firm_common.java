@@ -176,7 +176,6 @@ public class binding_firm_common {
 	}
 
 	public static enum symconst_kind {
-		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
@@ -247,7 +246,8 @@ public class binding_firm_common {
 		ir_bk_bswap(),
 		ir_bk_inport(),
 		ir_bk_outport(),
-		ir_bk_inner_trampoline();
+		ir_bk_inner_trampoline(),
+		ir_bk_last(ir_builtin_kind.ir_bk_inner_trampoline.val);
 		public final int val;
 
 		private static class C {
@@ -367,7 +367,6 @@ public class binding_firm_common {
 		k_ir_compound_graph_path(),
 		k_ir_extblk(),
 		k_ir_prog(),
-		k_ir_region(),
 		k_ir_graph_pass(),
 		k_ir_prog_pass(),
 		k_ir_graph_pass_mgr(),
@@ -398,7 +397,7 @@ public class binding_firm_common {
 	}
 
 
-	public static native void ir_init(Pointer params);
+	public static native void ir_init();
 
 	public static native void ir_finish();
 

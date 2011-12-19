@@ -38,16 +38,6 @@ public class MethodType extends Type {
 		binding_typerep.set_method_param_type(ptr, new NativeLong(pos), tp.ptr);
 	}
 
-	public final Entity getValueParamEnt(int pos) {
-		Pointer p = binding_typerep.get_method_value_param_ent(ptr, new NativeLong(pos));
-		return new Entity(p);
-	}
-
-	public final Type getValueParamType() {
-		Pointer p = binding_typerep.get_method_value_param_type(ptr);
-		return (p == null ? null : Type.createWrapper(p));
-	}
-
 	public final int getNRess() {
 		return binding_typerep.get_method_n_ress(ptr).intValue();
 	}

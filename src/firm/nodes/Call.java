@@ -34,15 +34,6 @@ public class Call extends Node {
 		firm.bindings.binding_irnode.set_Call_type(this.ptr, _val.ptr);
 	}
 
-	public int getTailCall() {
-		int _res = firm.bindings.binding_irnode.get_Call_tail_call(ptr);
-		return _res;
-	}
-
-	public void setTailCall(int _val) {
-		firm.bindings.binding_irnode.set_Call_tail_call(this.ptr, _val);
-	}
-
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

@@ -176,7 +176,6 @@ public class binding_irflag {
 	}
 
 	public static enum symconst_kind {
-		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
@@ -247,7 +246,8 @@ public class binding_irflag {
 		ir_bk_bswap(),
 		ir_bk_inport(),
 		ir_bk_outport(),
-		ir_bk_inner_trampoline();
+		ir_bk_inner_trampoline(),
+		ir_bk_last(ir_builtin_kind.ir_bk_inner_trampoline.val);
 		public final int val;
 
 		private static class C {
@@ -398,19 +398,9 @@ public class binding_irflag {
 
 	public static native void set_opt_global_cse(int value);
 
-	public static native void set_opt_unreachable_code(int value);
-
-	public static native void set_opt_dyn_meth_dispatch(int value);
-
-	public static native int get_opt_dyn_meth_dispatch();
-
 	public static native void set_opt_suppress_downcast_optimization(int value);
 
 	public static native int get_opt_suppress_downcast_optimization();
-
-	public static native void set_opt_ldst_only_null_ptr_exceptions(int value);
-
-	public static native void set_opt_sel_based_null_check_elim(int value);
 
 	public static native void set_opt_global_null_ptr_elimination(int value);
 

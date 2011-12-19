@@ -4,7 +4,6 @@ import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Platform;
-import com.sun.jna.Pointer;
 
 import firm.bindings.binding_firm_common;
 import firm.bindings.binding_irflag;
@@ -80,7 +79,7 @@ public final class Firm {
 		// catch abort signal
 		binding_libc.signal(/* SIGABRT */6, sigHandler);
 
-		binding_firm_common.ir_init(Pointer.NULL);
+		binding_firm_common.ir_init();
 
 		/* disable automatic optimisations */
 		binding_irflag.set_optimize(0);

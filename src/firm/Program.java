@@ -135,39 +135,4 @@ public class Program {
 			}
 		};
 	}
-
-	public static int getNModes() {
-		return binding_irprog.get_irp_n_modes().intValue();
-	}
-
-	public static Mode getMode(int n) {
-		return new Mode(binding_irprog.get_irp_mode(new NativeLong(n)));
-	}
-
-	public static Iterable<Mode> getModes() {
-		return new Iterable<Mode>() {
-			@Override
-			public Iterator<Mode> iterator() {
-				return new Iterator<Mode>() {
-					int n;
-
-					@Override
-					public boolean hasNext() {
-						return n < getNModes();
-					}
-
-					@Override
-					public Mode next() {
-						return getMode(n++);
-					}
-
-					@Override
-					public void remove() {
-						throw new UnsupportedOperationException(
-								"mode remove not available");
-					}
-				};
-			}
-		};
-	}
 }

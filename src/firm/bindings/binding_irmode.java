@@ -176,7 +176,6 @@ public class binding_irmode {
 	}
 
 	public static enum symconst_kind {
-		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
@@ -247,7 +246,8 @@ public class binding_irmode {
 		ir_bk_bswap(),
 		ir_bk_inport(),
 		ir_bk_outport(),
-		ir_bk_inner_trampoline();
+		ir_bk_inner_trampoline(),
+		ir_bk_last(ir_builtin_kind.ir_bk_inner_trampoline.val);
 		public final int val;
 
 		private static class C {
@@ -354,76 +354,13 @@ public class binding_irmode {
 		}
 	}
 
-	public static enum ir_mode_sort_helper {
-		irmsh_is_num(0x10),
-		irmsh_is_data(0x20),
-		irmsh_is_datab(0x40),
-		irmsh_is_dataM(0x80);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_mode_sort_helper(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_mode_sort_helper() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_mode_sort_helper getEnum(int val) {
-			for (ir_mode_sort_helper entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_mode_sort {
-		irms_auxiliary(0),
-		irms_control_flow(1),
-		irms_memory((2 | ir_mode_sort_helper.irmsh_is_dataM.val)),
-		irms_internal_boolean((3 | ir_mode_sort_helper.irmsh_is_datab.val)),
-		irms_reference((((4 | ir_mode_sort_helper.irmsh_is_data.val) | ir_mode_sort_helper.irmsh_is_datab.val) | ir_mode_sort_helper.irmsh_is_dataM.val)),
-		irms_int_number(((((5 | ir_mode_sort_helper.irmsh_is_data.val) | ir_mode_sort_helper.irmsh_is_datab.val) | ir_mode_sort_helper.irmsh_is_dataM.val) | ir_mode_sort_helper.irmsh_is_num.val)),
-		irms_float_number(((((6 | ir_mode_sort_helper.irmsh_is_data.val) | ir_mode_sort_helper.irmsh_is_datab.val) | ir_mode_sort_helper.irmsh_is_dataM.val) | ir_mode_sort_helper.irmsh_is_num.val));
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_mode_sort(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_mode_sort() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_mode_sort getEnum(int val) {
-			for (ir_mode_sort entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_mode_arithmetic {
 		irma_uninitialized(0),
 		irma_none(1),
 		irma_twos_complement(2),
-		irma_ones_complement(),
-		irma_int_BCD(),
 		irma_ieee754(256),
-		irma_float_BCD(),
-		irma_max();
+		irma_x86_extended_float(),
+		irma_last(ir_mode_arithmetic.irma_x86_extended_float.val);
 		public final int val;
 
 		private static class C {
@@ -449,19 +386,17 @@ public class binding_irmode {
 	}
 
 
-	public static native String get_mode_arithmetic_name(/* ir_mode_arithmetic */int ari);
+	public static native Pointer new_int_mode(String name, /* ir_mode_arithmetic */int arithmetic, int bit_size, int sign, int modulo_shift);
 
-	public static native Pointer new_ir_mode(String name, /* ir_mode_sort */int sort, int bit_size, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
+	public static native Pointer new_reference_mode(String name, /* ir_mode_arithmetic */int arithmetic, int bit_size, int modulo_shift);
 
-	public static native Pointer new_ir_vector_mode(String name, /* ir_mode_sort */int sort, int bit_size, int num_of_elem, int sign, /* ir_mode_arithmetic */int arithmetic, int modulo_shift);
+	public static native Pointer new_float_mode(String name, /* ir_mode_arithmetic */int arithmetic, int exponent_size, int mantissa_size);
 
 	public static native int is_mode(Pointer thing);
 
 	public static native Pointer get_mode_ident(Pointer mode);
 
 	public static native String get_mode_name(Pointer mode);
-
-	public static native /* ir_mode_sort */int get_mode_sort(Pointer mode);
 
 	public static native int get_mode_size_bits(Pointer mode);
 
@@ -472,8 +407,6 @@ public class binding_irmode {
 	public static native /* ir_mode_arithmetic */int get_mode_arithmetic(Pointer mode);
 
 	public static native int get_mode_modulo_shift(Pointer mode);
-
-	public static native int get_mode_n_vector_elems(Pointer mode);
 
 	public static native Pointer get_mode_link(Pointer mode);
 
@@ -499,7 +432,7 @@ public class binding_irmode {
 
 	public static native Pointer get_modeD();
 
-	public static native Pointer get_modeE();
+	public static native Pointer get_modeQ();
 
 	public static native Pointer get_modeBs();
 
@@ -561,10 +494,6 @@ public class binding_irmode {
 
 	public static native int mode_is_dataM(Pointer mode);
 
-	public static native int mode_is_float_vector(Pointer mode);
-
-	public static native int mode_is_int_vector(Pointer mode);
-
 	public static native int smaller_mode(Pointer sm, Pointer lm);
 
 	public static native int values_in_mode(Pointer sm, Pointer lm);
@@ -589,7 +518,15 @@ public class binding_irmode {
 
 	public static native void set_reference_mode_unsigned_eq(Pointer ref_mode, Pointer int_mode);
 
+	public static native int get_mode_mantissa_size(Pointer mode);
+
+	public static native int get_mode_exponent_size(Pointer mode);
+
 	public static native int is_reinterpret_cast(Pointer src, Pointer dst);
 
 	public static native Pointer get_type_for_mode(Pointer mode);
+
+	public static native com.sun.jna.NativeLong ir_get_n_modes();
+
+	public static native Pointer ir_get_mode(com.sun.jna.NativeLong num);
 }

@@ -42,8 +42,5 @@ public class Builtin extends Node {
 	/** memory result */
 	public static final int pnM = 0;
 
-	/** first result */
-	public static final int pn1Result = 1;
-
-	public static final int pnMax = 2;
+	public static final int pnMax = 1;
 }

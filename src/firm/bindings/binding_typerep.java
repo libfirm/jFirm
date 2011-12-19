@@ -176,7 +176,6 @@ public class binding_typerep {
 	}
 
 	public static enum symconst_kind {
-		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
@@ -247,7 +246,8 @@ public class binding_typerep {
 		ir_bk_bswap(),
 		ir_bk_inport(),
 		ir_bk_outport(),
-		ir_bk_inner_trampoline();
+		ir_bk_inner_trampoline(),
+		ir_bk_last(ir_builtin_kind.ir_bk_inner_trampoline.val);
 		public final int val;
 
 		private static class C {
@@ -467,6 +467,63 @@ public class binding_typerep {
 
 		public static ir_initializer_kind_t getEnum(int val) {
 			for (ir_initializer_kind_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum ir_allocation {
+		allocation_automatic(),
+		allocation_parameter(),
+		allocation_dynamic(),
+		allocation_static();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_allocation(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_allocation() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_allocation getEnum(int val) {
+			for (ir_allocation entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum ir_peculiarity {
+		peculiarity_existent(),
+		peculiarity_description(),
+		peculiarity_inherited();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_peculiarity(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_peculiarity() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_peculiarity getEnum(int val) {
+			for (ir_peculiarity entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -723,63 +780,6 @@ public class binding_typerep {
 		}
 	}
 
-	public static enum ir_allocation {
-		allocation_automatic(),
-		allocation_parameter(),
-		allocation_dynamic(),
-		allocation_static();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_allocation(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_allocation() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_allocation getEnum(int val) {
-			for (ir_allocation entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_peculiarity {
-		peculiarity_existent(),
-		peculiarity_description(),
-		peculiarity_inherited();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_peculiarity(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_peculiarity() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_peculiarity getEnum(int val) {
-			for (ir_peculiarity entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 
 	public static native /* ir_visibility */int get_entity_visibility(Pointer entity);
 
@@ -792,6 +792,12 @@ public class binding_typerep {
 	public static native Pointer new_entity(Pointer owner, Pointer name, Pointer tp);
 
 	public static native Pointer new_d_entity(Pointer owner, Pointer name, Pointer tp, Pointer db);
+
+	public static native Pointer new_parameter_entity(Pointer owner, com.sun.jna.NativeLong pos, Pointer type);
+
+	public static native Pointer new_d_parameter_entity(Pointer owner, com.sun.jna.NativeLong pos, Pointer type, Pointer dbgi);
+
+	public static native int check_entity(Pointer ent);
 
 	public static native Pointer copy_entity_own(Pointer old, Pointer new_owner);
 
@@ -859,8 +865,6 @@ public class binding_typerep {
 
 	public static native Pointer get_entity_irg(Pointer ent);
 
-	public static native void set_entity_irg(Pointer ent, Pointer irg);
-
 	public static native int get_entity_vtable_number(Pointer ent);
 
 	public static native void set_entity_vtable_number(Pointer ent, int vtable_number);
@@ -880,6 +884,12 @@ public class binding_typerep {
 	public static native Pointer get_entity_dbg_info(Pointer ent);
 
 	public static native void set_entity_dbg_info(Pointer ent, Pointer db);
+
+	public static native int is_parameter_entity(Pointer entity);
+
+	public static native com.sun.jna.NativeLong get_entity_parameter_number(Pointer entity);
+
+	public static native void set_entity_parameter_number(Pointer entity, com.sun.jna.NativeLong n);
 
 	public static native int is_irn_const_expression(Pointer n);
 
@@ -969,31 +979,27 @@ public class binding_typerep {
 
 	public static native Pointer get_unknown_entity();
 
+	public static native int is_unknown_entity(Pointer entity);
+
+	public static native /* ir_allocation */int get_entity_allocation(Pointer ent);
+
+	public static native void set_entity_allocation(Pointer ent, /* ir_allocation */int al);
+
+	public static native /* ir_peculiarity */int get_entity_peculiarity(Pointer ent);
+
+	public static native void set_entity_peculiarity(Pointer ent, /* ir_peculiarity */int pec);
+
+	public static native int is_entity_final(Pointer ent);
+
+	public static native void set_entity_final(Pointer ent, int _final);
+
+	public static native /* ir_peculiarity */int get_class_peculiarity(Pointer clss);
+
+	public static native void set_class_peculiarity(Pointer clss, /* ir_peculiarity */int pec);
+
 	public static native String get_tpop_name(Pointer op);
 
 	public static native /* tp_opcode */int get_tpop_code(Pointer op);
-
-	public static native Pointer get_tpop_class();
-
-	public static native Pointer get_tpop_struct();
-
-	public static native Pointer get_tpop_method();
-
-	public static native Pointer get_tpop_union();
-
-	public static native Pointer get_tpop_array();
-
-	public static native Pointer get_tpop_enumeration();
-
-	public static native Pointer get_tpop_pointer();
-
-	public static native Pointer get_tpop_primitive();
-
-	public static native Pointer get_tpop_code_type();
-
-	public static native Pointer get_tpop_none();
-
-	public static native Pointer get_tpop_unknown();
 
 	public static native int is_SubClass_of(Pointer low, Pointer high);
 
@@ -1035,25 +1041,17 @@ public class binding_typerep {
 
 	public static native Pointer get_entity_trans_overwrites_next(Pointer ent);
 
-	public static native String get_class_cast_state_string(/* ir_class_cast_state */int s);
-
-	public static native void set_irg_class_cast_state(Pointer irg, /* ir_class_cast_state */int s);
+	public static native void set_irg_class_cast_state(Pointer irg, /* ir_class_cast_state */int state);
 
 	public static native /* ir_class_cast_state */int get_irg_class_cast_state(Pointer irg);
 
-	public static native void set_irp_class_cast_state(/* ir_class_cast_state */int s);
+	public static native void set_irp_class_cast_state(/* ir_class_cast_state */int state);
 
 	public static native /* ir_class_cast_state */int get_irp_class_cast_state();
 
-	public static native void verify_irg_class_cast_state(Pointer irg);
-
 	public static native int check_type(Pointer tp);
 
-	public static native int check_entity(Pointer ent);
-
 	public static native int tr_verify();
-
-	public static native void free_type_entities(Pointer tp);
 
 	public static native void free_type(Pointer tp);
 
@@ -1099,17 +1097,19 @@ public class binding_typerep {
 
 	public static native void set_type_link(Pointer tp, Pointer l);
 
+	public static native void inc_master_type_visited();
+
 	public static native void set_master_type_visited(com.sun.jna.NativeLong val);
 
 	public static native com.sun.jna.NativeLong get_master_type_visited();
-
-	public static native void inc_master_type_visited();
 
 	public static native void set_type_dbg_info(Pointer tp, Pointer db);
 
 	public static native Pointer get_type_dbg_info(Pointer tp);
 
 	public static native int is_type(Pointer thing);
+
+	public static native com.sun.jna.NativeLong get_type_nr(Pointer tp);
 
 	public static native int equal_type(Pointer typ1, Pointer typ2);
 
@@ -1177,6 +1177,8 @@ public class binding_typerep {
 
 	public static native int is_Class_type(Pointer clss);
 
+	public static native Pointer get_tpop_class();
+
 	public static native Pointer new_type_struct(Pointer name);
 
 	public static native Pointer new_d_type_struct(Pointer name, Pointer db);
@@ -1193,6 +1195,26 @@ public class binding_typerep {
 
 	public static native int is_Struct_type(Pointer strct);
 
+	public static native Pointer get_tpop_struct();
+
+	public static native Pointer new_type_union(Pointer name);
+
+	public static native Pointer new_d_type_union(Pointer name, Pointer db);
+
+	public static native Pointer get_union_ident(Pointer uni);
+
+	public static native String get_union_name(Pointer uni);
+
+	public static native com.sun.jna.NativeLong get_union_n_members(Pointer uni);
+
+	public static native Pointer get_union_member(Pointer uni, com.sun.jna.NativeLong pos);
+
+	public static native com.sun.jna.NativeLong get_union_member_index(Pointer uni, Pointer member);
+
+	public static native int is_Union_type(Pointer uni);
+
+	public static native Pointer get_tpop_union();
+
 	public static native Pointer new_type_method(com.sun.jna.NativeLong n_param, com.sun.jna.NativeLong n_res);
 
 	public static native Pointer new_d_type_method(com.sun.jna.NativeLong n_param, com.sun.jna.NativeLong n_res, Pointer db);
@@ -1202,12 +1224,6 @@ public class binding_typerep {
 	public static native Pointer get_method_param_type(Pointer method, com.sun.jna.NativeLong pos);
 
 	public static native void set_method_param_type(Pointer method, com.sun.jna.NativeLong pos, Pointer tp);
-
-	public static native Pointer get_method_value_param_ent(Pointer method, com.sun.jna.NativeLong pos);
-
-	public static native void set_method_value_param_type(Pointer method, Pointer tp);
-
-	public static native Pointer get_method_value_param_type(Pointer method);
 
 	public static native com.sun.jna.NativeLong get_method_n_ress(Pointer method);
 
@@ -1237,21 +1253,7 @@ public class binding_typerep {
 
 	public static native int is_Method_type(Pointer method);
 
-	public static native Pointer new_type_union(Pointer name);
-
-	public static native Pointer new_d_type_union(Pointer name, Pointer db);
-
-	public static native Pointer get_union_ident(Pointer uni);
-
-	public static native String get_union_name(Pointer uni);
-
-	public static native com.sun.jna.NativeLong get_union_n_members(Pointer uni);
-
-	public static native Pointer get_union_member(Pointer uni, com.sun.jna.NativeLong pos);
-
-	public static native com.sun.jna.NativeLong get_union_member_index(Pointer uni, Pointer member);
-
-	public static native int is_Union_type(Pointer uni);
+	public static native Pointer get_tpop_method();
 
 	public static native Pointer new_type_array(com.sun.jna.NativeLong n_dims, Pointer element_type);
 
@@ -1299,6 +1301,8 @@ public class binding_typerep {
 
 	public static native int is_Array_type(Pointer array);
 
+	public static native Pointer get_tpop_array();
+
 	public static native Pointer new_type_enumeration(Pointer name, com.sun.jna.NativeLong n_enums);
 
 	public static native Pointer new_d_type_enumeration(Pointer name, com.sun.jna.NativeLong n_enums, Pointer db);
@@ -1327,6 +1331,8 @@ public class binding_typerep {
 
 	public static native int is_Enumeration_type(Pointer enumeration);
 
+	public static native Pointer get_tpop_enumeration();
+
 	public static native Pointer new_type_pointer(Pointer points_to);
 
 	public static native Pointer new_d_type_pointer(Pointer points_to, Pointer db);
@@ -1339,6 +1345,8 @@ public class binding_typerep {
 
 	public static native Pointer find_pointer_type_to_type(Pointer tp);
 
+	public static native Pointer get_tpop_pointer();
+
 	public static native Pointer new_type_primitive(Pointer mode);
 
 	public static native Pointer new_d_type_primitive(Pointer mode, Pointer db);
@@ -1349,11 +1357,25 @@ public class binding_typerep {
 
 	public static native void set_primitive_base_type(Pointer tp, Pointer base_tp);
 
+	public static native Pointer get_tpop_primitive();
+
 	public static native Pointer get_none_type();
+
+	public static native int is_none_type(Pointer type);
+
+	public static native Pointer get_tpop_none();
 
 	public static native Pointer get_code_type();
 
+	public static native int is_code_type(Pointer tp);
+
+	public static native Pointer get_tpop_code_type();
+
 	public static native Pointer get_unknown_type();
+
+	public static native int is_unknown_type(Pointer type);
+
+	public static native Pointer get_tpop_unknown();
 
 	public static native int is_atomic_type(Pointer tp);
 
@@ -1373,25 +1395,15 @@ public class binding_typerep {
 
 	public static native int is_compound_type(Pointer tp);
 
-	public static native int is_code_type(Pointer tp);
+	public static native Pointer new_type_frame();
 
 	public static native int is_frame_type(Pointer tp);
-
-	public static native int is_value_param_type(Pointer tp);
-
-	public static native Pointer new_type_value();
-
-	public static native Pointer new_type_frame();
 
 	public static native Pointer clone_frame_type(Pointer type);
 
 	public static native Pointer frame_alloc_area(Pointer frame_type, int size, int alignment, int at_start);
 
-	public static native com.sun.jna.NativeLong get_type_nr(Pointer tp);
-
 	public static native void type_walk(Pointer pre, Pointer post, Pointer env);
-
-	public static native void type_walk_prog(Pointer pre, Pointer post, Pointer env);
 
 	public static native void type_walk_irg(Pointer irg, Pointer pre, Pointer post, Pointer env);
 
@@ -1408,20 +1420,4 @@ public class binding_typerep {
 	public static native /* ir_visibility */int get_type_visibility(Pointer tp);
 
 	public static native void set_type_visibility(Pointer tp, /* ir_visibility */int v);
-
-	public static native /* ir_allocation */int get_entity_allocation(Pointer ent);
-
-	public static native void set_entity_allocation(Pointer ent, /* ir_allocation */int al);
-
-	public static native /* ir_peculiarity */int get_entity_peculiarity(Pointer ent);
-
-	public static native void set_entity_peculiarity(Pointer ent, /* ir_peculiarity */int pec);
-
-	public static native int is_entity_final(Pointer ent);
-
-	public static native void set_entity_final(Pointer ent, int _final);
-
-	public static native /* ir_peculiarity */int get_class_peculiarity(Pointer clss);
-
-	public static native void set_class_peculiarity(Pointer clss, /* ir_peculiarity */int pec);
 }

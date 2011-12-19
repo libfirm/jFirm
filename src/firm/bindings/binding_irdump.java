@@ -205,7 +205,6 @@ public class binding_irdump {
 	}
 
 	public static enum symconst_kind {
-		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
@@ -276,7 +275,8 @@ public class binding_irdump {
 		ir_bk_bswap(),
 		ir_bk_inport(),
 		ir_bk_outport(),
-		ir_bk_inner_trampoline();
+		ir_bk_inner_trampoline(),
+		ir_bk_last(ir_builtin_kind.ir_bk_inner_trampoline.val);
 		public final int val;
 
 		private static class C {
@@ -516,8 +516,6 @@ public class binding_irdump {
 	public static native void dump_globals_as_text(Pointer out);
 
 	public static native void dump_loop(Pointer out, Pointer loop);
-
-	public static native void dump_irnode_to_file(Pointer out, Pointer node);
 
 	public static native void dump_graph_as_text(Pointer out, Pointer graph);
 

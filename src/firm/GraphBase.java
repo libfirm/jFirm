@@ -10,6 +10,7 @@ import com.sun.jna.Structure;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irgmod;
 import firm.bindings.binding_irgraph;
+import firm.bindings.binding_irgraph.ir_graph_state_t;
 import firm.bindings.binding_irnode;
 import firm.bindings.binding_irnode.ir_opcode;
 import firm.bindings.binding_irop;
@@ -38,14 +39,14 @@ public abstract class GraphBase extends JNAWrapper {
 	 * returns the currently active graph
 	 */
 	public static Graph getCurrent() {
-		return new Graph(binding_irgraph.get_current_ir_graph());
+		return new Graph(binding_ircons.get_current_ir_graph());
 	}
 
 	/**
 	 * sets the currently active graph
 	 */
 	public static void setCurrent(GraphBase graph) {
-		binding_irgraph.set_current_ir_graph(graph.ptr);
+		binding_ircons.set_current_ir_graph(graph.ptr);
 	}
 
 	public Node newSymConst(Entity entity) {
@@ -421,8 +422,8 @@ public abstract class GraphBase extends JNAWrapper {
 	public static Node turnIntoTuple(Node node, int outArity) {
 		binding_irgmod.turn_into_tuple(node.ptr, outArity);
 		Node tuple = Node.createWrapper(node.ptr);
-		Graph graph = node.getGraph(); 
-		Node bad = Node.createWrapper(binding_ircons.new_r_Bad(graph.ptr, Mode.getANY().ptr)); 
+		Graph graph = node.getGraph();
+		Node bad = Node.createWrapper(binding_ircons.new_r_Bad(graph.ptr, Mode.getANY().ptr));
 		for (int i = 0; i < outArity; ++i) {
 			tuple.setPred(i, bad);
 		}
@@ -520,9 +521,21 @@ public abstract class GraphBase extends JNAWrapper {
 	 * information gets invalidated.
 	 */
 	public void notifyControlFlowChange() {
-		binding_irgraph.set_irg_loopinfo_inconsistent(ptr);
-		binding_irgraph.set_irg_doms_inconsistent(ptr);
-		binding_irgraph.set_irg_extblk_inconsistent(ptr);
-		binding_irgraph.set_irg_outs_inconsistent(ptr);
+		clearState(ir_graph_state_t.IR_GRAPH_STATE_CONSISTENT_LOOPINFO);
+		clearState(ir_graph_state_t.IR_GRAPH_STATE_CONSISTENT_DOMINANCE);
+		clearState(ir_graph_state_t.IR_GRAPH_STATE_CONSISTENT_POSTDOMINANCE);
+		clearState(ir_graph_state_t.IR_GRAPH_STATE_CONSISTENT_OUTS);
+		clearState(ir_graph_state_t.IR_GRAPH_STATE_NO_CRITICAL_EDGES);
+		clearState(ir_graph_state_t.IR_GRAPH_STATE_NO_UNREACHABLE_CODE);
+		clearState(ir_graph_state_t.IR_GRAPH_STATE_NO_BADS);
+		clearState(ir_graph_state_t.IR_GRAPH_STATE_VALID_EXTENDED_BLOCKS);
+	}
+
+	public void addState(ir_graph_state_t state) {
+		binding_irgraph.set_irg_state(ptr, state.val);
+	}
+
+	public void clearState(ir_graph_state_t state) {
+		binding_irgraph.clear_irg_state(ptr, state.val);
 	}
 }

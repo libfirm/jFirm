@@ -176,7 +176,6 @@ public class binding_lowering {
 	}
 
 	public static enum symconst_kind {
-		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
@@ -247,7 +246,8 @@ public class binding_lowering {
 		ir_bk_bswap(),
 		ir_bk_inport(),
 		ir_bk_outport(),
-		ir_bk_inner_trampoline();
+		ir_bk_inner_trampoline(),
+		ir_bk_last(ir_builtin_kind.ir_bk_inner_trampoline.val);
 		public final int val;
 
 		private static class C {
@@ -354,64 +354,6 @@ public class binding_lowering {
 		}
 	}
 
-	public static enum add_hidden {
-		ADD_HIDDEN_ALWAYS_IN_FRONT(0),
-		ADD_HIDDEN_ALWAYS_LAST(1),
-		ADD_HIDDEN_SMART(2);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		add_hidden(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		add_hidden() {
-			this.val = C.next_val++;
-		}
-
-		public static add_hidden getEnum(int val) {
-			for (add_hidden entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum lowering_flags {
-		LF_NONE(0),
-		LF_COMPOUND_PARAM(1),
-		LF_COMPOUND_RETURN(2),
-		LF_RETURN_HIDDEN(4),
-		LF_SMALL_CMP_IN_REGS(8);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		lowering_flags(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		lowering_flags() {
-			this.val = C.next_val++;
-		}
-
-		public static lowering_flags getEnum(int val) {
-			for (lowering_flags entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ikind {
 		INTRINSIC_CALL(0),
 		INTRINSIC_INSTR();
@@ -440,27 +382,19 @@ public class binding_lowering {
 	}
 
 
-	public static native void lower_calls_with_compounds(Pointer params);
-
-	public static native void lower_CopyB(Pointer irg, int max_size, int native_mode_bytes);
+	public static native void lower_CopyB(Pointer irg, int max_small_size, int min_large_size, int allow_misalignments);
 
 	public static native void lower_switch(Pointer irg, int small_switch, int spare_size, int allow_out_of_bounds);
 
-	public static native void lower_highlevel_graph(Pointer irg, int lower_bitfields);
+	public static native void lower_highlevel_graph(Pointer irg);
 
-	public static native Pointer lower_highlevel_graph_pass(String name, int lower_bitfields);
+	public static native Pointer lower_highlevel_graph_pass(String name);
 
-	public static native void lower_highlevel(int lower_bitfields);
+	public static native void lower_highlevel();
 
 	public static native void lower_const_code();
 
 	public static native Pointer lower_const_code_pass(String name);
-
-	public static native Pointer ir_create_mux_set(Pointer cond, Pointer dest_mode);
-
-	public static native Pointer ir_create_cond_set(Pointer cond, Pointer dest_mode);
-
-	public static native void ir_lower_mode_b(Pointer irg, Pointer config);
 
 	public static native void lower_mux(Pointer irg, Pointer cb_func);
 
@@ -482,7 +416,15 @@ public class binding_lowering {
 
 	public static native int i_mapper_exp(Pointer call, Pointer ctx);
 
+	public static native int i_mapper_exp2(Pointer call, Pointer ctx);
+
+	public static native int i_mapper_exp10(Pointer call, Pointer ctx);
+
 	public static native int i_mapper_log(Pointer call, Pointer ctx);
+
+	public static native int i_mapper_log2(Pointer call, Pointer ctx);
+
+	public static native int i_mapper_log10(Pointer call, Pointer ctx);
 
 	public static native int i_mapper_sin(Pointer call, Pointer ctx);
 

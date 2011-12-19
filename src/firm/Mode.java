@@ -1,5 +1,8 @@
 package firm;
 
+import java.util.Iterator;
+
+import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_irmode;
@@ -163,16 +166,12 @@ public final class Mode extends JNAWrapper {
 		}
 	}
 
-	public Mode(String name, ir_mode_sort sort, int bitSize, int sign,
-			ir_mode_arithmetic arithmetic, int moduloShift) {
-		this(binding_irmode.new_ir_mode(name, sort.val, bitSize, sign,
-				arithmetic.val, moduloShift));
+	public static Mode createIntMode(String name, ir_mode_arithmetic arithmetic, int bitSize, boolean sign, int moduloShift) {
+		return new Mode(binding_irmode.new_int_mode(name, arithmetic.val, bitSize, sign?1:0, moduloShift));
 	}
 
-	public Mode(String name, ir_mode_sort sort, int bitSize, int numOfElem,
-			int sign, ir_mode_arithmetic arithmetic, int moduloShift) {
-		this(binding_irmode.new_ir_vector_mode(name, sort.val, bitSize,
-				numOfElem, sign, arithmetic.val, moduloShift));
+	public static Mode createFloatMode(String name, ir_mode_arithmetic arithmetic, int exponentSize, int mantissaSize) {
+		return new Mode(binding_irmode.new_float_mode(name, arithmetic.val, exponentSize, mantissaSize));
 	}
 
 	public final String getName() {
@@ -184,11 +183,6 @@ public final class Mode extends JNAWrapper {
 		return getName();
 	}
 
-	public final ir_mode_sort getSort() {
-		int sort = binding_irmode.get_mode_sort(ptr);
-		return ir_mode_sort.getEnum(sort);
-	}
-
 	public final int getSizeBits() {
 		return binding_irmode.get_mode_size_bits(ptr);
 	}
@@ -197,8 +191,16 @@ public final class Mode extends JNAWrapper {
 		return binding_irmode.get_mode_size_bytes(ptr);
 	}
 
-	public final int getSign() {
-		return binding_irmode.get_mode_sign(ptr);
+	public final boolean hasSign() {
+		return binding_irmode.get_mode_sign(ptr) != 0;
+	}
+
+	public final int getMantissaSize() {
+		return binding_irmode.get_mode_mantissa_size(ptr);
+	}
+
+	public final int getExponentSize() {
+		return binding_irmode.get_mode_exponent_size(ptr);
 	}
 
 	public final ir_mode_arithmetic getArithmetic() {
@@ -208,10 +210,6 @@ public final class Mode extends JNAWrapper {
 
 	public final int getModuloShift() {
 		return binding_irmode.get_mode_modulo_shift(ptr);
-	}
-
-	public final int getNVectorElements() {
-		return binding_irmode.get_mode_n_vector_elems(ptr);
 	}
 
 	/** returns the smallest representable value of a mode */
@@ -272,8 +270,8 @@ public final class Mode extends JNAWrapper {
 		return new Mode(modePtr);
 	}
 
-	public static final Mode getE() {
-		Pointer modePtr = binding_irmode.get_modeE();
+	public static final Mode getQ() {
+		Pointer modePtr = binding_irmode.get_modeQ();
 		return new Mode(modePtr);
 	}
 
@@ -399,14 +397,6 @@ public final class Mode extends JNAWrapper {
 		return 0 != binding_irmode.mode_is_dataM(ptr);
 	}
 
-	public final boolean isFloatVector() {
-		return 0 != binding_irmode.mode_is_float_vector(ptr);
-	}
-
-	public final boolean isIntVector() {
-		return 0 != binding_irmode.mode_is_int_vector(ptr);
-	}
-
 	public final boolean isSmallerThan(Mode compareTo) {
 		int val = binding_irmode.smaller_mode(ptr, compareTo.ptr);
 		return 0 != val;
@@ -468,5 +458,40 @@ public final class Mode extends JNAWrapper {
 
 	public final Type getType() {
 		return Type.createWrapper(binding_irmode.get_type_for_mode(ptr));
+	}
+
+	public static int getNModes() {
+		return binding_irmode.ir_get_n_modes().intValue();
+	}
+
+	public static Mode getMode(int n) {
+		return new Mode(binding_irmode.ir_get_mode(new NativeLong(n)));
+	}
+
+	public static Iterable<Mode> getModes() {
+		return new Iterable<Mode>() {
+			@Override
+			public Iterator<Mode> iterator() {
+				return new Iterator<Mode>() {
+					int n;
+
+					@Override
+					public boolean hasNext() {
+						return n < getNModes();
+					}
+
+					@Override
+					public Mode next() {
+						return getMode(n++);
+					}
+
+					@Override
+					public void remove() {
+						throw new UnsupportedOperationException(
+								"mode remove not available");
+					}
+				};
+			}
+		};
 	}
 }

@@ -176,7 +176,6 @@ public class binding_irgopt {
 	}
 
 	public static enum symconst_kind {
-		symconst_type_tag(),
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
@@ -247,7 +246,8 @@ public class binding_irgopt {
 		ir_bk_bswap(),
 		ir_bk_inport(),
 		ir_bk_outport(),
-		ir_bk_inner_trampoline();
+		ir_bk_inner_trampoline(),
+		ir_bk_last(ir_builtin_kind.ir_bk_inner_trampoline.val);
 		public final int val;
 
 		private static class C {
@@ -359,9 +359,15 @@ public class binding_irgopt {
 
 	public static native void local_optimize_graph(Pointer irg);
 
+	public static native void local_opts(Pointer irg);
+
 	public static native int optimize_graph_df(Pointer irg);
 
+	public static native void remove_unreachable_code(Pointer irg);
+
 	public static native int remove_bads(Pointer irg);
+
+	public static native int remove_tuples(Pointer irg);
 
 	public static native Pointer optimize_graph_df_pass(String name);
 

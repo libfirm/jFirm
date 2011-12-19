@@ -25,12 +25,12 @@ public class Free extends Node {
 		firm.bindings.binding_irnode.set_Free_ptr(this.ptr, ptr.ptr);
 	}
 
-	public Node getSize() {
-		return createWrapper(firm.bindings.binding_irnode.get_Free_size(ptr));
+	public Node getCount() {
+		return createWrapper(firm.bindings.binding_irnode.get_Free_count(ptr));
 	}
 
-	public void setSize(Node size) {
-		firm.bindings.binding_irnode.set_Free_size(this.ptr, size.ptr);
+	public void setCount(Node count) {
+		firm.bindings.binding_irnode.set_Free_count(this.ptr, count.ptr);
 	}
 
 	public firm.Type getType() {

@@ -7,12 +7,12 @@ cat > /tmp/dummy.c << __EOF__
 #include <libfirm/firm.h>
 
 void __dummy__(void) {
-	ir_init(NULL);
+	ir_init();
 	ir_get_version_major();
-	lower_highlevel(0);
+	lower_highlevel();
 }
 __EOF__
 CC=gcc
-CMD="$CC ${GCC_SHARED} /tmp/dummy.c -o ${GOAL} -I${FIRM_INC} ${FIRM_LFLAGS}"
+CMD="$CC ${GCC_SHARED} /tmp/dummy.c -o ${GOAL} -I${FIRM_INC} ${FIRM_LFLAGS} -lgurobi45 -lpthread -lm"
 echo $CMD
 $CMD

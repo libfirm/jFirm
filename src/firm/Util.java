@@ -18,6 +18,6 @@ public class Util {
 	 * Replace Sel nodes by explicit address arithmetic
 	 */
 	public static void lowerSels() {
-		binding_lowering.lower_highlevel(0);
+		binding_lowering.lower_highlevel();
 	}
 }

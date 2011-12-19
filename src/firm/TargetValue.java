@@ -355,28 +355,20 @@ public class TargetValue extends JNAWrapper {
 		return 0 != binding_tv.tarval_is_single_bit(ptr);
 	}
 
-	public final boolean ieee754ZeroMantissa() {
-		return binding_tv.tarval_ieee754_zero_mantissa(ptr) != 0;
+	public final boolean zeroMantissa() {
+		return binding_tv.tarval_zero_mantissa(ptr) != 0;
 	}
 
-	public final int ieee754GetExponent() {
-		return binding_tv.tarval_ieee754_get_exponent(ptr);
+	public final int getExponent() {
+		return binding_tv.tarval_get_exponent(ptr);
 	}
 
 	public final boolean ieee754CanConvLossless(Mode mode) {
 		return 0 != binding_tv.tarval_ieee754_can_conv_lossless(ptr, mode.ptr);
 	}
 
-	public static final int ieee754SetImmediatePrecision(int bits) {
-		return binding_tv.tarval_ieee754_set_immediate_precision(bits);
-	}
-
 	public static final int ieee754GetExact() {
 		return binding_tv.tarval_ieee754_get_exact();
-	}
-
-	public static final int ieee754GetMantissaSize(Mode mode) {
-		return binding_tv.tarval_ieee754_get_mantissa_size(mode.ptr);
 	}
 
 	public final void setEnableFpOps(boolean enable) {

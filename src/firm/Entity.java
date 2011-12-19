@@ -22,6 +22,11 @@ public class Entity extends JNAWrapper {
 		this(owner, new Ident(name), type);
 	}
 
+	public static Entity createParameterEntity(Type owner, int parameterNumber, Type type) {
+		Pointer ptr = binding_typerep.new_parameter_entity(owner.ptr, new NativeLong(parameterNumber), type.ptr);
+		return new Entity(ptr);
+	}
+
 	public final void free() {
 		binding_typerep.free_entity(ptr);
 	}
@@ -141,16 +146,20 @@ public class Entity extends JNAWrapper {
 		return new Graph(p);
 	}
 
-	public final void setIrg(Graph irg) {
-		binding_typerep.set_entity_irg(ptr, irg.ptr);
-	}
-
 	public final boolean isCompilerGenerated() {
 		return 0 != binding_typerep.is_entity_compiler_generated(ptr);
 	}
 
 	public final void setCompilerGenerated(boolean flag) {
 		binding_typerep.set_entity_compiler_generated(ptr, (flag ? 1 : 0));
+	}
+
+	public final boolean isParameterEntity() {
+		return 0 != binding_typerep.is_parameter_entity(ptr);
+	}
+
+	public final int getParameterNumber() {
+		return binding_typerep.get_entity_parameter_number(ptr).intValue();
 	}
 
 	public final Node getAtomicValue() {

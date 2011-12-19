@@ -17,15 +17,6 @@ public class Cond extends Node {
 		firm.bindings.binding_irnode.set_Cond_selector(this.ptr, selector.ptr);
 	}
 
-	public int getDefaultProj() {
-		com.sun.jna.NativeLong _res = firm.bindings.binding_irnode.get_Cond_default_proj(ptr);
-		return _res.intValue();
-	}
-
-	public void setDefaultProj(int _val) {
-		firm.bindings.binding_irnode.set_Cond_default_proj(this.ptr, new com.sun.jna.NativeLong(_val));
-	}
-
 	public firm.bindings.binding_irnode.cond_jmp_predicate getJmpPred() {
 		int _res = firm.bindings.binding_irnode.get_Cond_jmp_pred(ptr);
 		return firm.bindings.binding_irnode.cond_jmp_predicate.getEnum(_res);

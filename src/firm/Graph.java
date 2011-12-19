@@ -134,8 +134,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Free node */
-	public final Node newFree(Node block, Node mem, Node ptr, Node size, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Free(block.ptr, mem.ptr, ptr.ptr, size.ptr, type.ptr, where.val));
+	public final Node newFree(Node block, Node mem, Node ptr, Node count, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Free(block.ptr, mem.ptr, ptr.ptr, count.ptr, type.ptr, where.val));
 	}
 
 	/** Create a new IJmp node */
@@ -266,6 +266,11 @@ public class Graph extends GraphBase {
 	/** Create a new Sub node */
 	public final Node newSub(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Sub(block.ptr, left.ptr, right.ptr, mode.ptr));
+	}
+
+	/** Create a new Switch node */
+	public final Node newSwitch(Node block, Node selector, int n_outs, Pointer table) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Switch(block.ptr, selector.ptr, n_outs, table));
 	}
 
 	/** Create a new Sync node */
