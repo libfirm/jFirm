@@ -96,7 +96,7 @@ public final class Firm {
 		}
 	}
 
-	public void enableOptimisations() {
+	public static void enableOptimisations() {
 		binding_irflag.set_optimize(1);
 	}
 
