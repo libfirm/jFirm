@@ -174,6 +174,14 @@ public final class Mode extends JNAWrapper {
 		return new Mode(binding_irmode.new_float_mode(name, arithmetic.val, exponentSize, mantissaSize));
 	}
 
+	public static Mode createReferenceMode(String name, ir_mode_arithmetic arithmetic, int bitSize, Mode equivalentSignedInt, Mode equivalentUnsignedInt) {
+		/** we use a modulo_shift of 0, because cparser does so. */
+		Mode mode = new Mode(binding_irmode.new_reference_mode(name, arithmetic.val, bitSize, 0));
+		binding_irmode.set_reference_mode_signed_eq(mode.ptr, equivalentSignedInt.ptr);
+		binding_irmode.set_reference_mode_unsigned_eq(mode.ptr, equivalentUnsignedInt.ptr);
+		return mode;
+	}
+
 	public final String getName() {
 		return binding_irmode.get_mode_name(ptr);
 	}
@@ -450,6 +458,11 @@ public final class Mode extends JNAWrapper {
 
 	public final void setReferenceUnsignedEq(Mode intMode) {
 		binding_irmode.set_reference_mode_signed_eq(ptr, intMode.ptr);
+	}
+
+	public static void setDefaultModeP(Mode mode) {
+		binding_irmode.set_modeP_code(mode.ptr);
+		binding_irmode.set_modeP_data(mode.ptr);
 	}
 
 	public final boolean isReinterpretCast(Mode castTo) {
