@@ -2037,9 +2037,9 @@ public class binding_iroptimize {
 
 	public static native Pointer inline_small_irgs_pass(String name, int size);
 
-	public static native void inline_leave_functions(int maxsize, int leavesize, int size, int ignore_runtime);
+	public static native void inline_leaf_functions(int maxsize, int leafsize, int size, int ignore_runtime);
 
-	public static native Pointer inline_leave_functions_pass(String name, int maxsize, int leavesize, int size, int ignore_runtime);
+	public static native Pointer inline_leaf_functions_pass(String name, int maxsize, int leafsize, int size, int ignore_runtime);
 
 	public static native void inline_functions(int maxsize, int inline_threshold, Pointer after_inline_opt);
 

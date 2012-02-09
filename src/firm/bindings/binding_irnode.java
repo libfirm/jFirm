@@ -3831,8 +3831,6 @@ public class binding_irnode {
 
 	public static native int is_Cast_downcast(Pointer node);
 
-	public static native int is_Phi0(Pointer n);
-
 	public static native java.nio.Buffer get_Phi_preds_arr(Pointer node);
 
 	public static native int get_Phi_n_preds(Pointer node);
