@@ -6,6 +6,7 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_irmode;
+import firm.bindings.binding_irmode.ir_mode_arithmetic;
 
 /**
  * Mode represents values that can be produced by firm nodes. There are modes
@@ -22,46 +23,20 @@ public final class Mode extends JNAWrapper {
 		super(p);
 	}
 
-	public static enum ir_modecode {
-		irm_BB(),
-		irm_X(),
-		irm_F(),
-		irm_D(),
-		irm_E(),
-		irm_Bs(),
-		irm_Bu(),
-		irm_Hs(),
-		irm_Hu(),
-		irm_Is(),
-		irm_Iu(),
-		irm_Ls(),
-		irm_Lu(),
-		irm_LLs(),
-		irm_LLu(),
-		irm_P(),
-		irm_b(),
-		irm_M(),
-		irm_T(),
-		irm_ANY(),
-		irm_BAD(),
-		irm_max();
+	public static enum Arithmetic {
+		Uninitialized(ir_mode_arithmetic.irma_uninitialized.val),
+		None(ir_mode_arithmetic.irma_none.val),
+		TwosComplement(ir_mode_arithmetic.irma_twos_complement.val),
+		IEE754(ir_mode_arithmetic.irma_ieee754.val),
+		X86ExtendedFloat(ir_mode_arithmetic.irma_x86_extended_float.val);
+
 		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_modecode(int val) {
+		private Arithmetic(int val) {
 			this.val = val;
-			C.next_val = val + 1;
 		}
 
-		ir_modecode() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_modecode getEnum(int val) {
-			for (ir_modecode entry : values()) {
+		public static Arithmetic getEnum(int val) {
+			for (Arithmetic entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -69,112 +44,15 @@ public final class Mode extends JNAWrapper {
 		}
 	}
 
-	public static enum ir_mode_sort_helper {
-		irmsh_is_num(16),
-		irmsh_is_data(32),
-		irmsh_is_datab(64),
-		irmsh_is_dataM(128);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_mode_sort_helper(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_mode_sort_helper() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_mode_sort_helper getEnum(int val) {
-			for (ir_mode_sort_helper entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_mode_sort {
-		irms_auxiliary(0),
-		irms_control_flow(1),
-		irms_memory((2 | ir_mode_sort_helper.irmsh_is_dataM.val)),
-		irms_internal_boolean((3 | ir_mode_sort_helper.irmsh_is_datab.val)),
-		irms_reference(
-				(((4 | ir_mode_sort_helper.irmsh_is_data.val) | ir_mode_sort_helper.irmsh_is_datab.val) | ir_mode_sort_helper.irmsh_is_dataM.val)),
-		irms_int_number(
-				((((5 | ir_mode_sort_helper.irmsh_is_data.val) | ir_mode_sort_helper.irmsh_is_datab.val) | ir_mode_sort_helper.irmsh_is_dataM.val) | ir_mode_sort_helper.irmsh_is_num.val)),
-		irms_float_number(
-				((((6 | ir_mode_sort_helper.irmsh_is_data.val) | ir_mode_sort_helper.irmsh_is_datab.val) | ir_mode_sort_helper.irmsh_is_dataM.val) | ir_mode_sort_helper.irmsh_is_num.val));
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_mode_sort(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_mode_sort() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_mode_sort getEnum(int val) {
-			for (ir_mode_sort entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_mode_arithmetic {
-		irma_uninitialized(0),
-		irma_none(1),
-		irma_twos_complement(2),
-		irma_ones_complement(),
-		irma_int_BCD(),
-		irma_ieee754(256),
-		irma_float_BCD(),
-		irma_max();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_mode_arithmetic(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_mode_arithmetic() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_mode_arithmetic getEnum(int val) {
-			for (ir_mode_arithmetic entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static Mode createIntMode(String name, ir_mode_arithmetic arithmetic, int bitSize, boolean sign, int moduloShift) {
+	public static Mode createIntMode(String name, Arithmetic arithmetic, int bitSize, boolean sign, int moduloShift) {
 		return new Mode(binding_irmode.new_int_mode(name, arithmetic.val, bitSize, sign?1:0, moduloShift));
 	}
 
-	public static Mode createFloatMode(String name, ir_mode_arithmetic arithmetic, int exponentSize, int mantissaSize) {
+	public static Mode createFloatMode(String name, Arithmetic arithmetic, int exponentSize, int mantissaSize) {
 		return new Mode(binding_irmode.new_float_mode(name, arithmetic.val, exponentSize, mantissaSize));
 	}
 
-	public static Mode createReferenceMode(String name, ir_mode_arithmetic arithmetic, int bitSize, Mode equivalentSignedInt, Mode equivalentUnsignedInt) {
+	public static Mode createReferenceMode(String name, Arithmetic arithmetic, int bitSize, Mode equivalentSignedInt, Mode equivalentUnsignedInt) {
 		/** we use a modulo_shift of 0, because cparser does so. */
 		Mode mode = new Mode(binding_irmode.new_reference_mode(name, arithmetic.val, bitSize, 0));
 		binding_irmode.set_reference_mode_signed_eq(mode.ptr, equivalentSignedInt.ptr);
@@ -211,9 +89,9 @@ public final class Mode extends JNAWrapper {
 		return binding_irmode.get_mode_exponent_size(ptr);
 	}
 
-	public final ir_mode_arithmetic getArithmetic() {
+	public final Arithmetic getArithmetic() {
 		int val = binding_irmode.get_mode_arithmetic(ptr);
-		return ir_mode_arithmetic.getEnum(val);
+		return Arithmetic.getEnum(val);
 	}
 
 	public final int getModuloShift() {
