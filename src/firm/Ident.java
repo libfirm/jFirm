@@ -14,13 +14,9 @@ public class Ident extends JNAWrapper {
 		this(binding_ident.new_id_from_str(string));
 	}
 
-	public String getString() {
-		return binding_ident.get_id_str(ptr);
-	}
-
 	@Override
 	public String toString() {
-		return getString();
+		return binding_ident.get_id_str(ptr);
 	}
 
 	@Override
@@ -37,7 +33,7 @@ public class Ident extends JNAWrapper {
 	 * create an identifier that is different from any other identifier created
 	 * by createUnique. You must specify %u inside the tag which is replaced by
 	 * a unique number.
-	 * 
+	 *
 	 * @param tag
 	 * @return
 	 */
@@ -46,34 +42,23 @@ public class Ident extends JNAWrapper {
 		return new Ident(pIdent);
 	}
 
-	public final static Ident mangleEntity(Entity ent) {
-		Pointer pIdent = binding_ident.id_mangle_entity(ent.ptr);
+	public final Ident mangleUnderscore(Ident second) {
+		Pointer pIdent = binding_ident.id_mangle_u(ptr, second.ptr);
 		return new Ident(pIdent);
 	}
 
-	public final static Ident mangleUnderscore(Ident first, Ident second) {
-		Pointer pIdent = binding_ident.id_mangle_u(first.ptr, second.ptr);
+	public final Ident mangleDot(Ident second) {
+		Pointer pIdent = binding_ident.id_mangle_dot(ptr, second.ptr);
 		return new Ident(pIdent);
 	}
 
-	public final static Ident mangleDot(Ident first, Ident second) {
-		Pointer pIdent = binding_ident.id_mangle_dot(first.ptr, second.ptr);
+	public final Ident mangle(Ident second) {
+		Pointer pIdent = binding_ident.id_mangle(ptr, second.ptr);
 		return new Ident(pIdent);
 	}
 
-	public final static Ident mangle(Ident first, Ident second) {
-		Pointer pIdent = binding_ident.id_mangle(first.ptr, second.ptr);
+	public final Ident mangle(String prefix, String suffix) {
+		Pointer pIdent = binding_ident.id_mangle3(prefix, ptr, suffix);
 		return new Ident(pIdent);
 	}
-
-	public final static Ident mangle(String prefix, Ident ident, String suffix) {
-		Pointer pIdent = binding_ident.id_mangle3(prefix, ident.ptr, suffix);
-		return new Ident(pIdent);
-	}
-
-	public final static Ident decorateWin32CFkt(Entity ent, Ident id) {
-		Pointer pIdent = binding_ident.id_decorate_win32_c_fkt(ent.ptr, id.ptr);
-		return new Ident(pIdent);
-	}
-
 }

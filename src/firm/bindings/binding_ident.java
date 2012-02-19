@@ -371,8 +371,6 @@ public class binding_ident {
 
 	public static native Pointer id_unique(String tag);
 
-	public static native Pointer id_mangle_entity(Pointer ent);
-
 	public static native Pointer id_mangle_u(Pointer first, Pointer scnd);
 
 	public static native Pointer id_mangle_dot(Pointer first, Pointer scnd);
@@ -380,6 +378,4 @@ public class binding_ident {
 	public static native Pointer id_mangle(Pointer first, Pointer scnd);
 
 	public static native Pointer id_mangle3(String prefix, Pointer middle, String suffix);
-
-	public static native Pointer id_decorate_win32_c_fkt(Pointer ent, Pointer id);
 }
