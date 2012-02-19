@@ -4,10 +4,12 @@ import com.sun.jna.Callback;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Platform;
+import com.sun.jna.Pointer;
 
 import firm.bindings.binding_firm_common;
 import firm.bindings.binding_irflag;
 import firm.bindings.binding_libc;
+import firm.bindings.binding_typerep.ir_visibility;
 
 public final class Firm {
 
@@ -18,6 +20,13 @@ public final class Firm {
 		}
 
 		void firm_set_assert_callback(FirmCallback handler);
+	}
+
+	public static interface binding_compilerlib extends Library {
+		interface CreateCallback extends Callback {
+			Pointer callback(Pointer ident, Pointer type);
+		}
+		void set_compilerlib_entity_creator(CreateCallback handle);
 	}
 
 	public static int getMajorVersion() {
@@ -37,6 +46,7 @@ public final class Firm {
 	}
 
 	private static binding_callback binding_cb = null;
+	private static binding_compilerlib binding_clib = null;
 
 	private static final binding_callback.FirmCallback handler = new binding_callback.FirmCallback() {
 		@Override
@@ -47,12 +57,34 @@ public final class Firm {
 		}
 	};
 
+	private static final binding_compilerlib.CreateCallback addUnderscore = new binding_compilerlib.CreateCallback() {
+		@Override
+		public Pointer callback(Pointer ident, Pointer type) {
+			final Ident baseIdent = new Ident(ident);
+			final Ident mangledIdent = baseIdent.mangle("_", "");
+			final Type global = Program.getGlobalType();
+			final Type tp = new Type(type);
+			final Entity entity = new Entity(global, mangledIdent, tp);
+			entity.setVisibility(ir_visibility.ir_visibility_external);
+			entity.setLdIdent(mangledIdent);
+			return entity.ptr;
+		}
+	};
+
 	public static binding_libc.SigHandler sigHandler = new binding_libc.SigHandler() {
 		@Override
 		public void callback(int arg) {
 			throw new RuntimeException("Prog Aborted");
 		}
 	};
+
+	private static void setupUnderscorePrefixCompilerlibCallback() {
+		if (binding_clib == null) {
+			binding_clib = (binding_compilerlib) Native.loadLibrary("firm",
+					binding_compilerlib.class);
+		}
+		binding_clib.set_compilerlib_entity_creator(addUnderscore);
+	}
 
 	/**
 	 * Initializes the firm library. Must be called before using any operations
@@ -89,8 +121,10 @@ public final class Firm {
 			Backend.option("ia32-gasmode=macho");
 			Backend.option("ia32-stackalign=4");
 			Backend.option("pic");
+			setupUnderscorePrefixCompilerlibCallback();
 		} else if (Platform.isWindows()) {
 			Backend.option("ia32-gasmode=mingw");
+			setupUnderscorePrefixCompilerlibCallback();
 		} else {
 			Backend.option("ia32-gasmode=elf");
 		}
