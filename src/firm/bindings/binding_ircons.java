@@ -3685,10 +3685,6 @@ public class binding_ircons {
 
 	public static native void set_r_value(Pointer irg, int pos, Pointer value);
 
-	public static native int find_value(Pointer value);
-
-	public static native int r_find_value(Pointer irg, Pointer value);
-
 	public static native Pointer get_store();
 
 	public static native Pointer get_r_store(Pointer irg);

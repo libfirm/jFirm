@@ -390,6 +390,8 @@ public class binding_irflag {
 
 	public static native void set_opt_constant_folding(int value);
 
+	public static native int get_opt_constant_folding();
+
 	public static native void set_opt_algebraic_simplification(int value);
 
 	public static native void set_opt_cse(int value);
