@@ -5,6 +5,7 @@ import com.sun.jna.Pointer;
 
 import firm.bindings.binding_typerep;
 import firm.bindings.binding_typerep.ir_align;
+import firm.bindings.binding_typerep.ir_linkage;
 import firm.bindings.binding_typerep.ir_visibility;
 import firm.nodes.Node;
 
@@ -84,20 +85,32 @@ public class Entity extends JNAWrapper {
 		binding_typerep.set_entity_type(ptr, tp.ptr);
 	}
 
-	public final int getLinkage() {
+	public final int getLinkageBits() {
 		return binding_typerep.get_entity_linkage(ptr);
 	}
 
-	public final void setLinkage(int linkage) {
+	public final void setLinkageBits(int linkage) {
 		binding_typerep.set_entity_linkage(ptr, linkage);
 	}
 
-	public final void addLinkage(int linkage) {
+	public final void addLinkageBits(int linkage) {
 		binding_typerep.add_entity_linkage(ptr, linkage);
 	}
 
-	public final void removeLinkage(int linkage) {
+	public final void removeLinkageBits(int linkage) {
 		binding_typerep.remove_entity_linkage(ptr, linkage);
+	}
+
+	public final void addLinkage(ir_linkage linkage) {
+		addLinkageBits(linkage.val);
+	}
+
+	public final void removeLinkage(ir_linkage linkage) {
+		removeLinkageBits(linkage.val);
+	}
+
+	public final boolean hasLinkage(ir_linkage linkage) {
+		return (getLinkageBits() & linkage.val) != 0;
 	}
 
 	public final ir_visibility getVisibility() {
