@@ -65,14 +65,6 @@ public abstract class GraphBase extends JNAWrapper {
 	}
 
 	/**
-	 * free resources occupied by the graph. You are not allowed to use the
-	 * graph anymore after calling this.
-	 */
-	public void free() {
-		binding_irgraph.free_ir_graph(ptr);
-	}
-
-	/**
 	 * returns associated entity
 	 */
 	public Entity getEntity() {
