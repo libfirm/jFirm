@@ -1299,6 +1299,10 @@ public class binding_typerep {
 
 	public static native Pointer get_array_element_entity(Pointer array);
 
+	public static native void set_array_variable_size(Pointer array, int variable_size_flag);
+
+	public static native int is_array_variable_size(Pointer array);
+
 	public static native int is_Array_type(Pointer array);
 
 	public static native Pointer get_tpop_array();
@@ -1390,6 +1394,10 @@ public class binding_typerep {
 	public static native com.sun.jna.NativeLong get_compound_member_index(Pointer tp, Pointer member);
 
 	public static native void remove_compound_member(Pointer compound, Pointer entity);
+
+	public static native void set_compound_variable_size(Pointer compound, int variable_size);
+
+	public static native int is_compound_variable_size(Pointer compound);
 
 	public static native void default_layout_compound_type(Pointer tp);
 

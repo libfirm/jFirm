@@ -2088,6 +2088,52 @@ public class binding_be {
 		}
 	}
 
+	public static enum dwarf_source_language {
+		DW_LANG_C89(0x0001),
+		DW_LANG_C(0x0002),
+		DW_LANG_Ada83(0x0003),
+		DW_LANG_C_plus_plus(0x0004),
+		DW_LANG_Cobol74(0x0005),
+		DW_LANG_Cobol85(0x0006),
+		DW_LANG_Fortran77(0x0007),
+		DW_LANG_Fortran90(0x0008),
+		DW_LANG_Pascal83(0x0009),
+		DW_LANG_Modula2(0x000a),
+		DW_LANG_Java(0x000b),
+		DW_LANG_C99(0x000c),
+		DW_LANG_Ada95(0x000d),
+		DW_LANG_Fortran95(0x000e),
+		DW_LANG_PLI(0x000f),
+		DW_LANG_ObjC(0x0010),
+		DW_LANG_ObjC_plus_plus(0x0011),
+		DW_LANG_UPC(0x0012),
+		DW_LANG_D(0x0013),
+		DW_LANG_Python(0x0014),
+		DW_LANG_Go(0x0016);
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		dwarf_source_language(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		dwarf_source_language() {
+			this.val = C.next_val++;
+		}
+
+		public static dwarf_source_language getEnum(int val) {
+			for (dwarf_source_language entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 
 	public static native int be_parse_arg(String arg);
 
@@ -2102,4 +2148,8 @@ public class binding_be {
 	public static native /* asm_constraint_flags_t */int be_parse_asm_constraints(String constraints);
 
 	public static native int be_is_valid_clobber(String clobber);
+
+	public static native void be_dwarf_set_source_language(/* dwarf_source_language */int language);
+
+	public static native void be_dwarf_set_compilation_directory(String directory);
 }
