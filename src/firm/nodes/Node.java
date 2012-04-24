@@ -117,7 +117,7 @@ public abstract class Node extends JNAWrapper {
 	/**
 	 * May be used instead of instanceof tests. (node.getOpCode() ==
 	 * ir_opcode.iro_Add) => node instanceof Add
-	 * 
+	 *
 	 * @return Type of the current node
 	 */
 	public binding_irnode.ir_opcode getOpCode() {
@@ -140,6 +140,14 @@ public abstract class Node extends JNAWrapper {
 				|| block.getOpCode() == ir_opcode.iro_Bad;
 		assert this.getOpCode() != ir_opcode.iro_Block;
 		binding_irnode.set_nodes_block(ptr, block.ptr);
+	}
+
+	public void setDebugInfo(Pointer dbgInfo) {
+		binding_irnode.set_irn_dbg_info(ptr, dbgInfo);
+	}
+
+	public Pointer getDebugInfo() {
+		return binding_irnode.get_irn_dbg_info(ptr);
 	}
 
 	public abstract void accept(NodeVisitor visitor);
