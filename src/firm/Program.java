@@ -5,6 +5,7 @@ import java.util.Iterator;
 import com.sun.jna.NativeLong;
 
 import firm.bindings.binding_irprog;
+import firm.bindings.binding_typerep;
 
 /**
  * Represents a complete program/compilation unit in firm. There is currently
@@ -142,5 +143,25 @@ public class Program {
 				};
 			}
 		};
+	}
+
+	/**
+	 * Checks for errors in types/entities in the program
+	 */
+	public static boolean checkTypes() {
+		return binding_typerep.tr_verify() != 0;
+	}
+
+	/**
+	 * Checks for errors in the program.
+	 * Checks all graphs and calls checkTYpes().
+	 */
+	public static boolean check() {
+		boolean result = true;
+		for (Graph g : getGraphs()) {
+			result &= g.check();
+		}
+		result &= checkTypes();
+		return result;
 	}
 }

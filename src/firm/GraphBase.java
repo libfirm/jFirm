@@ -397,9 +397,8 @@ public abstract class GraphBase extends JNAWrapper {
 	 * @param graph
 	 *            the graph to check
 	 */
-	public void check() {
-		binding_irverify.irg_verify(ptr,
-				irg_verify_flags_t.VERIFY_ENFORCE_SSA.val);
+	public boolean check() {
+		return binding_irverify.irg_verify(ptr, irg_verify_flags_t.VERIFY_ENFORCE_SSA.val) != 0;
 	}
 
 	/**
