@@ -7,8 +7,7 @@ import com.sun.jna.Library;
 import com.sun.jna.Memory;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
-
-import firm.bindings.binding_ident;
+import com.sun.jna.Structure;
 
 /**
  * Convenience class that helps constructing debug info that can be attached
@@ -20,27 +19,57 @@ public final class DebugInfo {
 	private static Memory currentMemory;
 	private static int currentIdx;
 
+	public static class SrcLog extends Structure {
+		public Pointer file;
+		public int line;
+		public int column;
+
+		public SrcLog(Pointer p) {
+			super(p);
+		}
+		public SrcLog() {
+		}
+
+		public static class ByValue extends SrcLog implements Structure.ByValue {
+			public ByValue() {
+			}
+			public ByValue(Pointer p) {
+				super(p);
+			}
+		}
+
+		public final static int SIZE;
+
+		static {
+			SrcLog log = new SrcLog();
+			SIZE = log.size();
+		}
+	};
+
 	private interface binding_dbginfo extends Library {
 
 		interface RetrieveDbgFunc extends Callback {
-			String callback(Pointer dbg, Pointer /* int* */line);
+			SrcLog.ByValue callback(Pointer dbg);
 		}
 
 		void ir_set_debug_retrieve(RetrieveDbgFunc handler);
+		Pointer get_id_str(Pointer ident);
 	}
 	private static binding_dbginfo binding_dbg;
 
+	private static SrcLog.ByValue nullSrc;
+	static {
+		nullSrc = new SrcLog.ByValue();
+		nullSrc.write();
+	}
+
 	private static final binding_dbginfo.RetrieveDbgFunc handler = new binding_dbginfo.RetrieveDbgFunc() {
 		@Override
-		public String callback(Pointer dbg, Pointer line) {
+		public SrcLog.ByValue callback(Pointer dbg) {
 			if (dbg == null)
-				return null;
-			Pointer ident = dbg.getPointer(0);
-			int lineNr = dbg.getInt(Pointer.SIZE);
-			if (!line.equals(Pointer.NULL)) {
-				line.setInt(0, lineNr);
-			}
-			return binding_ident.get_id_str(ident);
+				return nullSrc;
+			SrcLog.ByValue log = new SrcLog.ByValue(dbg);
+			return log;
 		}
 	};
 
@@ -57,21 +86,28 @@ public final class DebugInfo {
 		allocateMemoryBlock();
 	}
 
-	public static Pointer createInfo(Ident source, int line) {
-		final int size = Pointer.SIZE + 4;
-		if (currentIdx + size >= BLOCK_SIZE) {
+	/**
+	 * Create a dbg_info pointer which can be attached to firm nodes to indicate
+	 * source position.
+	 * @param source  name of the source (typically the filename)
+	 * @param line    line in the source starting with 1 or 0 if unknown
+	 * @param column  column in the source starting with 1 or 0 if unknown
+	 * @return dbg_info pointer
+	 */
+	public static Pointer createInfo(String source, int line, int column) {
+		if (currentIdx + SrcLog.SIZE >= BLOCK_SIZE) {
 			allocateMemoryBlock();
 		}
-		currentMemory.setPointer(currentIdx, source.ptr);
-		currentMemory.setInt(currentIdx+Pointer.SIZE, line);
+		/* TODO: align the index? */
 		Pointer result = currentMemory.share(currentIdx);
-		currentIdx += size;
+		SrcLog log = new SrcLog(result);
+		Ident ident = new Ident(source);
+		log.file = binding_dbg.get_id_str(ident.ptr);
+		log.line = line;
+		log.column = column;
+		log.write();
+		currentIdx += SrcLog.SIZE;
 		return result;
-	}
-
-	public static Pointer createInfo(String source, int line) {
-		final Ident ident = new Ident(source);
-		return createInfo(ident, line);
 	}
 
 	private static void allocateMemoryBlock() {
