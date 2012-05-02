@@ -9,7 +9,7 @@ import firm.bindings.binding_libc;
 
 /**
  * Utility class containing various functions for dumping firm graphs
- * 
+ *
  * @author matze
  */
 public final class Dump {

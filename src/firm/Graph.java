@@ -8,7 +8,7 @@ import firm.nodes.Node;
 
 /**
  * A graph is an object owning stuff related to a firm graph. That is:
- * 
+ *
  * - Nodes and Blocks
  * - A type describing the stackframe layout
  * - Direct pointers to some unique nodes (StartBlock, Start, ...)

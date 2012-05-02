@@ -18,5 +18,4 @@ public class FirmAssertionException extends RuntimeException {
 	public String getMessage() {
 		return "Failed assert('" + expr + "') in " + file + ":" + lineNr;
 	}
-
 }

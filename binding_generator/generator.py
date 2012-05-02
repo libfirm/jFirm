@@ -459,6 +459,7 @@ public {{"abstract "|ifabstract(node)}}class {{node.classname}} extends {{node.p
 	{% endfor -%}
 	public static final int pnMax = {{len(node.outs)}};
 }
+
 ''')
 	file.write(template.render(node = node, isAbstract = isAbstract, len=len))
 	file.close()
@@ -492,7 +493,9 @@ class ConstructionBase {
 	}
 	{%- endif %}
 	{%- endfor %}
-}''')
+}
+
+''')
 
 file = open("ConstructionBase.java", "w")
 file.write(template.render(nodes = nodes, isAbstract = isAbstract))
@@ -523,7 +526,9 @@ class NodeWrapperConstruction {
 			throw new IllegalStateException("Unkown node type: " + opcode);
 		}
 	}
-}''')
+}
+
+''')
 file = open("NodeWrapperConstruction.java", "w")
 file.write(template.render(nodes = nodes, isAbstract = isAbstract))
 file.close()
@@ -565,7 +570,9 @@ public interface NodeVisitor {
 		{%- endif -%}
 		{%- endfor %}
 	}
-}''')
+}
+
+''')
 file = open("NodeVisitor.java", "w")
 file.write(template.render(nodes = nodes, isAbstract = isAbstract))
 file.close()
@@ -581,7 +588,7 @@ import firm.nodes.Node;
 
 /**
  * A graph is an object owning stuff related to a firm graph. That is:
- * 
+ *
  * - Nodes and Blocks
  * - A type describing the stackframe layout
  * - Direct pointers to some unique nodes (StartBlock, Start, ...)
@@ -621,7 +628,9 @@ public class Graph extends GraphBase {
 	}
 	{%- endif %}
 	{%- endfor %}
-}''')
+}
+
+''')
 file = open("Graph.java", "w")
 file.write(template.render(nodes = nodes, isAbstract = isAbstract))
 file.close()
