@@ -132,7 +132,7 @@ public class SimpleIf {
 		graph.getEndBlock().addPred(retn);
 
 		// No code should follow a return statement.
-		cons.setCurrentBlockBad();
+		cons.setUnreachable();
 		// Done.
 		cons.finish();
 

@@ -77,12 +77,18 @@ public class Construction extends ConstructionBase {
 	}
 
 	/**
-	 * sets current block to bad, this will result in all generated code being
-	 * remove immediately. You should use this after generating Jmp or Return
-	 * nodes.
+	 * marks current block as unreachable, all code generated in this block is
+	 * removed immediately and a Bad node is returned instead.
 	 */
-	public void setCurrentBlockBad() {
+	public void setUnreachable() {
 		binding_ircons.set_r_cur_block(graph.ptr, graph.newBad(Mode.getBB()).ptr);
+	}
+
+	/**
+	 * returns true if the current block is the "unreachable block".
+	 */
+	public boolean isUnreachable() {
+		return getCurrentBlock().isBad();
 	}
 
 	/**
