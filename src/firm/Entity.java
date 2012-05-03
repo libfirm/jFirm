@@ -50,6 +50,10 @@ public class Entity extends JNAWrapper {
 		binding_typerep.set_entity_ident(ptr, id.ptr);
 	}
 
+	public final void setIdent(String ident) {
+		setIdent(new Ident(ident));
+	}
+
 	public final Ident getLdIdent() {
 		Pointer p = binding_typerep.get_entity_ld_ident(ptr);
 		return new Ident(p);
