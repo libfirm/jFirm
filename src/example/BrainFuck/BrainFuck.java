@@ -50,7 +50,6 @@ public class BrainFuck {
 		Type global = Program.getGlobalType();
 		Entity mainEnt = new Entity(global, "main", type);
 		mainEnt.setLdIdent(makeLdIdent("main"));
-		mainEnt.setVisibility(ir_visibility.ir_visibility_default);
 
 		/* create a new global array for the brainfuck data */
 		PrimitiveType btype = new PrimitiveType(Mode.getBu());
@@ -78,7 +77,6 @@ public class BrainFuck {
 				new Type[] { intType });
 
 		putcharEntity = new Entity(globalType, "putchar", putcharType);
-		putcharEntity.setVisibility(ir_visibility.ir_visibility_external);
 		putcharEntity.setLdIdent(makeLdIdent("putchar"));
 		putcharSymConst = construction.newSymConst(putcharEntity);
 
@@ -87,7 +85,6 @@ public class BrainFuck {
 				new Type[] { intType });
 
 		getcharEntity = new Entity(globalType, "getchar", getcharType);
-		getcharEntity.setVisibility(ir_visibility.ir_visibility_external);
 		getcharEntity.setLdIdent(makeLdIdent("getchar"));
 		getcharSymConst = construction.newSymConst(getcharEntity);
 

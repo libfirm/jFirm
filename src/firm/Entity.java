@@ -203,4 +203,8 @@ public class Entity extends JNAWrapper {
 	public final Entity getOverwrites(int index) {
 		return new Entity(binding_typerep.get_entity_overwrites(ptr, new NativeLong(index)));
 	}
+
+	public final boolean hasDefinition() {
+		return binding_typerep.entity_has_definition(ptr) != 0;
+	}
 }

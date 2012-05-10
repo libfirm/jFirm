@@ -397,9 +397,8 @@ public class binding_irnode {
 	}
 
 	public static enum ir_visibility {
-		ir_visibility_default(),
-		ir_visibility_local(),
 		ir_visibility_external(),
+		ir_visibility_local(),
 		ir_visibility_private();
 		public final int val;
 
@@ -431,7 +430,8 @@ public class binding_irnode {
 		IR_LINKAGE_WEAK((1 << 1)),
 		IR_LINKAGE_GARBAGE_COLLECT((1 << 2)),
 		IR_LINKAGE_MERGE((1 << 3)),
-		IR_LINKAGE_HIDDEN_USER((1 << 4));
+		IR_LINKAGE_HIDDEN_USER((1 << 4)),
+		IR_LINKAGE_NO_CODEGEN((1 << 5));
 		public final int val;
 
 		private static class C {
@@ -693,41 +693,6 @@ public class binding_irnode {
 
 		public static ir_class_cast_state getEnum(int val) {
 			for (ir_class_cast_state entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum trverify_error_codes {
-		no_error(0),
-		error_ent_not_cont(),
-		error_null_mem(),
-		error_const_on_wrong_irg(),
-		error_existent_entity_without_irg(),
-		error_wrong_ent_overwrites(),
-		error_inherited_ent_without_const(),
-		error_glob_ent_allocation(),
-		error_ent_const_mode(),
-		error_ent_wrong_owner();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		trverify_error_codes(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		trverify_error_codes() {
-			this.val = C.next_val++;
-		}
-
-		public static trverify_error_codes getEnum(int val) {
-			for (trverify_error_codes entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
