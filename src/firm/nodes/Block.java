@@ -40,9 +40,6 @@ public class Block extends Node {
 		firm.bindings.binding_irnode.mark_Block_block_visited(ptr);
 	}
 
-	public boolean isBad() {
-		return firm.bindings.binding_irnode.is_Bad(ptr) != 0;
-	}
 public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

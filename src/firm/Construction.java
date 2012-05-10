@@ -81,14 +81,17 @@ public class Construction extends ConstructionBase {
 	 * removed immediately and a Bad node is returned instead.
 	 */
 	public void setUnreachable() {
-		binding_ircons.set_r_cur_block(graph.ptr, graph.newBad(Mode.getBB()).ptr);
+		Node unreachableBlock = newBlock(new Node[] {});
+		binding_ircons.set_r_cur_block(graph.ptr, unreachableBlock.ptr);
 	}
 
 	/**
-	 * returns true if the current block is the "unreachable block".
+	 * returns true if the current block obviously unreachable.
 	 */
 	public boolean isUnreachable() {
-		return getCurrentBlock().isBad();
+		Block block = getCurrentBlock();
+		return block.getPredCount() == 0 && !block.equals(graph.getStartBlock())
+				&& !block.equals(graph.getEndBlock());
 	}
 
 	/**
@@ -105,7 +108,6 @@ public class Construction extends ConstructionBase {
 	 * return the current memory node
 	 */
 	public Node getCurrentMem() {
-		assert !getCurrentBlock().isBad();
 		return Node.createWrapper(binding_ircons.get_r_store(graph.ptr));
 	}
 
