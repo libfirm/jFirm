@@ -1947,7 +1947,7 @@ public class binding_iroptimize {
 
 	public static native Pointer opt_bool_pass(String name);
 
-	public static native int conv_opt(Pointer irg);
+	public static native void conv_opt(Pointer irg);
 
 	public static native Pointer conv_opt_pass(String name);
 
@@ -1973,11 +1973,11 @@ public class binding_iroptimize {
 
 	public static native Pointer can_replace_load_by_const(Pointer load, Pointer c);
 
-	public static native int optimize_load_store(Pointer irg);
+	public static native void optimize_load_store(Pointer irg);
 
 	public static native Pointer optimize_load_store_pass(String name);
 
-	public static native int opt_ldst(Pointer irg);
+	public static native void opt_ldst(Pointer irg);
 
 	public static native Pointer opt_ldst_pass(String name);
 
@@ -1999,7 +1999,7 @@ public class binding_iroptimize {
 
 	public static native Pointer proc_cloning_pass(String name, float threshold);
 
-	public static native int optimize_reassociation(Pointer irg);
+	public static native void optimize_reassociation(Pointer irg);
 
 	public static native Pointer optimize_reassociation_pass(String name);
 
@@ -2011,11 +2011,11 @@ public class binding_iroptimize {
 
 	public static native Pointer normalize_n_returns_pass(String name);
 
-	public static native int scalar_replacement_opt(Pointer irg);
+	public static native void scalar_replacement_opt(Pointer irg);
 
 	public static native Pointer scalar_replacement_opt_pass(String name);
 
-	public static native int opt_tail_rec_irg(Pointer irg);
+	public static native void opt_tail_rec_irg(Pointer irg);
 
 	public static native Pointer opt_tail_rec_irg_pass(String name);
 
@@ -2045,7 +2045,7 @@ public class binding_iroptimize {
 
 	public static native Pointer inline_functions_pass(String name, int maxsize, int inline_threshold, Pointer after_inline_opt);
 
-	public static native int shape_blocks(Pointer irg);
+	public static native void shape_blocks(Pointer irg);
 
 	public static native Pointer shape_blocks_pass(String name);
 

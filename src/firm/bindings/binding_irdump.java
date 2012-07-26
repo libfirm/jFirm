@@ -435,7 +435,6 @@ public class binding_irdump {
 
 	public static enum ir_dump_flags_t {
 		ir_dump_flag_blocks_as_subgraphs((1 << 0)),
-		ir_dump_flag_group_extbb((1 << 1)),
 		ir_dump_flag_with_typegraph((1 << 2)),
 		ir_dump_flag_disable_edge_labels((1 << 3)),
 		ir_dump_flag_consts_local((1 << 4)),

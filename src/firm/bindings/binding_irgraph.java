@@ -473,41 +473,69 @@ public class binding_irgraph {
 		}
 	}
 
-	public static enum ir_graph_state_t {
-		IR_GRAPH_STATE_ARCH_DEP((1 << 0)),
-		IR_GRAPH_STATE_MODEB_LOWERED((1 << 1)),
-		IR_GRAPH_STATE_NORMALISATION2((1 << 2)),
-		IR_GRAPH_STATE_IMPLICIT_BITFIELD_MASKING((1 << 3)),
-		IR_GRAPH_STATE_OPTIMIZE_UNREACHABLE_CODE((1 << 4)),
-		IR_GRAPH_STATE_NO_CRITICAL_EDGES((1 << 5)),
-		IR_GRAPH_STATE_NO_BADS((1 << 6)),
-		IR_GRAPH_STATE_NO_UNREACHABLE_CODE((1 << 7)),
-		IR_GRAPH_STATE_ONE_RETURN((1 << 8)),
-		IR_GRAPH_STATE_CONSISTENT_DOMINANCE((1 << 9)),
-		IR_GRAPH_STATE_CONSISTENT_POSTDOMINANCE((1 << 10)),
-		IR_GRAPH_STATE_CONSISTENT_OUT_EDGES((1 << 11)),
-		IR_GRAPH_STATE_CONSISTENT_OUTS((1 << 12)),
-		IR_GRAPH_STATE_CONSISTENT_LOOPINFO((1 << 13)),
-		IR_GRAPH_STATE_CONSISTENT_ENTITY_USAGE((1 << 14)),
-		IR_GRAPH_STATE_VALID_EXTENDED_BLOCKS((1 << 15)),
-		IR_GRAPH_STATE_MANY_RETURNS((1 << 16));
+	public static enum ir_graph_constraints_t {
+		IR_GRAPH_CONSTRAINT_ARCH_DEP((1 << 0)),
+		IR_GRAPH_CONSTRAINT_MODEB_LOWERED((1 << 1)),
+		IR_GRAPH_CONSTRAINT_NORMALISATION2((1 << 2)),
+		IR_GRAPH_CONSTRAINT_OPTIMIZE_UNREACHABLE_CODE((1 << 4));
 		public final int val;
 
 		private static class C {
 			static int next_val;
 		}
 
-		ir_graph_state_t(int val) {
+		ir_graph_constraints_t(int val) {
 			this.val = val;
 			C.next_val = val + 1;
 		}
 
-		ir_graph_state_t() {
+		ir_graph_constraints_t() {
 			this.val = C.next_val++;
 		}
 
-		public static ir_graph_state_t getEnum(int val) {
-			for (ir_graph_state_t entry : values()) {
+		public static ir_graph_constraints_t getEnum(int val) {
+			for (ir_graph_constraints_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum ir_graph_properties_t {
+		IR_GRAPH_PROPERTIES_NONE(0),
+		IR_GRAPH_PROPERTY_NO_CRITICAL_EDGES((1 << 0)),
+		IR_GRAPH_PROPERTY_NO_BADS((1 << 1)),
+		IR_GRAPH_PROPERTY_NO_TUPLES((1 << 2)),
+		IR_GRAPH_PROPERTY_NO_UNREACHABLE_CODE((1 << 3)),
+		IR_GRAPH_PROPERTY_ONE_RETURN((1 << 4)),
+		IR_GRAPH_PROPERTY_CONSISTENT_DOMINANCE((1 << 5)),
+		IR_GRAPH_PROPERTY_CONSISTENT_POSTDOMINANCE((1 << 6)),
+		IR_GRAPH_PROPERTY_CONSISTENT_DOMINANCE_FRONTIERS((1 << 7)),
+		IR_GRAPH_PROPERTY_CONSISTENT_OUT_EDGES((1 << 8)),
+		IR_GRAPH_PROPERTY_CONSISTENT_OUTS((1 << 9)),
+		IR_GRAPH_PROPERTY_CONSISTENT_LOOPINFO((1 << 10)),
+		IR_GRAPH_PROPERTY_CONSISTENT_ENTITY_USAGE((1 << 11)),
+		IR_GRAPH_PROPERTY_MANY_RETURNS((1 << 12)),
+		IR_GRAPH_PROPERTIES_CONTROL_FLOW(((((((ir_graph_properties_t.IR_GRAPH_PROPERTY_NO_CRITICAL_EDGES.val | ir_graph_properties_t.IR_GRAPH_PROPERTY_ONE_RETURN.val) | ir_graph_properties_t.IR_GRAPH_PROPERTY_NO_UNREACHABLE_CODE.val) | ir_graph_properties_t.IR_GRAPH_PROPERTY_CONSISTENT_LOOPINFO.val) | ir_graph_properties_t.IR_GRAPH_PROPERTY_CONSISTENT_DOMINANCE.val) | ir_graph_properties_t.IR_GRAPH_PROPERTY_CONSISTENT_POSTDOMINANCE.val) | ir_graph_properties_t.IR_GRAPH_PROPERTY_CONSISTENT_DOMINANCE_FRONTIERS.val)),
+		IR_GRAPH_PROPERTIES_ALL(((((((ir_graph_properties_t.IR_GRAPH_PROPERTIES_CONTROL_FLOW.val | ir_graph_properties_t.IR_GRAPH_PROPERTY_NO_BADS.val) | ir_graph_properties_t.IR_GRAPH_PROPERTY_NO_TUPLES.val) | ir_graph_properties_t.IR_GRAPH_PROPERTY_CONSISTENT_OUT_EDGES.val) | ir_graph_properties_t.IR_GRAPH_PROPERTY_CONSISTENT_OUTS.val) | ir_graph_properties_t.IR_GRAPH_PROPERTY_CONSISTENT_ENTITY_USAGE.val) | ir_graph_properties_t.IR_GRAPH_PROPERTY_MANY_RETURNS.val));
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_graph_properties_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_graph_properties_t() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_graph_properties_t getEnum(int val) {
+			for (ir_graph_properties_t entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -622,11 +650,17 @@ public class binding_irgraph {
 
 	public static native /* ir_resources_t */int ir_resources_reserved(Pointer irg);
 
-	public static native void set_irg_state(Pointer irg, /* ir_graph_state_t */int state);
+	public static native void add_irg_constraints(Pointer irg, /* ir_graph_constraints_t */int constraints);
 
-	public static native void clear_irg_state(Pointer irg, /* ir_graph_state_t */int state);
+	public static native void clear_irg_constraints(Pointer irg, /* ir_graph_constraints_t */int constraints);
 
-	public static native int is_irg_state(Pointer irg, /* ir_graph_state_t */int state);
+	public static native int irg_is_constrained(Pointer irg, /* ir_graph_constraints_t */int constraints);
+
+	public static native void add_irg_properties(Pointer irg, /* ir_graph_properties_t */int props);
+
+	public static native void clear_irg_properties(Pointer irg, /* ir_graph_properties_t */int props);
+
+	public static native int irg_has_properties(Pointer irg, /* ir_graph_properties_t */int props);
 
 	public static native void set_irg_loc_description(Pointer irg, int n, Pointer description);
 
@@ -639,6 +673,10 @@ public class binding_irgraph {
 	public static native int get_irg_fp_model(Pointer irg);
 
 	public static native void set_irg_fp_model(Pointer irg, int model);
+
+	public static native void assure_irg_properties(Pointer irg, /* ir_graph_properties_t */int props);
+
+	public static native void confirm_irg_properties(Pointer irg, /* ir_graph_properties_t */int props);
 
 	public static native com.sun.jna.NativeLong register_additional_graph_data(com.sun.jna.NativeLong size);
 }

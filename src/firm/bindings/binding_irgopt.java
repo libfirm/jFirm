@@ -365,9 +365,9 @@ public class binding_irgopt {
 
 	public static native void remove_unreachable_code(Pointer irg);
 
-	public static native int remove_bads(Pointer irg);
+	public static native void remove_bads(Pointer irg);
 
-	public static native int remove_tuples(Pointer irg);
+	public static native void remove_tuples(Pointer irg);
 
 	public static native Pointer optimize_graph_df_pass(String name);
 

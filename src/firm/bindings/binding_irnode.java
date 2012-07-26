@@ -364,8 +364,6 @@ public class binding_irnode {
 		k_ir_op(),
 		k_tarval(),
 		k_ir_loop(),
-		k_ir_compound_graph_path(),
-		k_ir_extblk(),
 		k_ir_prog(),
 		k_ir_graph_pass(),
 		k_ir_prog_pass(),
@@ -951,21 +949,18 @@ public class binding_irnode {
 
 	public static enum irop_flags {
 		irop_flag_none(0),
-		irop_flag_labeled((1 << 0)),
-		irop_flag_commutative((1 << 1)),
-		irop_flag_cfopcode((1 << 2)),
-		irop_flag_fragile((1 << 3)),
-		irop_flag_forking((1 << 4)),
-		irop_flag_highlevel((1 << 5)),
-		irop_flag_constlike((1 << 6)),
-		irop_flag_always_opt((1 << 7)),
-		irop_flag_keep((1 << 8)),
-		irop_flag_start_block((1 << 9)),
-		irop_flag_uses_memory((1 << 10)),
-		irop_flag_dump_noblock((1 << 11)),
-		irop_flag_dump_noinput((1 << 12)),
-		irop_flag_cse_neutral((1 << 13)),
-		irop_flag_unknown_jump((1 << 14));
+		irop_flag_commutative((1 << 0)),
+		irop_flag_cfopcode((1 << 1)),
+		irop_flag_fragile((1 << 2)),
+		irop_flag_forking((1 << 3)),
+		irop_flag_highlevel((1 << 4)),
+		irop_flag_constlike((1 << 5)),
+		irop_flag_keep((1 << 6)),
+		irop_flag_start_block((1 << 7)),
+		irop_flag_uses_memory((1 << 8)),
+		irop_flag_dump_noblock((1 << 9)),
+		irop_flag_cse_neutral((1 << 10)),
+		irop_flag_unknown_jump((1 << 11));
 		public final int val;
 
 		private static class C {
@@ -3574,7 +3569,7 @@ public class binding_irnode {
 
 	public static native void set_irn_in(Pointer node, int arity, java.nio.Buffer in);
 
-	public static native int add_irn_dep(Pointer node, Pointer dep);
+	public static native void add_irn_dep(Pointer node, Pointer dep);
 
 	public static native void add_irn_deps(Pointer tgt, Pointer src);
 
@@ -3583,6 +3578,8 @@ public class binding_irnode {
 	public static native Pointer get_irn_dep(Pointer node, int pos);
 
 	public static native void set_irn_dep(Pointer node, int pos, Pointer dep);
+
+	public static native void delete_irn_dep(Pointer node, Pointer dep);
 
 	public static native void set_irn_n(Pointer node, int n, Pointer in);
 
@@ -3655,10 +3652,6 @@ public class binding_irnode {
 	public static native void mark_Block_block_visited(Pointer node);
 
 	public static native int Block_block_visited(Pointer node);
-
-	public static native Pointer get_Block_extbb(Pointer block);
-
-	public static native void set_Block_extbb(Pointer block, Pointer extblk);
 
 	public static native Pointer get_Block_irg(Pointer block);
 
@@ -3736,7 +3729,7 @@ public class binding_irnode {
 
 	public static native java.nio.Buffer get_Call_param_arr(Pointer node);
 
-	public static native com.sun.jna.NativeLong get_Call_n_params(Pointer node);
+	public static native int get_Call_n_params(Pointer node);
 
 	public static native Pointer get_Call_param(Pointer node, int pos);
 
@@ -3836,7 +3829,9 @@ public class binding_irnode {
 
 	public static native void set_Tuple_pred(Pointer node, int pos, Pointer pred);
 
-	public static native com.sun.jna.NativeLong get_ASM_n_input_constraints(Pointer node);
+	public static native int get_ASM_n_inputs(Pointer node);
+
+	public static native Pointer get_ASM_input(Pointer node, int pos);
 
 	public static native com.sun.jna.NativeLong get_ASM_n_output_constraints(Pointer node);
 
@@ -3895,8 +3890,6 @@ public class binding_irnode {
 	public static native void set_irn_dbg_info(Pointer n, Pointer db);
 
 	public static native Pointer get_irn_dbg_info(Pointer n);
-
-	public static native int firm_default_hash(Pointer node);
 
 	public static native String gdb_node_helper(Pointer firm_object);
 

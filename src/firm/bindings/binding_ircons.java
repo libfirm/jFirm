@@ -364,8 +364,6 @@ public class binding_ircons {
 		k_ir_op(),
 		k_tarval(),
 		k_ir_loop(),
-		k_ir_compound_graph_path(),
-		k_ir_extblk(),
 		k_ir_prog(),
 		k_ir_graph_pass(),
 		k_ir_prog_pass(),
@@ -951,21 +949,18 @@ public class binding_ircons {
 
 	public static enum irop_flags {
 		irop_flag_none(0),
-		irop_flag_labeled((1 << 0)),
-		irop_flag_commutative((1 << 1)),
-		irop_flag_cfopcode((1 << 2)),
-		irop_flag_fragile((1 << 3)),
-		irop_flag_forking((1 << 4)),
-		irop_flag_highlevel((1 << 5)),
-		irop_flag_constlike((1 << 6)),
-		irop_flag_always_opt((1 << 7)),
-		irop_flag_keep((1 << 8)),
-		irop_flag_start_block((1 << 9)),
-		irop_flag_uses_memory((1 << 10)),
-		irop_flag_dump_noblock((1 << 11)),
-		irop_flag_dump_noinput((1 << 12)),
-		irop_flag_cse_neutral((1 << 13)),
-		irop_flag_unknown_jump((1 << 14));
+		irop_flag_commutative((1 << 0)),
+		irop_flag_cfopcode((1 << 1)),
+		irop_flag_fragile((1 << 2)),
+		irop_flag_forking((1 << 3)),
+		irop_flag_highlevel((1 << 4)),
+		irop_flag_constlike((1 << 5)),
+		irop_flag_keep((1 << 6)),
+		irop_flag_start_block((1 << 7)),
+		irop_flag_uses_memory((1 << 8)),
+		irop_flag_dump_noblock((1 << 9)),
+		irop_flag_cse_neutral((1 << 10)),
+		irop_flag_unknown_jump((1 << 11));
 		public final int val;
 
 		private static class C {
@@ -3606,13 +3601,13 @@ public class binding_ircons {
 
 	public static native Pointer new_DivRL(Pointer memop, Pointer op1, Pointer op2, Pointer mode, /* op_pin_state */int state);
 
-	public static native Pointer new_rd_ASM(Pointer db, Pointer block, int arity, java.nio.Buffer in, Pointer inputs, com.sun.jna.NativeLong n_outs, Pointer outputs, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
+	public static native Pointer new_rd_ASM(Pointer db, Pointer block, Pointer mem, int arity, java.nio.Buffer in, Pointer inputs, com.sun.jna.NativeLong n_outs, Pointer outputs, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
 
-	public static native Pointer new_r_ASM(Pointer block, int arity, java.nio.Buffer in, Pointer inputs, com.sun.jna.NativeLong n_outs, Pointer outputs, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
+	public static native Pointer new_r_ASM(Pointer block, Pointer mem, int arity, java.nio.Buffer in, Pointer inputs, com.sun.jna.NativeLong n_outs, Pointer outputs, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
 
-	public static native Pointer new_d_ASM(Pointer db, int arity, java.nio.Buffer in, Pointer inputs, com.sun.jna.NativeLong n_outs, Pointer outputs, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
+	public static native Pointer new_d_ASM(Pointer db, Pointer mem, int arity, java.nio.Buffer in, Pointer inputs, com.sun.jna.NativeLong n_outs, Pointer outputs, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
 
-	public static native Pointer new_ASM(int arity, java.nio.Buffer in, Pointer inputs, com.sun.jna.NativeLong n_outs, Pointer outputs, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
+	public static native Pointer new_ASM(Pointer mem, int arity, java.nio.Buffer in, Pointer inputs, com.sun.jna.NativeLong n_outs, Pointer outputs, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
 
 	public static native Pointer get_current_ir_graph();
 

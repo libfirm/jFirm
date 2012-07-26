@@ -364,8 +364,6 @@ public class binding_firm_common {
 		k_ir_op(),
 		k_tarval(),
 		k_ir_loop(),
-		k_ir_compound_graph_path(),
-		k_ir_extblk(),
 		k_ir_prog(),
 		k_ir_graph_pass(),
 		k_ir_prog_pass(),

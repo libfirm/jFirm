@@ -405,6 +405,8 @@ public class binding_iredges {
 
 	public static native void edges_reroute_kind(Pointer old, Pointer nw, /* ir_edge_kind_t */int kind);
 
+	public static native void edges_reroute_except(Pointer old, Pointer nw, Pointer exception);
+
 	public static native int edges_verify(Pointer irg);
 
 	public static native int edges_verify_kind(Pointer irg, /* ir_edge_kind_t */int kind);
@@ -417,9 +419,9 @@ public class binding_iredges {
 
 	public static native void edges_deactivate(Pointer irg);
 
-	public static native int edges_assure(Pointer irg);
+	public static native void assure_edges(Pointer irg);
 
-	public static native int edges_assure_kind(Pointer irg, /* ir_edge_kind_t */int kind);
+	public static native void assure_edges_kind(Pointer irg, /* ir_edge_kind_t */int kind);
 
 	public static native void irg_block_edges_walk(Pointer block, Pointer pre, Pointer post, Pointer env);
 

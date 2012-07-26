@@ -518,21 +518,18 @@ public class binding_irop {
 
 	public static enum irop_flags {
 		irop_flag_none(0),
-		irop_flag_labeled((1 << 0)),
-		irop_flag_commutative((1 << 1)),
-		irop_flag_cfopcode((1 << 2)),
-		irop_flag_fragile((1 << 3)),
-		irop_flag_forking((1 << 4)),
-		irop_flag_highlevel((1 << 5)),
-		irop_flag_constlike((1 << 6)),
-		irop_flag_always_opt((1 << 7)),
-		irop_flag_keep((1 << 8)),
-		irop_flag_start_block((1 << 9)),
-		irop_flag_uses_memory((1 << 10)),
-		irop_flag_dump_noblock((1 << 11)),
-		irop_flag_dump_noinput((1 << 12)),
-		irop_flag_cse_neutral((1 << 13)),
-		irop_flag_unknown_jump((1 << 14));
+		irop_flag_commutative((1 << 0)),
+		irop_flag_cfopcode((1 << 1)),
+		irop_flag_fragile((1 << 2)),
+		irop_flag_forking((1 << 3)),
+		irop_flag_highlevel((1 << 4)),
+		irop_flag_constlike((1 << 5)),
+		irop_flag_keep((1 << 6)),
+		irop_flag_start_block((1 << 7)),
+		irop_flag_uses_memory((1 << 8)),
+		irop_flag_dump_noblock((1 << 9)),
+		irop_flag_cse_neutral((1 << 10)),
+		irop_flag_unknown_jump((1 << 11));
 		public final int val;
 
 		private static class C {
@@ -609,7 +606,7 @@ public class binding_irop {
 
 	public static native /* irop_flags */int get_op_flags(Pointer op);
 
-	public static native Pointer new_ir_op(int code, String name, /* op_pin_state */int p, int flags, /* op_arity */int opar, int op_index, com.sun.jna.NativeLong attr_size, Pointer ops);
+	public static native Pointer new_ir_op(int code, String name, /* op_pin_state */int p, /* irop_flags */int flags, /* op_arity */int opar, int op_index, com.sun.jna.NativeLong attr_size);
 
 	public static native int ir_get_n_opcodes();
 
