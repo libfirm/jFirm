@@ -10,7 +10,7 @@ import com.sun.jna.Structure;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irgmod;
 import firm.bindings.binding_irgraph;
-import firm.bindings.binding_irgraph.ir_graph_state_t;
+import firm.bindings.binding_irgraph.ir_graph_properties_t;
 import firm.bindings.binding_irnode;
 import firm.bindings.binding_irnode.ir_opcode;
 import firm.bindings.binding_irop;
@@ -512,26 +512,11 @@ public abstract class GraphBase extends JNAWrapper {
 		return Node.createWrapper(new_node);
 	}
 
-	/**
-	 * Notify the graph that control flow has changed, so dominance and other
-	 * information gets invalidated.
-	 */
-	public void notifyControlFlowChange() {
-		clearState(ir_graph_state_t.IR_GRAPH_STATE_CONSISTENT_LOOPINFO);
-		clearState(ir_graph_state_t.IR_GRAPH_STATE_CONSISTENT_DOMINANCE);
-		clearState(ir_graph_state_t.IR_GRAPH_STATE_CONSISTENT_POSTDOMINANCE);
-		clearState(ir_graph_state_t.IR_GRAPH_STATE_CONSISTENT_OUTS);
-		clearState(ir_graph_state_t.IR_GRAPH_STATE_NO_CRITICAL_EDGES);
-		clearState(ir_graph_state_t.IR_GRAPH_STATE_NO_UNREACHABLE_CODE);
-		clearState(ir_graph_state_t.IR_GRAPH_STATE_NO_BADS);
-		clearState(ir_graph_state_t.IR_GRAPH_STATE_VALID_EXTENDED_BLOCKS);
+	public void assureProperties(ir_graph_properties_t props) {
+		binding_irgraph.assure_irg_properties(ptr, props.val);
 	}
 
-	public void addState(ir_graph_state_t state) {
-		binding_irgraph.set_irg_state(ptr, state.val);
-	}
-
-	public void clearState(ir_graph_state_t state) {
-		binding_irgraph.clear_irg_state(ptr, state.val);
+	public void confirmProperties(ir_graph_properties_t props) {
+		binding_irgraph.confirm_irg_properties(ptr, props.val);
 	}
 }
