@@ -2,13 +2,14 @@
 from jinja2 import Environment, Template
 import re
 
-from spec_util import verify_node, is_dynamic_pinned, setdefault, isAbstract, setldefault
+from spec_util import verify_node, is_dynamic_pinned, setdefault, isAbstract, setldefault, load_spec
 import ir_spec
 
 java_keywords = [ "public", "private", "protected", "true", "false" ]
 
-nodes = []
-for node in ir_spec.nodes:
+module = load_spec("ir_spec.py")
+nodes  = []
+for node in module.nodes:
 	# the symconst value is a union and is not generated automatically
 	if node.name == "SymConst":
 		node.noconstructor = True
@@ -321,14 +322,19 @@ def prepare_attr(attr):
 	if "java_name" not in attr:
 		attr["java_name"] = attr["name"]
 
+class Node:
+	classname = "Node"
+
 def preprocess_node(node):
 	if not isAbstract(node):
 		setdefault(node, "java_add", "")
-		setldefault(node, "parent", node.__base__)
+		if hasattr(node, "__base__"):
+			setldefault(node, "parent", node.__base__)
+		else:
+			setldefault(node, "parent", Node)
 		verify_node(node)
 	else:
-		setldefault(node, "parent", ir_spec.Op)
-		ir_spec.Op.classname = "Node"
+		setldefault(node, "parent", Node)
 	setldefault(node, "attrs", [])
 	setldefault(node, "constructor_args", [])
 	node.classname = format_camel_case_big(node.name)
@@ -413,13 +419,13 @@ public {{"abstract "|ifabstract(node)}}class {{node.classname}} extends {{node.p
 	}
 
 	{% for input in node.ins -%}
-	{%if node.parent.name != "Op"%}@Override
+	{%if node.parent.classname != "Node"%}@Override
 	{%endif-%}
 	public Node get{{input[0]|CamelCase}}() {
 		return createWrapper(firm.bindings.binding_irnode.get_{{node.name}}_{{input[0]}}(ptr));
 	}
 
-	{%if node.parent.name != "Op"%}@Override
+	{%if node.parent.classname != "Node"%}@Override
 	{%endif-%}
 	public void set{{input[0]|CamelCase}}(Node {{input[0]|filterkeywords}}) {
 		firm.bindings.binding_irnode.set_{{node.name}}_{{input[0]}}(this.ptr, {{input[0]|filterkeywords}}.ptr);
