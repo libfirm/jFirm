@@ -52,4 +52,8 @@ public final class Backend {
 					+ "'");
 		}
 	}
+
+	public static Mode getFloatArithmeticMode() {
+		return new Mode(binding_be.be_get_mode_float_arithmetic());
+	}
 }

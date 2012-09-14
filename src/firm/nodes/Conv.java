@@ -19,15 +19,6 @@ public class Conv extends Unop {
 		firm.bindings.binding_irnode.set_Conv_op(this.ptr, op.ptr);
 	}
 
-	public int getStrict() {
-		int _res = firm.bindings.binding_irnode.get_Conv_strict(ptr);
-		return _res;
-	}
-
-	public void setStrict(int _val) {
-		firm.bindings.binding_irnode.set_Conv_strict(this.ptr, _val);
-	}
-
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

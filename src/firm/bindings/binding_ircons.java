@@ -1015,7 +1015,6 @@ public class binding_ircons {
 	}
 
 	public static enum ir_mode_arithmetic {
-		irma_uninitialized(0),
 		irma_none(1),
 		irma_twos_complement(2),
 		irma_ieee754(256),
@@ -2921,10 +2920,6 @@ public class binding_ircons {
 
 	public static native void set_Conv_op(Pointer node, Pointer op);
 
-	public static native int get_Conv_strict(Pointer node);
-
-	public static native void set_Conv_strict(Pointer node, int strict);
-
 	public static native Pointer new_rd_CopyB(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type);
 
 	public static native Pointer new_r_CopyB(Pointer block, Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type);
@@ -3576,14 +3571,6 @@ public class binding_ircons {
 	public static native Pointer new_rd_SymConst_size(Pointer db, Pointer irg, Pointer mode, Pointer symbol);
 
 	public static native Pointer new_rd_SymConst_align(Pointer db, Pointer irg, Pointer mode, Pointer symbol);
-
-	public static native Pointer new_rd_strictConv(Pointer db, Pointer block, Pointer op, Pointer mode);
-
-	public static native Pointer new_r_strictConv(Pointer block, Pointer op, Pointer mode);
-
-	public static native Pointer new_d_strictConv(Pointer db, Pointer op, Pointer mode);
-
-	public static native Pointer new_strictConv(Pointer op, Pointer mode);
 
 	public static native Pointer new_rd_simpleSel(Pointer db, Pointer block, Pointer store, Pointer objptr, Pointer ent);
 

@@ -1015,7 +1015,6 @@ public class binding_irnode {
 	}
 
 	public static enum ir_mode_arithmetic {
-		irma_uninitialized(0),
 		irma_none(1),
 		irma_twos_complement(2),
 		irma_ieee754(256),
@@ -2921,10 +2920,6 @@ public class binding_irnode {
 
 	public static native void set_Conv_op(Pointer node, Pointer op);
 
-	public static native int get_Conv_strict(Pointer node);
-
-	public static native void set_Conv_strict(Pointer node, int strict);
-
 	public static native Pointer new_rd_CopyB(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type);
 
 	public static native Pointer new_r_CopyB(Pointer block, Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type);
@@ -3699,8 +3694,6 @@ public class binding_irnode {
 
 	public static native int is_Const_all_one(Pointer node);
 
-	public static native int is_strictConv(Pointer node);
-
 	public static native int is_SymConst_addr_ent(Pointer node);
 
 	public static native /* symconst_kind */int get_SymConst_kind(Pointer node);
@@ -3878,8 +3871,6 @@ public class binding_irnode {
 	public static native int is_irn_cse_neutral(Pointer node);
 
 	public static native String get_cond_jmp_predicate_name(/* cond_jmp_predicate */int pred);
-
-	public static native int firm_register_additional_node_data(int size);
 
 	public static native Pointer get_irn_generic_attr(Pointer node);
 

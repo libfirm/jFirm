@@ -511,9 +511,15 @@ public class binding_tv {
 
 	public static native Pointer tarval_shl(Pointer a, Pointer b);
 
+	public static native Pointer tarval_shl_unsigned(Pointer a, int b);
+
 	public static native Pointer tarval_shr(Pointer a, Pointer b);
 
+	public static native Pointer tarval_shr_unsigned(Pointer a, int b);
+
 	public static native Pointer tarval_shrs(Pointer a, Pointer b);
+
+	public static native Pointer tarval_shrs_unsigned(Pointer a, int b);
 
 	public static native Pointer tarval_rotl(Pointer a, Pointer b);
 

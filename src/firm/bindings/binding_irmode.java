@@ -355,7 +355,6 @@ public class binding_irmode {
 	}
 
 	public static enum ir_mode_arithmetic {
-		irma_uninitialized(0),
 		irma_none(1),
 		irma_twos_complement(2),
 		irma_ieee754(256),

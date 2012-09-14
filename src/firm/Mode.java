@@ -24,7 +24,6 @@ public final class Mode extends JNAWrapper {
 	}
 
 	public static enum Arithmetic {
-		Uninitialized(ir_mode_arithmetic.irma_uninitialized.val),
 		None(ir_mode_arithmetic.irma_none.val),
 		TwosComplement(ir_mode_arithmetic.irma_twos_complement.val),
 		IEE754(ir_mode_arithmetic.irma_ieee754.val),

@@ -2137,6 +2137,18 @@ public class binding_be {
 
 	public static native int be_parse_arg(String arg);
 
+	public static native int be_is_big_endian();
+
+	public static native int be_get_machine_size();
+
+	public static native Pointer be_get_mode_float_arithmetic();
+
+	public static native Pointer be_get_type_long_long();
+
+	public static native Pointer be_get_type_unsigned_long_long();
+
+	public static native Pointer be_get_type_long_double();
+
 	public static native Pointer be_get_backend_param();
 
 	public static native void be_lower_for_target();
