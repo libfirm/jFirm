@@ -54,6 +54,10 @@ public final class Backend {
 	}
 
 	public static Mode getFloatArithmeticMode() {
-		return new Mode(binding_be.be_get_mode_float_arithmetic());
+		Pointer p = binding_be.be_get_mode_float_arithmetic();
+		/* In soft-float mode, there will be no float mode set. */
+		if (p == null)
+			return null;
+		return new Mode(p);
 	}
 }
