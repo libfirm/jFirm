@@ -4,6 +4,7 @@
 /classes/
 /binding_generator/config
 /binding_generator/ir_spec.py
+/binding_generator/spec_util.py
 /lib/libfirm.so
 /lib/libfirm.dylib
 /lib/64
