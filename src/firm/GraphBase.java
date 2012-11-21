@@ -49,6 +49,14 @@ public abstract class GraphBase extends JNAWrapper {
 		binding_ircons.set_current_ir_graph(graph.ptr);
 	}
 
+	/**
+	 * Frees the current graph. It will not be available in the graph list
+	 * anymore. You are not allowed to use a freed graph anymore.
+	 */
+	public void free() {
+		binding_irgraph.free_ir_graph(ptr);
+	}
+
 	public Node newSymConst(Entity entity) {
 		return Node.createWrapper(binding_ircons.new_rd_SymConst_addr_ent(
 				Pointer.NULL, ptr, Mode.getP().ptr, entity.ptr));
@@ -367,15 +375,6 @@ public abstract class GraphBase extends JNAWrapper {
 
 			blockWalkHelper(walker, pred);
 		}
-	}
-
-	public void setPhaseState(binding_irgraph.irg_phase_state state) {
-		binding_irgraph.set_irg_phase_state(ptr, state.val);
-	}
-
-	public binding_irgraph.irg_phase_state getPhaseState() {
-		return binding_irgraph.irg_phase_state.getEnum(binding_irgraph
-				.get_irg_phase_state(ptr));
 	}
 
 	@Override

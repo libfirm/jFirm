@@ -102,14 +102,6 @@ public class Program {
 		return new Graph(binding_irprog.get_irp_irg(new NativeLong(n)));
 	}
 
-	/**
-	 * free resources occupied by the graph. You are not allowed to use the
-	 * graph anymore after calling this.
-	 */
-	public static void removeGraph(Graph graph) {
-		binding_irprog.remove_irp_irg(graph.ptr);
-	}
-
 	public static int getNTypes() {
 		return binding_irprog.get_irp_n_types().intValue();
 	}

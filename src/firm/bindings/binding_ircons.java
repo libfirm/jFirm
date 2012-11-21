@@ -138,19 +138,22 @@ public class binding_ircons {
 	}
 
 	public static enum mtp_additional_properties {
-		mtp_no_property(0x00000000),
-		mtp_property_const(0x00000001),
-		mtp_property_pure(0x00000002),
-		mtp_property_noreturn(0x00000004),
-		mtp_property_nothrow(0x00000008),
-		mtp_property_naked(0x00000010),
-		mtp_property_malloc(0x00000020),
-		mtp_property_returns_twice(0x00000040),
-		mtp_property_intrinsic(0x00000080),
-		mtp_property_runtime(0x00000100),
-		mtp_property_private(0x00000200),
-		mtp_property_has_loop(0x00000400),
-		mtp_property_inherited((1 << 31));
+		mtp_no_property(0),
+		mtp_property_const((1 << 0)),
+		mtp_property_pure((1 << 1)),
+		mtp_property_noreturn((1 << 2)),
+		mtp_property_nothrow((1 << 3)),
+		mtp_property_naked((1 << 4)),
+		mtp_property_malloc((1 << 5)),
+		mtp_property_returns_twice((1 << 6)),
+		mtp_property_intrinsic((1 << 7)),
+		mtp_property_runtime((1 << 8)),
+		mtp_property_private((1 << 9)),
+		mtp_property_has_loop((1 << 10)),
+		mtp_property_always_inline((1 << 11)),
+		mtp_property_noinline((1 << 12)),
+		mtp_property_inline_recommended((1 << 13)),
+		mtp_temporary((1 << 14));
 		public final int val;
 
 		private static class C {

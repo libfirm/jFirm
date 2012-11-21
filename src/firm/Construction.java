@@ -4,7 +4,6 @@ import com.sun.jna.Pointer;
 
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_ircons.ir_cons_flags;
-import firm.bindings.binding_irgraph.irg_phase_state;
 import firm.nodes.Block;
 import firm.nodes.Node;
 
@@ -167,7 +166,6 @@ public class Construction extends ConstructionBase {
 			}
 		});
 
-		/* set graph to state high */
-		graph.setPhaseState(irg_phase_state.phase_high);
+		binding_ircons.irp_finalize_cons();
 	}
 }
