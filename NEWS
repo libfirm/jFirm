@@ -1,3 +1,7 @@
+========= jFirm 1.21.0 (2012-11-21) =========
+* Added more convenience functions for checking, entity linkage, ...
+* Adapt to latest libFirm version
+
 ========= jFirm 0.2.5 (2009-07-10) =========
 * Fix quadratic runtime in topological walker
 

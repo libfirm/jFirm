@@ -3,7 +3,7 @@
 	
 	<!-- set global properties for this build -->
 	<property name="projectname" value="jFirm" />
-	<property name="version" value="1.19.1" />
+	<property name="version" value="1.21.0" />
 	<property name="src" location="${basedir}/src"/>
 	<property name="jar" value="jfirm.jar"/>
 	<property name="workdir" location="${basedir}/release"/>
@@ -97,8 +97,8 @@
 					<filename name="lib/libfirm.so"/>
 					<filename name="lib/libfirm.dylib"/>
 					<filename name="lib/firm.dll"/>
-					<filename name="lib/64/libfirm.so"/>
-					<filename name="lib/64/libfirm.dylib"/>
+					<filename name="lib/x86_64/libfirm.so"/>
+					<filename name="lib/x86_64/libfirm.dylib"/>
 					<filename name="src/**/*" />
 				</or>
 			</fileset>
