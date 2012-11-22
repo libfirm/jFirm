@@ -166,6 +166,6 @@ public class Construction extends ConstructionBase {
 			}
 		});
 
-		binding_ircons.irp_finalize_cons();
+		binding_ircons.irg_finalize_cons(graph.ptr);
 	}
 }
