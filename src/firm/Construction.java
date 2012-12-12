@@ -148,9 +148,8 @@ public class Construction extends ConstructionBase {
 	/**
 	 * must be called when graph construction has finished.
 	 *
-	 * This replaces Phi0 placeholders with real phi nodes, constructs a frame
-	 * type and sets graph phase to high (which means construction has finished
-	 * and the graph should be well formed).
+	 * This replaces Phi0 placeholders with real phi nodes, where necessary
+	 * by calling mature() on all blocks.
 	 */
 	public void finish() {
 		/* backedges interfere with construction somehow... */
