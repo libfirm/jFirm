@@ -6,6 +6,7 @@ import com.sun.jna.Pointer;
 import firm.bindings.binding_typerep;
 import firm.bindings.binding_typerep.ir_type_state;
 import firm.nodes.Node;
+import firm.nodes.Unknown;
 
 public class ArrayType extends Type {
 
@@ -53,6 +54,10 @@ public class ArrayType extends Type {
 				new NativeLong(dimension)));
 	}
 
+	public boolean hasLowerBound(int dimension) {
+		return !(getUpperBound(dimension) instanceof Unknown);
+	}
+
 	public void setUpperBound(int dimension, int upperBound) {
 		binding_typerep.set_array_upper_bound_int(ptr, new NativeLong(dimension), upperBound);
 	}
@@ -71,6 +76,10 @@ public class ArrayType extends Type {
 				new NativeLong(dimension)));
 	}
 
+	public boolean hasUpperBound(int dimension) {
+		return !(getUpperBound(dimension) instanceof Unknown);
+	}
+
 	public Type getElementType() {
 		return Type.createWrapper(binding_typerep.get_array_element_type(ptr));
 	}
@@ -86,10 +95,15 @@ public class ArrayType extends Type {
 
 		int size = getElementType().getSizeBytes();
 		for (int d = 0; d < getNDimensions(); ++d) {
+			if (!hasLowerBound(d) || !hasUpperBound(d)) {
+				size = -1;
+				break;
+			}
 			int n = getUpperBoundInt(d) - getLowerBoundInt(d);
 			size *= n;
 		}
-		setSizeBytes(size);
+		if (size >= 0)
+			setSizeBytes(size);
 
 		super.finishLayout();
 	}
