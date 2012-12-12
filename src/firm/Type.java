@@ -27,10 +27,13 @@ public class Type extends JNAWrapper {
 			return new StructType(ptr);
 		} else if (binding_typerep.is_Union_type(ptr) != 0) {
 			return new UnionType(ptr);
+		} else if (binding_typerep.is_unknown_type(ptr) != 0
+		        || binding_typerep.is_code_type(ptr) != 0
+		        || binding_typerep.is_none_type(ptr) != 0) {
+			return new Type(ptr);
 		} else {
 			Type type = new Type(ptr);
-			if (binding_typerep.is_Struct_type(ptr) == 0)
-				System.err.println("Unknown Type kind found");
+			System.err.println("Unknown Type kind found: " + type);
 			return type;
 		}
 	}
