@@ -24,23 +24,11 @@ public interface NodeVisitor {
 	/** called when accept is called on a Block node */
 	void visit(Block node);
 
-	/** called when accept is called on a Borrow node */
-	void visit(Borrow node);
-
-	/** called when accept is called on a Bound node */
-	void visit(Bound node);
-
 	/** called when accept is called on a Builtin node */
 	void visit(Builtin node);
 
 	/** called when accept is called on a Call node */
 	void visit(Call node);
-
-	/** called when accept is called on a Carry node */
-	void visit(Carry node);
-
-	/** called when accept is called on a Cast node */
-	void visit(Cast node);
 
 	/** called when accept is called on a Cmp node */
 	void visit(Cmp node);
@@ -213,32 +201,12 @@ public interface NodeVisitor {
 		}
 
 		@Override
-		public void visit(Borrow node) {
-			defaultVisit(node);
-		}
-
-		@Override
-		public void visit(Bound node) {
-			defaultVisit(node);
-		}
-
-		@Override
 		public void visit(Builtin node) {
 			defaultVisit(node);
 		}
 
 		@Override
 		public void visit(Call node) {
-			defaultVisit(node);
-		}
-
-		@Override
-		public void visit(Carry node) {
-			defaultVisit(node);
-		}
-
-		@Override
-		public void visit(Cast node) {
 			defaultVisit(node);
 		}
 

@@ -390,7 +390,11 @@ public class binding_iredges {
 
 	public static native Pointer get_irn_out_edge_first_kind(Pointer irn, /* ir_edge_kind_t */int kind);
 
-	public static native Pointer get_irn_out_edge_next(Pointer irn, Pointer last);
+	public static native Pointer get_irn_out_edge_first(Pointer irn);
+
+	public static native Pointer get_block_succ_first(Pointer block);
+
+	public static native Pointer get_irn_out_edge_next(Pointer irn, Pointer last, /* ir_edge_kind_t */int kind);
 
 	public static native Pointer get_edge_src_irn(Pointer edge);
 
@@ -398,13 +402,19 @@ public class binding_iredges {
 
 	public static native int get_irn_n_edges_kind(Pointer irn, /* ir_edge_kind_t */int kind);
 
+	public static native int get_irn_n_edges(Pointer irn);
+
 	public static native int edges_activated_kind(Pointer irg, /* ir_edge_kind_t */int kind);
+
+	public static native int edges_activated(Pointer irg);
 
 	public static native void edges_activate_kind(Pointer irg, /* ir_edge_kind_t */int kind);
 
 	public static native void edges_deactivate_kind(Pointer irg, /* ir_edge_kind_t */int kind);
 
 	public static native void edges_reroute_kind(Pointer old, Pointer nw, /* ir_edge_kind_t */int kind);
+
+	public static native void edges_reroute(Pointer old, Pointer nw);
 
 	public static native void edges_reroute_except(Pointer old, Pointer nw, Pointer exception);
 
@@ -427,6 +437,4 @@ public class binding_iredges {
 	public static native void irg_block_edges_walk(Pointer block, Pointer pre, Pointer post, Pointer env);
 
 	public static native void irg_walk_edges(Pointer start, Pointer pre, Pointer post, Pointer env);
-
-	public static native void edges_reset_private_data(Pointer irg, int offset, int size);
 }

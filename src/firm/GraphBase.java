@@ -2,10 +2,8 @@ package firm;
 
 import java.nio.IntBuffer;
 
-import com.sun.jna.Callback;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
-import com.sun.jna.Structure;
 
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irgmod;
@@ -13,7 +11,6 @@ import firm.bindings.binding_irgraph;
 import firm.bindings.binding_irgraph.ir_graph_properties_t;
 import firm.bindings.binding_irnode;
 import firm.bindings.binding_irnode.ir_opcode;
-import firm.bindings.binding_irop;
 import firm.bindings.binding_irverify;
 import firm.bindings.binding_irverify.irg_verify_flags_t;
 import firm.nodes.Bad;
@@ -411,17 +408,13 @@ public abstract class GraphBase extends JNAWrapper {
 	 *
 	 * @param node
 	 *            The node to be turned into a tuple.
-	 * @param outArity
-	 *            The number of values formed into a Tuple.
+	 * @param ins
+	 *            The new input array (should have 1 input for each Proj of
+	 *            the node to be changed)
 	 */
-	public static Node turnIntoTuple(Node node, int outArity) {
-		binding_irgmod.turn_into_tuple(node.ptr, outArity);
+	public static Node turnIntoTuple(Node node, Node[] ins) {
+		binding_irgmod.turn_into_tuple(node.ptr, ins.length, Node.getBufferFromNodeList(ins));
 		Node tuple = Node.createWrapper(node.ptr);
-		Graph graph = node.getGraph();
-		Node bad = Node.createWrapper(binding_ircons.new_r_Bad(graph.ptr, Mode.getANY().ptr));
-		for (int i = 0; i < outArity; ++i) {
-			tuple.setPred(i, bad);
-		}
 		return tuple;
 	}
 
@@ -441,42 +434,6 @@ public abstract class GraphBase extends JNAWrapper {
 		assert oldNode != newNode;
 		assert !oldNode.equals(newNode);
 		binding_irgmod.exchange(oldNode.ptr, newNode.ptr);
-	}
-
-	public static class IrOpOps extends Structure {
-		public IrOpOps(Pointer ptr) {
-			super(ptr);
-			read();
-		}
-
-		public Pointer hash_func;
-		public Pointer computed_value;
-		public Pointer computed_value_Proj;
-		public Pointer equivalent_node;
-		public Pointer equivalent_node_Proj;
-		public Pointer transform_node;
-		public Pointer transform_node_Proj;
-		public Pointer node_cmp_attr;
-		public Pointer reassociate;
-
-		private static interface CopyAttrCallback extends Callback {
-			void invoke(Pointer irg, Pointer old_node, Pointer new_node);
-		}
-
-		public CopyAttrCallback copy_attr;
-		public Pointer get_type_attr;
-		public Pointer get_entity_attr;
-		public Pointer verify_node;
-		public Pointer verify_proj_node;
-		public Pointer dump_node;
-		public Pointer generic;
-		public Pointer be_ops;
-	}
-
-	private void copyNodeAttr(Pointer old_node, Pointer new_node) {
-		Pointer op = binding_irnode.get_irn_op(old_node);
-		IrOpOps ops = new IrOpOps(binding_irop.get_op_ops(op));
-		ops.copy_attr.invoke(ptr, old_node, new_node);
 	}
 
 	/**
@@ -506,7 +463,7 @@ public abstract class GraphBase extends JNAWrapper {
 		}
 		Pointer new_node = binding_irnode.new_ir_node(dbgi, ptr, block, op,
 				mode, arity, ins);
-		copyNodeAttr(node.ptr, new_node);
+		binding_irnode.copy_node_attr(ptr, node.ptr, new_node);
 
 		return Node.createWrapper(new_node);
 	}

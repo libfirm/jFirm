@@ -526,8 +526,6 @@ public class binding_tv {
 
 	public static native Pointer tarval_rotl(Pointer a, Pointer b);
 
-	public static native int tarval_carry();
-
 	public static native int set_tarval_mode_output_option(Pointer mode, Pointer modeinfo);
 
 	public static native Pointer get_tarval_mode_output_option(Pointer mode);
@@ -553,10 +551,6 @@ public class binding_tv {
 	public static native int tarval_ieee754_can_conv_lossless(Pointer tv, Pointer mode);
 
 	public static native int tarval_ieee754_get_exact();
-
-	public static native void tarval_enable_fp_ops(int enable);
-
-	public static native int tarval_fp_ops_enabled();
 
 	public static native int tarval_is_NaN(Pointer tv);
 

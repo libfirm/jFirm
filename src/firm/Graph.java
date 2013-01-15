@@ -58,16 +58,6 @@ public class Graph extends GraphBase {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Block(this.ptr, ins.length, Node.getBufferFromNodeList(ins)));
 	}
 
-	/** Create a new Borrow node */
-	public final Node newBorrow(Node block, Node left, Node right, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Borrow(block.ptr, left.ptr, right.ptr, mode.ptr));
-	}
-
-	/** Create a new Bound node */
-	public final Node newBound(Node block, Node mem, Node index, Node lower, Node upper) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Bound(block.ptr, mem.ptr, index.ptr, lower.ptr, upper.ptr));
-	}
-
 	/** Create a new Builtin node */
 	public final Node newBuiltin(Node block, Node mem, Node[] ins, firm.bindings.binding_ircons.ir_builtin_kind kind, firm.Type type) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Builtin(block.ptr, mem.ptr, ins.length, Node.getBufferFromNodeList(ins), kind.val, type.ptr));
@@ -76,16 +66,6 @@ public class Graph extends GraphBase {
 	/** Create a new Call node */
 	public final Node newCall(Node block, Node mem, Node ptr, Node[] ins, firm.Type type) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Call(block.ptr, mem.ptr, ptr.ptr, ins.length, Node.getBufferFromNodeList(ins), type.ptr));
-	}
-
-	/** Create a new Carry node */
-	public final Node newCarry(Node block, Node left, Node right, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Carry(block.ptr, left.ptr, right.ptr, mode.ptr));
-	}
-
-	/** Create a new Cast node */
-	public final Node newCast(Node block, Node op, firm.Type type) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Cast(block.ptr, op.ptr, type.ptr));
 	}
 
 	/** Create a new Cmp node */

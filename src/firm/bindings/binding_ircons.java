@@ -672,35 +672,6 @@ public class binding_ircons {
 		}
 	}
 
-	public static enum ir_class_cast_state {
-		ir_class_casts_any(0),
-		ir_class_casts_transitive(1),
-		ir_class_casts_normalized(2),
-		ir_class_casts_state_max();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_class_cast_state(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_class_cast_state() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_class_cast_state getEnum(int val) {
-			for (ir_class_cast_state entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_type_state {
 		layout_undefined(),
 		layout_fixed();
@@ -825,12 +796,8 @@ public class binding_ircons {
 		iro_And(),
 		iro_Bad(),
 		iro_Block(),
-		iro_Borrow(),
-		iro_Bound(),
 		iro_Builtin(),
 		iro_Call(),
-		iro_Carry(),
-		iro_Cast(),
 		iro_Cmp(),
 		iro_Cond(),
 		iro_Confirm(),
@@ -1188,94 +1155,6 @@ public class binding_ircons {
 		}
 	}
 
-	public static enum n_Borrow {
-		n_Borrow_left(),
-		n_Borrow_right(),
-		n_Borrow_max(n_Borrow.n_Borrow_right.val);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		n_Borrow(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		n_Borrow() {
-			this.val = C.next_val++;
-		}
-
-		public static n_Borrow getEnum(int val) {
-			for (n_Borrow entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum n_Bound {
-		n_Bound_mem(),
-		n_Bound_index(),
-		n_Bound_lower(),
-		n_Bound_upper(),
-		n_Bound_max(n_Bound.n_Bound_upper.val);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		n_Bound(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		n_Bound() {
-			this.val = C.next_val++;
-		}
-
-		public static n_Bound getEnum(int val) {
-			for (n_Bound entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum pn_Bound {
-		pn_Bound_M(),
-		pn_Bound_res(),
-		pn_Bound_X_regular(),
-		pn_Bound_X_except(),
-		pn_Bound_max(pn_Bound.pn_Bound_X_except.val);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		pn_Bound(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		pn_Bound() {
-			this.val = C.next_val++;
-		}
-
-		public static pn_Bound getEnum(int val) {
-			for (pn_Bound entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum n_Builtin {
 		n_Builtin_mem(),
 		n_Builtin_max(n_Builtin.n_Builtin_mem.val);
@@ -1381,61 +1260,6 @@ public class binding_ircons {
 
 		public static pn_Call getEnum(int val) {
 			for (pn_Call entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum n_Carry {
-		n_Carry_left(),
-		n_Carry_right(),
-		n_Carry_max(n_Carry.n_Carry_right.val);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		n_Carry(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		n_Carry() {
-			this.val = C.next_val++;
-		}
-
-		public static n_Carry getEnum(int val) {
-			for (n_Carry entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum n_Cast {
-		n_Cast_op(),
-		n_Cast_max(n_Cast.n_Cast_op.val);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		n_Cast(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		n_Cast() {
-			this.val = C.next_val++;
-		}
-
-		public static n_Cast getEnum(int val) {
-			for (n_Cast entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -2605,6 +2429,12 @@ public class binding_ircons {
 
 	public static native void set_ASM_mem(Pointer node, Pointer mem);
 
+	public static native int get_ASM_n_inputs(Pointer node);
+
+	public static native Pointer get_ASM_input(Pointer node, int pos);
+
+	public static native void set_ASM_input(Pointer node, int pos, Pointer input);
+
 	public static native Pointer get_ASM_input_constraints(Pointer node);
 
 	public static native void set_ASM_input_constraints(Pointer node, Pointer input_constraints);
@@ -2705,53 +2535,15 @@ public class binding_ircons {
 
 	public static native int is_Block(Pointer node);
 
+	public static native int get_Block_n_cfgpreds(Pointer node);
+
+	public static native Pointer get_Block_cfgpred(Pointer node, int pos);
+
+	public static native void set_Block_cfgpred(Pointer node, int pos, Pointer cfgpred);
+
 	public static native Pointer get_Block_entity(Pointer node);
 
 	public static native void set_Block_entity(Pointer node, Pointer entity);
-
-	public static native Pointer new_rd_Borrow(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
-
-	public static native Pointer new_r_Borrow(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
-
-	public static native Pointer new_d_Borrow(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
-
-	public static native Pointer new_Borrow(Pointer irn_left, Pointer irn_right, Pointer mode);
-
-	public static native int is_Borrow(Pointer node);
-
-	public static native Pointer get_Borrow_left(Pointer node);
-
-	public static native void set_Borrow_left(Pointer node, Pointer left);
-
-	public static native Pointer get_Borrow_right(Pointer node);
-
-	public static native void set_Borrow_right(Pointer node, Pointer right);
-
-	public static native Pointer new_rd_Bound(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_index, Pointer irn_lower, Pointer irn_upper);
-
-	public static native Pointer new_r_Bound(Pointer block, Pointer irn_mem, Pointer irn_index, Pointer irn_lower, Pointer irn_upper);
-
-	public static native Pointer new_d_Bound(Pointer dbgi, Pointer irn_mem, Pointer irn_index, Pointer irn_lower, Pointer irn_upper);
-
-	public static native Pointer new_Bound(Pointer irn_mem, Pointer irn_index, Pointer irn_lower, Pointer irn_upper);
-
-	public static native int is_Bound(Pointer node);
-
-	public static native Pointer get_Bound_mem(Pointer node);
-
-	public static native void set_Bound_mem(Pointer node, Pointer mem);
-
-	public static native Pointer get_Bound_index(Pointer node);
-
-	public static native void set_Bound_index(Pointer node, Pointer index);
-
-	public static native Pointer get_Bound_lower(Pointer node);
-
-	public static native void set_Bound_lower(Pointer node, Pointer lower);
-
-	public static native Pointer get_Bound_upper(Pointer node);
-
-	public static native void set_Bound_upper(Pointer node, Pointer upper);
 
 	public static native Pointer new_rd_Builtin(Pointer dbgi, Pointer block, Pointer irn_mem, int arity, java.nio.Buffer in, /* ir_builtin_kind */int kind, Pointer type);
 
@@ -2766,6 +2558,12 @@ public class binding_ircons {
 	public static native Pointer get_Builtin_mem(Pointer node);
 
 	public static native void set_Builtin_mem(Pointer node, Pointer mem);
+
+	public static native int get_Builtin_n_params(Pointer node);
+
+	public static native Pointer get_Builtin_param(Pointer node, int pos);
+
+	public static native void set_Builtin_param(Pointer node, int pos, Pointer param);
 
 	public static native /* ir_builtin_kind */int get_Builtin_kind(Pointer node);
 
@@ -2793,45 +2591,15 @@ public class binding_ircons {
 
 	public static native void set_Call_ptr(Pointer node, Pointer ptr);
 
+	public static native int get_Call_n_params(Pointer node);
+
+	public static native Pointer get_Call_param(Pointer node, int pos);
+
+	public static native void set_Call_param(Pointer node, int pos, Pointer param);
+
 	public static native Pointer get_Call_type(Pointer node);
 
 	public static native void set_Call_type(Pointer node, Pointer type);
-
-	public static native Pointer new_rd_Carry(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
-
-	public static native Pointer new_r_Carry(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
-
-	public static native Pointer new_d_Carry(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
-
-	public static native Pointer new_Carry(Pointer irn_left, Pointer irn_right, Pointer mode);
-
-	public static native int is_Carry(Pointer node);
-
-	public static native Pointer get_Carry_left(Pointer node);
-
-	public static native void set_Carry_left(Pointer node, Pointer left);
-
-	public static native Pointer get_Carry_right(Pointer node);
-
-	public static native void set_Carry_right(Pointer node, Pointer right);
-
-	public static native Pointer new_rd_Cast(Pointer dbgi, Pointer block, Pointer irn_op, Pointer type);
-
-	public static native Pointer new_r_Cast(Pointer block, Pointer irn_op, Pointer type);
-
-	public static native Pointer new_d_Cast(Pointer dbgi, Pointer irn_op, Pointer type);
-
-	public static native Pointer new_Cast(Pointer irn_op, Pointer type);
-
-	public static native int is_Cast(Pointer node);
-
-	public static native Pointer get_Cast_op(Pointer node);
-
-	public static native void set_Cast_op(Pointer node, Pointer op);
-
-	public static native Pointer get_Cast_type(Pointer node);
-
-	public static native void set_Cast_type(Pointer node, Pointer type);
 
 	public static native Pointer new_rd_Cmp(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, /* ir_relation */int relation);
 
@@ -3000,6 +2768,12 @@ public class binding_ircons {
 	public static native Pointer new_End(int arity, java.nio.Buffer in);
 
 	public static native int is_End(Pointer node);
+
+	public static native int get_End_n_keepalives(Pointer node);
+
+	public static native Pointer get_End_keepalive(Pointer node, int pos);
+
+	public static native void set_End_keepalive(Pointer node, int pos, Pointer keepalive);
 
 	public static native Pointer new_rd_Eor(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
 
@@ -3289,6 +3063,12 @@ public class binding_ircons {
 
 	public static native int is_Phi(Pointer node);
 
+	public static native int get_Phi_n_preds(Pointer node);
+
+	public static native Pointer get_Phi_pred(Pointer node, int pos);
+
+	public static native void set_Phi_pred(Pointer node, int pos, Pointer pred);
+
 	public static native Pointer new_rd_Pin(Pointer dbgi, Pointer block, Pointer irn_op);
 
 	public static native Pointer new_r_Pin(Pointer block, Pointer irn_op);
@@ -3353,6 +3133,12 @@ public class binding_ircons {
 
 	public static native void set_Return_mem(Pointer node, Pointer mem);
 
+	public static native int get_Return_n_ress(Pointer node);
+
+	public static native Pointer get_Return_res(Pointer node, int pos);
+
+	public static native void set_Return_res(Pointer node, int pos, Pointer res);
+
 	public static native Pointer new_rd_Rotl(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
 
 	public static native Pointer new_r_Rotl(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
@@ -3388,6 +3174,12 @@ public class binding_ircons {
 	public static native Pointer get_Sel_ptr(Pointer node);
 
 	public static native void set_Sel_ptr(Pointer node, Pointer ptr);
+
+	public static native int get_Sel_n_indexs(Pointer node);
+
+	public static native Pointer get_Sel_index(Pointer node, int pos);
+
+	public static native void set_Sel_index(Pointer node, int pos, Pointer index);
 
 	public static native Pointer get_Sel_entity(Pointer node);
 
@@ -3539,6 +3331,12 @@ public class binding_ircons {
 
 	public static native int is_Sync(Pointer node);
 
+	public static native int get_Sync_n_preds(Pointer node);
+
+	public static native Pointer get_Sync_pred(Pointer node, int pos);
+
+	public static native void set_Sync_pred(Pointer node, int pos, Pointer pred);
+
 	public static native Pointer new_rd_Tuple(Pointer dbgi, Pointer block, int arity, java.nio.Buffer in);
 
 	public static native Pointer new_r_Tuple(Pointer block, int arity, java.nio.Buffer in);
@@ -3548,6 +3346,12 @@ public class binding_ircons {
 	public static native Pointer new_Tuple(int arity, java.nio.Buffer in);
 
 	public static native int is_Tuple(Pointer node);
+
+	public static native int get_Tuple_n_preds(Pointer node);
+
+	public static native Pointer get_Tuple_pred(Pointer node, int pos);
+
+	public static native void set_Tuple_pred(Pointer node, int pos, Pointer pred);
 
 	public static native Pointer new_rd_Unknown(Pointer dbgi, Pointer irg, Pointer mode);
 

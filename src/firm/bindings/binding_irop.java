@@ -394,12 +394,8 @@ public class binding_irop {
 		iro_And(),
 		iro_Bad(),
 		iro_Block(),
-		iro_Borrow(),
-		iro_Bound(),
 		iro_Builtin(),
 		iro_Call(),
-		iro_Carry(),
-		iro_Cast(),
 		iro_Cmp(),
 		iro_Cond(),
 		iro_Confirm(),
@@ -597,8 +593,6 @@ public class binding_irop {
 
 	public static native /* op_pin_state */int get_op_pinned(Pointer op);
 
-	public static native void set_op_pinned(Pointer op, /* op_pin_state */int pinned);
-
 	public static native int get_next_ir_opcode();
 
 	public static native int get_next_ir_opcodes(int num);
@@ -608,6 +602,36 @@ public class binding_irop {
 	public static native void set_generic_function_ptr(Pointer op, Pointer func);
 
 	public static native /* irop_flags */int get_op_flags(Pointer op);
+
+	public static native void set_op_hash(Pointer op, Pointer func);
+
+	public static native void set_op_computed_value(Pointer op, Pointer func);
+
+	public static native void set_op_computed_value_proj(Pointer op, Pointer func);
+
+	public static native void set_op_equivalent_node(Pointer op, Pointer func);
+
+	public static native void set_op_equivalent_node_proj(Pointer op, Pointer func);
+
+	public static native void set_op_transform_node(Pointer op, Pointer func);
+
+	public static native void set_op_transform_node_proj(Pointer op, Pointer func);
+
+	public static native void set_op_cmp_attr(Pointer op, Pointer func);
+
+	public static native void set_op_reassociate(Pointer op, Pointer func);
+
+	public static native void set_op_copy_attr(Pointer op, Pointer func);
+
+	public static native void set_op_get_type_attr(Pointer op, Pointer func);
+
+	public static native void set_op_get_entity_attr(Pointer op, Pointer func);
+
+	public static native void set_op_verify(Pointer op, Pointer func);
+
+	public static native void set_op_verify_proj(Pointer op, Pointer func);
+
+	public static native void set_op_dump(Pointer op, Pointer func);
 
 	public static native Pointer new_ir_op(int code, String name, /* op_pin_state */int p, /* irop_flags */int flags, /* op_arity */int opar, int op_index, com.sun.jna.NativeLong attr_size);
 
@@ -620,6 +644,4 @@ public class binding_irop {
 	public static native void ir_op_set_memory_index(Pointer op, int memory_index);
 
 	public static native void ir_op_set_fragile_indices(Pointer op, int pn_x_regular, int pn_x_except);
-
-	public static native Pointer get_op_ops(Pointer op);
 }

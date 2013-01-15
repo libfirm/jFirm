@@ -403,10 +403,6 @@ public class binding_irflag {
 
 	public static native void set_opt_global_cse(int value);
 
-	public static native void set_opt_suppress_downcast_optimization(int value);
-
-	public static native int get_opt_suppress_downcast_optimization();
-
 	public static native void set_opt_global_null_ptr_elimination(int value);
 
 	public static native void set_opt_auto_create_sync(int value);

@@ -15,7 +15,6 @@ import firm.nodes.Alloc;
 import firm.nodes.Call;
 import firm.nodes.Node;
 import firm.nodes.NodeVisitor;
-import firm.nodes.Tuple;
 
 /**
  * A transformation pass that lowers some highlevel features of OO languages,
@@ -157,9 +156,7 @@ public class Lower {
 			Node projT = graph.newProj(call, Mode.getT(), Call.pnTResult);
 			Node projRes = graph.newProj(projT, Mode.getP(), 0);
 
-			Tuple tuple = (Tuple) Graph.turnIntoTuple(alloc, Alloc.pnMax);
-			tuple.setPred(Alloc.pnM, projM);
-			tuple.setPred(Alloc.pnRes, projRes);
+			Graph.turnIntoTuple(alloc, new Node[] { projM, projRes });
 		}
 	}
 }

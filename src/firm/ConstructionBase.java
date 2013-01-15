@@ -39,16 +39,6 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newBorrow(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Borrow(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
-		return Node.createWrapper(result_ptr);
-	}
-
-	public Node newBound(Node mem, Node index, Node lower, Node upper) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Bound(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, index.ptr, lower.ptr, upper.ptr);
-		return Node.createWrapper(result_ptr);
-	}
-
 	public Node newBuiltin(Node mem, Node[] ins, firm.bindings.binding_ircons.ir_builtin_kind kind, firm.Type type) {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Builtin(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, ins.length, Node.getBufferFromNodeList(ins), kind.val, type.ptr);
 		return Node.createWrapper(result_ptr);
@@ -56,16 +46,6 @@ class ConstructionBase {
 
 	public Node newCall(Node mem, Node ptr, Node[] ins, firm.Type type) {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Call(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, ptr.ptr, ins.length, Node.getBufferFromNodeList(ins), type.ptr);
-		return Node.createWrapper(result_ptr);
-	}
-
-	public Node newCarry(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Carry(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
-		return Node.createWrapper(result_ptr);
-	}
-
-	public Node newCast(Node op, firm.Type type) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Cast(binding_ircons.get_r_cur_block(graph.ptr), op.ptr, type.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 

@@ -632,35 +632,6 @@ public class binding_typerep {
 		}
 	}
 
-	public static enum ir_class_cast_state {
-		ir_class_casts_any(0),
-		ir_class_casts_transitive(1),
-		ir_class_casts_normalized(2),
-		ir_class_casts_state_max();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_class_cast_state(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_class_cast_state() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_class_cast_state getEnum(int val) {
-			for (ir_class_cast_state entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_type_state {
 		layout_undefined(),
 		layout_fixed();
@@ -943,8 +914,6 @@ public class binding_typerep {
 
 	public static native void add_entity_additional_properties(Pointer ent, /* mtp_additional_properties */int flag);
 
-	public static native Pointer get_entity_repr_class(Pointer ent);
-
 	public static native Pointer get_unknown_entity();
 
 	public static native int is_unknown_entity(Pointer entity);
@@ -1008,14 +977,6 @@ public class binding_typerep {
 	public static native Pointer get_entity_trans_overwrites_first(Pointer ent);
 
 	public static native Pointer get_entity_trans_overwrites_next(Pointer ent);
-
-	public static native void set_irg_class_cast_state(Pointer irg, /* ir_class_cast_state */int state);
-
-	public static native /* ir_class_cast_state */int get_irg_class_cast_state(Pointer irg);
-
-	public static native void set_irp_class_cast_state(/* ir_class_cast_state */int state);
-
-	public static native /* ir_class_cast_state */int get_irp_class_cast_state();
 
 	public static native int check_type(Pointer tp);
 
@@ -1122,10 +1083,6 @@ public class binding_typerep {
 	public static native void set_class_supertype(Pointer clss, Pointer supertype, com.sun.jna.NativeLong pos);
 
 	public static native void remove_class_supertype(Pointer clss, Pointer supertype);
-
-	public static native Pointer get_class_type_info(Pointer clss);
-
-	public static native void set_class_type_info(Pointer clss, Pointer ent);
 
 	public static native int get_class_vtable_size(Pointer clss);
 

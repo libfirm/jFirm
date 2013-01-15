@@ -31,10 +31,12 @@ public class BackEdges {
 	private static class EdgeIterator implements Iterator<Edge> {
 		private Pointer edge;
 		private Pointer node;
+		private int     kind;
 
 		public EdgeIterator(Node newNode, ir_edge_kind_t kind) {
 			this.node = newNode.ptr;
-			edge = binding_iredges.get_irn_out_edge_first_kind(node, kind.val);
+			this.kind = kind.val;
+			edge = binding_iredges.get_irn_out_edge_first_kind(node, this.kind);
 		}
 
 		@Override
@@ -50,7 +52,7 @@ public class BackEdges {
 			result.node = Node.createWrapper(binding_iredges
 					.get_edge_src_irn(edge));
 			result.pos = binding_iredges.get_edge_src_pos(edge);
-			edge = binding_iredges.get_irn_out_edge_next(node, edge);
+			edge = binding_iredges.get_irn_out_edge_next(node, edge, kind);
 			return result;
 		}
 
@@ -82,7 +84,6 @@ public class BackEdges {
 	}
 
 	public static int getNOuts(Node node) {
-		return binding_iredges.get_irn_n_edges_kind(node.ptr,
-				ir_edge_kind_t.EDGE_KIND_NORMAL.val);
+		return binding_iredges.get_irn_n_edges(node.ptr);
 	}
 }

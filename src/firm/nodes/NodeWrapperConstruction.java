@@ -30,23 +30,11 @@ class NodeWrapperConstruction {
 		case iro_Block:
 			return new Block(ptr);
 
-		case iro_Borrow:
-			return new Borrow(ptr);
-
-		case iro_Bound:
-			return new Bound(ptr);
-
 		case iro_Builtin:
 			return new Builtin(ptr);
 
 		case iro_Call:
 			return new Call(ptr);
-
-		case iro_Carry:
-			return new Carry(ptr);
-
-		case iro_Cast:
-			return new Cast(ptr);
 
 		case iro_Cmp:
 			return new Cmp(ptr);

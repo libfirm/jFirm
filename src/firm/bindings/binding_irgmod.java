@@ -360,7 +360,7 @@ public class binding_irgmod {
 
 	public static native void exchange(Pointer old, Pointer nw);
 
-	public static native void turn_into_tuple(Pointer node, int arity);
+	public static native void turn_into_tuple(Pointer node, int arity, java.nio.Buffer in);
 
 	public static native void collect_phiprojs(Pointer irg);
 

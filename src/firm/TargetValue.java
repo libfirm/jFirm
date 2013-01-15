@@ -286,10 +286,6 @@ public class TargetValue extends JNAWrapper {
 		return new TargetValue(ptarval);
 	}
 
-	public final int carry() {
-		return binding_tv.tarval_carry();
-	}
-
 	public static enum tv_output_mode {
 		TVO_NATIVE(),
 		TVO_HEX(),
@@ -369,11 +365,6 @@ public class TargetValue extends JNAWrapper {
 
 	public static final int ieee754GetExact() {
 		return binding_tv.tarval_ieee754_get_exact();
-	}
-
-	public final void setEnableFpOps(boolean enable) {
-		int valEnable = (enable ? 1 : 0);
-		binding_tv.tarval_enable_fp_ops(valEnable);
 	}
 
 	public final boolean isNaN() {

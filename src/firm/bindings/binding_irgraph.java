@@ -599,8 +599,6 @@ public class binding_irgraph {
 
 	public static native Pointer get_irg_loc_description(Pointer irg, int n);
 
-	public static native int get_irg_estimated_node_cnt(Pointer irg);
-
 	public static native int get_irg_last_idx(Pointer irg);
 
 	public static native int get_irg_fp_model(Pointer irg);
@@ -610,6 +608,4 @@ public class binding_irgraph {
 	public static native void assure_irg_properties(Pointer irg, /* ir_graph_properties_t */int props);
 
 	public static native void confirm_irg_properties(Pointer irg, /* ir_graph_properties_t */int props);
-
-	public static native com.sun.jna.NativeLong register_additional_graph_data(com.sun.jna.NativeLong size);
 }

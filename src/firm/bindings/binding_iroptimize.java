@@ -498,94 +498,6 @@ public class binding_iroptimize {
 		}
 	}
 
-	public static enum n_Borrow {
-		n_Borrow_left(),
-		n_Borrow_right(),
-		n_Borrow_max(n_Borrow.n_Borrow_right.val);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		n_Borrow(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		n_Borrow() {
-			this.val = C.next_val++;
-		}
-
-		public static n_Borrow getEnum(int val) {
-			for (n_Borrow entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum n_Bound {
-		n_Bound_mem(),
-		n_Bound_index(),
-		n_Bound_lower(),
-		n_Bound_upper(),
-		n_Bound_max(n_Bound.n_Bound_upper.val);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		n_Bound(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		n_Bound() {
-			this.val = C.next_val++;
-		}
-
-		public static n_Bound getEnum(int val) {
-			for (n_Bound entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum pn_Bound {
-		pn_Bound_M(),
-		pn_Bound_res(),
-		pn_Bound_X_regular(),
-		pn_Bound_X_except(),
-		pn_Bound_max(pn_Bound.pn_Bound_X_except.val);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		pn_Bound(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		pn_Bound() {
-			this.val = C.next_val++;
-		}
-
-		public static pn_Bound getEnum(int val) {
-			for (pn_Bound entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum n_Builtin {
 		n_Builtin_mem(),
 		n_Builtin_max(n_Builtin.n_Builtin_mem.val);
@@ -691,61 +603,6 @@ public class binding_iroptimize {
 
 		public static pn_Call getEnum(int val) {
 			for (pn_Call entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum n_Carry {
-		n_Carry_left(),
-		n_Carry_right(),
-		n_Carry_max(n_Carry.n_Carry_right.val);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		n_Carry(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		n_Carry() {
-			this.val = C.next_val++;
-		}
-
-		public static n_Carry getEnum(int val) {
-			for (n_Carry entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum n_Cast {
-		n_Cast_op(),
-		n_Cast_max(n_Cast.n_Cast_op.val);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		n_Cast(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		n_Cast() {
-			this.val = C.next_val++;
-		}
-
-		public static n_Cast getEnum(int val) {
-			for (n_Cast entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -2026,23 +1883,9 @@ public class binding_iroptimize {
 
 	public static native Pointer opt_tail_recursion_pass(String name);
 
-	public static native void normalize_irp_class_casts(Pointer gppt_fct);
-
-	public static native void normalize_irg_class_casts(Pointer irg, Pointer gppt_fct);
-
-	public static native void optimize_class_casts();
-
 	public static native void combo(Pointer irg);
 
 	public static native Pointer combo_pass(String name);
-
-	public static native void inline_small_irgs(Pointer irg, int size);
-
-	public static native Pointer inline_small_irgs_pass(String name, int size);
-
-	public static native void inline_leaf_functions(int maxsize, int leafsize, int size, int ignore_runtime);
-
-	public static native Pointer inline_leaf_functions_pass(String name, int maxsize, int leafsize, int size, int ignore_runtime);
 
 	public static native void inline_functions(int maxsize, int inline_threshold, Pointer after_inline_opt);
 
