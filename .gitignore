@@ -1,5 +1,6 @@
 *.pyc
 *.class
+*.vcg
 /release/
 /classes/
 /binding_generator/config
