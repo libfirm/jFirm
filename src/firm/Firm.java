@@ -23,10 +23,10 @@ public final class Firm {
 	}
 
 	public static interface binding_compilerlib extends Library {
-		interface CreateCallback extends Callback {
+		interface NameMangleCallback extends Callback {
 			Pointer callback(Pointer ident, Pointer type);
 		}
-		void set_compilerlib_entity_creator(CreateCallback handle);
+		void set_compilerlib_name_mangle(NameMangleCallback handle);
 	}
 
 	public static int getMajorVersion() {
@@ -57,17 +57,12 @@ public final class Firm {
 		}
 	};
 
-	private static final binding_compilerlib.CreateCallback addUnderscore = new binding_compilerlib.CreateCallback() {
+	private static final binding_compilerlib.NameMangleCallback addUnderscore = new binding_compilerlib.NameMangleCallback() {
 		@Override
 		public Pointer callback(Pointer ident, Pointer type) {
 			final Ident baseIdent = new Ident(ident);
 			final Ident mangledIdent = baseIdent.mangle("_", "");
-			final Type global = Program.getGlobalType();
-			final Type tp = new Type(type);
-			final Entity entity = new Entity(global, mangledIdent, tp);
-			entity.setVisibility(ir_visibility.ir_visibility_external);
-			entity.setLdIdent(mangledIdent);
-			return entity.ptr;
+			return mangledIdent.ptr;
 		}
 	};
 
@@ -83,7 +78,7 @@ public final class Firm {
 			binding_clib = (binding_compilerlib) Native.loadLibrary("firm",
 					binding_compilerlib.class);
 		}
-		binding_clib.set_compilerlib_entity_creator(addUnderscore);
+		binding_clib.set_compilerlib_name_mangle(addUnderscore);
 	}
 
 	/**

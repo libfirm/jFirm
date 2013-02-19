@@ -146,14 +146,12 @@ public class binding_ident {
 		mtp_property_naked((1 << 4)),
 		mtp_property_malloc((1 << 5)),
 		mtp_property_returns_twice((1 << 6)),
-		mtp_property_intrinsic((1 << 7)),
-		mtp_property_runtime((1 << 8)),
-		mtp_property_private((1 << 9)),
-		mtp_property_has_loop((1 << 10)),
-		mtp_property_always_inline((1 << 11)),
-		mtp_property_noinline((1 << 12)),
-		mtp_property_inline_recommended((1 << 13)),
-		mtp_temporary((1 << 14));
+		mtp_property_private((1 << 7)),
+		mtp_property_has_loop((1 << 8)),
+		mtp_property_always_inline((1 << 9)),
+		mtp_property_noinline((1 << 10)),
+		mtp_property_inline_recommended((1 << 11)),
+		mtp_temporary((1 << 12));
 		public final int val;
 
 		private static class C {
@@ -363,14 +361,6 @@ public class binding_ident {
 	public static native Pointer new_id_from_chars(String str, com.sun.jna.NativeLong len);
 
 	public static native String get_id_str(Pointer id);
-
-	public static native com.sun.jna.NativeLong get_id_strlen(Pointer id);
-
-	public static native int id_is_prefix(Pointer prefix, Pointer id);
-
-	public static native int id_is_suffix(Pointer suffix, Pointer id);
-
-	public static native int id_contains_char(Pointer id, byte c);
 
 	public static native Pointer id_unique(String tag);
 

@@ -146,14 +146,12 @@ public class binding_iroptimize {
 		mtp_property_naked((1 << 4)),
 		mtp_property_malloc((1 << 5)),
 		mtp_property_returns_twice((1 << 6)),
-		mtp_property_intrinsic((1 << 7)),
-		mtp_property_runtime((1 << 8)),
-		mtp_property_private((1 << 9)),
-		mtp_property_has_loop((1 << 10)),
-		mtp_property_always_inline((1 << 11)),
-		mtp_property_noinline((1 << 12)),
-		mtp_property_inline_recommended((1 << 13)),
-		mtp_temporary((1 << 14));
+		mtp_property_private((1 << 7)),
+		mtp_property_has_loop((1 << 8)),
+		mtp_property_always_inline((1 << 9)),
+		mtp_property_noinline((1 << 10)),
+		mtp_property_inline_recommended((1 << 11)),
+		mtp_temporary((1 << 12));
 		public final int val;
 
 		private static class C {
@@ -1935,9 +1933,9 @@ public class binding_iroptimize {
 
 	public static native Pointer computed_value_Cmp_Confirm(Pointer cmp, Pointer left, Pointer right, /* ir_relation */int relation);
 
-	public static native void set_compilerlib_entity_creator(Pointer cb);
+	public static native void set_compilerlib_name_mangle(Pointer cb);
 
-	public static native Pointer get_compilerlib_entity_creator();
+	public static native Pointer get_compilerlib_name_mangle();
 
 	public static native Pointer create_compilerlib_entity(Pointer id, Pointer mt);
 }
