@@ -9,7 +9,6 @@ import com.sun.jna.Pointer;
 import firm.bindings.binding_firm_common;
 import firm.bindings.binding_irflag;
 import firm.bindings.binding_libc;
-import firm.bindings.binding_typerep.ir_visibility;
 
 public final class Firm {
 
