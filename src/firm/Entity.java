@@ -15,11 +15,11 @@ public class Entity extends JNAWrapper {
 		super(ptr);
 	}
 
-	public Entity(Type owner, Ident name, Type type) {
+	public Entity(CompoundType owner, Ident name, Type type) {
 		this(binding_typerep.new_entity(owner.ptr, name.ptr, type.ptr));
 	}
 
-	public Entity(Type owner, String name, Type type) {
+	public Entity(CompoundType owner, String name, Type type) {
 		this(owner, new Ident(name), type);
 	}
 

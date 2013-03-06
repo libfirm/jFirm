@@ -83,11 +83,11 @@ public abstract class GraphBase extends JNAWrapper {
 	/**
 	 * returns compound type for the functions stackframe layout
 	 */
-	public Type getFrameType() {
-		return Type.createWrapper(binding_irgraph.get_irg_frame_type(ptr));
+	public CompoundType getFrameType() {
+		return (CompoundType) Type.createWrapper(binding_irgraph.get_irg_frame_type(ptr));
 	}
 
-	public void setFrameType(Type type) {
+	public void setFrameType(CompoundType type) {
 		binding_irgraph.set_irg_frame_type(ptr, type.ptr);
 	}
 

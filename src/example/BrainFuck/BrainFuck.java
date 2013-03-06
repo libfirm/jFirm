@@ -7,6 +7,7 @@ import java.io.InputStream;
 import com.sun.jna.Platform;
 
 import firm.ArrayType;
+import firm.ClassType;
 import firm.Construction;
 import firm.Entity;
 import firm.Graph;
@@ -47,7 +48,7 @@ public class BrainFuck {
 
 		/* create a new entity for the main function */
 		MethodType type = new MethodType(0, 0);
-		Type global = Program.getGlobalType();
+		ClassType global = Program.getGlobalType();
 		Entity mainEnt = new Entity(global, "main", type);
 		mainEnt.setLdIdent(makeLdIdent("main"));
 
@@ -58,8 +59,7 @@ public class BrainFuck {
 		atype.setSizeBytes(DATA_SIZE);
 		atype.setTypeState(ir_type_state.layout_fixed);
 
-		Type globalType = Program.getGlobalType();
-		Entity data = new Entity(globalType, "data", atype);
+		Entity data = new Entity(global, "data", atype);
 		data.setLdIdent(makeLdIdent("data"));
 		data.setVisibility(ir_visibility.ir_visibility_local);
 
@@ -76,7 +76,7 @@ public class BrainFuck {
 		MethodType putcharType = new MethodType(new Type[] { intType },
 				new Type[] { intType });
 
-		putcharEntity = new Entity(globalType, "putchar", putcharType);
+		putcharEntity = new Entity(global, "putchar", putcharType);
 		putcharEntity.setLdIdent(makeLdIdent("putchar"));
 		putcharSymConst = construction.newSymConst(putcharEntity);
 
@@ -84,7 +84,7 @@ public class BrainFuck {
 		MethodType getcharType = new MethodType(new Type[] {},
 				new Type[] { intType });
 
-		getcharEntity = new Entity(globalType, "getchar", getcharType);
+		getcharEntity = new Entity(global, "getchar", getcharType);
 		getcharEntity.setLdIdent(makeLdIdent("getchar"));
 		getcharSymConst = construction.newSymConst(getcharEntity);
 
