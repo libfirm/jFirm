@@ -10,11 +10,11 @@ public abstract class Unop extends Node {
 	}
 
 	public Node getOp() {
-		return createWrapper(firm.bindings.binding_irnode.get_unop_op(ptr));
+		return createWrapper(firm.bindings.binding_irnode.get_irn_n(ptr, 0));
 	}
 
 	public void setOp(Node op) {
-		firm.bindings.binding_irnode.set_unop_op(this.ptr, op.ptr);
+		firm.bindings.binding_irnode.set_irn_n(this.ptr, 0, op.ptr);
 	}
 
 	public static final int pnMax = 0;

@@ -393,22 +393,6 @@ public class binding_irdump {
 		dump_verbosity_entattrs(0x00000010),
 		dump_verbosity_entconsts(0x00000020),
 		dump_verbosity_accessStats(0x00000100),
-		dump_verbosity_noClassTypes(0x00001000),
-		dump_verbosity_noStructTypes(0x00002000),
-		dump_verbosity_noUnionTypes(0x00004000),
-		dump_verbosity_noArrayTypes(0x00008000),
-		dump_verbosity_noPointerTypes(0x00010000),
-		dump_verbosity_noMethodTypes(0x00020000),
-		dump_verbosity_noPrimitiveTypes(0x00040000),
-		dump_verbosity_noEnumerationTypes(0x00080000),
-		dump_verbosity_onlyClassTypes(0x000FE000),
-		dump_verbosity_onlyStructTypes(0x000FD000),
-		dump_verbosity_onlyUnionTypes(0x000FB000),
-		dump_verbosity_onlyArrayTypes(0x000F7000),
-		dump_verbosity_onlyPointerTypes(0x000EF000),
-		dump_verbosity_onlyMethodTypes(0x000DF000),
-		dump_verbosity_onlyPrimitiveTypes(0x000BF000),
-		dump_verbosity_onlyEnumerationTypes(0x0007F000),
 		dump_verbosity_max(0x4FF00FBE);
 		public final int val;
 

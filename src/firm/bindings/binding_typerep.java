@@ -1038,10 +1038,6 @@ public class binding_typerep {
 
 	public static native com.sun.jna.NativeLong get_type_nr(Pointer tp);
 
-	public static native int equal_type(Pointer typ1, Pointer typ2);
-
-	public static native int smaller_type(Pointer st, Pointer lt);
-
 	public static native Pointer new_type_class(Pointer name);
 
 	public static native Pointer new_d_type_class(Pointer name, Pointer db);

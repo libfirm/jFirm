@@ -884,10 +884,7 @@ public class binding_irnode {
 
 	public static enum op_arity {
 		oparity_invalid(0),
-		oparity_unary(),
 		oparity_binary(),
-		oparity_trinary(),
-		oparity_zero(),
 		oparity_variable(),
 		oparity_dynamic(),
 		oparity_any();
@@ -3506,12 +3503,6 @@ public class binding_irnode {
 	public static native void remove_Call_callee_arr(Pointer node);
 
 	public static native String get_builtin_kind_name(/* ir_builtin_kind */int kind);
-
-	public static native int is_unop(Pointer node);
-
-	public static native Pointer get_unop_op(Pointer node);
-
-	public static native void set_unop_op(Pointer node, Pointer op);
 
 	public static native int is_binop(Pointer node);
 

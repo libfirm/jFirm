@@ -482,10 +482,7 @@ public class binding_irop {
 
 	public static enum op_arity {
 		oparity_invalid(0),
-		oparity_unary(),
 		oparity_binary(),
-		oparity_trinary(),
-		oparity_zero(),
 		oparity_variable(),
 		oparity_dynamic(),
 		oparity_any();

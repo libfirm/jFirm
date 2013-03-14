@@ -356,11 +356,11 @@ public class binding_iredges {
 	}
 
 	public static enum ir_edge_kind_t {
-		EDGE_KIND_FIRST(),
-		EDGE_KIND_NORMAL(ir_edge_kind_t.EDGE_KIND_FIRST.val),
+		EDGE_KIND_NORMAL(),
+		EDGE_KIND_FIRST(ir_edge_kind_t.EDGE_KIND_NORMAL.val),
 		EDGE_KIND_BLOCK(),
 		EDGE_KIND_DEP(),
-		EDGE_KIND_LAST();
+		EDGE_KIND_LAST(ir_edge_kind_t.EDGE_KIND_DEP.val);
 		public final int val;
 
 		private static class C {
