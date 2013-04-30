@@ -1,57 +1,11 @@
 #!/usr/bin/python
-from jinja2 import Environment, Template
+from jinja2 import Environment, Template, FileSystemLoader
 import re
 
 from spec_util import verify_node, is_dynamic_pinned, setdefault, isAbstract, setldefault, load_spec
-import ir_spec
+import sys
 
 java_keywords = [ "public", "private", "protected", "true", "false" ]
-
-module = load_spec("ir_spec.py")
-nodes  = []
-for node in module.nodes:
-	# the symconst value is a union and is not generated automatically
-	if node.name == "SymConst":
-		node.noconstructor = True
-	# Op is an abstract base
-	if node.name == "Op":
-		continue
-	# ASM n_clobbers has no setter, currently
-	if node.name == "ASM":
-		continue
-	if node.name == "Block":
-		node.java_add = '''
-	public void addPred(Node node) {
-		firm.bindings.binding_ircons.add_immBlock_pred(ptr, node.ptr);
-	}
-
-	public void mature() {
-		firm.bindings.binding_ircons.mature_immBlock(ptr);
-	}
-
-	@Override
-	public Block getBlock() {
-		return null;
-	}
-
-	public boolean blockVisited() {
-		return 0 != firm.bindings.binding_irnode.Block_block_visited(ptr);
-	}
-
-	public void markBlockVisited() {
-		firm.bindings.binding_irnode.mark_Block_block_visited(ptr);
-	}
-
-'''
-	# TODO short workaround
-	if node.name in ("End"):
-		node.noconstructor = True
-	if node.name == "Load":
-		for a in node.attrs:
-			if a["name"] == "mode":
-				a["java_name"] = "load_mode"
-	nodes.append(node)
-
 def format_filter_keywords(arg):
 	if arg in java_keywords:
 		return "_" + arg
@@ -162,36 +116,12 @@ def format_camel_case(string):
 def format_camel_case_big(string):
 	return format_camel_case_helper(string, True)
 
-def format_ifset(string, node, key):
-	if hasattr(node, key):
-		return string
-	return ""
-
-def format_if(string, cond):
-	if cond:
-		return string
-	return ""
-
-def format_ifabstract(string, node):
-	if isAbstract(node):
-		return string
-	return ""
-
-def format_key(node, key, default=""):
-	if hasattr(node, key):
-		return getattr(node, key)
-	return default
-
-env = Environment()
+env = Environment(loader=FileSystemLoader("."))
 env.filters['argdecls']    = format_argdecls
 env.filters['args']        = format_args
 env.filters['bindingargs'] = format_binding_args
 env.filters['camelCase']   = format_camel_case
 env.filters['CamelCase']   = format_camel_case_big
-env.filters['ifset']       = format_ifset
-env.filters['if']          = format_if
-env.filters['ifabstract']  = format_ifabstract
-env.filters['key']         = format_key
 env.filters['filterkeywords'] = format_filter_keywords
 
 env.filters['arguments']          = format_arguments
@@ -201,6 +131,9 @@ env.filters['nodearguments']      = format_nodearguments
 env.filters['blockparameter']     = format_blockparameter
 env.filters['blockargument']      = format_blockargument
 env.filters['block_construction'] = format_block_construction
+env.globals['isAbstract']         = isAbstract
+env.globals['len']                = len
+env.globals['warning']            = "/* Warning: Automatically generated file */"
 
 def get_java_type(type):
 	if type == "ir_type*":
@@ -399,241 +332,35 @@ def preprocess_node(node):
 			
 		node.arguments = arguments
 
-for node in nodes:
-	preprocess_node(node)
+def main(argv):
+	if len(argv) < 3:
+		print "usage: %s specfile templatefile [-nodes]" % argv[0]
+		sys.exit(1)
 
-for node in nodes:
-	filename = "%s.java" % node.classname
-	print "Create: %s" % filename
-	file = open(filename, "w");
-	
-	template = env.from_string('''/* Warning: Automatically generated file */
-package firm.nodes;
+	specfile     = argv[1]
+	templatefile = argv[2]
+	nodesmode    = "-nodes" in argv
 
-import com.sun.jna.Pointer;
+	spec  = load_spec(specfile)
+	nodes = spec.nodes
+	env.globals['nodes'] = nodes
+	env.globals['spec']  = spec
 
-public {{"abstract "|ifabstract(node)}}class {{node.classname}} extends {{node.parent.classname}} {
+	template = env.get_template(templatefile)
 
-	public {{node.classname}}(Pointer ptr) {
-		super(ptr);
-	}
+	for node in nodes:
+		preprocess_node(node)
 
-	{% for input in node.ins -%}
-	{%if node.parent.classname != "Node"%}@Override
-	{%endif-%}
-	public Node get{{input[0]|CamelCase}}() {
-		return createWrapper(firm.bindings.binding_irnode.get_{{node.name}}_{{input[0]}}(ptr));
-	}
+	if nodesmode:
+		for node in nodes:
+			filename = "%s.java" % node.classname
+			print "Create: %s" % filename
+			file = open(filename, "w");
+			
+			file.write(template.render(node = node).encode("utf-8") + "\n")
+			file.close()
+	else:
+		sys.stdout.write(template.render().encode("utf-8") + "\n")
 
-	{%if node.parent.classname != "Node"%}@Override
-	{%endif-%}
-	public void set{{input[0]|CamelCase}}(Node {{input[0]|filterkeywords}}) {
-		firm.bindings.binding_irnode.set_{{node.name}}_{{input[0]}}(this.ptr, {{input[0]|filterkeywords}}.ptr);
-	}
-
-	{% endfor -%}
-
-	{%- for attr in node.attrs -%}
-	public {{attr.java_type}} get{{attr.java_name|CamelCase}}() {
-		{{attr.wrap_type}} _res = firm.bindings.binding_irnode.get_{{node.name}}_{{attr.name}}(ptr);
-		return {{attr.from_wrapper % "_res"}};
-	}
-
-	public void set{{attr.java_name|CamelCase}}({{attr.java_type}} _val) {
-		firm.bindings.binding_irnode.set_{{node.name}}_{{attr.name}}(this.ptr, {{attr.to_wrapper % "_val"}});
-	}
-
-	{% endfor -%}
-
-	{{- node.java_add -}}
-	{%- if not isAbstract(node) -%}
-	public void accept(NodeVisitor visitor) {
-		visitor.visit(this);
-	}
-
-	{% endif -%}
-
-	{%- for out in node.outs -%}
-	{%- if out[1] != "" -%}
-	/** {{out[1]}} */
-	{% endif -%}
-	public static final int pn{{out[0]|CamelCase}} = {{loop.index0}};
-
-	{% endfor -%}
-	public static final int pnMax = {{len(node.outs)}};
-}
-
-''')
-	file.write(template.render(node = node, isAbstract = isAbstract, len=len))
-	file.close()
-
-template = env.from_string('''/* Warning: Automatically generated file */
-package firm;
-
-import com.sun.jna.Pointer;
-
-import firm.nodes.Node;
-import firm.bindings.binding_ircons;
-
-class ConstructionBase {
-
-	protected final Graph graph;
-
-	protected ConstructionBase(Graph graph) {
-		this.graph = graph;
-	}
-
-	{%- for node in nodes -%}
-	{%- if not isAbstract(node) and not node.noconstructor %}
-
-	public Node new{{node.classname}}({{node.arguments|argdecls}}) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_{{node.name}}(
-			{%- filter parameters %}
-			{{node|block_construction}}
-			{{node.arguments|bindingargs}}
-			{%- endfilter %});
-		return Node.createWrapper(result_ptr);
-	}
-	{%- endif %}
-	{%- endfor %}
-}
-
-''')
-
-file = open("ConstructionBase.java", "w")
-file.write(template.render(nodes = nodes, isAbstract = isAbstract))
-file.close()
-
-template = env.from_string('''/* Warning: automatically generated file */
-package firm.nodes;
-
-import com.sun.jna.Pointer;
-
-import firm.bindings.binding_irnode;
-
-class NodeWrapperConstruction {
-
-	public static Node createWrapper(Pointer ptr) {
-		final binding_irnode.ir_opcode opcode = binding_irnode.ir_opcode
-				.getEnum(binding_irnode.get_irn_opcode(ptr));
-
-		switch (opcode) {
-		{% for node in nodes -%}
-		{% if not isAbstract(node) -%}
-		case iro_{{node.name}}:
-			return new {{node.classname}}(ptr);
-
-		{% endif -%}
-		{% endfor -%}
-		default:
-			throw new IllegalStateException("Unkown node type: " + opcode);
-		}
-	}
-}
-
-''')
-file = open("NodeWrapperConstruction.java", "w")
-file.write(template.render(nodes = nodes, isAbstract = isAbstract))
-file.close()
-
-template = env.from_string('''/* Warning: automatically generated file */
-package firm.nodes;
-
-/**
- * Visitor interface for firm nodes
- */
-public interface NodeVisitor {
-
-	{%- for node in nodes -%}
-	{% if not isAbstract(node) %}
-
-	/** called when accept is called on a {{node.classname}} node */
-	void visit({{node.classname}} node);
-	{%- endif %}
-	{%- endfor %}
-
-	/**
-	 * Default Visitor: A class which implements every visit function of the
-	 * NodeVisitor interface with a call to the defaultVisit function. Usefull
-	 * as base for own visitors which need to treat all nodes equally or only
-	 * need to override some visit functions.
-	 */
-	public static abstract class Default implements NodeVisitor {
-
-		public void defaultVisit(Node n) {
-		}
-
-		{%- for node in nodes -%}
-		{% if not isAbstract(node) %}
-
-		@Override
-		public void visit({{node.classname}} node) {
-			defaultVisit(node);
-		}
-		{%- endif -%}
-		{%- endfor %}
-	}
-}
-
-''')
-file = open("NodeVisitor.java", "w")
-file.write(template.render(nodes = nodes, isAbstract = isAbstract))
-file.close()
-
-
-template = env.from_string('''/* Warning: automatically generated file */
-package firm;
-
-import com.sun.jna.Pointer;
-
-import firm.bindings.binding_irgraph;
-import firm.nodes.Node;
-
-/**
- * A graph is an object owning stuff related to a firm graph. That is:
- *
- * - Nodes and Blocks
- * - A type describing the stackframe layout
- * - Direct pointers to some unique nodes (StartBlock, Start, ...)
- * - Helper functions to traverse the graph
- */
-public class Graph extends GraphBase {
-
-	public Graph(Pointer pointer) {
-		super(pointer);
-	}
-
-	/**
-	 * create a new firm graph.
-	 * You have to specify the number of parameters, you want to use during
-	 * graph construction (for Construction.setVariable/Construction.getVariable)
-	 * @param entity      Entity for the graph (an entity with MethodType)
-	 * @param nLocalVars  number of local variables during graph construction
-	 */
-	public Graph(Entity entity, int nLocalVars) {
-		this(binding_irgraph.new_ir_graph(entity.ptr, nLocalVars));
-	}
-
-	{% for node in nodes -%}
-	{% if not isAbstract(node) and not node.noconstructor %}
-
-	/** Create a new {{node.name}} node */
-	public final Node new{{node.classname}}(
-		{%- filter parameters %}
-			{{node|blockparameter}}
-			{{node|nodeparameters}}
-		{%- endfilter %}) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_{{node.name}}(
-			{%- filter arguments %}
-				{{node|blockargument}}
-				{{node|nodearguments}}
-			{%- endfilter %}));
-	}
-	{%- endif %}
-	{%- endfor %}
-}
-
-''')
-file = open("Graph.java", "w")
-file.write(template.render(nodes = nodes, isAbstract = isAbstract))
-file.close()
+if __name__ == "__main__":
+	main(sys.argv)

@@ -3,18 +3,16 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
-public class Minus extends Unop {
+public class Minus extends Node {
 
 	public Minus(Pointer ptr) {
 		super(ptr);
 	}
 
-	@Override
 	public Node getOp() {
 		return createWrapper(firm.bindings.binding_irnode.get_Minus_op(ptr));
 	}
 
-	@Override
 	public void setOp(Node op) {
 		firm.bindings.binding_irnode.set_Minus_op(this.ptr, op.ptr);
 	}

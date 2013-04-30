@@ -1,4 +1,4 @@
-/* Warning: automatically generated file */
+/* Warning: Automatically generated file */
 package firm.nodes;
 
 import com.sun.jna.Pointer;

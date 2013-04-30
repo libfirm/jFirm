@@ -40,7 +40,7 @@ public class Block extends Node {
 		firm.bindings.binding_irnode.mark_Block_block_visited(ptr);
 	}
 
-public void accept(NodeVisitor visitor) {
+	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}
 
