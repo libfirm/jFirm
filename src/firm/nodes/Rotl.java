@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Rotl extends Binop {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Rotl(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Rotl.val, new Factory());
+	}
 
 	public Rotl(Pointer ptr) {
 		super(ptr);
@@ -29,6 +39,7 @@ public class Rotl extends Binop {
 		firm.bindings.binding_irnode.set_Rotl_right(this.ptr, right.ptr);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

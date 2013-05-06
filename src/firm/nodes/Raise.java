@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Raise extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Raise(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Raise.val, new Factory());
+	}
 
 	public Raise(Pointer ptr) {
 		super(ptr);
@@ -25,6 +35,7 @@ public class Raise extends Node {
 		firm.bindings.binding_irnode.set_Raise_exo_ptr(this.ptr, exo_ptr.ptr);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

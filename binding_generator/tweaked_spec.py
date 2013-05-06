@@ -1,5 +1,8 @@
 from ir_spec import *
 
+java_binding = "firm.bindings.binding_irnode"
+java_package = "firm.nodes"
+
 # some tweaks are necessary to generate the java code
 SymConst.noconstructor = True
 End.noconstructor = True

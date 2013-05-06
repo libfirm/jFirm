@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Store extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Store(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Store.val, new Factory());
+	}
 
 	public Store(Pointer ptr) {
 		super(ptr);
@@ -51,6 +61,7 @@ public class Store extends Node {
 		firm.bindings.binding_irnode.set_Store_unaligned(this.ptr, _val.val);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

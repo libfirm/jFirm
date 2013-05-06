@@ -159,6 +159,8 @@ public interface NodeVisitor {
 	/** called when accept is called on a Unknown node */
 	void visit(Unknown node);
 
+	void visitUnknown(Node node);
+
 	/**
 	 * Default Visitor: A class which implements every visit function of the
 	 * NodeVisitor interface with a call to the defaultVisit function. Usefull
@@ -422,6 +424,11 @@ public interface NodeVisitor {
 
 		@Override
 		public void visit(Unknown node) {
+			defaultVisit(node);
+		}
+
+		@Override
+		public void visitUnknown(Node node) {
 			defaultVisit(node);
 		}
 	}

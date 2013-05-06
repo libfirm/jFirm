@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Block extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Block(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Block.val, new Factory());
+	}
 
 	public Block(Pointer ptr) {
 		super(ptr);
@@ -40,6 +50,7 @@ public class Block extends Node {
 		firm.bindings.binding_irnode.mark_Block_block_visited(ptr);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

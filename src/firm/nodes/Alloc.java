@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Alloc extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Alloc(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Alloc.val, new Factory());
+	}
 
 	public Alloc(Pointer ptr) {
 		super(ptr);
@@ -43,6 +53,7 @@ public class Alloc extends Node {
 		firm.bindings.binding_irnode.set_Alloc_where(this.ptr, _val.val);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

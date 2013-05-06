@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Cmp extends Binop {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Cmp(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Cmp.val, new Factory());
+	}
 
 	public Cmp(Pointer ptr) {
 		super(ptr);
@@ -38,6 +48,7 @@ public class Cmp extends Binop {
 		firm.bindings.binding_irnode.set_Cmp_relation(this.ptr, _val.value());
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

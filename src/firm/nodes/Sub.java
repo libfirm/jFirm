@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Sub extends Binop {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Sub(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Sub.val, new Factory());
+	}
 
 	public Sub(Pointer ptr) {
 		super(ptr);
@@ -29,6 +39,7 @@ public class Sub extends Binop {
 		firm.bindings.binding_irnode.set_Sub_right(this.ptr, right.ptr);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

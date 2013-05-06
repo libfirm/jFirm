@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Builtin extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Builtin(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Builtin.val, new Factory());
+	}
 
 	public Builtin(Pointer ptr) {
 		super(ptr);
@@ -35,6 +45,7 @@ public class Builtin extends Node {
 		firm.bindings.binding_irnode.set_Builtin_type(this.ptr, _val.ptr);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

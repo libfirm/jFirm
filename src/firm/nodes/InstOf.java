@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class InstOf extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new InstOf(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_InstOf.val, new Factory());
+	}
 
 	public InstOf(Pointer ptr) {
 		super(ptr);
@@ -34,6 +44,7 @@ public class InstOf extends Node {
 		firm.bindings.binding_irnode.set_InstOf_type(this.ptr, _val.ptr);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

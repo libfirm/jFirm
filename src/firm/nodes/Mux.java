@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Mux extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Mux(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Mux.val, new Factory());
+	}
 
 	public Mux(Pointer ptr) {
 		super(ptr);
@@ -33,6 +43,7 @@ public class Mux extends Node {
 		firm.bindings.binding_irnode.set_Mux_true(this.ptr, _true.ptr);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

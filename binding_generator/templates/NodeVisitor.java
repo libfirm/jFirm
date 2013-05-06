@@ -1,5 +1,5 @@
 {{warning}}
-package firm.nodes;
+package {{package}};
 
 /**
  * Visitor interface for firm nodes
@@ -13,6 +13,8 @@ public interface NodeVisitor {
 	void visit({{node.classname}} node);
 	{%- endif %}
 	{%- endfor %}
+
+	void visitUnknown(Node node);
 
 	/**
 	 * Default Visitor: A class which implements every visit function of the
@@ -34,5 +36,10 @@ public interface NodeVisitor {
 		}
 		{%- endif -%}
 		{%- endfor %}
+
+		@Override
+		public void visitUnknown(Node node) {
+			defaultVisit(node);
+		}
 	}
 }

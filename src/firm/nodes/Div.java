@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Div extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Div(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Div.val, new Factory());
+	}
 
 	public Div(Pointer ptr) {
 		super(ptr);
@@ -51,6 +61,7 @@ public class Div extends Node {
 		firm.bindings.binding_irnode.set_Div_no_remainder(this.ptr, _val);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

@@ -51,12 +51,17 @@ def format_blockargument(node):
 		return "block.ptr"
 
 def format_block_construction(node):
+	if hasattr(env.globals['spec'], "external"):
+		graph = "cons.getGraph().ptr"
+	else:
+		graph = "graph.ptr"
+
 	if hasattr(node, "knownBlock"):
 		if hasattr(node, "knownGraph"):
 			return ""
-		return "graph.ptr"
+		return graph
 	else:
-		return "binding_ircons.get_r_cur_block(graph.ptr)"
+		return "binding_ircons.get_r_cur_block(%s)" % graph
 
 def format_arguments(string, voidwhenempty = False):
 	args = re.split('\s*\n\s*', string)
@@ -343,8 +348,10 @@ def main(argv):
 
 	spec  = load_spec(specfile)
 	nodes = spec.nodes
-	env.globals['nodes'] = nodes
-	env.globals['spec']  = spec
+	env.globals['nodes']   = nodes
+	env.globals['spec']    = spec
+	env.globals['binding'] = spec.java_binding
+	env.globals['package'] = spec.java_package
 
 	template = env.get_template(templatefile)
 

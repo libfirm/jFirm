@@ -16,7 +16,7 @@ for i in ConstructionBase.java Graph.java; do
 	echo "GEN $GOAL"
 	$GENERATOR templates/$i > $GOAL
 done
-for i in NodeVisitor.java NodeWrapperConstruction.java; do
+for i in NodeVisitor.java Nodes.java; do
 	GOAL=../src/firm/nodes/$i
 	echo "GEN $GOAL"
 	$GENERATOR templates/$i > $GOAL

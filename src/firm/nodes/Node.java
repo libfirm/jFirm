@@ -3,6 +3,7 @@ package firm.nodes;
 import java.nio.Buffer;
 import java.nio.IntBuffer;
 import java.nio.LongBuffer;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.sun.jna.NativeLong;
@@ -15,8 +16,9 @@ import firm.bindings.binding_irnode;
 import firm.bindings.binding_irnode.ir_opcode;
 
 public abstract class Node extends JNAWrapper {
+	private static ArrayList<NodeWrapperFactory> factories = new ArrayList<NodeWrapperFactory>();
 
-	public Node(Pointer ptr) {
+	protected Node(Pointer ptr) {
 		super(ptr);
 	}
 
@@ -25,7 +27,21 @@ public abstract class Node extends JNAWrapper {
 	}
 
 	public static Node createWrapper(Pointer ptr) {
-		return NodeWrapperConstruction.createWrapper(ptr);
+		final int opcode = binding_irnode.get_irn_opcode(ptr);
+		NodeWrapperFactory factory = null;
+		if (opcode > factories.size() || (factory = factories.get(opcode)) == null) {
+			Node res = new UnknownNode(ptr);
+			System.err.printf("Warning: opcode of node %s is unknown\n", res);
+			return res;
+		}
+		return factory.createWrapper(ptr);
+	}
+
+	public static void registerFactory(int opcode_id, NodeWrapperFactory factory) {
+		while (factories.size() <= opcode_id) {
+			factories.add(null);
+		}
+		factories.add(opcode_id, factory);
 	}
 
 	public static Pointer[] getPointerListFromNodeList(Node[] list) {

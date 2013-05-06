@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class CopyB extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new CopyB(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_CopyB.val, new Factory());
+	}
 
 	public CopyB(Pointer ptr) {
 		super(ptr);
@@ -42,6 +52,7 @@ public class CopyB extends Node {
 		firm.bindings.binding_irnode.set_CopyB_type(this.ptr, _val.ptr);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

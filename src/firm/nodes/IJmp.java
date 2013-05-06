@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class IJmp extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new IJmp(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_IJmp.val, new Factory());
+	}
 
 	public IJmp(Pointer ptr) {
 		super(ptr);
@@ -17,6 +27,7 @@ public class IJmp extends Node {
 		firm.bindings.binding_irnode.set_IJmp_target(this.ptr, target.ptr);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

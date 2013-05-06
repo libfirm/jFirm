@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Mod extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Mod(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Mod.val, new Factory());
+	}
 
 	public Mod(Pointer ptr) {
 		super(ptr);
@@ -42,6 +52,7 @@ public class Mod extends Node {
 		firm.bindings.binding_irnode.set_Mod_resmode(this.ptr, _val.ptr);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

@@ -4,11 +4,22 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Start extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Start(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Start.val, new Factory());
+	}
 
 	public Start(Pointer ptr) {
 		super(ptr);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

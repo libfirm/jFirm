@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Cond extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Cond(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Cond.val, new Factory());
+	}
 
 	public Cond(Pointer ptr) {
 		super(ptr);
@@ -26,6 +36,7 @@ public class Cond extends Node {
 		firm.bindings.binding_irnode.set_Cond_jmp_pred(this.ptr, _val.val);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

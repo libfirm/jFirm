@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Minus extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Minus(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Minus.val, new Factory());
+	}
 
 	public Minus(Pointer ptr) {
 		super(ptr);
@@ -17,6 +27,7 @@ public class Minus extends Node {
 		firm.bindings.binding_irnode.set_Minus_op(this.ptr, op.ptr);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}

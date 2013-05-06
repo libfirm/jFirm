@@ -9,6 +9,7 @@ import com.sun.jna.Pointer;
 import firm.bindings.binding_firm_common;
 import firm.bindings.binding_irflag;
 import firm.bindings.binding_libc;
+import firm.nodes.Nodes;
 
 public final class Firm {
 
@@ -86,6 +87,8 @@ public final class Firm {
 	 * called more than once unless there was an finish() call.
 	 */
 	public static void init() {
+		Nodes.init();
+
 		/* hack to catch asserts... */
 		if (binding_cb == null) {
 			binding_cb = (binding_callback) Native.loadLibrary("firm",

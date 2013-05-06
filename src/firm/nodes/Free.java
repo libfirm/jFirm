@@ -4,6 +4,16 @@ package firm.nodes;
 import com.sun.jna.Pointer;
 
 public class Free extends Node {
+	static class Factory implements NodeWrapperFactory {
+		@Override
+		public Node createWrapper(Pointer ptr) {
+			return new Free(ptr);
+		}
+	}
+
+	static void init() {
+		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Free.val, new Factory());
+	}
 
 	public Free(Pointer ptr) {
 		super(ptr);
@@ -51,6 +61,7 @@ public class Free extends Node {
 		firm.bindings.binding_irnode.set_Free_where(this.ptr, _val.val);
 	}
 
+	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
 	}
