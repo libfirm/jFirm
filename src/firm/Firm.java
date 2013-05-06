@@ -87,8 +87,6 @@ public final class Firm {
 	 * called more than once unless there was an finish() call.
 	 */
 	public static void init() {
-		Nodes.init();
-
 		/* hack to catch asserts... */
 		if (binding_cb == null) {
 			binding_cb = (binding_callback) Native.loadLibrary("firm",
@@ -125,6 +123,8 @@ public final class Firm {
 		} else {
 			Backend.option("ia32-gasmode=elf");
 		}
+
+		Nodes.init();
 	}
 
 	public static void enableOptimisations() {

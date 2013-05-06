@@ -2,6 +2,7 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
+import firm.bindings.binding_irop;
 
 public abstract class Binop extends Node {
 

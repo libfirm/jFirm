@@ -2,6 +2,7 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
+import firm.bindings.binding_irop;
 
 public class Return extends Node {
 	static class Factory implements NodeWrapperFactory {
@@ -12,7 +13,8 @@ public class Return extends Node {
 	}
 
 	static void init() {
-		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Return.val, new Factory());
+		Pointer op = firm.bindings.binding_irnode.get_op_Return();
+		Node.registerFactory(binding_irop.get_op_code(op), new Factory());
 	}
 
 	public Return(Pointer ptr) {

@@ -248,7 +248,9 @@ public class binding_tv {
 		ir_bk_inport(),
 		ir_bk_outport(),
 		ir_bk_inner_trampoline(),
-		ir_bk_last(ir_builtin_kind.ir_bk_inner_trampoline.val);
+		ir_bk_saturating_increment(),
+		ir_bk_compare_swap(),
+		ir_bk_last(ir_builtin_kind.ir_bk_compare_swap.val);
 		public final int val;
 
 		private static class C {
@@ -537,6 +539,8 @@ public class binding_tv {
 	public static native int get_tarval_popcount(Pointer tv);
 
 	public static native int get_tarval_lowest_bit(Pointer tv);
+
+	public static native int get_tarval_highest_bit(Pointer tv);
 
 	public static native int tarval_snprintf(String buf, com.sun.jna.NativeLong buflen, Pointer tv);
 

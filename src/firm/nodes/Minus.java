@@ -2,6 +2,7 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
+import firm.bindings.binding_irop;
 
 public class Minus extends Node {
 	static class Factory implements NodeWrapperFactory {
@@ -12,7 +13,8 @@ public class Minus extends Node {
 	}
 
 	static void init() {
-		Node.registerFactory(firm.bindings.binding_irnode.ir_opcode.iro_Minus.val, new Factory());
+		Pointer op = firm.bindings.binding_irnode.get_op_Minus();
+		Node.registerFactory(binding_irop.get_op_code(op), new Factory());
 	}
 
 	public Minus(Pointer ptr) {

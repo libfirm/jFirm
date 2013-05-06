@@ -10,7 +10,7 @@ for i in lowering irgmod iredges irmode tv ircons irnode firm_common irdump irop
 	echo " * Creating $RES"
 	CMD="$CPARSER --print-jna --jna-libname firm -fvisibility=hidden -DFIRM_DLL -DFIRM_BUILD -I${FIRM_INC} ${FIRM_INC}/libfirm/$i.h --jna-limit ${FIRM_INC}/libfirm/$i.h"
 	if [ $i = "irnode" -o $i = "ircons" ]; then
-		CMD="$CMD --jna-limit ${FIRM_INC}/libfirm/nodeops.h"
+		CMD="$CMD --jna-limit ${FIRM_INC}/libfirm/nodes.h"
 	fi
 	echo "$CMD"
 	$CMD > $TMP || exit $?

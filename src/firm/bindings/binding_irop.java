@@ -277,7 +277,9 @@ public class binding_irop {
 		ir_bk_inport(),
 		ir_bk_outport(),
 		ir_bk_inner_trampoline(),
-		ir_bk_last(ir_builtin_kind.ir_bk_inner_trampoline.val);
+		ir_bk_saturating_increment(),
+		ir_bk_compare_swap(),
+		ir_bk_last(ir_builtin_kind.ir_bk_compare_swap.val);
 		public final int val;
 
 		private static class C {
@@ -377,102 +379,6 @@ public class binding_irop {
 
 		public static ir_align getEnum(int val) {
 			for (ir_align entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_opcode {
-		iro_ASM(),
-		iro_Add(),
-		iro_Alloc(),
-		iro_Anchor(),
-		iro_And(),
-		iro_Bad(),
-		iro_Block(),
-		iro_Builtin(),
-		iro_Call(),
-		iro_Cmp(),
-		iro_Cond(),
-		iro_Confirm(),
-		iro_Const(),
-		iro_Conv(),
-		iro_CopyB(),
-		iro_Deleted(),
-		iro_Div(),
-		iro_Dummy(),
-		iro_End(),
-		iro_Eor(),
-		iro_Free(),
-		iro_IJmp(),
-		iro_Id(),
-		iro_InstOf(),
-		iro_Jmp(),
-		iro_Load(),
-		iro_Minus(),
-		iro_Mod(),
-		iro_Mul(),
-		iro_Mulh(),
-		iro_Mux(),
-		iro_NoMem(),
-		iro_Not(),
-		iro_Or(),
-		iro_Phi(),
-		iro_Pin(),
-		iro_Proj(),
-		iro_Raise(),
-		iro_Return(),
-		iro_Rotl(),
-		iro_Sel(),
-		iro_Shl(),
-		iro_Shr(),
-		iro_Shrs(),
-		iro_Start(),
-		iro_Store(),
-		iro_Sub(),
-		iro_Switch(),
-		iro_SymConst(),
-		iro_Sync(),
-		iro_Tuple(),
-		iro_Unknown(),
-		iro_First(ir_opcode.iro_ASM.val),
-		iro_Last(ir_opcode.iro_Unknown.val),
-		beo_First(),
-		beo_Spill(ir_opcode.beo_First.val),
-		beo_Reload(),
-		beo_Perm(),
-		beo_MemPerm(),
-		beo_Copy(),
-		beo_Keep(),
-		beo_CopyKeep(),
-		beo_Call(),
-		beo_Return(),
-		beo_AddSP(),
-		beo_SubSP(),
-		beo_IncSP(),
-		beo_Start(),
-		beo_FrameAddr(),
-		beo_Last(ir_opcode.beo_FrameAddr.val),
-		iro_MaxOpcode();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_opcode(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_opcode() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_opcode getEnum(int val) {
-			for (ir_opcode entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -629,6 +535,8 @@ public class binding_irop {
 	public static native void set_op_dump(Pointer op, Pointer func);
 
 	public static native Pointer new_ir_op(int code, String name, /* op_pin_state */int p, /* irop_flags */int flags, /* op_arity */int opar, int op_index, com.sun.jna.NativeLong attr_size);
+
+	public static native void free_ir_op(Pointer code);
 
 	public static native int ir_get_n_opcodes();
 
