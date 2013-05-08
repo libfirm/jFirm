@@ -37,32 +37,6 @@ public class Free extends Node {
 		firm.bindings.binding_irnode.set_Free_ptr(this.ptr, ptr.ptr);
 	}
 
-	public Node getCount() {
-		return createWrapper(firm.bindings.binding_irnode.get_Free_count(ptr));
-	}
-
-	public void setCount(Node count) {
-		firm.bindings.binding_irnode.set_Free_count(this.ptr, count.ptr);
-	}
-
-	public firm.Type getType() {
-		Pointer _res = firm.bindings.binding_irnode.get_Free_type(ptr);
-		return firm.Type.createWrapper(_res);
-	}
-
-	public void setType(firm.Type _val) {
-		firm.bindings.binding_irnode.set_Free_type(this.ptr, _val.ptr);
-	}
-
-	public firm.bindings.binding_ircons.ir_where_alloc getWhere() {
-		int _res = firm.bindings.binding_irnode.get_Free_where(ptr);
-		return firm.bindings.binding_ircons.ir_where_alloc.getEnum(_res);
-	}
-
-	public void setWhere(firm.bindings.binding_ircons.ir_where_alloc _val) {
-		firm.bindings.binding_irnode.set_Free_where(this.ptr, _val.val);
-	}
-
 	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);

@@ -206,33 +206,6 @@ public class binding_irnode {
 		}
 	}
 
-	public static enum ir_where_alloc {
-		stack_alloc(),
-		heap_alloc();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_where_alloc(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_where_alloc() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_where_alloc getEnum(int val) {
-			for (ir_where_alloc entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_builtin_kind {
 		ir_bk_trap(),
 		ir_bk_debugbreak(),
@@ -1051,8 +1024,8 @@ public class binding_irnode {
 
 	public static enum n_Alloc {
 		n_Alloc_mem(),
-		n_Alloc_count(),
-		n_Alloc_max(n_Alloc.n_Alloc_count.val);
+		n_Alloc_size(),
+		n_Alloc_max(n_Alloc.n_Alloc_size.val);
 		public final int val;
 
 		private static class C {
@@ -1080,9 +1053,7 @@ public class binding_irnode {
 	public static enum pn_Alloc {
 		pn_Alloc_M(),
 		pn_Alloc_res(),
-		pn_Alloc_X_regular(),
-		pn_Alloc_X_except(),
-		pn_Alloc_max(pn_Alloc.pn_Alloc_X_except.val);
+		pn_Alloc_max(pn_Alloc.pn_Alloc_res.val);
 		public final int val;
 
 		private static class C {
@@ -1533,8 +1504,7 @@ public class binding_irnode {
 	public static enum n_Free {
 		n_Free_mem(),
 		n_Free_ptr(),
-		n_Free_count(),
-		n_Free_max(n_Free.n_Free_count.val);
+		n_Free_max(n_Free.n_Free_ptr.val);
 		public final int val;
 
 		private static class C {
@@ -2453,13 +2423,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Add();
 
-	public static native Pointer new_rd_Alloc(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_count, Pointer type, /* ir_where_alloc */int where);
+	public static native Pointer new_rd_Alloc(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_size, int alignment);
 
-	public static native Pointer new_r_Alloc(Pointer block, Pointer irn_mem, Pointer irn_count, Pointer type, /* ir_where_alloc */int where);
+	public static native Pointer new_r_Alloc(Pointer block, Pointer irn_mem, Pointer irn_size, int alignment);
 
-	public static native Pointer new_d_Alloc(Pointer dbgi, Pointer irn_mem, Pointer irn_count, Pointer type, /* ir_where_alloc */int where);
+	public static native Pointer new_d_Alloc(Pointer dbgi, Pointer irn_mem, Pointer irn_size, int alignment);
 
-	public static native Pointer new_Alloc(Pointer irn_mem, Pointer irn_count, Pointer type, /* ir_where_alloc */int where);
+	public static native Pointer new_Alloc(Pointer irn_mem, Pointer irn_size, int alignment);
 
 	public static native int is_Alloc(Pointer node);
 
@@ -2467,17 +2437,13 @@ public class binding_irnode {
 
 	public static native void set_Alloc_mem(Pointer node, Pointer mem);
 
-	public static native Pointer get_Alloc_count(Pointer node);
+	public static native Pointer get_Alloc_size(Pointer node);
 
-	public static native void set_Alloc_count(Pointer node, Pointer count);
+	public static native void set_Alloc_size(Pointer node, Pointer size);
 
-	public static native Pointer get_Alloc_type(Pointer node);
+	public static native int get_Alloc_alignment(Pointer node);
 
-	public static native void set_Alloc_type(Pointer node, Pointer type);
-
-	public static native /* ir_where_alloc */int get_Alloc_where(Pointer node);
-
-	public static native void set_Alloc_where(Pointer node, /* ir_where_alloc */int where);
+	public static native void set_Alloc_alignment(Pointer node, int alignment);
 
 	public static native Pointer get_op_Alloc();
 
@@ -2813,13 +2779,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Eor();
 
-	public static native Pointer new_rd_Free(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer irn_count, Pointer type, /* ir_where_alloc */int where);
+	public static native Pointer new_rd_Free(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_ptr);
 
-	public static native Pointer new_r_Free(Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer irn_count, Pointer type, /* ir_where_alloc */int where);
+	public static native Pointer new_r_Free(Pointer block, Pointer irn_mem, Pointer irn_ptr);
 
-	public static native Pointer new_d_Free(Pointer dbgi, Pointer irn_mem, Pointer irn_ptr, Pointer irn_count, Pointer type, /* ir_where_alloc */int where);
+	public static native Pointer new_d_Free(Pointer dbgi, Pointer irn_mem, Pointer irn_ptr);
 
-	public static native Pointer new_Free(Pointer irn_mem, Pointer irn_ptr, Pointer irn_count, Pointer type, /* ir_where_alloc */int where);
+	public static native Pointer new_Free(Pointer irn_mem, Pointer irn_ptr);
 
 	public static native int is_Free(Pointer node);
 
@@ -2830,18 +2796,6 @@ public class binding_irnode {
 	public static native Pointer get_Free_ptr(Pointer node);
 
 	public static native void set_Free_ptr(Pointer node, Pointer ptr);
-
-	public static native Pointer get_Free_count(Pointer node);
-
-	public static native void set_Free_count(Pointer node, Pointer count);
-
-	public static native Pointer get_Free_type(Pointer node);
-
-	public static native void set_Free_type(Pointer node, Pointer type);
-
-	public static native /* ir_where_alloc */int get_Free_where(Pointer node);
-
-	public static native void set_Free_where(Pointer node, /* ir_where_alloc */int where);
 
 	public static native Pointer get_op_Free();
 

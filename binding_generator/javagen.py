@@ -191,11 +191,6 @@ def get_java_type(type):
 		wrap_type    = "int"
 		to_wrapper   = "%s.val"
 		from_wrapper = "firm.bindings.binding_ircons.ir_cons_flags.getEnum(%s)"
-	elif type == "ir_where_alloc":
-		java_type    = "firm.bindings.binding_ircons.ir_where_alloc"
-		wrap_type    = "int"
-		to_wrapper   = "%s.val"
-		from_wrapper = "firm.bindings.binding_ircons.ir_where_alloc.getEnum(%s)"
 	elif type == "ir_entity*":
 		java_type    = "firm.Entity"
 		wrap_type    = "Pointer"

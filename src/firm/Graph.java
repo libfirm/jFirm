@@ -39,8 +39,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Alloc node */
-	public final Node newAlloc(Node block, Node mem, Node count, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Alloc(block.ptr, mem.ptr, count.ptr, type.ptr, where.val));
+	public final Node newAlloc(Node block, Node mem, Node size, int alignment) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Alloc(block.ptr, mem.ptr, size.ptr, alignment));
 	}
 
 	/** Create a new And node */
@@ -114,8 +114,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Free node */
-	public final Node newFree(Node block, Node mem, Node ptr, Node count, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Free(block.ptr, mem.ptr, ptr.ptr, count.ptr, type.ptr, where.val));
+	public final Node newFree(Node block, Node mem, Node ptr) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Free(block.ptr, mem.ptr, ptr.ptr));
 	}
 
 	/** Create a new IJmp node */

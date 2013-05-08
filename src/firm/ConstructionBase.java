@@ -19,8 +19,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newAlloc(Node mem, Node count, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Alloc(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, count.ptr, type.ptr, where.val);
+	public Node newAlloc(Node mem, Node size, int alignment) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Alloc(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, size.ptr, alignment);
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -94,8 +94,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newFree(Node mem, Node ptr, Node count, firm.Type type, firm.bindings.binding_ircons.ir_where_alloc where) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Free(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, ptr.ptr, count.ptr, type.ptr, where.val);
+	public Node newFree(Node mem, Node ptr) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Free(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, ptr.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 

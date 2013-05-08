@@ -206,33 +206,6 @@ public class binding_irconsconfirm {
 		}
 	}
 
-	public static enum ir_where_alloc {
-		stack_alloc(),
-		heap_alloc();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_where_alloc(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_where_alloc() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_where_alloc getEnum(int val) {
-			for (ir_where_alloc entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_builtin_kind {
 		ir_bk_trap(),
 		ir_bk_debugbreak(),
