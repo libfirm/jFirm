@@ -45,6 +45,10 @@ public class Construction extends ConstructionBase {
 		return graph.newSymConstTypeSize(type, mode);
 	}
 
+	public Node newSymcConstTypeAlign(Type type, Mode mode) {
+		return graph.newSymConstTypeAlign(type, mode);
+	}
+
 	public Node newConst(TargetValue tarval) {
 		return graph.newConst(tarval);
 	}

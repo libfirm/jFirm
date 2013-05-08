@@ -64,6 +64,11 @@ public abstract class GraphBase extends JNAWrapper {
 				Pointer.NULL, ptr, mode.ptr, type.ptr));
 	}
 
+	public Node newSymConstTypeAlign(Type type, Mode mode) {
+		return Node.createWrapper(binding_ircons.new_rd_SymConst_align(
+				Pointer.NULL, ptr, mode.ptr, type.ptr));
+	}
+
 	public Node newConst(int value, Mode mode) {
 		return Node.createWrapper(binding_ircons.new_rd_Const_long(
 				Pointer.NULL, ptr, mode.ptr, new NativeLong(value)));
