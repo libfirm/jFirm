@@ -2,7 +2,6 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.bindings.binding_irop;
 
 public class Mul extends Binop {
 	static class Factory implements NodeWrapperFactory {
@@ -14,7 +13,7 @@ public class Mul extends Binop {
 
 	static void init() {
 		Pointer op = firm.bindings.binding_irnode.get_op_Mul();
-		Node.registerFactory(binding_irop.get_op_code(op), new Factory());
+		Node.registerFactory(firm.bindings.binding_irop.get_op_code(op), new Factory());
 	}
 
 	public Mul(Pointer ptr) {

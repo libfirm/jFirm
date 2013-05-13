@@ -2,7 +2,6 @@
 package firm.nodes;
 
 import com.sun.jna.Pointer;
-import firm.bindings.binding_irop;
 
 public class Div extends Node {
 	static class Factory implements NodeWrapperFactory {
@@ -14,7 +13,7 @@ public class Div extends Node {
 
 	static void init() {
 		Pointer op = firm.bindings.binding_irnode.get_op_Div();
-		Node.registerFactory(binding_irop.get_op_code(op), new Factory());
+		Node.registerFactory(firm.bindings.binding_irop.get_op_code(op), new Factory());
 	}
 
 	public Div(Pointer ptr) {
