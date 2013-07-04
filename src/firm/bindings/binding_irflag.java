@@ -83,8 +83,7 @@ public class binding_irflag {
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
-		op_pin_state_exc_pinned(),
-		op_pin_state_mem_pinned();
+		op_pin_state_exc_pinned();
 		public final int val;
 
 		private static class C {
@@ -248,34 +247,6 @@ public class binding_irflag {
 		}
 	}
 
-	public static enum ir_value_classify_sign {
-		value_classified_unknown(0),
-		value_classified_positive(1),
-		value_classified_negative(-1);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_value_classify_sign(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_value_classify_sign() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_value_classify_sign getEnum(int val) {
-			for (ir_value_classify_sign entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_volatility {
 		volatility_non_volatile(),
 		volatility_is_volatile();
@@ -330,35 +301,6 @@ public class binding_irflag {
 		}
 	}
 
-	public static enum firm_verification_t {
-		FIRM_VERIFICATION_OFF(0),
-		FIRM_VERIFICATION_ON(1),
-		FIRM_VERIFICATION_REPORT(2),
-		FIRM_VERIFICATION_ERROR_ONLY(3);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		firm_verification_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		firm_verification_t() {
-			this.val = C.next_val++;
-		}
-
-		public static firm_verification_t getEnum(int val) {
-			for (firm_verification_t entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 
 	public static native void set_optimize(int value);
 
@@ -389,6 +331,4 @@ public class binding_irflag {
 	public static native void restore_optimization_state(Pointer state);
 
 	public static native void all_optimizations_off();
-
-	public static native void do_node_verification(/* firm_verification_t */int mode);
 }

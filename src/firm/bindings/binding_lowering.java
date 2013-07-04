@@ -83,8 +83,7 @@ public class binding_lowering {
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
-		op_pin_state_exc_pinned(),
-		op_pin_state_mem_pinned();
+		op_pin_state_exc_pinned();
 		public final int val;
 
 		private static class C {
@@ -248,34 +247,6 @@ public class binding_lowering {
 		}
 	}
 
-	public static enum ir_value_classify_sign {
-		value_classified_unknown(0),
-		value_classified_positive(1),
-		value_classified_negative(-1);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_value_classify_sign(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_value_classify_sign() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_value_classify_sign getEnum(int val) {
-			for (ir_value_classify_sign entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_volatility {
 		volatility_non_volatile(),
 		volatility_is_volatile();
@@ -364,81 +335,75 @@ public class binding_lowering {
 
 	public static native void lower_highlevel_graph(Pointer irg);
 
-	public static native Pointer lower_highlevel_graph_pass(String name);
-
 	public static native void lower_highlevel();
 
 	public static native void lower_const_code();
 
-	public static native Pointer lower_const_code_pass(String name);
-
 	public static native void lower_mux(Pointer irg, Pointer cb_func);
 
-	public static native Pointer lower_mux_pass(String name, Pointer cb_func);
+	public static native Pointer ir_create_intrinsics_map(Pointer list, com.sun.jna.NativeLong length, int part_block_used);
 
-	public static native com.sun.jna.NativeLong lower_intrinsics(Pointer list, com.sun.jna.NativeLong length, int part_block_used);
+	public static native void ir_free_intrinsics_map(Pointer map);
 
-	public static native Pointer lower_intrinsics_pass(String name, Pointer list, com.sun.jna.NativeLong length, int part_block_used);
+	public static native void ir_lower_intrinsics(Pointer irg, Pointer map);
 
-	public static native int i_mapper_abs(Pointer call, Pointer ctx);
+	public static native int i_mapper_abs(Pointer call);
 
-	public static native int i_mapper_bswap(Pointer call, Pointer ctx);
+	public static native int i_mapper_bswap(Pointer call);
 
-	public static native int i_mapper_sqrt(Pointer call, Pointer ctx);
+	public static native int i_mapper_sqrt(Pointer call);
 
-	public static native int i_mapper_cbrt(Pointer call, Pointer ctx);
+	public static native int i_mapper_cbrt(Pointer call);
 
-	public static native int i_mapper_pow(Pointer call, Pointer ctx);
+	public static native int i_mapper_pow(Pointer call);
 
-	public static native int i_mapper_exp(Pointer call, Pointer ctx);
+	public static native int i_mapper_exp(Pointer call);
 
-	public static native int i_mapper_exp2(Pointer call, Pointer ctx);
+	public static native int i_mapper_exp2(Pointer call);
 
-	public static native int i_mapper_exp10(Pointer call, Pointer ctx);
+	public static native int i_mapper_exp10(Pointer call);
 
-	public static native int i_mapper_log(Pointer call, Pointer ctx);
+	public static native int i_mapper_log(Pointer call);
 
-	public static native int i_mapper_log2(Pointer call, Pointer ctx);
+	public static native int i_mapper_log2(Pointer call);
 
-	public static native int i_mapper_log10(Pointer call, Pointer ctx);
+	public static native int i_mapper_log10(Pointer call);
 
-	public static native int i_mapper_sin(Pointer call, Pointer ctx);
+	public static native int i_mapper_sin(Pointer call);
 
-	public static native int i_mapper_cos(Pointer call, Pointer ctx);
+	public static native int i_mapper_cos(Pointer call);
 
-	public static native int i_mapper_tan(Pointer call, Pointer ctx);
+	public static native int i_mapper_tan(Pointer call);
 
-	public static native int i_mapper_asin(Pointer call, Pointer ctx);
+	public static native int i_mapper_asin(Pointer call);
 
-	public static native int i_mapper_acos(Pointer call, Pointer ctx);
+	public static native int i_mapper_acos(Pointer call);
 
-	public static native int i_mapper_atan(Pointer call, Pointer ctx);
+	public static native int i_mapper_atan(Pointer call);
 
-	public static native int i_mapper_sinh(Pointer call, Pointer ctx);
+	public static native int i_mapper_sinh(Pointer call);
 
-	public static native int i_mapper_cosh(Pointer call, Pointer ctx);
+	public static native int i_mapper_cosh(Pointer call);
 
-	public static native int i_mapper_tanh(Pointer call, Pointer ctx);
+	public static native int i_mapper_tanh(Pointer call);
 
-	public static native int i_mapper_strcmp(Pointer call, Pointer ctx);
+	public static native int i_mapper_strcmp(Pointer call);
 
-	public static native int i_mapper_strncmp(Pointer call, Pointer ctx);
+	public static native int i_mapper_strncmp(Pointer call);
 
-	public static native int i_mapper_strcpy(Pointer call, Pointer ctx);
+	public static native int i_mapper_strcpy(Pointer call);
 
-	public static native int i_mapper_strlen(Pointer call, Pointer ctx);
+	public static native int i_mapper_strlen(Pointer call);
 
-	public static native int i_mapper_memcpy(Pointer call, Pointer ctx);
+	public static native int i_mapper_memcpy(Pointer call);
 
-	public static native int i_mapper_mempcpy(Pointer call, Pointer ctx);
+	public static native int i_mapper_mempcpy(Pointer call);
 
-	public static native int i_mapper_memmove(Pointer call, Pointer ctx);
+	public static native int i_mapper_memmove(Pointer call);
 
-	public static native int i_mapper_memset(Pointer call, Pointer ctx);
+	public static native int i_mapper_memset(Pointer call);
 
-	public static native int i_mapper_memcmp(Pointer call, Pointer ctx);
+	public static native int i_mapper_memcmp(Pointer call);
 
-	public static native int i_mapper_alloca(Pointer call, Pointer ctx);
-
-	public static native int i_mapper_RuntimeCall(Pointer node, Pointer rt);
+	public static native int i_mapper_alloca(Pointer call);
 }

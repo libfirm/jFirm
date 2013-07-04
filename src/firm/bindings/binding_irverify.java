@@ -83,8 +83,7 @@ public class binding_irverify {
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
-		op_pin_state_exc_pinned(),
-		op_pin_state_mem_pinned();
+		op_pin_state_exc_pinned();
 		public final int val;
 
 		private static class C {
@@ -248,34 +247,6 @@ public class binding_irverify {
 		}
 	}
 
-	public static enum ir_value_classify_sign {
-		value_classified_unknown(0),
-		value_classified_positive(1),
-		value_classified_negative(-1);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_value_classify_sign(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_value_classify_sign() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_value_classify_sign getEnum(int val) {
-			for (ir_value_classify_sign entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_volatility {
 		volatility_non_volatile(),
 		volatility_is_volatile();
@@ -330,72 +301,12 @@ public class binding_irverify {
 		}
 	}
 
-	public static enum irg_verify_flags_t {
-		VERIFY_NORMAL(0),
-		VERIFY_ENFORCE_SSA(1);
-		public final int val;
 
-		private static class C {
-			static int next_val;
-		}
-
-		irg_verify_flags_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		irg_verify_flags_t() {
-			this.val = C.next_val++;
-		}
-
-		public static irg_verify_flags_t getEnum(int val) {
-			for (irg_verify_flags_t entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum verify_bad_flags_t {
-		BAD_CF(1),
-		BAD_DF(2),
-		BAD_BLOCK(4),
-		TUPLE(8);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		verify_bad_flags_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		verify_bad_flags_t() {
-			this.val = C.next_val++;
-		}
-
-		public static verify_bad_flags_t getEnum(int val) {
-			for (verify_bad_flags_t entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-
-	public static native int irn_verify(Pointer checknode);
+	public static native int irn_verify(Pointer node);
 
 	public static native int irn_verify_irg(Pointer checknode, Pointer irg);
 
-	public static native int irn_verify_irg_dump(Pointer checknode, Pointer irg, java.nio.Buffer bad_string);
+	public static native int irg_verify(Pointer irg);
 
-	public static native int irg_verify(Pointer irg, int flags);
-
-	public static native Pointer irg_verify_pass(String name, int flags);
-
-	public static native int irg_verify_bads(Pointer irg, int flags);
+	public static native void irg_assert_verify(Pointer irg);
 }

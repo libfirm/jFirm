@@ -308,8 +308,8 @@ public final class Mode extends JNAWrapper {
 		return new Mode(modep);
 	}
 
-	public final boolean honorSignedZeros() {
-		return 0 != binding_irmode.mode_honor_signed_zeros(ptr);
+	public final boolean hasSignedZero() {
+		return 0 != binding_irmode.mode_has_signed_zero(ptr);
 	}
 
 	public final boolean overflowOnUnaryMinus() {

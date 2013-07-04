@@ -25,7 +25,6 @@ public class Nodes {
 		Free.init();
 		IJmp.init();
 		Id.init();
-		InstOf.init();
 		Jmp.init();
 		Load.init();
 		Minus.init();
@@ -41,7 +40,6 @@ public class Nodes {
 		Proj.init();
 		Raise.init();
 		Return.init();
-		Rotl.init();
 		Sel.init();
 		Shl.init();
 		Shr.init();

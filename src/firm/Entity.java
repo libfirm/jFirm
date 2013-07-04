@@ -147,12 +147,20 @@ public class Entity extends JNAWrapper {
 		binding_typerep.set_entity_offset(ptr, offset);
 	}
 
-	public final byte getOffsetBitsRemainder() {
-		return binding_typerep.get_entity_offset_bits_remainder(ptr);
+	public final int getBitfieldOffset() {
+		return binding_typerep.get_entity_bitfield_offset(ptr);
 	}
 
-	public final void setOffsetBitsRemainder(byte offset) {
-		binding_typerep.set_entity_offset_bits_remainder(ptr, offset);
+	public final void setBitfieldOffset(int offset) {
+		binding_typerep.set_entity_bitfield_offset(ptr, offset);
+	}
+
+	public final int getBitfieldSize() {
+		return binding_typerep.get_entity_bitfield_size(ptr);
+	}
+
+	public final void setBitfieldSize(int size) {
+		binding_typerep.set_entity_bitfield_size(ptr, size);
 	}
 
 	public final Graph getGraph() {

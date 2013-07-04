@@ -12,7 +12,6 @@ import firm.bindings.binding_irgraph.ir_graph_properties_t;
 import firm.bindings.binding_irnode;
 import firm.bindings.binding_irnode.ir_opcode;
 import firm.bindings.binding_irverify;
-import firm.bindings.binding_irverify.irg_verify_flags_t;
 import firm.nodes.Bad;
 import firm.nodes.Block;
 import firm.nodes.End;
@@ -399,7 +398,7 @@ public abstract class GraphBase extends JNAWrapper {
 	 *            the graph to check
 	 */
 	public boolean check() {
-		return binding_irverify.irg_verify(ptr, irg_verify_flags_t.VERIFY_ENFORCE_SSA.val) != 0;
+		return binding_irverify.irg_verify(ptr) != 0;
 	}
 
 	/**

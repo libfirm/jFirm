@@ -28,8 +28,7 @@ public class Type extends JNAWrapper {
 		} else if (binding_typerep.is_Union_type(ptr) != 0) {
 			return new UnionType(ptr);
 		} else if (binding_typerep.is_unknown_type(ptr) != 0
-		        || binding_typerep.is_code_type(ptr) != 0
-		        || binding_typerep.is_none_type(ptr) != 0) {
+		        || binding_typerep.is_code_type(ptr) != 0) {
 			return new Type(ptr);
 		} else {
 			Type type = new Type(ptr);
@@ -72,11 +71,6 @@ public class Type extends JNAWrapper {
 
 	public static Type getUnknown() {
 		Pointer ptr = binding_typerep.get_unknown_type();
-		return new Type(ptr);
-	}
-
-	public static Type getNone() {
-		Pointer ptr = binding_typerep.get_none_type();
 		return new Type(ptr);
 	}
 

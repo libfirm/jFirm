@@ -58,14 +58,5 @@ public class CopyB extends Node {
 		visitor.visit(this);
 	}
 
-	/** memory result */
-	public static final int pnM = 0;
-
-	/** control flow when no exception occurs */
-	public static final int pnXRegular = 1;
-
-	/** control flow when exception occured */
-	public static final int pnXExcept = 2;
-
-	public static final int pnMax = 3;
+	public static final int pnMax = 0;
 }

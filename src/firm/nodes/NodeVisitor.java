@@ -72,9 +72,6 @@ public interface NodeVisitor {
 	/** called when accept is called on a Id node */
 	void visit(Id node);
 
-	/** called when accept is called on a InstOf node */
-	void visit(InstOf node);
-
 	/** called when accept is called on a Jmp node */
 	void visit(Jmp node);
 
@@ -119,9 +116,6 @@ public interface NodeVisitor {
 
 	/** called when accept is called on a Return node */
 	void visit(Return node);
-
-	/** called when accept is called on a Rotl node */
-	void visit(Rotl node);
 
 	/** called when accept is called on a Sel node */
 	void visit(Sel node);
@@ -283,11 +277,6 @@ public interface NodeVisitor {
 		}
 
 		@Override
-		public void visit(InstOf node) {
-			defaultVisit(node);
-		}
-
-		@Override
 		public void visit(Jmp node) {
 			defaultVisit(node);
 		}
@@ -359,11 +348,6 @@ public interface NodeVisitor {
 
 		@Override
 		public void visit(Return node) {
-			defaultVisit(node);
-		}
-
-		@Override
-		public void visit(Rotl node) {
 			defaultVisit(node);
 		}
 

@@ -83,8 +83,7 @@ public class binding_iroptimize {
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
-		op_pin_state_exc_pinned(),
-		op_pin_state_mem_pinned();
+		op_pin_state_exc_pinned();
 		public final int val;
 
 		private static class C {
@@ -248,34 +247,6 @@ public class binding_iroptimize {
 		}
 	}
 
-	public static enum ir_value_classify_sign {
-		value_classified_unknown(0),
-		value_classified_positive(1),
-		value_classified_negative(-1);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_value_classify_sign(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_value_classify_sign() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_value_classify_sign getEnum(int val) {
-			for (ir_value_classify_sign entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_volatility {
 		volatility_non_volatile(),
 		volatility_is_volatile();
@@ -362,19 +333,11 @@ public class binding_iroptimize {
 
 	public static native void optimize_cf(Pointer irg);
 
-	public static native Pointer optimize_cf_pass(String name);
-
 	public static native void opt_jumpthreading(Pointer irg);
-
-	public static native Pointer opt_jumpthreading_pass(String name);
 
 	public static native void opt_bool(Pointer irg);
 
-	public static native Pointer opt_bool_pass(String name);
-
 	public static native void conv_opt(Pointer irg);
-
-	public static native Pointer conv_opt_pass(String name);
 
 	public static native void escape_enalysis_irg(Pointer irg, Pointer callback);
 
@@ -382,83 +345,45 @@ public class binding_iroptimize {
 
 	public static native void optimize_funccalls();
 
-	public static native Pointer optimize_funccalls_pass(String name);
-
 	public static native void do_gvn_pre(Pointer irg);
-
-	public static native Pointer do_gvn_pre_pass(String name);
 
 	public static native void opt_if_conv(Pointer irg);
 
-	public static native Pointer opt_if_conv_pass(String name);
-
 	public static native void opt_parallelize_mem(Pointer irg);
-
-	public static native Pointer opt_parallelize_mem_pass(String name);
 
 	public static native Pointer can_replace_load_by_const(Pointer load, Pointer c);
 
 	public static native void optimize_load_store(Pointer irg);
 
-	public static native Pointer optimize_load_store_pass(String name);
-
 	public static native void opt_ldst(Pointer irg);
-
-	public static native Pointer opt_ldst_pass(String name);
 
 	public static native void loop_optimization(Pointer irg);
 
 	public static native void opt_frame_irg(Pointer irg);
 
-	public static native Pointer opt_frame_irg_pass(String name);
-
 	public static native void opt_osr(Pointer irg, int flags);
-
-	public static native Pointer opt_osr_pass(String name, int flags);
 
 	public static native void remove_phi_cycles(Pointer irg);
 
-	public static native Pointer remove_phi_cycles_pass(String name);
-
 	public static native void proc_cloning(float threshold);
-
-	public static native Pointer proc_cloning_pass(String name, float threshold);
 
 	public static native void optimize_reassociation(Pointer irg);
 
-	public static native Pointer optimize_reassociation_pass(String name);
-
 	public static native void normalize_one_return(Pointer irg);
-
-	public static native Pointer normalize_one_return_pass(String name);
 
 	public static native void normalize_n_returns(Pointer irg);
 
-	public static native Pointer normalize_n_returns_pass(String name);
-
 	public static native void scalar_replacement_opt(Pointer irg);
-
-	public static native Pointer scalar_replacement_opt_pass(String name);
 
 	public static native void opt_tail_rec_irg(Pointer irg);
 
-	public static native Pointer opt_tail_rec_irg_pass(String name);
-
 	public static native void opt_tail_recursion();
-
-	public static native Pointer opt_tail_recursion_pass(String name);
 
 	public static native void combo(Pointer irg);
 
-	public static native Pointer combo_pass(String name);
-
 	public static native void inline_functions(int maxsize, int inline_threshold, Pointer after_inline_opt);
 
-	public static native Pointer inline_functions_pass(String name, int maxsize, int inline_threshold, Pointer after_inline_opt);
-
 	public static native void shape_blocks(Pointer irg);
-
-	public static native Pointer shape_blocks_pass(String name);
 
 	public static native void do_loop_inversion(Pointer irg);
 
@@ -466,39 +391,19 @@ public class binding_iroptimize {
 
 	public static native void do_loop_peeling(Pointer irg);
 
-	public static native Pointer loop_inversion_pass(String name);
-
-	public static native Pointer loop_unroll_pass(String name);
-
-	public static native Pointer loop_peeling_pass(String name);
-
-	public static native Pointer set_vrp_pass(String name);
-
 	public static native void garbage_collect_entities();
-
-	public static native Pointer garbage_collect_entities_pass(String name);
 
 	public static native void dead_node_elimination(Pointer irg);
 
-	public static native Pointer dead_node_elimination_pass(String name);
-
-	public static native int inline_method(Pointer call, Pointer called_graph);
-
 	public static native void place_code(Pointer irg);
-
-	public static native Pointer place_code_pass(String name);
 
 	public static native void fixpoint_vrp(Pointer _0);
 
 	public static native void occult_consts(Pointer _0);
 
-	public static native Pointer fixpoint_vrp_irg_pass(String name);
-
 	public static native int value_not_zero(Pointer n, java.nio.Buffer confirm);
 
 	public static native int value_not_null(Pointer n, java.nio.Buffer confirm);
-
-	public static native /* ir_value_classify_sign */int classify_value_sign(Pointer n);
 
 	public static native Pointer computed_value_Cmp_Confirm(Pointer cmp, Pointer left, Pointer right, /* ir_relation */int relation);
 

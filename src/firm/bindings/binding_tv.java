@@ -83,8 +83,7 @@ public class binding_tv {
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
-		op_pin_state_exc_pinned(),
-		op_pin_state_mem_pinned();
+		op_pin_state_exc_pinned();
 		public final int val;
 
 		private static class C {
@@ -248,34 +247,6 @@ public class binding_tv {
 		}
 	}
 
-	public static enum ir_value_classify_sign {
-		value_classified_unknown(0),
-		value_classified_positive(1),
-		value_classified_negative(-1);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_value_classify_sign(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_value_classify_sign() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_value_classify_sign getEnum(int val) {
-			for (ir_value_classify_sign entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_volatility {
 		volatility_non_volatile(),
 		volatility_is_volatile();
@@ -397,6 +368,8 @@ public class binding_tv {
 
 	public static native Pointer new_tarval_from_long(com.sun.jna.NativeLong l, Pointer mode);
 
+	public static native Pointer new_tarval_from_bytes(Pointer buf, Pointer mode, int big_endian);
+
 	public static native com.sun.jna.NativeLong get_tarval_long(Pointer tv);
 
 	public static native int tarval_is_long(Pointer tv);
@@ -496,8 +469,6 @@ public class binding_tv {
 	public static native Pointer tarval_shrs(Pointer a, Pointer b);
 
 	public static native Pointer tarval_shrs_unsigned(Pointer a, int b);
-
-	public static native Pointer tarval_rotl(Pointer a, Pointer b);
 
 	public static native int set_tarval_mode_output_option(Pointer mode, Pointer modeinfo);
 

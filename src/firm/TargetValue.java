@@ -281,11 +281,6 @@ public class TargetValue extends JNAWrapper {
 		return new TargetValue(ptarval);
 	}
 
-	public final TargetValue rotl(TargetValue other) {
-		Pointer ptarval = binding_tv.tarval_rotl(ptr, other.ptr);
-		return new TargetValue(ptarval);
-	}
-
 	public static enum tv_output_mode {
 		TVO_NATIVE(),
 		TVO_HEX(),

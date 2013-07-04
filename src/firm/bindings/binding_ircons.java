@@ -83,8 +83,7 @@ public class binding_ircons {
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
-		op_pin_state_exc_pinned(),
-		op_pin_state_mem_pinned();
+		op_pin_state_exc_pinned();
 		public final int val;
 
 		private static class C {
@@ -241,34 +240,6 @@ public class binding_ircons {
 
 		public static ir_builtin_kind getEnum(int val) {
 			for (ir_builtin_kind entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_value_classify_sign {
-		value_classified_unknown(0),
-		value_classified_positive(1),
-		value_classified_negative(-1);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_value_classify_sign(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_value_classify_sign() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_value_classify_sign getEnum(int val) {
-			for (ir_value_classify_sign entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -589,7 +560,6 @@ public class binding_ircons {
 		tpo_pointer(),
 		tpo_primitive(),
 		tpo_code(),
-		tpo_none(),
 		tpo_unknown(),
 		tpo_last(tp_opcode.tpo_unknown.val);
 		public final int val;
@@ -912,7 +882,6 @@ public class binding_ircons {
 		iro_Free(),
 		iro_IJmp(),
 		iro_Id(),
-		iro_InstOf(),
 		iro_Jmp(),
 		iro_Load(),
 		iro_Minus(),
@@ -928,7 +897,6 @@ public class binding_ircons {
 		iro_Proj(),
 		iro_Raise(),
 		iro_Return(),
-		iro_Rotl(),
 		iro_Sel(),
 		iro_Shl(),
 		iro_Shr(),
@@ -1385,35 +1353,6 @@ public class binding_ircons {
 		}
 	}
 
-	public static enum pn_CopyB {
-		pn_CopyB_M(),
-		pn_CopyB_X_regular(),
-		pn_CopyB_X_except(),
-		pn_CopyB_max(pn_CopyB.pn_CopyB_X_except.val);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		pn_CopyB(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		pn_CopyB() {
-			this.val = C.next_val++;
-		}
-
-		public static pn_CopyB getEnum(int val) {
-			for (pn_CopyB entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum n_Div {
 		n_Div_mem(),
 		n_Div_left(),
@@ -1576,64 +1515,6 @@ public class binding_ircons {
 
 		public static n_Id getEnum(int val) {
 			for (n_Id entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum n_InstOf {
-		n_InstOf_store(),
-		n_InstOf_obj(),
-		n_InstOf_max(n_InstOf.n_InstOf_obj.val);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		n_InstOf(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		n_InstOf() {
-			this.val = C.next_val++;
-		}
-
-		public static n_InstOf getEnum(int val) {
-			for (n_InstOf entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum pn_InstOf {
-		pn_InstOf_M(),
-		pn_InstOf_res(),
-		pn_InstOf_X_regular(),
-		pn_InstOf_X_except(),
-		pn_InstOf_max(pn_InstOf.pn_InstOf_X_except.val);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		pn_InstOf(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		pn_InstOf() {
-			this.val = C.next_val++;
-		}
-
-		public static pn_InstOf getEnum(int val) {
-			for (pn_InstOf entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -2055,34 +1936,6 @@ public class binding_ircons {
 
 		public static n_Return getEnum(int val) {
 			for (n_Return entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum n_Rotl {
-		n_Rotl_left(),
-		n_Rotl_right(),
-		n_Rotl_max(n_Rotl.n_Rotl_right.val);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		n_Rotl(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		n_Rotl() {
-			this.val = C.next_val++;
-		}
-
-		public static n_Rotl getEnum(int val) {
-			for (n_Rotl entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -2831,30 +2684,6 @@ public class binding_ircons {
 
 	public static native Pointer get_op_Id();
 
-	public static native Pointer new_rd_InstOf(Pointer dbgi, Pointer block, Pointer irn_store, Pointer irn_obj, Pointer type);
-
-	public static native Pointer new_r_InstOf(Pointer block, Pointer irn_store, Pointer irn_obj, Pointer type);
-
-	public static native Pointer new_d_InstOf(Pointer dbgi, Pointer irn_store, Pointer irn_obj, Pointer type);
-
-	public static native Pointer new_InstOf(Pointer irn_store, Pointer irn_obj, Pointer type);
-
-	public static native int is_InstOf(Pointer node);
-
-	public static native Pointer get_InstOf_store(Pointer node);
-
-	public static native void set_InstOf_store(Pointer node, Pointer store);
-
-	public static native Pointer get_InstOf_obj(Pointer node);
-
-	public static native void set_InstOf_obj(Pointer node, Pointer obj);
-
-	public static native Pointer get_InstOf_type(Pointer node);
-
-	public static native void set_InstOf_type(Pointer node, Pointer type);
-
-	public static native Pointer get_op_InstOf();
-
 	public static native Pointer new_rd_Jmp(Pointer dbgi, Pointer block);
 
 	public static native Pointer new_r_Jmp(Pointer block);
@@ -3150,26 +2979,6 @@ public class binding_ircons {
 	public static native void set_Return_res(Pointer node, int pos, Pointer res);
 
 	public static native Pointer get_op_Return();
-
-	public static native Pointer new_rd_Rotl(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
-
-	public static native Pointer new_r_Rotl(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
-
-	public static native Pointer new_d_Rotl(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
-
-	public static native Pointer new_Rotl(Pointer irn_left, Pointer irn_right, Pointer mode);
-
-	public static native int is_Rotl(Pointer node);
-
-	public static native Pointer get_Rotl_left(Pointer node);
-
-	public static native void set_Rotl_left(Pointer node, Pointer left);
-
-	public static native Pointer get_Rotl_right(Pointer node);
-
-	public static native void set_Rotl_right(Pointer node, Pointer right);
-
-	public static native Pointer get_op_Rotl();
 
 	public static native Pointer new_rd_Sel(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
 

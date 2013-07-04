@@ -109,11 +109,6 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newInstOf(Node store, Node obj, firm.Type type) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_InstOf(binding_ircons.get_r_cur_block(graph.ptr), store.ptr, obj.ptr, type.ptr);
-		return Node.createWrapper(result_ptr);
-	}
-
 	public Node newJmp() {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Jmp(binding_ircons.get_r_cur_block(graph.ptr));
 		return Node.createWrapper(result_ptr);
@@ -186,11 +181,6 @@ class ConstructionBase {
 
 	public Node newReturn(Node mem, Node[] ins) {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Return(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, ins.length, Node.getBufferFromNodeList(ins));
-		return Node.createWrapper(result_ptr);
-	}
-
-	public Node newRotl(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Rotl(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 

@@ -83,8 +83,7 @@ public class binding_irgraph {
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
-		op_pin_state_exc_pinned(),
-		op_pin_state_mem_pinned();
+		op_pin_state_exc_pinned();
 		public final int val;
 
 		private static class C {
@@ -241,34 +240,6 @@ public class binding_irgraph {
 
 		public static ir_builtin_kind getEnum(int val) {
 			for (ir_builtin_kind entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_value_classify_sign {
-		value_classified_unknown(0),
-		value_classified_positive(1),
-		value_classified_negative(-1);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_value_classify_sign(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_value_classify_sign() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_value_classify_sign getEnum(int val) {
-			for (ir_value_classify_sign entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -573,10 +544,6 @@ public class binding_irgraph {
 	public static native Pointer get_irg_loc_description(Pointer irg, int n);
 
 	public static native int get_irg_last_idx(Pointer irg);
-
-	public static native int get_irg_fp_model(Pointer irg);
-
-	public static native void set_irg_fp_model(Pointer irg, int model);
 
 	public static native void assure_irg_properties(Pointer irg, /* ir_graph_properties_t */int props);
 

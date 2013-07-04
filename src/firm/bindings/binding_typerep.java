@@ -83,8 +83,7 @@ public class binding_typerep {
 	public static enum op_pin_state {
 		op_pin_state_floats(0),
 		op_pin_state_pinned(1),
-		op_pin_state_exc_pinned(),
-		op_pin_state_mem_pinned();
+		op_pin_state_exc_pinned();
 		public final int val;
 
 		private static class C {
@@ -241,34 +240,6 @@ public class binding_typerep {
 
 		public static ir_builtin_kind getEnum(int val) {
 			for (ir_builtin_kind entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_value_classify_sign {
-		value_classified_unknown(0),
-		value_classified_positive(1),
-		value_classified_negative(-1);
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_value_classify_sign(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_value_classify_sign() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_value_classify_sign getEnum(int val) {
-			for (ir_value_classify_sign entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -549,7 +520,6 @@ public class binding_typerep {
 		tpo_pointer(),
 		tpo_primitive(),
 		tpo_code(),
-		tpo_none(),
 		tpo_unknown(),
 		tpo_last(tp_opcode.tpo_unknown.val);
 		public final int val;
@@ -763,13 +733,17 @@ public class binding_typerep {
 
 	public static native String get_align_name(/* ir_align */int a);
 
-	public static native int get_entity_offset(Pointer ent);
+	public static native int get_entity_offset(Pointer entity);
 
-	public static native void set_entity_offset(Pointer ent, int offset);
+	public static native void set_entity_offset(Pointer entity, int offset);
 
-	public static native byte get_entity_offset_bits_remainder(Pointer ent);
+	public static native int get_entity_bitfield_offset(Pointer entity);
 
-	public static native void set_entity_offset_bits_remainder(Pointer ent, byte offset);
+	public static native void set_entity_bitfield_offset(Pointer entity, int offset);
+
+	public static native void set_entity_bitfield_size(Pointer entity, int size);
+
+	public static native int get_entity_bitfield_size(Pointer entity);
 
 	public static native Pointer get_entity_link(Pointer ent);
 
@@ -802,10 +776,6 @@ public class binding_typerep {
 	public static native com.sun.jna.NativeLong get_entity_parameter_number(Pointer entity);
 
 	public static native void set_entity_parameter_number(Pointer entity, com.sun.jna.NativeLong n);
-
-	public static native int is_irn_const_expression(Pointer n);
-
-	public static native Pointer copy_const_value(Pointer dbg, Pointer n, Pointer to_block);
 
 	public static native Pointer get_atomic_ent_value(Pointer ent);
 
@@ -1251,17 +1221,7 @@ public class binding_typerep {
 
 	public static native int is_Primitive_type(Pointer primitive);
 
-	public static native Pointer get_primitive_base_type(Pointer tp);
-
-	public static native void set_primitive_base_type(Pointer tp, Pointer base_tp);
-
 	public static native Pointer get_tpop_primitive();
-
-	public static native Pointer get_none_type();
-
-	public static native int is_none_type(Pointer type);
-
-	public static native Pointer get_tpop_none();
 
 	public static native Pointer get_code_type();
 

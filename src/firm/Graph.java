@@ -128,11 +128,6 @@ public class Graph extends GraphBase {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Id(block.ptr, pred.ptr, mode.ptr));
 	}
 
-	/** Create a new InstOf node */
-	public final Node newInstOf(Node block, Node store, Node obj, firm.Type type) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_InstOf(block.ptr, store.ptr, obj.ptr, type.ptr));
-	}
-
 	/** Create a new Jmp node */
 	public final Node newJmp(Node block) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Jmp(block.ptr));
@@ -206,11 +201,6 @@ public class Graph extends GraphBase {
 	/** Create a new Return node */
 	public final Node newReturn(Node block, Node mem, Node[] ins) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Return(block.ptr, mem.ptr, ins.length, Node.getBufferFromNodeList(ins)));
-	}
-
-	/** Create a new Rotl node */
-	public final Node newRotl(Node block, Node left, Node right, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Rotl(block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 
 	/** Create a new Sel node */
