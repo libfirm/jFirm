@@ -179,8 +179,7 @@ public class binding_ircons {
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
-		symconst_ofs_ent(),
-		symconst_enum_const();
+		symconst_ofs_ent();
 		public final int val;
 
 		private static class C {
@@ -556,7 +555,6 @@ public class binding_ircons {
 		tpo_method(),
 		tpo_union(),
 		tpo_array(),
-		tpo_enumeration(),
 		tpo_pointer(),
 		tpo_primitive(),
 		tpo_code(),
@@ -2518,13 +2516,13 @@ public class binding_ircons {
 
 	public static native Pointer get_op_Conv();
 
-	public static native Pointer new_rd_CopyB(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type);
+	public static native Pointer new_rd_CopyB(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type, /* ir_cons_flags */int flags);
 
-	public static native Pointer new_r_CopyB(Pointer block, Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type);
+	public static native Pointer new_r_CopyB(Pointer block, Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type, /* ir_cons_flags */int flags);
 
-	public static native Pointer new_d_CopyB(Pointer dbgi, Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type);
+	public static native Pointer new_d_CopyB(Pointer dbgi, Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type, /* ir_cons_flags */int flags);
 
-	public static native Pointer new_CopyB(Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type);
+	public static native Pointer new_CopyB(Pointer irn_mem, Pointer irn_dst, Pointer irn_src, Pointer type, /* ir_cons_flags */int flags);
 
 	public static native int is_CopyB(Pointer node);
 
@@ -2543,6 +2541,10 @@ public class binding_ircons {
 	public static native Pointer get_CopyB_type(Pointer node);
 
 	public static native void set_CopyB_type(Pointer node, Pointer type);
+
+	public static native /* ir_volatility */int get_CopyB_volatility(Pointer node);
+
+	public static native void set_CopyB_volatility(Pointer node, /* ir_volatility */int volatility);
 
 	public static native Pointer get_op_CopyB();
 

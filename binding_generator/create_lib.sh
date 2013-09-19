@@ -13,6 +13,6 @@ void __dummy__(void) {
 }
 __EOF__
 CC=gcc
-CMD="$CC ${GCC_SHARED} /tmp/dummy.c -o ${GOAL} -I${FIRM_INC} ${FIRM_LFLAGS} -lpthread -lm"
+CMD="$CC ${GCC_SHARED} /tmp/dummy.c -o ${GOAL} -I${FIRM_INC} -I${FIRM_INC2} ${FIRM_LFLAGS} -lpthread -lm"
 echo $CMD
 $CMD

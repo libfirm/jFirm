@@ -8,9 +8,9 @@ for i in lowering irgmod iredges irmode tv ircons irnode firm_common irdump irop
 	RES="../src/firm/bindings/binding_$i.java"
 	TMP="/tmp/tmp.java"
 	echo " * Creating $RES"
-	CMD="$CPARSER --print-jna --jna-libname firm -fvisibility=hidden -DFIRM_DLL -DFIRM_BUILD -I${FIRM_INC} ${FIRM_INC}/libfirm/$i.h --jna-limit ${FIRM_INC}/libfirm/$i.h"
+	CMD="$CPARSER --print-jna --jna-libname firm -fvisibility=hidden -DFIRM_DLL -DFIRM_BUILD -I${FIRM_INC} -I${FIRM_INC2} ${FIRM_INC}/libfirm/$i.h --jna-limit ${FIRM_INC}/libfirm/$i.h"
 	if [ $i = "irnode" -o $i = "ircons" ]; then
-		CMD="$CMD --jna-limit ${FIRM_INC}/libfirm/nodes.h"
+		CMD="$CMD --jna-limit ${FIRM_INC2}/nodes.h"
 	fi
 	echo "$CMD"
 	$CMD > $TMP || exit $?

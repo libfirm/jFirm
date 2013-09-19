@@ -94,8 +94,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new CopyB node */
-	public final Node newCopyB(Node block, Node mem, Node dst, Node src, firm.Type type) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_CopyB(block.ptr, mem.ptr, dst.ptr, src.ptr, type.ptr));
+	public final Node newCopyB(Node block, Node mem, Node dst, Node src, firm.Type type, firm.bindings.binding_ircons.ir_cons_flags flags) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_CopyB(block.ptr, mem.ptr, dst.ptr, src.ptr, type.ptr, flags.val));
 	}
 
 	/** Create a new Div node */

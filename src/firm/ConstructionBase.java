@@ -74,8 +74,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newCopyB(Node mem, Node dst, Node src, firm.Type type) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_CopyB(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, dst.ptr, src.ptr, type.ptr);
+	public Node newCopyB(Node mem, Node dst, Node src, firm.Type type, firm.bindings.binding_ircons.ir_cons_flags flags) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_CopyB(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, dst.ptr, src.ptr, type.ptr, flags.val);
 		return Node.createWrapper(result_ptr);
 	}
 

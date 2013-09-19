@@ -179,8 +179,7 @@ public class binding_irgraph {
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
-		symconst_ofs_ent(),
-		symconst_enum_const();
+		symconst_ofs_ent();
 		public final int val;
 
 		private static class C {

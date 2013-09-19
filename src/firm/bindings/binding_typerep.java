@@ -179,8 +179,7 @@ public class binding_typerep {
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
-		symconst_ofs_ent(),
-		symconst_enum_const();
+		symconst_ofs_ent();
 		public final int val;
 
 		private static class C {
@@ -516,7 +515,6 @@ public class binding_typerep {
 		tpo_method(),
 		tpo_union(),
 		tpo_array(),
-		tpo_enumeration(),
 		tpo_pointer(),
 		tpo_primitive(),
 		tpo_code(),
@@ -673,11 +671,13 @@ public class binding_typerep {
 
 	public static native Pointer new_entity(Pointer owner, Pointer name, Pointer tp);
 
-	public static native Pointer new_d_entity(Pointer owner, Pointer name, Pointer tp, Pointer db);
-
 	public static native Pointer new_parameter_entity(Pointer owner, com.sun.jna.NativeLong pos, Pointer type);
 
-	public static native Pointer new_d_parameter_entity(Pointer owner, com.sun.jna.NativeLong pos, Pointer type, Pointer dbgi);
+	public static native Pointer new_alias_entity(Pointer owner, Pointer name, Pointer alias, Pointer type);
+
+	public static native void set_entity_alias(Pointer alias, Pointer aliased);
+
+	public static native Pointer get_entity_alias(Pointer alias);
 
 	public static native int check_entity(Pointer ent);
 
@@ -983,9 +983,9 @@ public class binding_typerep {
 
 	public static native com.sun.jna.NativeLong get_type_nr(Pointer tp);
 
-	public static native Pointer new_type_class(Pointer name);
+	public static native int is_segment_type(Pointer tp);
 
-	public static native Pointer new_d_type_class(Pointer name, Pointer db);
+	public static native Pointer new_type_class(Pointer name);
 
 	public static native Pointer get_class_ident(Pointer clss);
 
@@ -1045,8 +1045,6 @@ public class binding_typerep {
 
 	public static native Pointer new_type_struct(Pointer name);
 
-	public static native Pointer new_d_type_struct(Pointer name, Pointer db);
-
 	public static native Pointer get_struct_ident(Pointer strct);
 
 	public static native String get_struct_name(Pointer strct);
@@ -1063,8 +1061,6 @@ public class binding_typerep {
 
 	public static native Pointer new_type_union(Pointer name);
 
-	public static native Pointer new_d_type_union(Pointer name, Pointer db);
-
 	public static native Pointer get_union_ident(Pointer uni);
 
 	public static native String get_union_name(Pointer uni);
@@ -1080,8 +1076,6 @@ public class binding_typerep {
 	public static native Pointer get_tpop_union();
 
 	public static native Pointer new_type_method(com.sun.jna.NativeLong n_param, com.sun.jna.NativeLong n_res);
-
-	public static native Pointer new_d_type_method(com.sun.jna.NativeLong n_param, com.sun.jna.NativeLong n_res, Pointer db);
 
 	public static native com.sun.jna.NativeLong get_method_n_params(Pointer method);
 
@@ -1120,8 +1114,6 @@ public class binding_typerep {
 	public static native Pointer get_tpop_method();
 
 	public static native Pointer new_type_array(com.sun.jna.NativeLong n_dims, Pointer element_type);
-
-	public static native Pointer new_d_type_array(com.sun.jna.NativeLong n_dims, Pointer element_type, Pointer db);
 
 	public static native com.sun.jna.NativeLong get_array_n_dimensions(Pointer array);
 
@@ -1171,39 +1163,7 @@ public class binding_typerep {
 
 	public static native Pointer get_tpop_array();
 
-	public static native Pointer new_type_enumeration(Pointer name, com.sun.jna.NativeLong n_enums);
-
-	public static native Pointer new_d_type_enumeration(Pointer name, com.sun.jna.NativeLong n_enums, Pointer db);
-
-	public static native Pointer get_enumeration_ident(Pointer enumeration);
-
-	public static native String get_enumeration_name(Pointer enumeration);
-
-	public static native void set_enumeration_const(Pointer enumeration, com.sun.jna.NativeLong pos, Pointer nameid, Pointer con);
-
-	public static native com.sun.jna.NativeLong get_enumeration_n_enums(Pointer enumeration);
-
-	public static native Pointer get_enumeration_const(Pointer enumeration, com.sun.jna.NativeLong pos);
-
-	public static native Pointer get_enumeration_owner(Pointer enum_cnst);
-
-	public static native void set_enumeration_value(Pointer enum_cnst, Pointer con);
-
-	public static native Pointer get_enumeration_value(Pointer enum_cnst);
-
-	public static native void set_enumeration_nameid(Pointer enum_cnst, Pointer id);
-
-	public static native Pointer get_enumeration_const_nameid(Pointer enum_cnst);
-
-	public static native String get_enumeration_const_name(Pointer enum_cnst);
-
-	public static native int is_Enumeration_type(Pointer enumeration);
-
-	public static native Pointer get_tpop_enumeration();
-
 	public static native Pointer new_type_pointer(Pointer points_to);
-
-	public static native Pointer new_d_type_pointer(Pointer points_to, Pointer db);
 
 	public static native void set_pointer_points_to_type(Pointer pointer, Pointer tp);
 
@@ -1216,8 +1176,6 @@ public class binding_typerep {
 	public static native Pointer get_tpop_pointer();
 
 	public static native Pointer new_type_primitive(Pointer mode);
-
-	public static native Pointer new_d_type_primitive(Pointer mode, Pointer db);
 
 	public static native int is_Primitive_type(Pointer primitive);
 

@@ -179,8 +179,7 @@ public class binding_iroptimize {
 		symconst_type_size(),
 		symconst_type_align(),
 		symconst_addr_ent(),
-		symconst_ofs_ent(),
-		symconst_enum_const();
+		symconst_ofs_ent();
 		public final int val;
 
 		private static class C {
@@ -348,6 +347,8 @@ public class binding_iroptimize {
 	public static native void do_gvn_pre(Pointer irg);
 
 	public static native void opt_if_conv(Pointer irg);
+
+	public static native void opt_if_conv_cb(Pointer irg, Pointer callback);
 
 	public static native void opt_parallelize_mem(Pointer irg);
 

@@ -53,6 +53,15 @@ public class CopyB extends Node {
 		firm.bindings.binding_irnode.set_CopyB_type(this.ptr, _val.ptr);
 	}
 
+	public firm.bindings.binding_irnode.ir_volatility getVolatility() {
+		int _res = firm.bindings.binding_irnode.get_CopyB_volatility(ptr);
+		return firm.bindings.binding_irnode.ir_volatility.getEnum(_res);
+	}
+
+	public void setVolatility(firm.bindings.binding_irnode.ir_volatility _val) {
+		firm.bindings.binding_irnode.set_CopyB_volatility(this.ptr, _val.val);
+	}
+
 	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);
