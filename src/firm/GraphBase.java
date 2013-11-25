@@ -36,14 +36,17 @@ public abstract class GraphBase extends JNAWrapper {
 	 * returns the currently active graph
 	 */
 	public static Graph getCurrent() {
-		return new Graph(binding_ircons.get_current_ir_graph());
+		final Pointer current = binding_ircons.get_current_ir_graph();
+		if (current == null)
+			return null;
+		return new Graph(current);
 	}
 
 	/**
 	 * sets the currently active graph
 	 */
 	public static void setCurrent(GraphBase graph) {
-		binding_ircons.set_current_ir_graph(graph.ptr);
+		binding_ircons.set_current_ir_graph(graph == null ? Pointer.NULL : graph.ptr);
 	}
 
 	/**
