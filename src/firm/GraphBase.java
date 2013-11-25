@@ -8,6 +8,7 @@ import com.sun.jna.Pointer;
 import firm.bindings.binding_ircons;
 import firm.bindings.binding_irgmod;
 import firm.bindings.binding_irgraph;
+import firm.bindings.binding_irgraph.ir_graph_constraints_t;
 import firm.bindings.binding_irgraph.ir_graph_properties_t;
 import firm.bindings.binding_irnode;
 import firm.bindings.binding_irnode.ir_opcode;
@@ -478,5 +479,9 @@ public abstract class GraphBase extends JNAWrapper {
 
 	public void confirmProperties(ir_graph_properties_t props) {
 		binding_irgraph.confirm_irg_properties(ptr, props.val);
+	}
+
+	public void addConstraints(ir_graph_constraints_t constraints) {
+		binding_irgraph.add_irg_constraints(ptr, constraints.val);
 	}
 }
