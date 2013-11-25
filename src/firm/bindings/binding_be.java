@@ -446,6 +446,63 @@ public class binding_be {
 		}
 	}
 
+	public static enum ir_mode_arithmetic {
+		irma_none(1),
+		irma_twos_complement(2),
+		irma_ieee754(256),
+		irma_x86_extended_float(),
+		irma_last(ir_mode_arithmetic.irma_x86_extended_float.val);
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		ir_mode_arithmetic(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		ir_mode_arithmetic() {
+			this.val = C.next_val++;
+		}
+
+		public static ir_mode_arithmetic getEnum(int val) {
+			for (ir_mode_arithmetic entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum float_int_conversion_overflow_style_t {
+		ir_overflow_indefinite(),
+		ir_overflow_min_max();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		float_int_conversion_overflow_style_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		float_int_conversion_overflow_style_t() {
+			this.val = C.next_val++;
+		}
+
+		public static float_int_conversion_overflow_style_t getEnum(int val) {
+			for (float_int_conversion_overflow_style_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum asm_constraint_flags_t {
 		ASM_CONSTRAINT_FLAG_NONE(0),
 		ASM_CONSTRAINT_FLAG_SUPPORTS_REGISTER((1 << 0)),
@@ -544,9 +601,13 @@ public class binding_be {
 
 	public static native Pointer be_get_type_long_double();
 
+	public static native /* float_int_conversion_overflow_style_t */int be_get_float_int_overflow();
+
 	public static native Pointer be_get_backend_param();
 
 	public static native void be_lower_for_target();
+
+	public static native void be_set_after_transform_func(Pointer func);
 
 	public static native void be_main(Pointer output, String compilation_unit_name);
 

@@ -751,6 +751,8 @@ public class binding_typerep {
 
 	public static native Pointer get_entity_irg(Pointer ent);
 
+	public static native Pointer get_entity_linktime_irg(Pointer ent);
+
 	public static native int get_entity_vtable_number(Pointer ent);
 
 	public static native void set_entity_vtable_number(Pointer ent, int vtable_number);
@@ -839,6 +841,8 @@ public class binding_typerep {
 
 	public static native int is_method_entity(Pointer ent);
 
+	public static native int is_alias_entity(Pointer ent);
+
 	public static native com.sun.jna.NativeLong get_entity_nr(Pointer ent);
 
 	public static native com.sun.jna.NativeLong get_entity_visited(Pointer ent);
@@ -850,6 +854,8 @@ public class binding_typerep {
 	public static native int entity_visited(Pointer ent);
 
 	public static native int entity_not_visited(Pointer ent);
+
+	public static native int entity_has_additional_properties(Pointer entity);
 
 	public static native /* mtp_additional_properties */int get_entity_additional_properties(Pointer ent);
 

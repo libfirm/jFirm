@@ -330,12 +330,41 @@ public class binding_irmode {
 		}
 	}
 
+	public static enum float_int_conversion_overflow_style_t {
+		ir_overflow_indefinite(),
+		ir_overflow_min_max();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		float_int_conversion_overflow_style_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		float_int_conversion_overflow_style_t() {
+			this.val = C.next_val++;
+		}
+
+		public static float_int_conversion_overflow_style_t getEnum(int val) {
+			for (float_int_conversion_overflow_style_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 
 	public static native Pointer new_int_mode(String name, /* ir_mode_arithmetic */int arithmetic, int bit_size, int sign, int modulo_shift);
 
 	public static native Pointer new_reference_mode(String name, /* ir_mode_arithmetic */int arithmetic, int bit_size, int modulo_shift);
 
-	public static native Pointer new_float_mode(String name, /* ir_mode_arithmetic */int arithmetic, int exponent_size, int mantissa_size);
+	public static native Pointer new_float_mode(String name, /* ir_mode_arithmetic */int arithmetic, int exponent_size, int mantissa_size, /* float_int_conversion_overflow_style_t */int int_conv_overflow);
+
+	public static native Pointer new_non_arithmetic_mode(String name);
 
 	public static native int is_mode(Pointer thing);
 
@@ -377,8 +406,6 @@ public class binding_irmode {
 
 	public static native Pointer get_modeD();
 
-	public static native Pointer get_modeQ();
-
 	public static native Pointer get_modeBs();
 
 	public static native Pointer get_modeBu();
@@ -394,10 +421,6 @@ public class binding_irmode {
 	public static native Pointer get_modeLs();
 
 	public static native Pointer get_modeLu();
-
-	public static native Pointer get_modeLLs();
-
-	public static native Pointer get_modeLLu();
 
 	public static native Pointer get_modeP();
 
@@ -435,10 +458,6 @@ public class binding_irmode {
 
 	public static native int mode_is_data(Pointer mode);
 
-	public static native int mode_is_datab(Pointer mode);
-
-	public static native int mode_is_dataM(Pointer mode);
-
 	public static native int smaller_mode(Pointer sm, Pointer lm);
 
 	public static native int values_in_mode(Pointer sm, Pointer lm);
@@ -466,6 +485,8 @@ public class binding_irmode {
 	public static native int get_mode_mantissa_size(Pointer mode);
 
 	public static native int get_mode_exponent_size(Pointer mode);
+
+	public static native /* float_int_conversion_overflow_style_t */int get_mode_float_int_overflow(Pointer mode);
 
 	public static native int is_reinterpret_cast(Pointer src, Pointer dst);
 

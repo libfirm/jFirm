@@ -5,6 +5,7 @@ import java.util.Iterator;
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
+import firm.bindings.binding_be;
 import firm.bindings.binding_irmode;
 import firm.bindings.binding_irmode.ir_mode_arithmetic;
 
@@ -48,7 +49,8 @@ public final class Mode extends JNAWrapper {
 	}
 
 	public static Mode createFloatMode(String name, Arithmetic arithmetic, int exponentSize, int mantissaSize) {
-		return new Mode(binding_irmode.new_float_mode(name, arithmetic.val, exponentSize, mantissaSize));
+		return new Mode(binding_irmode.new_float_mode(name, arithmetic.val, exponentSize, mantissaSize,
+		                binding_be.be_get_float_int_overflow()));
 	}
 
 	public static Mode createReferenceMode(String name, Arithmetic arithmetic, int bitSize, Mode equivalentSignedInt, Mode equivalentUnsignedInt,
@@ -156,11 +158,6 @@ public final class Mode extends JNAWrapper {
 		return new Mode(modePtr);
 	}
 
-	public static final Mode getQ() {
-		Pointer modePtr = binding_irmode.get_modeQ();
-		return new Mode(modePtr);
-	}
-
 	public static final Mode getBs() {
 		Pointer modePtr = binding_irmode.get_modeBs();
 		return new Mode(modePtr);
@@ -198,16 +195,6 @@ public final class Mode extends JNAWrapper {
 
 	public static final Mode getLu() {
 		Pointer modePtr = binding_irmode.get_modeLu();
-		return new Mode(modePtr);
-	}
-
-	public static final Mode getLLs() {
-		Pointer modePtr = binding_irmode.get_modeLLs();
-		return new Mode(modePtr);
-	}
-
-	public static final Mode getLLu() {
-		Pointer modePtr = binding_irmode.get_modeLLu();
 		return new Mode(modePtr);
 	}
 
@@ -273,14 +260,6 @@ public final class Mode extends JNAWrapper {
 
 	public final boolean isData() {
 		return 0 != binding_irmode.mode_is_data(ptr);
-	}
-
-	public final boolean isDatab() {
-		return 0 != binding_irmode.mode_is_datab(ptr);
-	}
-
-	public final boolean isDataM() {
-		return 0 != binding_irmode.mode_is_dataM(ptr);
 	}
 
 	public final boolean isSmallerThan(Mode compareTo) {

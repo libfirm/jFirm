@@ -328,38 +328,6 @@ public class binding_tv {
 		}
 	}
 
-	public static enum tv_output_mode {
-		TVO_NATIVE(),
-		TVO_HEX(),
-		TVO_DECIMAL(),
-		TVO_OCTAL(),
-		TVO_BINARY(),
-		TVO_FLOAT(),
-		TVO_HEXFLOAT();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		tv_output_mode(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		tv_output_mode() {
-			this.val = C.next_val++;
-		}
-
-		public static tv_output_mode getEnum(int val) {
-			for (tv_output_mode entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 
 	public static native Pointer new_tarval_from_str(String str, com.sun.jna.NativeLong len, Pointer mode);
 
@@ -469,25 +437,15 @@ public class binding_tv {
 
 	public static native Pointer tarval_shrs_unsigned(Pointer a, int b);
 
-	public static native int set_tarval_mode_output_option(Pointer mode, Pointer modeinfo);
-
-	public static native Pointer get_tarval_mode_output_option(Pointer mode);
-
 	public static native String get_tarval_bitpattern(Pointer tv);
 
 	public static native byte get_tarval_sub_bits(Pointer tv, int byte_ofs);
-
-	public static native int tarval_is_single_bit(Pointer tv);
 
 	public static native int get_tarval_popcount(Pointer tv);
 
 	public static native int get_tarval_lowest_bit(Pointer tv);
 
 	public static native int get_tarval_highest_bit(Pointer tv);
-
-	public static native int tarval_snprintf(String buf, com.sun.jna.NativeLong buflen, Pointer tv);
-
-	public static native int tarval_printf(Pointer tv);
 
 	public static native int tarval_zero_mantissa(Pointer tv);
 
@@ -497,7 +455,7 @@ public class binding_tv {
 
 	public static native int tarval_ieee754_get_exact();
 
-	public static native int tarval_is_NaN(Pointer tv);
+	public static native int tarval_is_nan(Pointer tv);
 
 	public static native int tarval_is_plus_inf(Pointer tv);
 

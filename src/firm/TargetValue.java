@@ -319,31 +319,12 @@ public class TargetValue extends JNAWrapper {
 		}
 	}
 
-	/**
-	 * @return true on success
-	 */
-	public static final boolean setModeOutputOption(Mode mode, ModeInfo modeinfo) {
-		// returns 0 on success
-		int status = binding_tv.set_tarval_mode_output_option(mode.ptr,
-				modeinfo.ptr);
-		return status == 0;
-	}
-
-	public static final ModeInfo getModeOutputOption(Mode mode) {
-		Pointer pModeInfo = binding_tv.get_tarval_mode_output_option(mode.ptr);
-		return new ModeInfo(pModeInfo);
-	}
-
 	public final String getBitpattern() {
 		return binding_tv.get_tarval_bitpattern(ptr);
 	}
 
 	public final byte getSubBits(int byteOfs) {
 		return binding_tv.get_tarval_sub_bits(ptr, byteOfs);
-	}
-
-	public final boolean isSingleBit() {
-		return 0 != binding_tv.tarval_is_single_bit(ptr);
 	}
 
 	public final boolean zeroMantissa() {
@@ -363,7 +344,7 @@ public class TargetValue extends JNAWrapper {
 	}
 
 	public final boolean isNaN() {
-		return 0 != binding_tv.tarval_is_NaN(ptr);
+		return 0 != binding_tv.tarval_is_nan(ptr);
 	}
 
 	public final boolean isPlusInf() {
