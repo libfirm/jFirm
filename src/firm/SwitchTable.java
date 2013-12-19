@@ -19,9 +19,9 @@ public class SwitchTable extends JNAWrapper {
 		binding_irnode.ir_switch_table_set(ptr, new NativeLong(entry), min.ptr, max.ptr, new NativeLong(pn));
 	}
 
-	public final void setEntry(int entry, int min, int max, int pn) {
-		TargetValue minTV = new TargetValue(min, Mode.getIs());
-		TargetValue maxTV = new TargetValue(max, Mode.getIs());
+	public final void setEntry(int entry, int min, int max, Mode mode, int pn) {
+		TargetValue minTV = new TargetValue(min, mode);
+		TargetValue maxTV = new TargetValue(max, mode);
 		setEntry(entry, minTV, maxTV, pn);
 	}
 
