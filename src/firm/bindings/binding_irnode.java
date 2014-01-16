@@ -3251,7 +3251,7 @@ public class binding_irnode {
 
 	public static native void add_irn_deps(Pointer tgt, Pointer src);
 
-	public static native int get_irn_deps(Pointer node);
+	public static native int get_irn_n_deps(Pointer node);
 
 	public static native Pointer get_irn_dep(Pointer node, int pos);
 
