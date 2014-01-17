@@ -311,10 +311,6 @@ public class binding_firm_common {
 		k_tarval(),
 		k_ir_loop(),
 		k_ir_prog(),
-		k_ir_graph_pass(),
-		k_ir_prog_pass(),
-		k_ir_graph_pass_mgr(),
-		k_ir_prog_pass_mgr(),
 		k_ir_max();
 		public final int val;
 

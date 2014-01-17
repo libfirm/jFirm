@@ -331,7 +331,7 @@ public class binding_tv {
 
 	public static native Pointer new_tarval_from_str(String str, com.sun.jna.NativeLong len, Pointer mode);
 
-	public static native Pointer new_integer_tarval_from_str(String str, com.sun.jna.NativeLong len, byte sign, byte base, Pointer mode);
+	public static native Pointer new_integer_tarval_from_str(String str, com.sun.jna.NativeLong len, int negative, byte base, Pointer mode);
 
 	public static native Pointer new_tarval_from_long(com.sun.jna.NativeLong l, Pointer mode);
 
