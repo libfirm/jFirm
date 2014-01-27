@@ -15,6 +15,9 @@
 	<property name="lib" location="${basedir}/lib"/>
 	<property name="make.exe" value="make"/>
 	<property name="bfmain" value="example.BrainFuck.Main"/>
+	<condition property="buildvariant" value="${VARIANT}" else="debug">
+		<isset property="VARIANT"/>
+	</condition>
 	<path id="project.classpath">
 		<pathelement location="${basedir}/lib/jna.jar"/>
 	</path>
@@ -40,10 +43,11 @@
 	<target name="libfirm.so" depends="init" if="libfirm.exists">
 		<exec executable="${make.exe}" failonerror="true" dir="${basedir}/../libfirm">
 			<arg value="-j2"/>
+			<arg value="variant=${buildvariant}"/>
 		</exec>
 		<copy todir="${lib}" flatten="true">
 			<fileset dir="${basedir}/../libfirm">
-				<include name="build/debug/libfirm.so"/>
+				<include name="build/${buildvariant}/libfirm.so"/>
 			</fileset>
 		</copy>
 	</target>
@@ -51,6 +55,7 @@
 	<target name="clean-libfirm.so">
 		<exec executable="${make.exe}" failonerror="true" dir="${basedir}/../libfirm">
 			<arg value="clean"/>
+			<arg value="variant=${buildvariant}"/>
 		</exec>
 	</target>
 
