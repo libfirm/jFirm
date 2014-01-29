@@ -4,6 +4,8 @@ package firm.nodes;
 public class Nodes {
 	public static void init() {
 		Add.init();
+		Address.init();
+		Align.init();
 		Alloc.init();
 		Anchor.init();
 		And.init();
@@ -34,6 +36,7 @@ public class Nodes {
 		Mux.init();
 		NoMem.init();
 		Not.init();
+		Offset.init();
 		Or.init();
 		Phi.init();
 		Pin.init();
@@ -44,11 +47,11 @@ public class Nodes {
 		Shl.init();
 		Shr.init();
 		Shrs.init();
+		Size.init();
 		Start.init();
 		Store.init();
 		Sub.init();
 		Switch.init();
-		SymConst.init();
 		Sync.init();
 		Tuple.init();
 		Unknown.init();

@@ -57,19 +57,16 @@ public abstract class GraphBase extends JNAWrapper {
 		binding_irgraph.free_ir_graph(ptr);
 	}
 
-	public Node newSymConst(Entity entity) {
-		return Node.createWrapper(binding_ircons.new_rd_SymConst_addr_ent(
-				Pointer.NULL, ptr, Mode.getP().ptr, entity.ptr));
+	public Node newAddress(Entity entity) {
+		return Node.createWrapper(binding_ircons.new_r_Address(ptr, entity.ptr));
 	}
 
-	public Node newSymConstTypeSize(Type type, Mode mode) {
-		return Node.createWrapper(binding_ircons.new_rd_SymConst_size(
-				Pointer.NULL, ptr, mode.ptr, type.ptr));
+	public Node newSize(Type type, Mode mode) {
+		return Node.createWrapper(binding_ircons.new_r_Size(ptr, mode.ptr, type.ptr));
 	}
 
-	public Node newSymConstTypeAlign(Type type, Mode mode) {
-		return Node.createWrapper(binding_ircons.new_rd_SymConst_align(
-				Pointer.NULL, ptr, mode.ptr, type.ptr));
+	public Node newAlign(Type type, Mode mode) {
+		return Node.createWrapper(binding_ircons.new_r_Align(ptr, mode.ptr, type.ptr));
 	}
 
 	public Node newConst(int value, Mode mode) {

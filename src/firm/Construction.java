@@ -37,16 +37,16 @@ public class Construction extends ConstructionBase {
 		return new Block(binding_ircons.new_r_immBlock(graph.ptr));
 	}
 
-	public Node newSymConst(Entity entity) {
-		return graph.newSymConst(entity);
+	public Node newAddress(Entity entity) {
+		return graph.newAddress(entity);
 	}
 
-	public Node newSymConstTypeSize(Type type, Mode mode) {
-		return graph.newSymConstTypeSize(type, mode);
+	public Node newSize(Type type, Mode mode) {
+		return graph.newSize(type, mode);
 	}
 
-	public Node newSymcConstTypeAlign(Type type, Mode mode) {
-		return graph.newSymConstTypeAlign(type, mode);
+	public Node newAlign(Type type, Mode mode) {
+		return graph.newAlign(type, mode);
 	}
 
 	public Node newConst(TargetValue tarval) {

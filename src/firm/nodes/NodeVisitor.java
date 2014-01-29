@@ -9,6 +9,12 @@ public interface NodeVisitor {
 	/** called when accept is called on a Add node */
 	void visit(Add node);
 
+	/** called when accept is called on a Address node */
+	void visit(Address node);
+
+	/** called when accept is called on a Align node */
+	void visit(Align node);
+
 	/** called when accept is called on a Alloc node */
 	void visit(Alloc node);
 
@@ -99,6 +105,9 @@ public interface NodeVisitor {
 	/** called when accept is called on a Not node */
 	void visit(Not node);
 
+	/** called when accept is called on a Offset node */
+	void visit(Offset node);
+
 	/** called when accept is called on a Or node */
 	void visit(Or node);
 
@@ -129,6 +138,9 @@ public interface NodeVisitor {
 	/** called when accept is called on a Shrs node */
 	void visit(Shrs node);
 
+	/** called when accept is called on a Size node */
+	void visit(Size node);
+
 	/** called when accept is called on a Start node */
 	void visit(Start node);
 
@@ -140,9 +152,6 @@ public interface NodeVisitor {
 
 	/** called when accept is called on a Switch node */
 	void visit(Switch node);
-
-	/** called when accept is called on a SymConst node */
-	void visit(SymConst node);
 
 	/** called when accept is called on a Sync node */
 	void visit(Sync node);
@@ -168,6 +177,16 @@ public interface NodeVisitor {
 
 		@Override
 		public void visit(Add node) {
+			defaultVisit(node);
+		}
+
+		@Override
+		public void visit(Address node) {
+			defaultVisit(node);
+		}
+
+		@Override
+		public void visit(Align node) {
 			defaultVisit(node);
 		}
 
@@ -322,6 +341,11 @@ public interface NodeVisitor {
 		}
 
 		@Override
+		public void visit(Offset node) {
+			defaultVisit(node);
+		}
+
+		@Override
 		public void visit(Or node) {
 			defaultVisit(node);
 		}
@@ -372,6 +396,11 @@ public interface NodeVisitor {
 		}
 
 		@Override
+		public void visit(Size node) {
+			defaultVisit(node);
+		}
+
+		@Override
 		public void visit(Start node) {
 			defaultVisit(node);
 		}
@@ -388,11 +417,6 @@ public interface NodeVisitor {
 
 		@Override
 		public void visit(Switch node) {
-			defaultVisit(node);
-		}
-
-		@Override
-		public void visit(SymConst node) {
 			defaultVisit(node);
 		}
 

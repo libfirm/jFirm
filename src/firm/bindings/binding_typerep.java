@@ -175,35 +175,6 @@ public class binding_typerep {
 		}
 	}
 
-	public static enum symconst_kind {
-		symconst_type_size(),
-		symconst_type_align(),
-		symconst_addr_ent(),
-		symconst_ofs_ent();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		symconst_kind(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		symconst_kind() {
-			this.val = C.next_val++;
-		}
-
-		public static symconst_kind getEnum(int val) {
-			for (symconst_kind entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_builtin_kind {
 		ir_bk_trap(),
 		ir_bk_debugbreak(),

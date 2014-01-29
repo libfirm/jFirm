@@ -175,35 +175,6 @@ public class binding_ircons {
 		}
 	}
 
-	public static enum symconst_kind {
-		symconst_type_size(),
-		symconst_type_align(),
-		symconst_addr_ent(),
-		symconst_ofs_ent();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		symconst_kind(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		symconst_kind() {
-			this.val = C.next_val++;
-		}
-
-		public static symconst_kind getEnum(int val) {
-			for (symconst_kind entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_builtin_kind {
 		ir_bk_trap(),
 		ir_bk_debugbreak(),
@@ -882,6 +853,8 @@ public class binding_ircons {
 	public static enum ir_opcode {
 		iro_ASM(),
 		iro_Add(),
+		iro_Address(),
+		iro_Align(),
 		iro_Alloc(),
 		iro_Anchor(),
 		iro_And(),
@@ -912,6 +885,7 @@ public class binding_ircons {
 		iro_Mux(),
 		iro_NoMem(),
 		iro_Not(),
+		iro_Offset(),
 		iro_Or(),
 		iro_Phi(),
 		iro_Pin(),
@@ -922,11 +896,11 @@ public class binding_ircons {
 		iro_Shl(),
 		iro_Shr(),
 		iro_Shrs(),
+		iro_Size(),
 		iro_Start(),
 		iro_Store(),
 		iro_Sub(),
 		iro_Switch(),
-		iro_SymConst(),
 		iro_Sync(),
 		iro_Tuple(),
 		iro_Unknown(),
@@ -2297,6 +2271,38 @@ public class binding_ircons {
 
 	public static native Pointer get_op_Add();
 
+	public static native Pointer new_rd_Address(Pointer dbgi, Pointer irg, Pointer entity);
+
+	public static native Pointer new_r_Address(Pointer irg, Pointer entity);
+
+	public static native Pointer new_d_Address(Pointer dbgi, Pointer entity);
+
+	public static native Pointer new_Address(Pointer entity);
+
+	public static native int is_Address(Pointer node);
+
+	public static native Pointer get_Address_entity(Pointer node);
+
+	public static native void set_Address_entity(Pointer node, Pointer entity);
+
+	public static native Pointer get_op_Address();
+
+	public static native Pointer new_rd_Align(Pointer dbgi, Pointer irg, Pointer mode, Pointer type);
+
+	public static native Pointer new_r_Align(Pointer irg, Pointer mode, Pointer type);
+
+	public static native Pointer new_d_Align(Pointer dbgi, Pointer mode, Pointer type);
+
+	public static native Pointer new_Align(Pointer mode, Pointer type);
+
+	public static native int is_Align(Pointer node);
+
+	public static native Pointer get_Align_type(Pointer node);
+
+	public static native void set_Align_type(Pointer node, Pointer type);
+
+	public static native Pointer get_op_Align();
+
 	public static native Pointer new_rd_Alloc(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_size, int alignment);
 
 	public static native Pointer new_r_Alloc(Pointer block, Pointer irn_mem, Pointer irn_size, int alignment);
@@ -2889,6 +2895,22 @@ public class binding_ircons {
 
 	public static native Pointer get_op_Not();
 
+	public static native Pointer new_rd_Offset(Pointer dbgi, Pointer irg, Pointer mode, Pointer entity);
+
+	public static native Pointer new_r_Offset(Pointer irg, Pointer mode, Pointer entity);
+
+	public static native Pointer new_d_Offset(Pointer dbgi, Pointer mode, Pointer entity);
+
+	public static native Pointer new_Offset(Pointer mode, Pointer entity);
+
+	public static native int is_Offset(Pointer node);
+
+	public static native Pointer get_Offset_entity(Pointer node);
+
+	public static native void set_Offset_entity(Pointer node, Pointer entity);
+
+	public static native Pointer get_op_Offset();
+
 	public static native Pointer new_rd_Or(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
 
 	public static native Pointer new_r_Or(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
@@ -3095,6 +3117,22 @@ public class binding_ircons {
 
 	public static native Pointer get_op_Shrs();
 
+	public static native Pointer new_rd_Size(Pointer dbgi, Pointer irg, Pointer mode, Pointer type);
+
+	public static native Pointer new_r_Size(Pointer irg, Pointer mode, Pointer type);
+
+	public static native Pointer new_d_Size(Pointer dbgi, Pointer mode, Pointer type);
+
+	public static native Pointer new_Size(Pointer mode, Pointer type);
+
+	public static native int is_Size(Pointer node);
+
+	public static native Pointer get_Size_type(Pointer node);
+
+	public static native void set_Size_type(Pointer node, Pointer type);
+
+	public static native Pointer get_op_Size();
+
 	public static native Pointer new_rd_Start(Pointer dbgi, Pointer irg);
 
 	public static native Pointer new_r_Start(Pointer irg);
@@ -3183,10 +3221,6 @@ public class binding_ircons {
 
 	public static native Pointer get_op_Switch();
 
-	public static native int is_SymConst(Pointer node);
-
-	public static native Pointer get_op_SymConst();
-
 	public static native Pointer new_rd_Sync(Pointer dbgi, Pointer block, int arity, java.nio.Buffer in);
 
 	public static native Pointer new_r_Sync(Pointer block, int arity, java.nio.Buffer in);
@@ -3242,14 +3276,6 @@ public class binding_ircons {
 	public static native Pointer new_d_Const_long(Pointer db, Pointer mode, com.sun.jna.NativeLong value);
 
 	public static native Pointer new_Const_long(Pointer mode, com.sun.jna.NativeLong value);
-
-	public static native Pointer new_rd_SymConst_addr_ent(Pointer db, Pointer irg, Pointer mode, Pointer symbol);
-
-	public static native Pointer new_rd_SymConst_ofs_ent(Pointer db, Pointer irg, Pointer mode, Pointer symbol);
-
-	public static native Pointer new_rd_SymConst_size(Pointer db, Pointer irg, Pointer mode, Pointer symbol);
-
-	public static native Pointer new_rd_SymConst_align(Pointer db, Pointer irg, Pointer mode, Pointer symbol);
 
 	public static native Pointer new_rd_simpleSel(Pointer db, Pointer block, Pointer store, Pointer objptr, Pointer ent);
 

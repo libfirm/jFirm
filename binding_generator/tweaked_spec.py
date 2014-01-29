@@ -4,8 +4,6 @@ java_binding = "firm.bindings.binding_irnode"
 java_package = "firm.nodes"
 
 # some tweaks are necessary to generate the java code
-SymConst.noconstructor = True
-End.noconstructor = True
 Block.java_add = '''
 	public void addPred(Node node) {
 		firm.bindings.binding_ircons.add_immBlock_pred(ptr, node.ptr);

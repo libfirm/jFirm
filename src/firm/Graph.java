@@ -38,6 +38,16 @@ public class Graph extends GraphBase {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Add(block.ptr, left.ptr, right.ptr, mode.ptr));
 	}
 
+	/** Create a new Address node */
+	public final Node newAddress(firm.Entity entity) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Address(this.ptr, entity.ptr));
+	}
+
+	/** Create a new Align node */
+	public final Node newAlign(firm.Mode mode, firm.Type type) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Align(this.ptr, mode.ptr, type.ptr));
+	}
+
 	/** Create a new Alloc node */
 	public final Node newAlloc(Node block, Node mem, Node size, int alignment) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Alloc(block.ptr, mem.ptr, size.ptr, alignment));
@@ -108,6 +118,11 @@ public class Graph extends GraphBase {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Dummy(this.ptr, mode.ptr));
 	}
 
+	/** Create a new End node */
+	public final Node newEnd(Node[] ins) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_End(this.ptr, ins.length, Node.getBufferFromNodeList(ins)));
+	}
+
 	/** Create a new Eor node */
 	public final Node newEor(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Eor(block.ptr, left.ptr, right.ptr, mode.ptr));
@@ -173,6 +188,11 @@ public class Graph extends GraphBase {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Not(block.ptr, op.ptr, mode.ptr));
 	}
 
+	/** Create a new Offset node */
+	public final Node newOffset(firm.Mode mode, firm.Entity entity) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Offset(this.ptr, mode.ptr, entity.ptr));
+	}
+
 	/** Create a new Or node */
 	public final Node newOr(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Or(block.ptr, left.ptr, right.ptr, mode.ptr));
@@ -221,6 +241,11 @@ public class Graph extends GraphBase {
 	/** Create a new Shrs node */
 	public final Node newShrs(Node block, Node left, Node right, firm.Mode mode) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Shrs(block.ptr, left.ptr, right.ptr, mode.ptr));
+	}
+
+	/** Create a new Size node */
+	public final Node newSize(firm.Mode mode, firm.Type type) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Size(this.ptr, mode.ptr, type.ptr));
 	}
 
 	/** Create a new Start node */

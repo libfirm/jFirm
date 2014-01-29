@@ -19,6 +19,16 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
+	public Node newAddress(firm.Entity entity) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Address(graph.ptr, entity.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+
+	public Node newAlign(firm.Mode mode, firm.Type type) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Align(graph.ptr, mode.ptr, type.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+
 	public Node newAlloc(Node mem, Node size, int alignment) {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Alloc(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, size.ptr, alignment);
 		return Node.createWrapper(result_ptr);
@@ -89,6 +99,11 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
+	public Node newEnd(Node[] ins) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_End(graph.ptr, ins.length, Node.getBufferFromNodeList(ins));
+		return Node.createWrapper(result_ptr);
+	}
+
 	public Node newEor(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Eor(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
 		return Node.createWrapper(result_ptr);
@@ -154,6 +169,11 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
+	public Node newOffset(firm.Mode mode, firm.Entity entity) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Offset(graph.ptr, mode.ptr, entity.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+
 	public Node newOr(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Or(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
 		return Node.createWrapper(result_ptr);
@@ -201,6 +221,11 @@ class ConstructionBase {
 
 	public Node newShrs(Node left, Node right, firm.Mode mode) {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Shrs(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+
+	public Node newSize(firm.Mode mode, firm.Type type) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Size(graph.ptr, mode.ptr, type.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
