@@ -268,7 +268,7 @@ def preprocess_node(node):
 		verify_node(node)
 	else:
 		setldefault(node, "parent", Node)
-	setldefault(node, "attrs", [])
+	setdefault(node, "attrs", [])
 	setldefault(node, "constructor_args", [])
 	node.classname = format_camel_case_big(node.name)
 
