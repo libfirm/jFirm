@@ -110,7 +110,7 @@ def format_camel_case_helper(string, firstbig):
 			continue
 		result += c
 		nextbig = False
-	
+
 	if result == "":
 		return string
 	return result
@@ -310,7 +310,7 @@ def preprocess_node(node):
 			prepare_attr(attr)
 			if "init" in attr:
 				continue
-			
+
 			arguments.append(dict(
 				name = attr["java_name"],
 				type = attr["java_type"],
@@ -329,7 +329,7 @@ def preprocess_node(node):
 
 		for arg in arguments:
 			arg['name'] = format_filter_keywords(arg['name'])
-			
+
 		node.arguments = arguments
 
 def main(argv):
@@ -358,7 +358,7 @@ def main(argv):
 			filename = "%s.java" % node.classname
 			print "Create: %s" % filename
 			file = open(filename, "w");
-			
+
 			file.write(template.render(node = node).encode("utf-8") + "\n")
 			file.close()
 	else:
