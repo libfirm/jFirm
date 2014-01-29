@@ -68,6 +68,7 @@ public {% if isAbstract(node) %}abstract {%endif-%} class {{node.classname}} ext
 
 	{% endfor -%}
 
+	{%- if not isAbstract(node) %}
 	{%- for attr in node.attrs -%}
 	public {{attr.java_type}} get{{attr.java_name|CamelCase}}() {
 		{{attr.wrap_type}} _res = {{binding}}.get_{{node.name}}_{{attr.name}}(ptr);
@@ -79,6 +80,7 @@ public {% if isAbstract(node) %}abstract {%endif-%} class {{node.classname}} ext
 	}
 
 	{% endfor -%}
+	{% endif -%}
 
 	{{- node.java_add -}}
 	{%- if not isAbstract(node) -%}
