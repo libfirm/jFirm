@@ -68,7 +68,7 @@ public class BrainFuck {
 		Graph graph = new Graph(mainEnt, n_vars);
 		construction = new Construction(graph);
 
-		Node symconst = construction.newSymConst(data);
+		Node symconst = construction.newAddress(data);
 		construction.setVariable(0, symconst);
 
 		/* create putchar entity */
@@ -78,7 +78,7 @@ public class BrainFuck {
 
 		putcharEntity = new Entity(global, "putchar", putcharType);
 		putcharEntity.setLdIdent(makeLdIdent("putchar"));
-		putcharSymConst = construction.newSymConst(putcharEntity);
+		putcharSymConst = construction.newAddress(putcharEntity);
 
 		/* create getchar entity */
 		MethodType getcharType = new MethodType(new Type[] {},
@@ -86,7 +86,7 @@ public class BrainFuck {
 
 		getcharEntity = new Entity(global, "getchar", getcharType);
 		getcharEntity.setLdIdent(makeLdIdent("getchar"));
-		getcharSymConst = construction.newSymConst(getcharEntity);
+		getcharSymConst = construction.newAddress(getcharEntity);
 
 		while (input.available() > 0) {
 			parse();
