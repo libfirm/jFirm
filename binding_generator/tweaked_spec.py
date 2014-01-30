@@ -28,8 +28,8 @@ Block.java_add = '''
 
 	'''
 for a in Load.attrs:
-	if a["name"] == "mode":
-		a["java_name"] = "load_mode"
+	if a.name == "mode":
+		a.java_name = "load_mode"
 
 del ASM # n_clobbers has no setter in libfirm, so leave out the whole node
         # for now...

@@ -2,7 +2,7 @@
 from jinja2 import Environment, Template, FileSystemLoader
 import re
 
-from spec_util import verify_node, is_dynamic_pinned, setdefault, isAbstract, setldefault, load_spec
+from spec_util import verify_node, is_dynamic_pinned, setdefault, isAbstract, setldefault, load_spec, Attribute
 import sys
 
 java_keywords = [ "public", "private", "protected", "true", "false" ]
@@ -12,7 +12,7 @@ def format_filter_keywords(arg):
 	return arg
 
 def format_argdecls(arglist):
-	argstrings = map(lambda arg : (arg["type"] + " " + format_filter_keywords(arg["name"])), arglist)
+	argstrings = [ "%s %s" % (arg.type, format_filter_keywords(arg.name)) for arg in arglist ]
 	return ", ".join(argstrings)
 
 def format_parameterlist(parameterlist):
@@ -20,21 +20,21 @@ def format_parameterlist(parameterlist):
 
 def format_nodearguments(node):
 	def format_argument(arg):
-		if arg['type'] == "Node[]":
-			return arg["name"] + ".length, Node.getBufferFromNodeList(" + arg["name"] + ")"
-		elif "to_wrapper" in arg:
-			return arg["to_wrapper"] % arg['name']
+		if arg.type == "Node[]":
+			return arg.name + ".length, Node.getBufferFromNodeList(" + arg.name + ")"
+		elif hasattr(arg, "to_wrapper") and arg.to_wrapper is not None:
+			return arg.to_wrapper % (arg.name,)
 		else:
-			return "%s.ptr" % arg['name']
+			return "%s.ptr" % (arg.name,)
 	arguments = map(format_argument, node.arguments)
 	return format_parameterlist(arguments)
 
 def format_nodeparameters(node):
-	parameters = map(lambda arg: arg["type"] + " " + arg["name"], node.arguments)
+	parameters = [ "%s %s" % (arg.type, arg.name) for arg in node.arguments ]
 	return format_parameterlist(parameters)
 
 def format_args(arglist):
-	argstrings = map(lambda arg : arg["name"], arglist)
+	argstrings = [ arg.name for arg in arglist ]
 	return ", ".join(argstrings)
 
 def format_blockparameter(node):
@@ -87,12 +87,12 @@ def format_binding_args(arglist, need_graph = False):
 		if not first:
 			res += ", "
 		first = False
-		if arg["type"] == "Node[]":
-			res += arg["name"] + ".length, Node.getBufferFromNodeList(" + arg["name"] + ")"
+		if arg.type == "Node[]":
+			res += arg.name + ".length, Node.getBufferFromNodeList(" + arg.name + ")"
 			continue
-		name = format_filter_keywords(arg["name"])
-		if "to_wrapper" in arg:
-			res += arg["to_wrapper"] % name
+		name = format_filter_keywords(arg.name)
+		if hasattr(arg, "to_wrapper") and arg.to_wrapper is not None:
+			res += arg.to_wrapper % (name,)
 		else:
 			res += name + ".ptr"
 
@@ -115,9 +115,6 @@ def format_camel_case_helper(string, firstbig):
 		return string
 	return result
 
-def format_camel_case(string):
-	return format_camel_case_helper(string, False)
-
 def format_camel_case_big(string):
 	return format_camel_case_helper(string, True)
 
@@ -125,7 +122,6 @@ env = Environment(loader=FileSystemLoader("."))
 env.filters['argdecls']    = format_argdecls
 env.filters['args']        = format_args
 env.filters['bindingargs'] = format_binding_args
-env.filters['camelCase']   = format_camel_case
 env.filters['CamelCase']   = format_camel_case_big
 env.filters['filterkeywords'] = format_filter_keywords
 
@@ -246,17 +242,21 @@ def get_java_type(type):
 	return (java_type,wrap_type,to_wrapper,from_wrapper)
 
 def prepare_attr(attr):
-	type = attr["type"]
-	(java_type,wrap_type,to_wrapper,from_wrapper) = get_java_type(type)
-	attr["java_type"] = java_type
-	attr["wrap_type"] = wrap_type
-	attr["to_wrapper"] = to_wrapper
-	attr["from_wrapper"] = from_wrapper
-	if "java_name" not in attr:
-		attr["java_name"] = attr["name"]
+	(java_type,wrap_type,to_wrapper,from_wrapper) = get_java_type(attr.type)
+	attr.java_type = java_type
+	attr.wrap_type = wrap_type
+	attr.to_wrapper = to_wrapper
+	attr.from_wrapper = from_wrapper
+	if not hasattr(attr, "java_name"):
+		attr.java_name = attr.name
 
 class Node:
 	classname = "Node"
+
+class JavaArgument(Attribute):
+	def __init__(self, name, type, to_wrapper, **kwargs):
+		super(JavaArgument, self).__init__(name, type, **kwargs)
+		self.to_wrapper = to_wrapper
 
 def preprocess_node(node):
 	if not isAbstract(node):
@@ -274,10 +274,8 @@ def preprocess_node(node):
 
 	# dynamic pin node?
 	if is_dynamic_pinned(node) and not hasattr(node, "pinned_init"):
-		node.constructor_args.append(dict(
-			name = "pin_state",
-			type = "op_pin_state"
-		))
+		node.constructor_args.append(
+			Attribute("pin_state", type = "op_pin_state"))
 
 	# transform outs into name, comment tuples if not in this format already
 	if hasattr(node, "outs"):
@@ -291,44 +289,32 @@ def preprocess_node(node):
 	if not isAbstract(node):
 		arguments = [ ]
 		for input in node.ins:
-			arguments.append(dict(
-				type    = "Node",
-				name    = input[0],
-				comment = input[1]
-			))
+			arguments.append(
+				Attribute(name=input[0], type="Node", comment=input[1]))
 		if node.arity == "variable" or node.arity == "dynamic":
-			arguments.append(dict(
-				name = "ins",
-				type = "Node[]"
-			))
+			arguments.append(
+				Attribute("ins", type="Node[]"))
 		if not hasattr(node, "mode"):
-			arguments.append(dict(
-				name = "mode",
-				type = "firm.Mode"
-			))
+			arguments.append(
+				Attribute("mode", type="firm.Mode"))
 		for attr in node.attrs:
 			prepare_attr(attr)
-			if "init" in attr:
+			if attr.init is not None:
 				continue
 
-			arguments.append(dict(
-				name = attr["java_name"],
-				type = attr["java_type"],
-				to_wrapper = attr["to_wrapper"],
-				comment = attr["comment"]
-			))
+			arguments.append(
+				JavaArgument(name=attr.java_name, type=attr.java_type,
+				             to_wrapper=attr.to_wrapper, comment=attr.comment))
 		for arg in node.constructor_args:
-			old_type = arg["type"]
+			old_type = arg.type
 			(java_type,wrap_type,to_wrapper,from_wrapper) = get_java_type(old_type)
 
-			arguments.append(dict(
-				name = arg["name"],
-				type = java_type,
-				to_wrapper = to_wrapper
-			))
+			arguments.append(
+				JavaArgument(name=arg.name, type=java_type,
+				             to_wrapper=to_wrapper, comment=arg.comment))
 
 		for arg in arguments:
-			arg['name'] = format_filter_keywords(arg['name'])
+			arg.name = format_filter_keywords(arg.name)
 
 		node.arguments = arguments
 
