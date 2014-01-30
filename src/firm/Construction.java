@@ -33,38 +33,27 @@ public class Construction extends ConstructionBase {
 		return graph;
 	}
 
+	/** Constructs a new "immature" Block where you can append inputs later on. */
 	public Block newBlock() {
 		return new Block(binding_ircons.new_r_immBlock(graph.ptr));
 	}
 
-	public Node newAddress(Entity entity) {
-		return graph.newAddress(entity);
-	}
-
-	public Node newSize(Type type, Mode mode) {
-		return graph.newSize(type, mode);
-	}
-
-	public Node newAlign(Type type, Mode mode) {
-		return graph.newAlign(type, mode);
-	}
-
-	public Node newConst(TargetValue tarval) {
-		return graph.newConst(tarval);
-	}
-
+	/** Convenience Const construction method that takes an int value and a mode */
 	public Node newConst(int value, Mode mode) {
 		return newConst(new TargetValue(value, mode));
 	}
 
+	/** Convenience Load construction method with cons_flags being None. */
 	public Node newLoad(Node mem, Node ptr, Mode loadMode) {
 		return newLoad(mem, ptr, loadMode, ir_cons_flags.cons_none);
 	}
 
+	/** Convenience Store construction method with cons_flags being None. */
 	public Node newStore(Node mem, Node ptr, Node value) {
 		return newStore(mem, ptr, value, ir_cons_flags.cons_none);
 	}
 
+	/** Convenience Sel construction method with a single base inputs and an entity */
 	public Node newSel(Node ptr, Entity entity) {
 		Node noMem = newNoMem();
 		return newSel(noMem, ptr, new Node[] {}, entity);
