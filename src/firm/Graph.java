@@ -74,8 +74,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Call node */
-	public final Node newCall(Node block, Node mem, Node ptr, Node[] ins, firm.Type type) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Call(block.ptr, mem.ptr, ptr.ptr, ins.length, Node.getBufferFromNodeList(ins), type.ptr));
+	public final Node newCall(Node block, Node mem, Node _ptr, Node[] ins, firm.Type type) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Call(block.ptr, mem.ptr, _ptr.ptr, ins.length, Node.getBufferFromNodeList(ins), type.ptr));
 	}
 
 	/** Create a new Cmp node */
@@ -129,8 +129,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Free node */
-	public final Node newFree(Node block, Node mem, Node ptr) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Free(block.ptr, mem.ptr, ptr.ptr));
+	public final Node newFree(Node block, Node mem, Node _ptr) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Free(block.ptr, mem.ptr, _ptr.ptr));
 	}
 
 	/** Create a new IJmp node */
@@ -149,8 +149,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Load node */
-	public final Node newLoad(Node block, Node mem, Node ptr, firm.Mode load_mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Load(block.ptr, mem.ptr, ptr.ptr, load_mode.ptr, flags.val));
+	public final Node newLoad(Node block, Node mem, Node _ptr, firm.Mode load_mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Load(block.ptr, mem.ptr, _ptr.ptr, load_mode.ptr, flags.val));
 	}
 
 	/** Create a new Minus node */
@@ -224,8 +224,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Sel node */
-	public final Node newSel(Node block, Node mem, Node ptr, Node[] ins, firm.Entity entity) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Sel(block.ptr, mem.ptr, ptr.ptr, ins.length, Node.getBufferFromNodeList(ins), entity.ptr));
+	public final Node newSel(Node block, Node _ptr, Node[] ins, firm.Entity entity) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Sel(block.ptr, _ptr.ptr, ins.length, Node.getBufferFromNodeList(ins), entity.ptr));
 	}
 
 	/** Create a new Shl node */
@@ -254,8 +254,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Store node */
-	public final Node newStore(Node block, Node mem, Node ptr, Node value, firm.bindings.binding_ircons.ir_cons_flags flags) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Store(block.ptr, mem.ptr, ptr.ptr, value.ptr, flags.val));
+	public final Node newStore(Node block, Node mem, Node _ptr, Node value, firm.bindings.binding_ircons.ir_cons_flags flags) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Store(block.ptr, mem.ptr, _ptr.ptr, value.ptr, flags.val));
 	}
 
 	/** Create a new Sub node */

@@ -192,7 +192,8 @@ public class binding_typerep {
 		ir_bk_inner_trampoline(),
 		ir_bk_saturating_increment(),
 		ir_bk_compare_swap(),
-		ir_bk_last(ir_builtin_kind.ir_bk_compare_swap.val);
+		ir_bk_may_alias(),
+		ir_bk_last(ir_builtin_kind.ir_bk_may_alias.val);
 		public final int val;
 
 		private static class C {
@@ -384,63 +385,6 @@ public class binding_typerep {
 
 		public static ir_initializer_kind_t getEnum(int val) {
 			for (ir_initializer_kind_t entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_allocation {
-		allocation_automatic(),
-		allocation_parameter(),
-		allocation_dynamic(),
-		allocation_static();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_allocation(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_allocation() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_allocation getEnum(int val) {
-			for (ir_allocation entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_peculiarity {
-		peculiarity_existent(),
-		peculiarity_description(),
-		peculiarity_inherited();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_peculiarity(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_peculiarity() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_peculiarity getEnum(int val) {
-			for (ir_peculiarity entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -838,22 +782,6 @@ public class binding_typerep {
 
 	public static native int is_unknown_entity(Pointer entity);
 
-	public static native /* ir_allocation */int get_entity_allocation(Pointer ent);
-
-	public static native void set_entity_allocation(Pointer ent, /* ir_allocation */int al);
-
-	public static native /* ir_peculiarity */int get_entity_peculiarity(Pointer ent);
-
-	public static native void set_entity_peculiarity(Pointer ent, /* ir_peculiarity */int pec);
-
-	public static native int is_entity_final(Pointer ent);
-
-	public static native void set_entity_final(Pointer ent, int _final);
-
-	public static native /* ir_peculiarity */int get_class_peculiarity(Pointer clss);
-
-	public static native void set_class_peculiarity(Pointer clss, /* ir_peculiarity */int pec);
-
 	public static native String get_tpop_name(Pointer op);
 
 	public static native /* tp_opcode */int get_tpop_code(Pointer op);
@@ -865,10 +793,6 @@ public class binding_typerep {
 	public static native int is_overwritten_by(Pointer high, Pointer low);
 
 	public static native Pointer resolve_ent_polymorphy(Pointer dynamic_class, Pointer static_ent);
-
-	public static native Pointer default_mangle_inherited_name(Pointer ent, Pointer clss);
-
-	public static native void resolve_inheritance(Pointer mfunc);
 
 	public static native void set_irp_inh_transitive_closure_state(/* inh_transitive_closure_state */int s);
 
@@ -974,8 +898,6 @@ public class binding_typerep {
 
 	public static native com.sun.jna.NativeLong get_class_member_index(Pointer clss, Pointer mem);
 
-	public static native Pointer get_class_member_by_name(Pointer clss, Pointer name);
-
 	public static native void add_class_subtype(Pointer clss, Pointer subtype);
 
 	public static native com.sun.jna.NativeLong get_class_n_subtypes(Pointer clss);
@@ -999,22 +921,6 @@ public class binding_typerep {
 	public static native void set_class_supertype(Pointer clss, Pointer supertype, com.sun.jna.NativeLong pos);
 
 	public static native void remove_class_supertype(Pointer clss, Pointer supertype);
-
-	public static native int get_class_vtable_size(Pointer clss);
-
-	public static native void set_class_vtable_size(Pointer clss, int size);
-
-	public static native int is_class_final(Pointer clss);
-
-	public static native void set_class_final(Pointer clss, int flag);
-
-	public static native int is_class_interface(Pointer clss);
-
-	public static native void set_class_interface(Pointer clss, int flag);
-
-	public static native int is_class_abstract(Pointer clss);
-
-	public static native void set_class_abstract(Pointer clss, int flag);
 
 	public static native int is_Class_type(Pointer clss);
 
@@ -1090,39 +996,17 @@ public class binding_typerep {
 
 	public static native Pointer get_tpop_method();
 
-	public static native Pointer new_type_array(com.sun.jna.NativeLong n_dims, Pointer element_type);
+	public static native Pointer new_type_array(Pointer element_type);
 
-	public static native com.sun.jna.NativeLong get_array_n_dimensions(Pointer array);
+	public static native void set_array_size(Pointer array, Pointer size);
 
-	public static native void set_array_bounds_int(Pointer array, com.sun.jna.NativeLong dimension, int lower_bound, int upper_bound);
+	public static native void set_array_size_int(Pointer array, int size);
 
-	public static native void set_array_bounds(Pointer array, com.sun.jna.NativeLong dimension, Pointer lower_bound, Pointer upper_bound);
+	public static native int has_array_size(Pointer array);
 
-	public static native void set_array_lower_bound(Pointer array, com.sun.jna.NativeLong dimension, Pointer lower_bound);
+	public static native Pointer get_array_size(Pointer array);
 
-	public static native void set_array_lower_bound_int(Pointer array, com.sun.jna.NativeLong dimension, int lower_bound);
-
-	public static native void set_array_upper_bound(Pointer array, com.sun.jna.NativeLong dimension, Pointer upper_bound);
-
-	public static native void set_array_upper_bound_int(Pointer array, com.sun.jna.NativeLong dimension, int upper_bound);
-
-	public static native int has_array_lower_bound(Pointer array, com.sun.jna.NativeLong dimension);
-
-	public static native Pointer get_array_lower_bound(Pointer array, com.sun.jna.NativeLong dimension);
-
-	public static native com.sun.jna.NativeLong get_array_lower_bound_int(Pointer array, com.sun.jna.NativeLong dimension);
-
-	public static native int has_array_upper_bound(Pointer array, com.sun.jna.NativeLong dimension);
-
-	public static native Pointer get_array_upper_bound(Pointer array, com.sun.jna.NativeLong dimension);
-
-	public static native com.sun.jna.NativeLong get_array_upper_bound_int(Pointer array, com.sun.jna.NativeLong dimension);
-
-	public static native void set_array_order(Pointer array, com.sun.jna.NativeLong dimension, com.sun.jna.NativeLong order);
-
-	public static native com.sun.jna.NativeLong get_array_order(Pointer array, com.sun.jna.NativeLong dimension);
-
-	public static native com.sun.jna.NativeLong find_array_dimension(Pointer array, com.sun.jna.NativeLong order);
+	public static native int get_array_size_int(Pointer array);
 
 	public static native void set_array_element_type(Pointer array, Pointer tp);
 
@@ -1211,8 +1095,6 @@ public class binding_typerep {
 	public static native void class_walk_super2sub(Pointer pre, Pointer post, Pointer env);
 
 	public static native void walk_types_entities(Pointer tp, Pointer doit, Pointer env);
-
-	public static native void types_calc_finalization();
 
 	public static native /* ir_visibility */int get_type_visibility(Pointer tp);
 

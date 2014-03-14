@@ -192,7 +192,8 @@ public class binding_irmode {
 		ir_bk_inner_trampoline(),
 		ir_bk_saturating_increment(),
 		ir_bk_compare_swap(),
-		ir_bk_last(ir_builtin_kind.ir_bk_compare_swap.val);
+		ir_bk_may_alias(),
+		ir_bk_last(ir_builtin_kind.ir_bk_may_alias.val);
 		public final int val;
 
 		private static class C {
@@ -352,10 +353,6 @@ public class binding_irmode {
 	public static native /* ir_mode_arithmetic */int get_mode_arithmetic(Pointer mode);
 
 	public static native int get_mode_modulo_shift(Pointer mode);
-
-	public static native Pointer get_mode_link(Pointer mode);
-
-	public static native void set_mode_link(Pointer mode, Pointer l);
 
 	public static native Pointer get_mode_min(Pointer mode);
 

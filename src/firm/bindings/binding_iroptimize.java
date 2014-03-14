@@ -192,7 +192,8 @@ public class binding_iroptimize {
 		ir_bk_inner_trampoline(),
 		ir_bk_saturating_increment(),
 		ir_bk_compare_swap(),
-		ir_bk_last(ir_builtin_kind.ir_bk_compare_swap.val);
+		ir_bk_may_alias(),
+		ir_bk_last(ir_builtin_kind.ir_bk_may_alias.val);
 		public final int val;
 
 		private static class C {
@@ -309,10 +310,6 @@ public class binding_iroptimize {
 
 	public static native void conv_opt(Pointer irg);
 
-	public static native void escape_enalysis_irg(Pointer irg, Pointer callback);
-
-	public static native void escape_analysis(int run_scalar_replace, Pointer callback);
-
 	public static native void optimize_funccalls();
 
 	public static native void do_gvn_pre(Pointer irg);
@@ -369,11 +366,7 @@ public class binding_iroptimize {
 
 	public static native void place_code(Pointer irg);
 
-	public static native void fixpoint_vrp(Pointer _0);
-
 	public static native void occult_consts(Pointer _0);
-
-	public static native int value_not_zero(Pointer n, java.nio.Buffer confirm);
 
 	public static native int value_not_null(Pointer n, java.nio.Buffer confirm);
 

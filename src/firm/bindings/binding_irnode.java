@@ -192,7 +192,8 @@ public class binding_irnode {
 		ir_bk_inner_trampoline(),
 		ir_bk_saturating_increment(),
 		ir_bk_compare_swap(),
-		ir_bk_last(ir_builtin_kind.ir_bk_compare_swap.val);
+		ir_bk_may_alias(),
+		ir_bk_last(ir_builtin_kind.ir_bk_may_alias.val);
 		public final int val;
 
 		private static class C {
@@ -420,63 +421,6 @@ public class binding_irnode {
 
 		public static ir_initializer_kind_t getEnum(int val) {
 			for (ir_initializer_kind_t entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_allocation {
-		allocation_automatic(),
-		allocation_parameter(),
-		allocation_dynamic(),
-		allocation_static();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_allocation(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_allocation() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_allocation getEnum(int val) {
-			for (ir_allocation entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum ir_peculiarity {
-		peculiarity_existent(),
-		peculiarity_description(),
-		peculiarity_inherited();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_peculiarity(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_peculiarity() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_peculiarity getEnum(int val) {
-			for (ir_peculiarity entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -1939,7 +1883,6 @@ public class binding_irnode {
 	}
 
 	public static enum n_Sel {
-		n_Sel_mem(),
 		n_Sel_ptr(),
 		n_Sel_max(n_Sel.n_Sel_ptr.val);
 		public final int val;
@@ -3027,19 +2970,15 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Return();
 
-	public static native Pointer new_rd_Sel(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
+	public static native Pointer new_rd_Sel(Pointer dbgi, Pointer block, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
 
-	public static native Pointer new_r_Sel(Pointer block, Pointer irn_mem, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
+	public static native Pointer new_r_Sel(Pointer block, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
 
-	public static native Pointer new_d_Sel(Pointer dbgi, Pointer irn_mem, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
+	public static native Pointer new_d_Sel(Pointer dbgi, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
 
-	public static native Pointer new_Sel(Pointer irn_mem, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
+	public static native Pointer new_Sel(Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
 
 	public static native int is_Sel(Pointer node);
-
-	public static native Pointer get_Sel_mem(Pointer node);
-
-	public static native void set_Sel_mem(Pointer node, Pointer mem);
 
 	public static native Pointer get_Sel_ptr(Pointer node);
 
@@ -3269,6 +3208,20 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Unknown();
 
+	public static native int is_binop(Pointer node);
+
+	public static native int is_entconst(Pointer node);
+
+	public static native Pointer get_entconst_entity(Pointer node);
+
+	public static native void set_entconst_entity(Pointer node, Pointer entity);
+
+	public static native int is_typeconst(Pointer node);
+
+	public static native Pointer get_typeconst_type(Pointer node);
+
+	public static native void set_typeconst_type(Pointer node, Pointer type);
+
 	public static native int is_ir_node(Pointer thing);
 
 	public static native int get_irn_arity(Pointer node);
@@ -3365,8 +3318,6 @@ public class binding_irnode {
 
 	public static native void set_Block_mark(Pointer block, int mark);
 
-	public static native Pointer is_frame_pointer(Pointer n);
-
 	public static native void add_End_keepalive(Pointer end, Pointer ka);
 
 	public static native void set_End_keepalives(Pointer end, int n, java.nio.Buffer in);
@@ -3388,8 +3339,6 @@ public class binding_irnode {
 	public static native Pointer get_Call_callee(Pointer call);
 
 	public static native String get_builtin_kind_name(/* ir_builtin_kind */int kind);
-
-	public static native int is_binop(Pointer node);
 
 	public static native Pointer get_binop_left(Pointer node);
 

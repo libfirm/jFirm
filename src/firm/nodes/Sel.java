@@ -20,20 +20,12 @@ public class Sel extends Node {
 		super(ptr);
 	}
 
-	public Node getMem() {
-		return createWrapper(firm.bindings.binding_irnode.get_Sel_mem(ptr));
-	}
-
-	public void setMem(Node mem) {
-		firm.bindings.binding_irnode.set_Sel_mem(this.ptr, mem.ptr);
-	}
-
 	public Node getPtr() {
 		return createWrapper(firm.bindings.binding_irnode.get_Sel_ptr(ptr));
 	}
 
-	public void setPtr(Node ptr) {
-		firm.bindings.binding_irnode.set_Sel_ptr(this.ptr, ptr.ptr);
+	public void setPtr(Node _ptr) {
+		firm.bindings.binding_irnode.set_Sel_ptr(this.ptr, _ptr.ptr);
 	}
 
 	public firm.Entity getEntity() {

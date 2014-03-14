@@ -17,7 +17,6 @@ import firm.PrimitiveType;
 import firm.Program;
 import firm.Relation;
 import firm.Type;
-import firm.bindings.binding_typerep.ir_type_state;
 import firm.bindings.binding_typerep.ir_visibility;
 import firm.nodes.Block;
 import firm.nodes.Call;
@@ -54,10 +53,9 @@ public class BrainFuck {
 
 		/* create a new global array for the brainfuck data */
 		PrimitiveType btype = new PrimitiveType(Mode.getBu());
-		ArrayType atype = new ArrayType(1, btype);
-		atype.setBounds(0, 0, DATA_SIZE);
-		atype.setSizeBytes(DATA_SIZE);
-		atype.setTypeState(ir_type_state.layout_fixed);
+		ArrayType atype = new ArrayType(btype);
+		atype.setSize(DATA_SIZE);
+		atype.finishLayout();
 
 		Entity data = new Entity(global, "data", atype);
 		data.setLdIdent(makeLdIdent("data"));

@@ -55,8 +55,7 @@ public class Construction extends ConstructionBase {
 
 	/** Convenience Sel construction method with a single base inputs and an entity */
 	public Node newSel(Node ptr, Entity entity) {
-		Node noMem = newNoMem();
-		return newSel(noMem, ptr, new Node[] {}, entity);
+		return newSel(ptr, new Node[] {}, entity);
 	}
 
 	/**

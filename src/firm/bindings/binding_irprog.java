@@ -192,7 +192,8 @@ public class binding_irprog {
 		ir_bk_inner_trampoline(),
 		ir_bk_saturating_increment(),
 		ir_bk_compare_swap(),
-		ir_bk_last(ir_builtin_kind.ir_bk_compare_swap.val);
+		ir_bk_may_alias(),
+		ir_bk_last(ir_builtin_kind.ir_bk_may_alias.val);
 		public final int val;
 
 		private static class C {
@@ -410,7 +411,8 @@ public class binding_irprog {
 		IR_SEGMENT_THREAD_LOCAL(),
 		IR_SEGMENT_CONSTRUCTORS(),
 		IR_SEGMENT_DESTRUCTORS(),
-		IR_SEGMENT_LAST(ir_segment_t.IR_SEGMENT_DESTRUCTORS.val);
+		IR_SEGMENT_JCR(),
+		IR_SEGMENT_LAST(ir_segment_t.IR_SEGMENT_JCR.val);
 		public final int val;
 
 		private static class C {

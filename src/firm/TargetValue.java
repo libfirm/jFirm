@@ -87,13 +87,24 @@ public class TargetValue extends JNAWrapper {
 		return 0 != binding_tv.tarval_is_constant(ptr);
 	}
 
+	/**
+	 * Returns the tarval representing a Bad value (a value that can't
+	 * be produced by calculations). This may be used to represent results
+	 * of unreachable code or of invalid calculations like a division by zero.
+	 * This may be used in dataflow optimizations as top/bottom.
+	 */
 	public static final TargetValue getBad() {
 		Pointer ptr = binding_tv.get_tarval_bad();
 		return new TargetValue(ptr);
 	}
 
-	public static final TargetValue getUndefined() {
-		Pointer ptr = binding_tv.get_tarval_undefined();
+	/**
+	 * Returns the tarval representing a Unknown (but otherwise valid)
+	 * value.
+	 * This may be used in dataflow optimizations as top/bottom.
+	 */
+	public static final TargetValue getUnknown() {
+		Pointer ptr = binding_tv.get_tarval_unknown();
 		return new TargetValue(ptr);
 	}
 
@@ -104,16 +115,6 @@ public class TargetValue extends JNAWrapper {
 
 	public static final TargetValue getBTrue() {
 		Pointer ptr = binding_tv.get_tarval_b_true();
-		return new TargetValue(ptr);
-	}
-
-	public static final TargetValue getUnreachable() {
-		Pointer ptr = binding_tv.get_tarval_unreachable();
-		return new TargetValue(ptr);
-	}
-
-	public static final TargetValue getReachable() {
-		Pointer ptr = binding_tv.get_tarval_reachable();
 		return new TargetValue(ptr);
 	}
 

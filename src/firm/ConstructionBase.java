@@ -54,8 +54,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newCall(Node mem, Node ptr, Node[] ins, firm.Type type) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Call(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, ptr.ptr, ins.length, Node.getBufferFromNodeList(ins), type.ptr);
+	public Node newCall(Node mem, Node _ptr, Node[] ins, firm.Type type) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Call(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, _ptr.ptr, ins.length, Node.getBufferFromNodeList(ins), type.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -109,8 +109,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newFree(Node mem, Node ptr) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Free(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, ptr.ptr);
+	public Node newFree(Node mem, Node _ptr) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Free(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, _ptr.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -129,8 +129,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newLoad(Node mem, Node ptr, firm.Mode load_mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Load(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, ptr.ptr, load_mode.ptr, flags.val);
+	public Node newLoad(Node mem, Node _ptr, firm.Mode load_mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Load(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, _ptr.ptr, load_mode.ptr, flags.val);
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -204,8 +204,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newSel(Node mem, Node ptr, Node[] ins, firm.Entity entity) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Sel(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, ptr.ptr, ins.length, Node.getBufferFromNodeList(ins), entity.ptr);
+	public Node newSel(Node _ptr, Node[] ins, firm.Entity entity) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Sel(binding_ircons.get_r_cur_block(graph.ptr), _ptr.ptr, ins.length, Node.getBufferFromNodeList(ins), entity.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -234,8 +234,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newStore(Node mem, Node ptr, Node value, firm.bindings.binding_ircons.ir_cons_flags flags) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Store(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, ptr.ptr, value.ptr, flags.val);
+	public Node newStore(Node mem, Node _ptr, Node value, firm.bindings.binding_ircons.ir_cons_flags flags) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Store(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, _ptr.ptr, value.ptr, flags.val);
 		return Node.createWrapper(result_ptr);
 	}
 

@@ -192,7 +192,8 @@ public class binding_tv {
 		ir_bk_inner_trampoline(),
 		ir_bk_saturating_increment(),
 		ir_bk_compare_swap(),
-		ir_bk_last(ir_builtin_kind.ir_bk_compare_swap.val);
+		ir_bk_may_alias(),
+		ir_bk_last(ir_builtin_kind.ir_bk_may_alias.val);
 		public final int val;
 
 		private static class C {
@@ -334,15 +335,11 @@ public class binding_tv {
 
 	public static native Pointer get_tarval_bad();
 
-	public static native Pointer get_tarval_undefined();
+	public static native Pointer get_tarval_unknown();
 
 	public static native Pointer get_tarval_b_false();
 
 	public static native Pointer get_tarval_b_true();
-
-	public static native Pointer get_tarval_unreachable();
-
-	public static native Pointer get_tarval_reachable();
 
 	public static native Pointer get_tarval_max(Pointer mode);
 
@@ -393,6 +390,8 @@ public class binding_tv {
 	public static native Pointer tarval_andnot(Pointer a, Pointer b);
 
 	public static native Pointer tarval_or(Pointer a, Pointer b);
+
+	public static native Pointer tarval_ornot(Pointer a, Pointer b);
 
 	public static native Pointer tarval_eor(Pointer a, Pointer b);
 

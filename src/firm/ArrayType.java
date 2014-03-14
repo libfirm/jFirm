@@ -1,12 +1,9 @@
 package firm;
 
-import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_typerep;
 import firm.bindings.binding_typerep.ir_type_state;
-import firm.nodes.Node;
-import firm.nodes.Unknown;
 
 public class ArrayType extends Type {
 
@@ -14,70 +11,21 @@ public class ArrayType extends Type {
 		super(ptr);
 	}
 
-	public ArrayType(int n_dims, Type elementType) {
-		super(binding_typerep.new_type_array(new NativeLong(n_dims), elementType.ptr));
-	}
-
 	public ArrayType(Type elementType) {
-		this(1, elementType);
+		super(binding_typerep.new_type_array(elementType.ptr));
 	}
 
-	public int getNDimensions() {
-		return binding_typerep.get_array_n_dimensions(ptr).intValue();
+	public void setSize(int size) {
+		assert size >= 0;
+		binding_typerep.set_array_size_int(ptr, size);
 	}
 
-	public void setBounds(int dimension, int lowerBound, int upperBound) {
-		binding_typerep.set_array_bounds_int(ptr, new NativeLong(dimension),
-				lowerBound, upperBound);
+	public int getSizeInt() {
+		return binding_typerep.get_array_size_int(ptr);
 	}
 
-	public void setBounds(int dimension, Node lowerBound, Node upperBound) {
-		binding_typerep.set_array_bounds(ptr, new NativeLong(dimension),
-				lowerBound.ptr, upperBound.ptr);
-	}
-
-	public void setLowerBound(int dimension, int lowerBound) {
-		binding_typerep.set_array_lower_bound_int(ptr, new NativeLong(dimension),
-				lowerBound);
-	}
-
-	public void setLowerBound(int dimension, Node lowerBound) {
-		binding_typerep.set_array_lower_bound(ptr, new NativeLong(dimension), lowerBound.ptr);
-	}
-
-	public int getLowerBoundInt(int dimension) {
-		return binding_typerep.get_array_lower_bound_int(ptr, new NativeLong(dimension)).intValue();
-	}
-
-	public Node getLowerBound(int dimension) {
-		return Node.createWrapper(binding_typerep.get_array_lower_bound(ptr,
-				new NativeLong(dimension)));
-	}
-
-	public boolean hasLowerBound(int dimension) {
-		return !(getUpperBound(dimension) instanceof Unknown);
-	}
-
-	public void setUpperBound(int dimension, int upperBound) {
-		binding_typerep.set_array_upper_bound_int(ptr, new NativeLong(dimension), upperBound);
-	}
-
-	public void setUpperBound(int dimension, Node upperBound) {
-		binding_typerep.set_array_upper_bound(ptr, new NativeLong(dimension), upperBound.ptr);
-	}
-
-	public int getUpperBoundInt(int dimension) {
-		NativeLong l = binding_typerep.get_array_upper_bound_int(ptr, new NativeLong(dimension));
-		return l.intValue();
-	}
-
-	public Node getUpperBound(int dimension) {
-		return Node.createWrapper(binding_typerep.get_array_upper_bound(ptr,
-				new NativeLong(dimension)));
-	}
-
-	public boolean hasUpperBound(int dimension) {
-		return !(getUpperBound(dimension) instanceof Unknown);
+	public boolean hasSize() {
+		return binding_typerep.has_array_size(ptr) != 0;
 	}
 
 	public Type getElementType() {
@@ -93,17 +41,11 @@ public class ArrayType extends Type {
 		/* calculate the array size */
 		assert getElementType().getTypeState() == ir_type_state.layout_fixed;
 
-		int size = getElementType().getSizeBytes();
-		for (int d = 0; d < getNDimensions(); ++d) {
-			if (!hasLowerBound(d) || !hasUpperBound(d)) {
-				size = -1;
-				break;
-			}
-			int n = getUpperBoundInt(d) - getLowerBoundInt(d);
-			size *= n;
+		if (hasSize()) {
+			int element_size = getElementType().getSizeBytes();
+			int size         = getSizeInt();
+			setSizeBytes(element_size * size);
 		}
-		if (size >= 0)
-			setSizeBytes(size);
 
 		super.finishLayout();
 	}

@@ -192,7 +192,8 @@ public class binding_irgopt {
 		ir_bk_inner_trampoline(),
 		ir_bk_saturating_increment(),
 		ir_bk_compare_swap(),
-		ir_bk_last(ir_builtin_kind.ir_bk_compare_swap.val);
+		ir_bk_may_alias(),
+		ir_bk_last(ir_builtin_kind.ir_bk_may_alias.val);
 		public final int val;
 
 		private static class C {
@@ -278,11 +279,9 @@ public class binding_irgopt {
 
 	public static native void local_optimize_graph(Pointer irg);
 
-	public static native void local_opts(Pointer irg);
+	public static native void optimize_graph_df(Pointer irg);
 
 	public static native void local_opts_const_code();
-
-	public static native int optimize_graph_df(Pointer irg);
 
 	public static native void remove_unreachable_code(Pointer irg);
 

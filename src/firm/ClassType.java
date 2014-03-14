@@ -38,7 +38,12 @@ public class ClassType extends CompoundType {
 	}
 
 	public Entity getMemberByName(Ident name) {
-		return new Entity(binding_typerep.get_class_member_by_name(ptr, name.ptr));
+		for (Entity member : getMembers()) {
+			if (member.getIdent().equals(name)) {
+				return member;
+			}
+		}
+		return null;
 	}
 
 	public Entity getMemberByName(String name) {

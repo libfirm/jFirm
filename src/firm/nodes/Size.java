@@ -3,7 +3,7 @@ package firm.nodes;
 
 import com.sun.jna.Pointer;
 
-public class Size extends Node {
+public class Size extends Typeconst {
 	static class Factory implements NodeWrapperFactory {
 		@Override
 		public Node createWrapper(Pointer ptr) {

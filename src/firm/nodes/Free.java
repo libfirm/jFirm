@@ -32,8 +32,8 @@ public class Free extends Node {
 		return createWrapper(firm.bindings.binding_irnode.get_Free_ptr(ptr));
 	}
 
-	public void setPtr(Node ptr) {
-		firm.bindings.binding_irnode.set_Free_ptr(this.ptr, ptr.ptr);
+	public void setPtr(Node _ptr) {
+		firm.bindings.binding_irnode.set_Free_ptr(this.ptr, _ptr.ptr);
 	}
 
 	@Override

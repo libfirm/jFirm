@@ -221,7 +221,8 @@ public class binding_irdump {
 		ir_bk_inner_trampoline(),
 		ir_bk_saturating_increment(),
 		ir_bk_compare_swap(),
-		ir_bk_last(ir_builtin_kind.ir_bk_compare_swap.val);
+		ir_bk_may_alias(),
+		ir_bk_last(ir_builtin_kind.ir_bk_may_alias.val);
 		public final int val;
 
 		private static class C {
@@ -346,7 +347,6 @@ public class binding_irdump {
 		ir_dump_flag_dominance((1 << 9)),
 		ir_dump_flag_loops((1 << 10)),
 		ir_dump_flag_back_edges((1 << 11)),
-		ir_dump_flag_analysed_types((1 << 12)),
 		ir_dump_flag_iredges((1 << 13)),
 		ir_dump_flag_node_addresses((1 << 14)),
 		ir_dump_flag_all_anchors((1 << 15)),
@@ -392,8 +392,6 @@ public class binding_irdump {
 	public static native void ir_set_dump_filter(String name);
 
 	public static native String ir_get_dump_filter();
-
-	public static native int ir_should_dump(String name);
 
 	public static native void dump_ir_graph_file(Pointer out, Pointer graph);
 

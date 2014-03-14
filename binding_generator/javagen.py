@@ -5,7 +5,7 @@ import re
 from spec_util import verify_node, is_dynamic_pinned, setdefault, isAbstract, setldefault, load_spec, Attribute
 import sys
 
-java_keywords = [ "public", "private", "protected", "true", "false" ]
+java_keywords = [ "public", "private", "protected", "true", "false", "ptr" ]
 def format_filter_keywords(arg):
 	if arg in java_keywords:
 		return "_" + arg
