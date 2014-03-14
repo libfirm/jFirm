@@ -197,7 +197,7 @@ public class Entity extends JNAWrapper {
 	}
 
 	public final void setInitializer(Initializer initializer) {
-		binding_typerep.set_entity_initializer(ptr, initializer.ptr);
+		binding_typerep.set_entity_initializer(ptr, initializer != null ? initializer.ptr : Pointer.NULL);
 	}
 
 	public final void addEntityOverwrites(Entity overwritten) {
