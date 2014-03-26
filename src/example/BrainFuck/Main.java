@@ -10,8 +10,6 @@ public class Main {
 
 	public static void main(String[] args) throws IOException {
 		Firm.init();
-		Firm.finish();
-		Firm.init();
 		System.out.printf("Initialized Firm Version: %1s.%2s\n",
 				Firm.getMajorVersion(), Firm.getMinorVersion());
 
@@ -43,8 +41,6 @@ public class Main {
 		if (res != 0)
 			System.err.println("Warning: Linking step failed");
 
-		Firm.finish();
-		Firm.init();
 		Firm.finish();
 	}
 }
