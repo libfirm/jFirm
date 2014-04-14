@@ -38,17 +38,17 @@ def format_args(arglist):
 	return ", ".join(argstrings)
 
 def format_blockparameter(node):
-	if not hasattr(node, "knownBlock"):
+	if not node.block:
 		return "Node block"
 	return ""
 
 def format_blockargument(node):
-	if hasattr(node, "knownBlock"):
-		if hasattr(node, "knownGraph"):
-			return ""
+	if not node.block:
+		return "block.ptr"
+	elif node.usesGraph:
 		return "this.ptr"
 	else:
-		return "block.ptr"
+		return ""
 
 def format_block_construction(node):
 	if hasattr(env.globals['spec'], "external"):
@@ -56,12 +56,12 @@ def format_block_construction(node):
 	else:
 		graph = "graph.ptr"
 
-	if hasattr(node, "knownBlock"):
-		if hasattr(node, "knownGraph"):
-			return ""
+	if not node.block:
+		return "binding_ircons.get_r_cur_block(%s)" % graph
+	elif node.usesGraph:
 		return graph
 	else:
-		return "binding_ircons.get_r_cur_block(%s)" % graph
+		return ""
 
 def format_arguments(string, voidwhenempty = False):
 	args = re.split('\s*\n\s*', string)

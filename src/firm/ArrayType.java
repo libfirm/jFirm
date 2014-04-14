@@ -32,10 +32,6 @@ public class ArrayType extends Type {
 		return Type.createWrapper(binding_typerep.get_array_element_type(ptr));
 	}
 
-	public Entity getElmentEntity() {
-		return new Entity(binding_typerep.get_array_element_entity(ptr));
-	}
-
 	@Override
 	public void finishLayout() {
 		/* calculate the array size */

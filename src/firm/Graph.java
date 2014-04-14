@@ -63,6 +63,11 @@ public class Graph extends GraphBase {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Bad(this.ptr, mode.ptr));
 	}
 
+	/** Create a new Bitcast node */
+	public final Node newBitcast(Node block, Node op, firm.Mode mode) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Bitcast(block.ptr, op.ptr, mode.ptr));
+	}
+
 	/** Create a new Block node */
 	public final Node newBlock(Node[] ins) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Block(this.ptr, ins.length, Node.getBufferFromNodeList(ins)));
@@ -153,6 +158,11 @@ public class Graph extends GraphBase {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Load(block.ptr, mem.ptr, _ptr.ptr, load_mode.ptr, flags.val));
 	}
 
+	/** Create a new Member node */
+	public final Node newMember(Node block, Node _ptr, firm.Entity entity) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Member(block.ptr, _ptr.ptr, entity.ptr));
+	}
+
 	/** Create a new Minus node */
 	public final Node newMinus(Node block, Node op, firm.Mode mode) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Minus(block.ptr, op.ptr, mode.ptr));
@@ -224,8 +234,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Sel node */
-	public final Node newSel(Node block, Node _ptr, Node[] ins, firm.Entity entity) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Sel(block.ptr, _ptr.ptr, ins.length, Node.getBufferFromNodeList(ins), entity.ptr));
+	public final Node newSel(Node block, Node _ptr, Node index, firm.Type type) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Sel(block.ptr, _ptr.ptr, index.ptr, type.ptr));
 	}
 
 	/** Create a new Shl node */

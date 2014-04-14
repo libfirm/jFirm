@@ -864,8 +864,6 @@ public class binding_typerep {
 
 	public static native int type_visited(Pointer tp);
 
-	public static native int type_not_visited(Pointer tp);
-
 	public static native Pointer get_type_link(Pointer tp);
 
 	public static native void set_type_link(Pointer tp, Pointer l);
@@ -1011,10 +1009,6 @@ public class binding_typerep {
 	public static native void set_array_element_type(Pointer array, Pointer tp);
 
 	public static native Pointer get_array_element_type(Pointer array);
-
-	public static native void set_array_element_entity(Pointer array, Pointer ent);
-
-	public static native Pointer get_array_element_entity(Pointer array);
 
 	public static native void set_array_variable_size(Pointer array, int variable_size_flag);
 

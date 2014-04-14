@@ -53,13 +53,9 @@ public final class Mode extends JNAWrapper {
 		                binding_be.be_get_float_int_overflow()));
 	}
 
-	public static Mode createReferenceMode(String name, Arithmetic arithmetic, int bitSize, Mode equivalentSignedInt, Mode equivalentUnsignedInt,
-	                                       int moduloShift) {
+	public static Mode createReferenceMode(String name, Arithmetic arithmetic, int bitSize, int moduloShift) {
 		/** we use a modulo_shift of 0, because cparser does so. */
-		Mode mode = new Mode(binding_irmode.new_reference_mode(name, arithmetic.val, bitSize, moduloShift));
-		binding_irmode.set_reference_mode_signed_eq(mode.ptr, equivalentSignedInt.ptr);
-		binding_irmode.set_reference_mode_unsigned_eq(mode.ptr, equivalentUnsignedInt.ptr);
-		return mode;
+		return new Mode(binding_irmode.new_reference_mode(name, arithmetic.val, bitSize, moduloShift));
 	}
 
 	public final String getName() {
@@ -299,22 +295,13 @@ public final class Mode extends JNAWrapper {
 		return 0 != binding_irmode.mode_wrap_around(ptr);
 	}
 
-	public final Mode getReferenceSignedEq() {
-		Pointer modep = binding_irmode.get_reference_mode_signed_eq(ptr);
-		return new Mode(modep);
-	}
-
-	public final void setReferenceSignedEq(Mode intMode) {
-		binding_irmode.set_reference_mode_signed_eq(ptr, intMode.ptr);
-	}
-
 	public final Mode getReferenceUnsignedEq() {
 		Pointer modep = binding_irmode.get_reference_mode_unsigned_eq(ptr);
 		return new Mode(modep);
 	}
 
 	public final void setReferenceUnsignedEq(Mode intMode) {
-		binding_irmode.set_reference_mode_signed_eq(ptr, intMode.ptr);
+		binding_irmode.set_reference_mode_unsigned_eq(ptr, intMode.ptr);
 	}
 
 	public static void setDefaultModeP(Mode mode) {

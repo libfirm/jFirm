@@ -53,11 +53,6 @@ public class Construction extends ConstructionBase {
 		return newStore(mem, ptr, value, ir_cons_flags.cons_none);
 	}
 
-	/** Convenience Sel construction method with a single base inputs and an entity */
-	public Node newSel(Node ptr, Entity entity) {
-		return newSel(ptr, new Node[] {}, entity);
-	}
-
 	/**
 	 * sets the current block
 	 *

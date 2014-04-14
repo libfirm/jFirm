@@ -324,9 +324,9 @@ public class binding_iroptimize {
 
 	public static native void optimize_load_store(Pointer irg);
 
-	public static native void opt_ldst(Pointer irg);
+	public static native void combine_memops(Pointer irg);
 
-	public static native void loop_optimization(Pointer irg);
+	public static native void opt_ldst(Pointer irg);
 
 	public static native void opt_frame_irg(Pointer irg);
 

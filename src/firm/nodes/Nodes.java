@@ -10,6 +10,7 @@ public class Nodes {
 		Anchor.init();
 		And.init();
 		Bad.init();
+		Bitcast.init();
 		Block.init();
 		Builtin.init();
 		Call.init();
@@ -29,6 +30,7 @@ public class Nodes {
 		Id.init();
 		Jmp.init();
 		Load.init();
+		Member.init();
 		Minus.init();
 		Mod.init();
 		Mul.init();

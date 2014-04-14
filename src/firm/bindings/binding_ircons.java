@@ -803,6 +803,7 @@ public class binding_ircons {
 		iro_Anchor(),
 		iro_And(),
 		iro_Bad(),
+		iro_Bitcast(),
 		iro_Block(),
 		iro_Builtin(),
 		iro_Call(),
@@ -822,6 +823,7 @@ public class binding_ircons {
 		iro_Id(),
 		iro_Jmp(),
 		iro_Load(),
+		iro_Member(),
 		iro_Minus(),
 		iro_Mod(),
 		iro_Mul(),
@@ -1006,6 +1008,33 @@ public class binding_ircons {
 
 		public static n_And getEnum(int val) {
 			for (n_And entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum n_Bitcast {
+		n_Bitcast_op(),
+		n_Bitcast_max(n_Bitcast.n_Bitcast_op.val);
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		n_Bitcast(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		n_Bitcast() {
+			this.val = C.next_val++;
+		}
+
+		public static n_Bitcast getEnum(int val) {
+			for (n_Bitcast entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -1519,6 +1548,33 @@ public class binding_ircons {
 		}
 	}
 
+	public static enum n_Member {
+		n_Member_ptr(),
+		n_Member_max(n_Member.n_Member_ptr.val);
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		n_Member(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		n_Member() {
+			this.val = C.next_val++;
+		}
+
+		public static n_Member getEnum(int val) {
+			for (n_Member entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum n_Minus {
 		n_Minus_op(),
 		n_Minus_max(n_Minus.n_Minus_op.val);
@@ -1884,7 +1940,8 @@ public class binding_ircons {
 
 	public static enum n_Sel {
 		n_Sel_ptr(),
-		n_Sel_max(n_Sel.n_Sel_ptr.val);
+		n_Sel_index(),
+		n_Sel_max(n_Sel.n_Sel_index.val);
 		public final int val;
 
 		private static class C {
@@ -2306,6 +2363,22 @@ public class binding_ircons {
 
 	public static native Pointer get_op_Bad();
 
+	public static native Pointer new_rd_Bitcast(Pointer dbgi, Pointer block, Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_r_Bitcast(Pointer block, Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_d_Bitcast(Pointer dbgi, Pointer irn_op, Pointer mode);
+
+	public static native Pointer new_Bitcast(Pointer irn_op, Pointer mode);
+
+	public static native int is_Bitcast(Pointer node);
+
+	public static native Pointer get_Bitcast_op(Pointer node);
+
+	public static native void set_Bitcast_op(Pointer node, Pointer op);
+
+	public static native Pointer get_op_Bitcast();
+
 	public static native Pointer new_rd_Block(Pointer dbgi, Pointer irg, int arity, java.nio.Buffer in);
 
 	public static native Pointer new_r_Block(Pointer irg, int arity, java.nio.Buffer in);
@@ -2702,6 +2775,26 @@ public class binding_ircons {
 
 	public static native Pointer get_op_Load();
 
+	public static native Pointer new_rd_Member(Pointer dbgi, Pointer block, Pointer irn_ptr, Pointer entity);
+
+	public static native Pointer new_r_Member(Pointer block, Pointer irn_ptr, Pointer entity);
+
+	public static native Pointer new_d_Member(Pointer dbgi, Pointer irn_ptr, Pointer entity);
+
+	public static native Pointer new_Member(Pointer irn_ptr, Pointer entity);
+
+	public static native int is_Member(Pointer node);
+
+	public static native Pointer get_Member_ptr(Pointer node);
+
+	public static native void set_Member_ptr(Pointer node, Pointer ptr);
+
+	public static native Pointer get_Member_entity(Pointer node);
+
+	public static native void set_Member_entity(Pointer node, Pointer entity);
+
+	public static native Pointer get_op_Member();
+
 	public static native Pointer new_rd_Minus(Pointer dbgi, Pointer block, Pointer irn_op, Pointer mode);
 
 	public static native Pointer new_r_Minus(Pointer block, Pointer irn_op, Pointer mode);
@@ -2970,13 +3063,13 @@ public class binding_ircons {
 
 	public static native Pointer get_op_Return();
 
-	public static native Pointer new_rd_Sel(Pointer dbgi, Pointer block, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
+	public static native Pointer new_rd_Sel(Pointer dbgi, Pointer block, Pointer irn_ptr, Pointer irn_index, Pointer type);
 
-	public static native Pointer new_r_Sel(Pointer block, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
+	public static native Pointer new_r_Sel(Pointer block, Pointer irn_ptr, Pointer irn_index, Pointer type);
 
-	public static native Pointer new_d_Sel(Pointer dbgi, Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
+	public static native Pointer new_d_Sel(Pointer dbgi, Pointer irn_ptr, Pointer irn_index, Pointer type);
 
-	public static native Pointer new_Sel(Pointer irn_ptr, int arity, java.nio.Buffer in, Pointer entity);
+	public static native Pointer new_Sel(Pointer irn_ptr, Pointer irn_index, Pointer type);
 
 	public static native int is_Sel(Pointer node);
 
@@ -2984,15 +3077,13 @@ public class binding_ircons {
 
 	public static native void set_Sel_ptr(Pointer node, Pointer ptr);
 
-	public static native int get_Sel_n_indexs(Pointer node);
+	public static native Pointer get_Sel_index(Pointer node);
 
-	public static native Pointer get_Sel_index(Pointer node, int pos);
+	public static native void set_Sel_index(Pointer node, Pointer index);
 
-	public static native void set_Sel_index(Pointer node, int pos, Pointer index);
+	public static native Pointer get_Sel_type(Pointer node);
 
-	public static native Pointer get_Sel_entity(Pointer node);
-
-	public static native void set_Sel_entity(Pointer node, Pointer entity);
+	public static native void set_Sel_type(Pointer node, Pointer type);
 
 	public static native Pointer get_op_Sel();
 
@@ -3229,14 +3320,6 @@ public class binding_ircons {
 	public static native Pointer new_d_Const_long(Pointer db, Pointer mode, com.sun.jna.NativeLong value);
 
 	public static native Pointer new_Const_long(Pointer mode, com.sun.jna.NativeLong value);
-
-	public static native Pointer new_rd_simpleSel(Pointer db, Pointer block, Pointer objptr, Pointer ent);
-
-	public static native Pointer new_r_simpleSel(Pointer block, Pointer objptr, Pointer ent);
-
-	public static native Pointer new_d_simpleSel(Pointer db, Pointer objptr, Pointer ent);
-
-	public static native Pointer new_simpleSel(Pointer objptr, Pointer ent);
 
 	public static native Pointer new_rd_DivRL(Pointer db, Pointer block, Pointer memop, Pointer op1, Pointer op2, Pointer mode, /* op_pin_state */int state);
 

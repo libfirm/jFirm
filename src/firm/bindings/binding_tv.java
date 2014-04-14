@@ -367,6 +367,8 @@ public class binding_tv {
 
 	public static native Pointer tarval_convert_to(Pointer src, Pointer mode);
 
+	public static native Pointer tarval_bitcast(Pointer src, Pointer mode);
+
 	public static native Pointer tarval_not(Pointer a);
 
 	public static native Pointer tarval_neg(Pointer a);

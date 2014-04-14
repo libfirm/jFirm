@@ -34,19 +34,13 @@ public abstract class GraphBase extends JNAWrapper {
 
 	/**
 	 * returns the currently active graph
+	 * @deprecated
 	 */
 	public static Graph getCurrent() {
 		final Pointer current = binding_ircons.get_current_ir_graph();
 		if (current == null)
 			return null;
 		return new Graph(current);
-	}
-
-	/**
-	 * sets the currently active graph
-	 */
-	public static void setCurrent(GraphBase graph) {
-		binding_ircons.set_current_ir_graph(graph == null ? Pointer.NULL : graph.ptr);
 	}
 
 	/**

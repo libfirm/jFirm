@@ -28,13 +28,21 @@ public class Sel extends Node {
 		firm.bindings.binding_irnode.set_Sel_ptr(this.ptr, _ptr.ptr);
 	}
 
-	public firm.Entity getEntity() {
-		Pointer _res = firm.bindings.binding_irnode.get_Sel_entity(ptr);
-		return new firm.Entity(_res);
+	public Node getIndex() {
+		return createWrapper(firm.bindings.binding_irnode.get_Sel_index(ptr));
 	}
 
-	public void setEntity(firm.Entity _val) {
-		firm.bindings.binding_irnode.set_Sel_entity(this.ptr, _val.ptr);
+	public void setIndex(Node index) {
+		firm.bindings.binding_irnode.set_Sel_index(this.ptr, index.ptr);
+	}
+
+	public firm.Type getType() {
+		Pointer _res = firm.bindings.binding_irnode.get_Sel_type(ptr);
+		return firm.Type.createWrapper(_res);
+	}
+
+	public void setType(firm.Type _val) {
+		firm.bindings.binding_irnode.set_Sel_type(this.ptr, _val.ptr);
 	}
 
 	@Override

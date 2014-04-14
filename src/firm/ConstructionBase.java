@@ -44,6 +44,11 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
+	public Node newBitcast(Node op, firm.Mode mode) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Bitcast(binding_ircons.get_r_cur_block(graph.ptr), op.ptr, mode.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+
 	public Node newBlock(Node[] ins) {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Block(graph.ptr, ins.length, Node.getBufferFromNodeList(ins));
 		return Node.createWrapper(result_ptr);
@@ -134,6 +139,11 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
+	public Node newMember(Node _ptr, firm.Entity entity) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Member(binding_ircons.get_r_cur_block(graph.ptr), _ptr.ptr, entity.ptr);
+		return Node.createWrapper(result_ptr);
+	}
+
 	public Node newMinus(Node op, firm.Mode mode) {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Minus(binding_ircons.get_r_cur_block(graph.ptr), op.ptr, mode.ptr);
 		return Node.createWrapper(result_ptr);
@@ -204,8 +214,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newSel(Node _ptr, Node[] ins, firm.Entity entity) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Sel(binding_ircons.get_r_cur_block(graph.ptr), _ptr.ptr, ins.length, Node.getBufferFromNodeList(ins), entity.ptr);
+	public Node newSel(Node _ptr, Node index, firm.Type type) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Sel(binding_ircons.get_r_cur_block(graph.ptr), _ptr.ptr, index.ptr, type.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 

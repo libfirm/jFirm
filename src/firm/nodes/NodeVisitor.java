@@ -27,6 +27,9 @@ public interface NodeVisitor {
 	/** called when accept is called on a Bad node */
 	void visit(Bad node);
 
+	/** called when accept is called on a Bitcast node */
+	void visit(Bitcast node);
+
 	/** called when accept is called on a Block node */
 	void visit(Block node);
 
@@ -83,6 +86,9 @@ public interface NodeVisitor {
 
 	/** called when accept is called on a Load node */
 	void visit(Load node);
+
+	/** called when accept is called on a Member node */
+	void visit(Member node);
 
 	/** called when accept is called on a Minus node */
 	void visit(Minus node);
@@ -211,6 +217,11 @@ public interface NodeVisitor {
 		}
 
 		@Override
+		public void visit(Bitcast node) {
+			defaultVisit(node);
+		}
+
+		@Override
 		public void visit(Block node) {
 			defaultVisit(node);
 		}
@@ -302,6 +313,11 @@ public interface NodeVisitor {
 
 		@Override
 		public void visit(Load node) {
+			defaultVisit(node);
+		}
+
+		@Override
+		public void visit(Member node) {
 			defaultVisit(node);
 		}
 
