@@ -9,6 +9,34 @@ public class binding_typerep {
 		Native.register("firm");
 	}
 
+	public static enum idtype_t {
+		P_ALL(),
+		P_PID(),
+		P_PGID();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		idtype_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		idtype_t() {
+			this.val = C.next_val++;
+		}
+
+		public static idtype_t getEnum(int val) {
+			for (idtype_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum ir_relation {
 		ir_relation_false(0),
 		ir_relation_equal((1 << 0)),
@@ -138,15 +166,15 @@ public class binding_typerep {
 
 	public static enum mtp_additional_properties {
 		mtp_no_property(0),
-		mtp_property_const((1 << 0)),
+		mtp_property_no_write((1 << 0)),
 		mtp_property_pure((1 << 1)),
 		mtp_property_noreturn((1 << 2)),
-		mtp_property_nothrow((1 << 3)),
-		mtp_property_naked((1 << 4)),
-		mtp_property_malloc((1 << 5)),
-		mtp_property_returns_twice((1 << 6)),
-		mtp_property_private((1 << 7)),
-		mtp_property_has_loop((1 << 8)),
+		mtp_property_terminates((1 << 3)),
+		mtp_property_nothrow((1 << 4)),
+		mtp_property_naked((1 << 5)),
+		mtp_property_malloc((1 << 6)),
+		mtp_property_returns_twice((1 << 7)),
+		mtp_property_private((1 << 8)),
 		mtp_property_always_inline((1 << 9)),
 		mtp_property_noinline((1 << 10)),
 		mtp_property_inline_recommended((1 << 11)),

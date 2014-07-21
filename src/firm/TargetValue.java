@@ -75,10 +75,6 @@ public class TargetValue extends JNAWrapper {
 		return 0 != binding_tv.tarval_is_one(ptr);
 	}
 
-	public final boolean isMinusOne() {
-		return 0 != binding_tv.tarval_is_minus_one(ptr);
-	}
-
 	public final boolean isAllOne() {
 		return 0 != binding_tv.tarval_is_all_one(ptr);
 	}
@@ -115,51 +111,6 @@ public class TargetValue extends JNAWrapper {
 
 	public static final TargetValue getBTrue() {
 		Pointer ptr = binding_tv.get_tarval_b_true();
-		return new TargetValue(ptr);
-	}
-
-	public static final TargetValue getMax(Mode mode) {
-		Pointer ptr = binding_tv.get_tarval_max(mode.ptr);
-		return new TargetValue(ptr);
-	}
-
-	public static final TargetValue getMin(Mode mode) {
-		Pointer ptr = binding_tv.get_tarval_min(mode.ptr);
-		return new TargetValue(ptr);
-	}
-
-	public static final TargetValue getNull(Mode mode) {
-		Pointer ptr = binding_tv.get_tarval_null(mode.ptr);
-		return new TargetValue(ptr);
-	}
-
-	public static final TargetValue getOne(Mode mode) {
-		Pointer ptr = binding_tv.get_tarval_one(mode.ptr);
-		return new TargetValue(ptr);
-	}
-
-	public static final TargetValue getMinusOne(Mode mode) {
-		Pointer ptr = binding_tv.get_tarval_minus_one(mode.ptr);
-		return new TargetValue(ptr);
-	}
-
-	public static final TargetValue getAllOne(Mode mode) {
-		Pointer ptr = binding_tv.get_tarval_all_one(mode.ptr);
-		return new TargetValue(ptr);
-	}
-
-	public static final TargetValue getNAN(Mode mode) {
-		Pointer ptr = binding_tv.get_tarval_nan(mode.ptr);
-		return new TargetValue(ptr);
-	}
-
-	public static final TargetValue getPlusInf(Mode mode) {
-		Pointer ptr = binding_tv.get_tarval_plus_inf(mode.ptr);
-		return new TargetValue(ptr);
-	}
-
-	public static final TargetValue getMinusInf(Mode mode) {
-		Pointer ptr = binding_tv.get_tarval_minus_inf(mode.ptr);
 		return new TargetValue(ptr);
 	}
 

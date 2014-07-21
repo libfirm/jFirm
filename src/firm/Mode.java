@@ -120,12 +120,6 @@ public final class Mode extends JNAWrapper {
 		return new TargetValue(tarval);
 	}
 
-	/** returns a -1 (if the mode has one) */
-	public final TargetValue getMinusOne() {
-		Pointer tarval = binding_irmode.get_mode_minus_one(ptr);
-		return new TargetValue(tarval);
-	}
-
 	/** return the value where all bits are set to 1 */
 	public final TargetValue getAllOne() {
 		Pointer tarval = binding_irmode.get_mode_all_one(ptr);
@@ -305,8 +299,7 @@ public final class Mode extends JNAWrapper {
 	}
 
 	public static void setDefaultModeP(Mode mode) {
-		binding_irmode.set_modeP_code(mode.ptr);
-		binding_irmode.set_modeP_data(mode.ptr);
+		binding_irmode.set_modeP(mode.ptr);
 	}
 
 	public final boolean isReinterpretCast(Mode castTo) {

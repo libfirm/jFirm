@@ -138,15 +138,15 @@ public class binding_irnode {
 
 	public static enum mtp_additional_properties {
 		mtp_no_property(0),
-		mtp_property_const((1 << 0)),
+		mtp_property_no_write((1 << 0)),
 		mtp_property_pure((1 << 1)),
 		mtp_property_noreturn((1 << 2)),
-		mtp_property_nothrow((1 << 3)),
-		mtp_property_naked((1 << 4)),
-		mtp_property_malloc((1 << 5)),
-		mtp_property_returns_twice((1 << 6)),
-		mtp_property_private((1 << 7)),
-		mtp_property_has_loop((1 << 8)),
+		mtp_property_terminates((1 << 3)),
+		mtp_property_nothrow((1 << 4)),
+		mtp_property_naked((1 << 5)),
+		mtp_property_malloc((1 << 6)),
+		mtp_property_returns_twice((1 << 7)),
+		mtp_property_private((1 << 8)),
 		mtp_property_always_inline((1 << 9)),
 		mtp_property_noinline((1 << 10)),
 		mtp_property_inline_recommended((1 << 11)),
@@ -301,6 +301,34 @@ public class binding_irnode {
 
 		public static firm_kind getEnum(int val) {
 			for (firm_kind entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum idtype_t {
+		P_ALL(),
+		P_PID(),
+		P_PGID();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		idtype_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		idtype_t() {
+			this.val = C.next_val++;
+		}
+
+		public static idtype_t getEnum(int val) {
+			for (idtype_t entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -683,7 +711,8 @@ public class binding_irnode {
 		irop_flag_uses_memory((1 << 8)),
 		irop_flag_dump_noblock((1 << 9)),
 		irop_flag_cse_neutral((1 << 10)),
-		irop_flag_unknown_jump((1 << 11));
+		irop_flag_unknown_jump((1 << 11)),
+		irop_flag_const_memory((1 << 12));
 		public final int val;
 
 		private static class C {
@@ -3494,6 +3523,8 @@ public class binding_irnode {
 	public static native int is_fragile_op(Pointer node);
 
 	public static native int is_irn_forking(Pointer node);
+
+	public static native int is_irn_const_memory(Pointer node);
 
 	public static native void copy_node_attr(Pointer irg, Pointer old_node, Pointer new_node);
 

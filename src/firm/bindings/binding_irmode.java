@@ -138,15 +138,15 @@ public class binding_irmode {
 
 	public static enum mtp_additional_properties {
 		mtp_no_property(0),
-		mtp_property_const((1 << 0)),
+		mtp_property_no_write((1 << 0)),
 		mtp_property_pure((1 << 1)),
 		mtp_property_noreturn((1 << 2)),
-		mtp_property_nothrow((1 << 3)),
-		mtp_property_naked((1 << 4)),
-		mtp_property_malloc((1 << 5)),
-		mtp_property_returns_twice((1 << 6)),
-		mtp_property_private((1 << 7)),
-		mtp_property_has_loop((1 << 8)),
+		mtp_property_terminates((1 << 3)),
+		mtp_property_nothrow((1 << 4)),
+		mtp_property_naked((1 << 5)),
+		mtp_property_malloc((1 << 6)),
+		mtp_property_returns_twice((1 << 7)),
+		mtp_property_private((1 << 8)),
 		mtp_property_always_inline((1 << 9)),
 		mtp_property_noinline((1 << 10)),
 		mtp_property_inline_recommended((1 << 11)),
@@ -362,8 +362,6 @@ public class binding_irmode {
 
 	public static native Pointer get_mode_one(Pointer mode);
 
-	public static native Pointer get_mode_minus_one(Pointer mode);
-
 	public static native Pointer get_mode_all_one(Pointer mode);
 
 	public static native Pointer get_mode_infinite(Pointer mode);
@@ -406,13 +404,7 @@ public class binding_irmode {
 
 	public static native Pointer get_modeBAD();
 
-	public static native Pointer get_modeP_code();
-
-	public static native Pointer get_modeP_data();
-
-	public static native void set_modeP_code(Pointer p);
-
-	public static native void set_modeP_data(Pointer p);
+	public static native void set_modeP(Pointer p);
 
 	public static native int mode_is_signed(Pointer mode);
 

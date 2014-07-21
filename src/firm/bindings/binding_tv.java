@@ -138,15 +138,15 @@ public class binding_tv {
 
 	public static enum mtp_additional_properties {
 		mtp_no_property(0),
-		mtp_property_const((1 << 0)),
+		mtp_property_no_write((1 << 0)),
 		mtp_property_pure((1 << 1)),
 		mtp_property_noreturn((1 << 2)),
-		mtp_property_nothrow((1 << 3)),
-		mtp_property_naked((1 << 4)),
-		mtp_property_malloc((1 << 5)),
-		mtp_property_returns_twice((1 << 6)),
-		mtp_property_private((1 << 7)),
-		mtp_property_has_loop((1 << 8)),
+		mtp_property_terminates((1 << 3)),
+		mtp_property_nothrow((1 << 4)),
+		mtp_property_naked((1 << 5)),
+		mtp_property_malloc((1 << 6)),
+		mtp_property_returns_twice((1 << 7)),
+		mtp_property_private((1 << 8)),
 		mtp_property_always_inline((1 << 9)),
 		mtp_property_noinline((1 << 10)),
 		mtp_property_inline_recommended((1 << 11)),
@@ -327,8 +327,6 @@ public class binding_tv {
 
 	public static native int tarval_is_one(Pointer tv);
 
-	public static native int tarval_is_minus_one(Pointer tv);
-
 	public static native int tarval_is_all_one(Pointer tv);
 
 	public static native int tarval_is_constant(Pointer tv);
@@ -340,24 +338,6 @@ public class binding_tv {
 	public static native Pointer get_tarval_b_false();
 
 	public static native Pointer get_tarval_b_true();
-
-	public static native Pointer get_tarval_max(Pointer mode);
-
-	public static native Pointer get_tarval_min(Pointer mode);
-
-	public static native Pointer get_tarval_null(Pointer mode);
-
-	public static native Pointer get_tarval_one(Pointer mode);
-
-	public static native Pointer get_tarval_minus_one(Pointer mode);
-
-	public static native Pointer get_tarval_all_one(Pointer mode);
-
-	public static native Pointer get_tarval_nan(Pointer mode);
-
-	public static native Pointer get_tarval_plus_inf(Pointer mode);
-
-	public static native Pointer get_tarval_minus_inf(Pointer mode);
 
 	public static native void tarval_set_integer_overflow_mode(/* tarval_int_overflow_mode_t */int ov_mode);
 
