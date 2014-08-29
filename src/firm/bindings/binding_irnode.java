@@ -704,7 +704,6 @@ public class binding_irnode {
 		irop_flag_cfopcode((1 << 1)),
 		irop_flag_fragile((1 << 2)),
 		irop_flag_forking((1 << 3)),
-		irop_flag_highlevel((1 << 4)),
 		irop_flag_constlike((1 << 5)),
 		irop_flag_keep((1 << 6)),
 		irop_flag_start_block((1 << 7)),
@@ -3012,6 +3011,10 @@ public class binding_irnode {
 
 	public static native void set_Phi_pred(Pointer node, int pos, Pointer pred);
 
+	public static native int get_Phi_loop(Pointer node);
+
+	public static native void set_Phi_loop(Pointer node, int loop);
+
 	public static native Pointer get_op_Phi();
 
 	public static native Pointer new_rd_Pin(Pointer dbgi, Pointer block, Pointer irn_op);
@@ -3513,8 +3516,6 @@ public class binding_irnode {
 	public static native Pointer skip_Pin(Pointer node);
 
 	public static native Pointer skip_Confirm(Pointer node);
-
-	public static native Pointer skip_HighLevel_ops(Pointer node);
 
 	public static native int is_cfop(Pointer node);
 

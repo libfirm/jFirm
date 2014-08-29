@@ -20,6 +20,15 @@ public class Phi extends Node {
 		super(ptr);
 	}
 
+	public int getLoop() {
+		int _res = firm.bindings.binding_irnode.get_Phi_loop(ptr);
+		return _res;
+	}
+
+	public void setLoop(int _val) {
+		firm.bindings.binding_irnode.set_Phi_loop(this.ptr, _val);
+	}
+
 	@Override
 	public void accept(NodeVisitor visitor) {
 		visitor.visit(this);

@@ -283,19 +283,23 @@ public class binding_irflag {
 
 	public static native void set_opt_algebraic_simplification(int value);
 
+	public static native int get_opt_algebraic_simplification();
+
 	public static native void set_opt_cse(int value);
 
 	public static native int get_opt_cse();
 
 	public static native void set_opt_global_cse(int value);
 
+	public static native int get_opt_global_cse();
+
 	public static native void set_opt_global_null_ptr_elimination(int value);
 
-	public static native void set_opt_auto_create_sync(int value);
-
-	public static native void set_opt_alias_analysis(int value);
+	public static native int get_opt_global_null_ptr_elimination();
 
 	public static native void set_opt_closed_world(int value);
+
+	public static native int get_opt_closed_world();
 
 	public static native void save_optimization_state(Pointer state);
 

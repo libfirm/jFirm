@@ -337,7 +337,6 @@ public class binding_irop {
 		irop_flag_cfopcode((1 << 1)),
 		irop_flag_fragile((1 << 2)),
 		irop_flag_forking((1 << 3)),
-		irop_flag_highlevel((1 << 4)),
 		irop_flag_constlike((1 << 5)),
 		irop_flag_keep((1 << 6)),
 		irop_flag_start_block((1 << 7)),
