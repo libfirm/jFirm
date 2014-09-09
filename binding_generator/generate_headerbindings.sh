@@ -4,7 +4,7 @@
 
 . config
 
-for i in lowering irarch irgmod iredges irmode tv ircons irnode firm_common irdump iroptimize irgraph typerep ident irprog be irverify irflag irop irgopt irconsconfirm irio; do
+for i in lowering irarch irgmod iredges irmode tv ircons irnode firm_common irdump iroptimize irgraph typerep ident irprog be irverify irflag irop irgopt irconsconfirm irio irmemory; do
 	RES="../src/firm/bindings/binding_$i.java"
 	TMP="/tmp/tmp.java"
 	echo " * Creating $RES"
