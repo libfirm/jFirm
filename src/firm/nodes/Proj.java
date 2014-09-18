@@ -28,13 +28,13 @@ public class Proj extends Node {
 		firm.bindings.binding_irnode.set_Proj_pred(this.ptr, pred.ptr);
 	}
 
-	public int getProj() {
-		com.sun.jna.NativeLong _res = firm.bindings.binding_irnode.get_Proj_proj(ptr);
-		return _res.intValue();
+	public int getNum() {
+		int _res = firm.bindings.binding_irnode.get_Proj_num(ptr);
+		return _res;
 	}
 
-	public void setProj(int _val) {
-		firm.bindings.binding_irnode.set_Proj_proj(this.ptr, new com.sun.jna.NativeLong(_val));
+	public void setNum(int _val) {
+		firm.bindings.binding_irnode.set_Proj_num(this.ptr, _val);
 	}
 
 	@Override

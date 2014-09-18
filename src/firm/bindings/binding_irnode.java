@@ -3033,13 +3033,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Pin();
 
-	public static native Pointer new_rd_Proj(Pointer dbgi, Pointer irn_pred, Pointer mode, com.sun.jna.NativeLong proj);
+	public static native Pointer new_rd_Proj(Pointer dbgi, Pointer irn_pred, Pointer mode, int num);
 
-	public static native Pointer new_r_Proj(Pointer irn_pred, Pointer mode, com.sun.jna.NativeLong proj);
+	public static native Pointer new_r_Proj(Pointer irn_pred, Pointer mode, int num);
 
-	public static native Pointer new_d_Proj(Pointer dbgi, Pointer irn_pred, Pointer mode, com.sun.jna.NativeLong proj);
+	public static native Pointer new_d_Proj(Pointer dbgi, Pointer irn_pred, Pointer mode, int num);
 
-	public static native Pointer new_Proj(Pointer irn_pred, Pointer mode, com.sun.jna.NativeLong proj);
+	public static native Pointer new_Proj(Pointer irn_pred, Pointer mode, int num);
 
 	public static native int is_Proj(Pointer node);
 
@@ -3047,9 +3047,9 @@ public class binding_irnode {
 
 	public static native void set_Proj_pred(Pointer node, Pointer pred);
 
-	public static native com.sun.jna.NativeLong get_Proj_proj(Pointer node);
+	public static native int get_Proj_num(Pointer node);
 
-	public static native void set_Proj_proj(Pointer node, com.sun.jna.NativeLong proj);
+	public static native void set_Proj_num(Pointer node, int num);
 
 	public static native Pointer get_op_Proj();
 
@@ -3427,8 +3427,6 @@ public class binding_irnode {
 
 	public static native int Block_block_visited(Pointer node);
 
-	public static native Pointer get_Block_irg(Pointer block);
-
 	public static native Pointer create_Block_entity(Pointer block);
 
 	public static native Pointer get_Block_phis(Pointer block);
@@ -3559,13 +3557,13 @@ public class binding_irnode {
 
 	public static native com.sun.jna.NativeLong ir_switch_table_get_n_entries(Pointer table);
 
-	public static native void ir_switch_table_set(Pointer table, com.sun.jna.NativeLong entry, Pointer min, Pointer max, com.sun.jna.NativeLong pn);
+	public static native void ir_switch_table_set(Pointer table, com.sun.jna.NativeLong entry, Pointer min, Pointer max, int pn);
 
 	public static native Pointer ir_switch_table_get_max(Pointer table, com.sun.jna.NativeLong entry);
 
 	public static native Pointer ir_switch_table_get_min(Pointer table, com.sun.jna.NativeLong entry);
 
-	public static native com.sun.jna.NativeLong ir_switch_table_get_pn(Pointer table, com.sun.jna.NativeLong entry);
+	public static native int ir_switch_table_get_pn(Pointer table, com.sun.jna.NativeLong entry);
 
 	public static native Pointer ir_switch_table_duplicate(Pointer irg, Pointer table);
 }

@@ -199,8 +199,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newProj(Node pred, firm.Mode mode, int proj) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Proj(pred.ptr, mode.ptr, new com.sun.jna.NativeLong(proj));
+	public Node newProj(Node pred, firm.Mode mode, int num) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Proj(pred.ptr, mode.ptr, num);
 		return Node.createWrapper(result_ptr);
 	}
 

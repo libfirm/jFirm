@@ -433,7 +433,7 @@ public class binding_irop {
 
 	public static native void set_op_transform_node_proj(Pointer op, Pointer func);
 
-	public static native void set_op_cmp_attr(Pointer op, Pointer func);
+	public static native void set_op_attrs_equal(Pointer op, Pointer func);
 
 	public static native void set_op_reassociate(Pointer op, Pointer func);
 

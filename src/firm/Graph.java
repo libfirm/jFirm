@@ -219,8 +219,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Proj node */
-	public final Node newProj(Node pred, firm.Mode mode, int proj) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Proj(pred.ptr, mode.ptr, new com.sun.jna.NativeLong(proj)));
+	public final Node newProj(Node pred, firm.Mode mode, int num) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Proj(pred.ptr, mode.ptr, num));
 	}
 
 	/** Create a new Raise node */

@@ -16,7 +16,7 @@ public class SwitchTable extends JNAWrapper {
 	}
 
 	public final void setEntry(int entry, TargetValue min, TargetValue max, int pn) {
-		binding_irnode.ir_switch_table_set(ptr, new NativeLong(entry), min.ptr, max.ptr, new NativeLong(pn));
+		binding_irnode.ir_switch_table_set(ptr, new NativeLong(entry), min.ptr, max.ptr, pn);
 	}
 
 	public final void setEntry(int entry, int min, int max, Mode mode, int pn) {
@@ -38,6 +38,6 @@ public class SwitchTable extends JNAWrapper {
 	}
 
 	public final int getPn(int entry) {
-		return binding_irnode.ir_switch_table_get_pn(ptr, new NativeLong(entry)).intValue();
+		return binding_irnode.ir_switch_table_get_pn(ptr, new NativeLong(entry));
 	}
 }
