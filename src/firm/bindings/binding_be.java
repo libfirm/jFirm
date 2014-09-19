@@ -218,7 +218,6 @@ public class binding_be {
 		ir_bk_bswap(),
 		ir_bk_inport(),
 		ir_bk_outport(),
-		ir_bk_inner_trampoline(),
 		ir_bk_saturating_increment(),
 		ir_bk_compare_swap(),
 		ir_bk_may_alias(),
