@@ -2770,13 +2770,13 @@ public class binding_ircons {
 
 	public static native Pointer get_op_Jmp();
 
-	public static native Pointer new_rd_Load(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer mode, /* ir_cons_flags */int flags);
+	public static native Pointer new_rd_Load(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer mode, Pointer type, /* ir_cons_flags */int flags);
 
-	public static native Pointer new_r_Load(Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer mode, /* ir_cons_flags */int flags);
+	public static native Pointer new_r_Load(Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer mode, Pointer type, /* ir_cons_flags */int flags);
 
-	public static native Pointer new_d_Load(Pointer dbgi, Pointer irn_mem, Pointer irn_ptr, Pointer mode, /* ir_cons_flags */int flags);
+	public static native Pointer new_d_Load(Pointer dbgi, Pointer irn_mem, Pointer irn_ptr, Pointer mode, Pointer type, /* ir_cons_flags */int flags);
 
-	public static native Pointer new_Load(Pointer irn_mem, Pointer irn_ptr, Pointer mode, /* ir_cons_flags */int flags);
+	public static native Pointer new_Load(Pointer irn_mem, Pointer irn_ptr, Pointer mode, Pointer type, /* ir_cons_flags */int flags);
 
 	public static native int is_Load(Pointer node);
 
@@ -2791,6 +2791,10 @@ public class binding_ircons {
 	public static native Pointer get_Load_mode(Pointer node);
 
 	public static native void set_Load_mode(Pointer node, Pointer mode);
+
+	public static native Pointer get_Load_type(Pointer node);
+
+	public static native void set_Load_type(Pointer node, Pointer type);
 
 	public static native /* ir_volatility */int get_Load_volatility(Pointer node);
 
@@ -3206,13 +3210,13 @@ public class binding_ircons {
 
 	public static native Pointer get_op_Start();
 
-	public static native Pointer new_rd_Store(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer irn_value, /* ir_cons_flags */int flags);
+	public static native Pointer new_rd_Store(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer irn_value, Pointer type, /* ir_cons_flags */int flags);
 
-	public static native Pointer new_r_Store(Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer irn_value, /* ir_cons_flags */int flags);
+	public static native Pointer new_r_Store(Pointer block, Pointer irn_mem, Pointer irn_ptr, Pointer irn_value, Pointer type, /* ir_cons_flags */int flags);
 
-	public static native Pointer new_d_Store(Pointer dbgi, Pointer irn_mem, Pointer irn_ptr, Pointer irn_value, /* ir_cons_flags */int flags);
+	public static native Pointer new_d_Store(Pointer dbgi, Pointer irn_mem, Pointer irn_ptr, Pointer irn_value, Pointer type, /* ir_cons_flags */int flags);
 
-	public static native Pointer new_Store(Pointer irn_mem, Pointer irn_ptr, Pointer irn_value, /* ir_cons_flags */int flags);
+	public static native Pointer new_Store(Pointer irn_mem, Pointer irn_ptr, Pointer irn_value, Pointer type, /* ir_cons_flags */int flags);
 
 	public static native int is_Store(Pointer node);
 
@@ -3227,6 +3231,10 @@ public class binding_ircons {
 	public static native Pointer get_Store_value(Pointer node);
 
 	public static native void set_Store_value(Pointer node, Pointer value);
+
+	public static native Pointer get_Store_type(Pointer node);
+
+	public static native void set_Store_type(Pointer node, Pointer type);
 
 	public static native /* ir_volatility */int get_Store_volatility(Pointer node);
 

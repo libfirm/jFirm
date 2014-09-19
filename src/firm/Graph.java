@@ -31,7 +31,7 @@ public class Graph extends GraphBase {
 		this(binding_irgraph.new_ir_graph(entity.ptr, nLocalVars));
 	}
 
-	
+
 
 	/** Create a new Add node */
 	public final Node newAdd(Node block, Node left, Node right, firm.Mode mode) {
@@ -155,7 +155,8 @@ public class Graph extends GraphBase {
 
 	/** Create a new Load node */
 	public final Node newLoad(Node block, Node mem, Node _ptr, firm.Mode load_mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Load(block.ptr, mem.ptr, _ptr.ptr, load_mode.ptr, flags.val));
+		Type type = load_mode.getType();
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Load(block.ptr, mem.ptr, _ptr.ptr, load_mode.ptr, type.ptr, flags.val));
 	}
 
 	/** Create a new Member node */
@@ -265,7 +266,8 @@ public class Graph extends GraphBase {
 
 	/** Create a new Store node */
 	public final Node newStore(Node block, Node mem, Node _ptr, Node value, firm.bindings.binding_ircons.ir_cons_flags flags) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Store(block.ptr, mem.ptr, _ptr.ptr, value.ptr, flags.val));
+		Type type = value.getMode().getType();
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Store(block.ptr, mem.ptr, _ptr.ptr, value.ptr, type.ptr, flags.val));
 	}
 
 	/** Create a new Sub node */
