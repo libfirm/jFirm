@@ -6,6 +6,7 @@ import firm.bindings.binding_ircons;
 import firm.bindings.binding_ircons.ir_cons_flags;
 import firm.nodes.Block;
 import firm.nodes.Node;
+import firm.Type;
 
 /**
  * Utility class helping in constructing firm graphs. (Performs SSA-construction
@@ -43,14 +44,29 @@ public class Construction extends ConstructionBase {
 		return newConst(new TargetValue(value, mode));
 	}
 
-	/** Convenience Load construction method with cons_flags being None. */
+	/** Convenience Load construction method that derives the
+	 *  type from the loadMode and sets cons_flags to None.
+	 */
 	public Node newLoad(Node mem, Node ptr, Mode loadMode) {
-		return newLoad(mem, ptr, loadMode, ir_cons_flags.cons_none);
+		return newLoad(mem, ptr, loadMode, loadMode.getType());
+	}
+
+	/** Convenience Load construction method with cons_flags being None. */
+	public Node newLoad(Node mem, Node ptr, Mode loadMode, Type type) {
+		return newLoad(mem, ptr, loadMode, type, ir_cons_flags.cons_none);
+	}
+
+	/** Convenience Store construction method that derives the
+	 *  type from the value and sets cons_flags to None.
+	 */
+	public Node newStore(Node mem, Node ptr, Node value) {
+		Type type = value.getMode().getType();
+		return newStore(mem, ptr, value, type, ir_cons_flags.cons_none);
 	}
 
 	/** Convenience Store construction method with cons_flags being None. */
-	public Node newStore(Node mem, Node ptr, Node value) {
-		return newStore(mem, ptr, value, ir_cons_flags.cons_none);
+	public Node newStore(Node mem, Node ptr, Node value, Type type) {
+		return newStore(mem, ptr, value, type, ir_cons_flags.cons_none);
 	}
 
 	/**

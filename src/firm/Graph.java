@@ -154,8 +154,7 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Load node */
-	public final Node newLoad(Node block, Node mem, Node _ptr, firm.Mode load_mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
-		Type type = load_mode.getType();
+	public final Node newLoad(Node block, Node mem, Node _ptr, firm.Mode load_mode, firm.Type type, firm.bindings.binding_ircons.ir_cons_flags flags) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Load(block.ptr, mem.ptr, _ptr.ptr, load_mode.ptr, type.ptr, flags.val));
 	}
 
@@ -265,8 +264,7 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Store node */
-	public final Node newStore(Node block, Node mem, Node _ptr, Node value, firm.bindings.binding_ircons.ir_cons_flags flags) {
-		Type type = value.getMode().getType();
+	public final Node newStore(Node block, Node mem, Node _ptr, Node value, firm.Type type, firm.bindings.binding_ircons.ir_cons_flags flags) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Store(block.ptr, mem.ptr, _ptr.ptr, value.ptr, type.ptr, flags.val));
 	}
 

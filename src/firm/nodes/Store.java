@@ -44,6 +44,15 @@ public class Store extends Node {
 		firm.bindings.binding_irnode.set_Store_value(this.ptr, value.ptr);
 	}
 
+	public firm.Type getType() {
+		Pointer _res = firm.bindings.binding_irnode.get_Store_type(ptr);
+		return firm.Type.createWrapper(_res);
+	}
+
+	public void setType(firm.Type _val) {
+		firm.bindings.binding_irnode.set_Store_type(this.ptr, _val.ptr);
+	}
+
 	public firm.bindings.binding_irnode.ir_volatility getVolatility() {
 		int _res = firm.bindings.binding_irnode.get_Store_volatility(ptr);
 		return firm.bindings.binding_irnode.ir_volatility.getEnum(_res);

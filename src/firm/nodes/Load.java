@@ -45,6 +45,15 @@ public class Load extends Node {
 		firm.bindings.binding_irnode.set_Load_mode(this.ptr, _val.ptr);
 	}
 
+	public firm.Type getType() {
+		Pointer _res = firm.bindings.binding_irnode.get_Load_type(ptr);
+		return firm.Type.createWrapper(_res);
+	}
+
+	public void setType(firm.Type _val) {
+		firm.bindings.binding_irnode.set_Load_type(this.ptr, _val.ptr);
+	}
+
 	public firm.bindings.binding_irnode.ir_volatility getVolatility() {
 		int _res = firm.bindings.binding_irnode.get_Load_volatility(ptr);
 		return firm.bindings.binding_irnode.ir_volatility.getEnum(_res);

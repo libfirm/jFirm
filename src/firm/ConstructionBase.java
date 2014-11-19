@@ -134,8 +134,7 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newLoad(Node mem, Node _ptr, firm.Mode load_mode, firm.bindings.binding_ircons.ir_cons_flags flags) {
-		Type    type       = load_mode.getType();
+	public Node newLoad(Node mem, Node _ptr, firm.Mode load_mode, firm.Type type, firm.bindings.binding_ircons.ir_cons_flags flags) {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Load(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, _ptr.ptr, load_mode.ptr, type.ptr, flags.val);
 		return Node.createWrapper(result_ptr);
 	}
@@ -245,8 +244,7 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newStore(Node mem, Node _ptr, Node value, firm.bindings.binding_ircons.ir_cons_flags flags) {
-		Type    type       = value.getMode().getType();
+	public Node newStore(Node mem, Node _ptr, Node value, firm.Type type, firm.bindings.binding_ircons.ir_cons_flags flags) {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Store(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, _ptr.ptr, value.ptr, type.ptr, flags.val);
 		return Node.createWrapper(result_ptr);
 	}
