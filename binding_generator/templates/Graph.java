@@ -31,7 +31,7 @@ public class Graph extends GraphBase {
 		this(binding_irgraph.new_ir_graph(entity.ptr, nLocalVars));
 	}
 
-	{% for node in nodes -%}
+{% for node in nodes -%}
 	{% if not isAbstract(node) and not node.noconstructor %}
 
 	/** Create a new {{node.name}} node */
