@@ -3413,8 +3413,6 @@ public class binding_irnode {
 
 	public static native void set_nodes_block(Pointer node, Pointer block);
 
-	public static native int get_Block_cfgpred_pos(Pointer block, Pointer pred);
-
 	public static native Pointer get_Block_cfgpred_block(Pointer node, int pos);
 
 	public static native int get_Block_matured(Pointer block);
