@@ -1012,6 +1012,40 @@ public class binding_ircons {
 		}
 	}
 
+	public static enum n_Anchor {
+		n_Anchor_end_block(),
+		n_Anchor_start_block(),
+		n_Anchor_end(),
+		n_Anchor_start(),
+		n_Anchor_frame(),
+		n_Anchor_initial_mem(),
+		n_Anchor_args(),
+		n_Anchor_no_mem(),
+		n_Anchor_max(n_Anchor.n_Anchor_no_mem.val);
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		n_Anchor(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		n_Anchor() {
+			this.val = C.next_val++;
+		}
+
+		public static n_Anchor getEnum(int val) {
+			for (n_Anchor entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum n_And {
 		n_And_left(),
 		n_And_right(),
@@ -2352,6 +2386,38 @@ public class binding_ircons {
 	public static native Pointer get_op_Alloc();
 
 	public static native int is_Anchor(Pointer node);
+
+	public static native Pointer get_Anchor_end_block(Pointer node);
+
+	public static native void set_Anchor_end_block(Pointer node, Pointer end_block);
+
+	public static native Pointer get_Anchor_start_block(Pointer node);
+
+	public static native void set_Anchor_start_block(Pointer node, Pointer start_block);
+
+	public static native Pointer get_Anchor_end(Pointer node);
+
+	public static native void set_Anchor_end(Pointer node, Pointer end);
+
+	public static native Pointer get_Anchor_start(Pointer node);
+
+	public static native void set_Anchor_start(Pointer node, Pointer start);
+
+	public static native Pointer get_Anchor_frame(Pointer node);
+
+	public static native void set_Anchor_frame(Pointer node, Pointer frame);
+
+	public static native Pointer get_Anchor_initial_mem(Pointer node);
+
+	public static native void set_Anchor_initial_mem(Pointer node, Pointer initial_mem);
+
+	public static native Pointer get_Anchor_args(Pointer node);
+
+	public static native void set_Anchor_args(Pointer node, Pointer args);
+
+	public static native Pointer get_Anchor_no_mem(Pointer node);
+
+	public static native void set_Anchor_no_mem(Pointer node, Pointer no_mem);
 
 	public static native Pointer get_op_Anchor();
 
