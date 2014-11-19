@@ -276,7 +276,11 @@ public class binding_irgmod {
 
 	public static native void turn_into_tuple(Pointer node, int arity, java.nio.Buffer in);
 
-	public static native void collect_phiprojs(Pointer irg);
+	public static native void collect_phiprojs_and_start_block_nodes(Pointer irg);
+
+	public static native void collect_new_start_block_node(Pointer node);
+
+	public static native void collect_new_phi_node(Pointer node);
 
 	public static native void part_block(Pointer node);
 

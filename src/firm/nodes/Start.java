@@ -25,17 +25,14 @@ public class Start extends Node {
 		visitor.visit(this);
 	}
 
-	/** control flow */
-	public static final int pnXInitialExec = 0;
-
 	/** initial memory */
-	public static final int pnM = 1;
+	public static final int pnM = 0;
 
 	/** frame base pointer */
-	public static final int pnPFrameBase = 2;
+	public static final int pnPFrameBase = 1;
 
 	/** function arguments */
-	public static final int pnTArgs = 3;
+	public static final int pnTArgs = 2;
 
-	public static final int pnMax = 4;
+	public static final int pnMax = 3;
 }

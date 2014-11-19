@@ -749,8 +749,6 @@ public class binding_typerep {
 
 	public static native void set_entity_initializer(Pointer entity, Pointer initializer);
 
-	public static native int has_entity_initializer(Pointer entity);
-
 	public static native Pointer get_entity_initializer(Pointer entity);
 
 	public static native void add_entity_overwrites(Pointer ent, Pointer overwritten);
@@ -774,8 +772,6 @@ public class binding_typerep {
 	public static native void set_entity_overwrittenby(Pointer ent, com.sun.jna.NativeLong pos, Pointer overwrites);
 
 	public static native void remove_entity_overwrittenby(Pointer ent, Pointer overwrites);
-
-	public static native int is_entity(Pointer thing);
 
 	public static native int is_atomic_entity(Pointer ent);
 
@@ -904,8 +900,6 @@ public class binding_typerep {
 	public static native void set_type_dbg_info(Pointer tp, Pointer db);
 
 	public static native Pointer get_type_dbg_info(Pointer tp);
-
-	public static native int is_type(Pointer thing);
 
 	public static native com.sun.jna.NativeLong get_type_nr(Pointer tp);
 

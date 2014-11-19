@@ -278,10 +278,8 @@ public class binding_ircons {
 		k_ir_graph(),
 		k_ir_node(),
 		k_ir_mode(),
-		k_ir_op(),
 		k_tarval(),
 		k_ir_loop(),
-		k_ir_prog(),
 		k_ir_max();
 		public final int val;
 
@@ -2078,7 +2076,6 @@ public class binding_ircons {
 	}
 
 	public static enum pn_Start {
-		pn_Start_X_initial_exec(),
 		pn_Start_M(),
 		pn_Start_P_frame_base(),
 		pn_Start_T_args(),

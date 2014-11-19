@@ -337,8 +337,6 @@ public class binding_irmode {
 
 	public static native Pointer new_non_arithmetic_mode(String name);
 
-	public static native int is_mode(Pointer thing);
-
 	public static native Pointer get_mode_ident(Pointer mode);
 
 	public static native String get_mode_name(Pointer mode);

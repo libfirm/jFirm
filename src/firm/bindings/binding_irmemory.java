@@ -360,7 +360,7 @@ public class binding_irmemory {
 
 	public static native String get_ir_alias_relation_name(/* ir_alias_relation */int rel);
 
-	public static native /* ir_alias_relation */int get_alias_relation(Pointer addr1, Pointer type1, Pointer addr2, Pointer type2);
+	public static native /* ir_alias_relation */int get_alias_relation(Pointer addr1, Pointer type1, int size1, Pointer addr2, Pointer type2, int size2);
 
 	public static native void assure_irg_entity_usage_computed(Pointer irg);
 

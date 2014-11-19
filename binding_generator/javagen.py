@@ -2,7 +2,7 @@
 from jinja2 import Environment, Template, FileSystemLoader
 import re
 
-from spec_util import verify_node, is_dynamic_pinned, setdefault, isAbstract, setldefault, load_spec, Attribute
+from spec_util import verify_node, is_dynamic_pinned, setdefault, isAbstract, setldefault, load_spec, Attribute, Input, Output
 import sys
 
 java_keywords = [ "public", "private", "protected", "true", "false", "ptr" ]
@@ -277,20 +277,34 @@ def preprocess_node(node):
 		node.constructor_args.append(
 			Attribute("pin_state", type = "op_pin_state"))
 
+	# transform ins into name, comment tuples if not in this format already
+	if hasattr(node, "ins"):
+		new_ins = []
+		for i in node.ins:
+			if isinstance(i, basestring):
+				i = Input(i)
+			elif isinstance(i, tuple):
+				i = Input(name=i[0], comment=i[1])
+			new_ins.append(i)
+		node.ins = new_ins
+
 	# transform outs into name, comment tuples if not in this format already
 	if hasattr(node, "outs"):
-		for i in range(0,len(node.outs)):
-			out = node.outs[i]
-			if not isinstance(out, tuple):
-				out = (out, "")
-			node.outs[i] = out
+		new_outs = []
+		for o in node.outs:
+			if isinstance(o, basestring):
+				o = Output(o)
+			elif isinstance(o, tuple):
+				o = Output(name=o[0], comment=o[1])
+			new_outs.append(o)
+		node.outs = new_outs
 
 	# construct node arguments
 	if not isAbstract(node):
 		arguments = [ ]
 		for input in node.ins:
 			arguments.append(
-				Attribute(name=input[0], type="Node", comment=input[1]))
+				Attribute(name=input.name, type="Node", comment=input.comment))
 		if node.arity == "variable" or node.arity == "dynamic":
 			arguments.append(
 				Attribute("ins", type="Node[]"))

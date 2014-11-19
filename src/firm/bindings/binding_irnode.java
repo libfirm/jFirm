@@ -278,10 +278,8 @@ public class binding_irnode {
 		k_ir_graph(),
 		k_ir_node(),
 		k_ir_mode(),
-		k_ir_op(),
 		k_tarval(),
 		k_ir_loop(),
-		k_ir_prog(),
 		k_ir_max();
 		public final int val;
 
@@ -2078,7 +2076,6 @@ public class binding_irnode {
 	}
 
 	public static enum pn_Start {
-		pn_Start_X_initial_exec(),
 		pn_Start_M(),
 		pn_Start_P_frame_base(),
 		pn_Start_T_args(),
@@ -3352,8 +3349,6 @@ public class binding_irnode {
 
 	public static native void set_typeconst_type(Pointer node, Pointer type);
 
-	public static native int is_ir_node(Pointer thing);
-
 	public static native int get_irn_arity(Pointer node);
 
 	public static native Pointer get_irn_n(Pointer node, int n);
@@ -3503,8 +3498,6 @@ public class binding_irnode {
 	public static native void add_Sync_pred(Pointer node, Pointer pred);
 
 	public static native void remove_Sync_n(Pointer n, int i);
-
-	public static native int is_arg_Proj(Pointer node);
 
 	public static native com.sun.jna.NativeLong get_ASM_n_output_constraints(Pointer node);
 

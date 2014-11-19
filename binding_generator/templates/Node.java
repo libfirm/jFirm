@@ -56,14 +56,14 @@ public {% if isAbstract(node) %}abstract {%endif-%} class {{node.classname}} ext
 	{% for input in node.ins -%}
 	{%if node.parent.classname != "Node"%}@Override
 	{%endif-%}
-	public Node get{{input[0]|CamelCase}}() {
-		return createWrapper({{binding}}.get_{{node.name}}_{{input[0]}}(ptr));
+	public Node get{{input.name|CamelCase}}() {
+		return createWrapper({{binding}}.get_{{node.name}}_{{input.name}}(ptr));
 	}
 
 	{%if node.parent.classname != "Node"%}@Override
 	{%endif-%}
-	public void set{{input[0]|CamelCase}}(Node {{input[0]|filterkeywords}}) {
-		{{binding}}.set_{{node.name}}_{{input[0]}}(this.ptr, {{input[0]|filterkeywords}}.ptr);
+	public void set{{input.name|CamelCase}}(Node {{input.name|filterkeywords}}) {
+		{{binding}}.set_{{node.name}}_{{input.name}}(this.ptr, {{input.name|filterkeywords}}.ptr);
 	}
 
 	{% endfor -%}
@@ -96,10 +96,10 @@ public {% if isAbstract(node) %}abstract {%endif-%} class {{node.classname}} ext
 	{% endif -%}
 
 	{%- for out in node.outs -%}
-	{%- if out[1] != "" -%}
-	/** {{out[1]}} */
+	{%- if out.comment != "" -%}
+	/** {{out.comment}} */
 	{% endif -%}
-	public static final int pn{{out[0]|CamelCase}} = {{loop.index0}};
+	public static final int pn{{out.name|CamelCase}} = {{loop.index0}};
 
 	{% endfor -%}
 	public static final int pnMax = {{len(node.outs)}};

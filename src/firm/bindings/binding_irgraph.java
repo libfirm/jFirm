@@ -409,8 +409,6 @@ public class binding_irgraph {
 
 	public static native void free_ir_graph(Pointer irg);
 
-	public static native int is_ir_graph(Pointer thing);
-
 	public static native Pointer get_irg_entity(Pointer irg);
 
 	public static native void set_irg_entity(Pointer irg, Pointer ent);
@@ -434,10 +432,6 @@ public class binding_irgraph {
 	public static native Pointer get_irg_end(Pointer irg);
 
 	public static native void set_irg_end(Pointer irg, Pointer node);
-
-	public static native Pointer get_irg_initial_exec(Pointer irg);
-
-	public static native void set_irg_initial_exec(Pointer irg, Pointer node);
 
 	public static native Pointer get_irg_frame(Pointer irg);
 

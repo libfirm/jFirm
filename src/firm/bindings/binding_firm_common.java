@@ -278,10 +278,8 @@ public class binding_firm_common {
 		k_ir_graph(),
 		k_ir_node(),
 		k_ir_mode(),
-		k_ir_op(),
 		k_tarval(),
 		k_ir_loop(),
-		k_ir_prog(),
 		k_ir_max();
 		public final int val;
 

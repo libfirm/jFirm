@@ -413,6 +413,4 @@ public class binding_tv {
 	public static native int tarval_is_minus_inf(Pointer tv);
 
 	public static native int tarval_is_finite(Pointer tv);
-
-	public static native int is_tarval(Pointer thing);
 }

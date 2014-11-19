@@ -300,38 +300,6 @@ public class binding_be {
 		}
 	}
 
-	public static enum insn_kind {
-		LEA(),
-		SHIFT(),
-		SUB(),
-		ADD(),
-		ZERO(),
-		MUL(),
-		ROOT();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		insn_kind(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		insn_kind() {
-			this.val = C.next_val++;
-		}
-
-		public static insn_kind getEnum(int val) {
-			for (insn_kind entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum arch_dep_opts_t {
 		arch_dep_none(0),
 		arch_dep_mul_to_shift((1 << 0)),
