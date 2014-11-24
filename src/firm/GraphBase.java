@@ -138,10 +138,6 @@ public abstract class GraphBase extends JNAWrapper {
 		binding_irgraph.set_irg_end(ptr, node.ptr);
 	}
 
-	public void setInitialExec(Node node) {
-		binding_irgraph.set_irg_initial_exec(ptr, node.ptr);
-	}
-
 	public void setInitialMem(Node node) {
 		binding_irgraph.set_irg_initial_mem(ptr, node.ptr);
 	}

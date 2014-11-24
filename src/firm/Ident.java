@@ -42,21 +42,6 @@ public class Ident extends JNAWrapper {
 		return new Ident(pIdent);
 	}
 
-	public final Ident mangleUnderscore(Ident second) {
-		Pointer pIdent = binding_ident.id_mangle_u(ptr, second.ptr);
-		return new Ident(pIdent);
-	}
-
-	public final Ident mangleDot(Ident second) {
-		Pointer pIdent = binding_ident.id_mangle_dot(ptr, second.ptr);
-		return new Ident(pIdent);
-	}
-
-	public final Ident mangle(Ident second) {
-		Pointer pIdent = binding_ident.id_mangle(ptr, second.ptr);
-		return new Ident(pIdent);
-	}
-
 	public final Ident mangle(String prefix, String suffix) {
 		Pointer pIdent = binding_ident.id_mangle3(prefix, ptr, suffix);
 		return new Ident(pIdent);
