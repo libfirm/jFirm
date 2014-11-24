@@ -10,12 +10,9 @@ import firm.Util;
  * A transformation pass that lowers some highlevel features of OO languages,
  * so we can generate machine assembler:
  *
- *   - Replace Alloc-nodes by calls to libcs "calloc"
  *   - Move methods from classtypes into global type
  *   - escape/replace special chars in LdNames so normal assemblers are fine
  *     with them
- *
- * This demonstrates the usage of turnIntoTuple and Graph.walk()
  */
 public class Lower {
 	private Lower() {
@@ -23,7 +20,7 @@ public class Lower {
 
 	private void fixEntityLdName(Entity entity) {
 		String name = entity.getLdName();
-		/* replace some "java" names with "C" names:
+		/* replace some "Java" names with "C" names:
 		 * - The main method has to be called "main" in C
 		 * - There is no PrintStream.println (but we use our dummy print_int implementation)
 		 * - java/lang/system/out is also replaced by a dummy variable
