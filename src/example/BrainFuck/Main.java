@@ -3,7 +3,10 @@ package example.BrainFuck;
 import java.io.IOException;
 
 import firm.Backend;
+import firm.Dump;
 import firm.Firm;
+import firm.Graph;
+import firm.Program;
 
 /* Test libFirm bindings */
 public class Main {
@@ -24,10 +27,9 @@ public class Main {
 		fuck.compile(input);
 
 		/* dump all firm graphs to disk */
-		/*
-		 * for(Graph g : Program.getGraphs()) { Dump.dumpBlockGraph(g,
-		 * "-finished"); }
-		 */
+		for (Graph g : Program.getGraphs()) {
+			Dump.dumpGraph(g, "-finished");
+		}
 
 		/* transform to x86 assembler */
 		Backend.createAssembler("test.s", "<builtin>");
