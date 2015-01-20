@@ -1,6 +1,8 @@
 package firm;
 
+import java.nio.Buffer;
 import java.nio.IntBuffer;
+import java.nio.LongBuffer;
 
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
@@ -420,6 +422,28 @@ public abstract class GraphBase extends JNAWrapper {
 	}
 
 	/**
+	 * Return a copy of the node's in array. There is no PointerBuffer class,
+	 * hence choose the correct primitive buffer type based on pointer size.
+	 */
+	private static Buffer copyIns(Node node) {
+		int arity = binding_irnode.get_irn_arity(node.ptr);
+		if (Pointer.SIZE == 4) {
+			IntBuffer ins = IntBuffer.allocate(arity);
+			for (int i = 0; i < arity; ++i) {
+				ins.put(i, (int) Pointer.nativeValue(node.getPred(i).ptr));
+			}
+			return ins;
+		} else if (Pointer.SIZE == 8) {
+			LongBuffer ins = LongBuffer.allocate(arity);
+			for (int i = 0; i < arity; ++i) {
+				ins.put(i, Pointer.nativeValue(node.getPred(i).ptr));
+			}
+			return ins;
+		}
+		throw new IllegalStateException();
+	}
+
+	/**
 	 * Copies a node and its attributes into the graph. The node is allowed to
 	 * be on a different graph. Note that the predecessors might still point to
 	 * nodes on the other graph after the copy operation which is not valid
@@ -433,11 +457,7 @@ public abstract class GraphBase extends JNAWrapper {
 		Pointer op = binding_irnode.get_irn_op(node.ptr);
 		Pointer mode = binding_irnode.get_irn_mode(node.ptr);
 		int arity = binding_irnode.get_irn_arity(node.ptr);
-		IntBuffer ins = IntBuffer.allocate(arity);
-		for (int i = 0; i < arity; ++i) {
-			assert Pointer.SIZE == 4; // There is no PointerBuffer...
-			ins.put(i, (int) Pointer.nativeValue(node.getPred(i).ptr));
-		}
+		Buffer ins = copyIns(node);
 		Pointer block;
 		if (node.getOpCode() == ir_opcode.iro_Block) {
 			block = Pointer.NULL;
