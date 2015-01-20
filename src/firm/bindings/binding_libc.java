@@ -6,7 +6,11 @@ import com.sun.jna.Pointer;
 
 public class binding_libc {
 	static {
-		Native.register("firm");
+		if (System.getProperty("os.name").startsWith("Windows")) {
+			Native.register("msvcrt");
+		} else {
+			Native.register("firm");
+		}
 	}
 
 	public static native Pointer fopen(String name, String mode);
