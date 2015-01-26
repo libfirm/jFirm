@@ -132,7 +132,7 @@ public final class Firm {
 	}
 
 	/**
-	 * frees internal datastructures of firm. After this call no firm operaion
+	 * frees internal data structures of firm. After this call no firm operation
 	 * must be performed anymore.
 	 */
 	public static void finish() {
