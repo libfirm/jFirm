@@ -61,7 +61,7 @@ public enum Relation {
 
 	/** Calculates the negated (Complement(R)) relation, i.e. "<" becomes ">=u" */
 	public Relation negated() {
-		return fromValue(val ^= True.val);
+		return fromValue(val ^ True.val);
 	}
 
 	/** Calculates the inversed (R^-1) relation, i.e., "<" becomes ">" */
