@@ -278,8 +278,6 @@ public class binding_irdom {
 
 	public static native int block_dominates(Pointer a, Pointer b);
 
-	public static native int block_strictly_dominates(Pointer a, Pointer b);
-
 	public static native int block_postdominates(Pointer a, Pointer b);
 
 	public static native int block_strictly_postdominates(Pointer a, Pointer b);
@@ -292,7 +290,7 @@ public class binding_irdom {
 
 	public static native Pointer get_Block_postdominated_next(Pointer node);
 
-	public static native Pointer node_smallest_common_dominator(Pointer a, Pointer b);
+	public static native Pointer ir_deepest_common_dominator(Pointer block0, Pointer block1);
 
 	public static native void dom_tree_walk(Pointer n, Pointer pre, Pointer post, Pointer env);
 
@@ -305,10 +303,6 @@ public class binding_irdom {
 	public static native void compute_doms(Pointer irg);
 
 	public static native void compute_postdoms(Pointer irg);
-
-	public static native void free_dom(Pointer irg);
-
-	public static native void free_postdom(Pointer irg);
 
 	public static native void ir_compute_dominance_frontiers(Pointer irg);
 

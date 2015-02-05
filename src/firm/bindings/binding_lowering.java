@@ -305,8 +305,6 @@ public class binding_lowering {
 
 	public static native void lower_highlevel_graph(Pointer irg);
 
-	public static native void lower_highlevel();
-
 	public static native void lower_const_code();
 
 	public static native void lower_mux(Pointer irg, Pointer cb_func);
@@ -318,8 +316,6 @@ public class binding_lowering {
 	public static native void ir_lower_intrinsics(Pointer irg, Pointer map);
 
 	public static native int i_mapper_abs(Pointer call);
-
-	public static native int i_mapper_bswap(Pointer call);
 
 	public static native int i_mapper_sqrt(Pointer call);
 
@@ -367,13 +363,9 @@ public class binding_lowering {
 
 	public static native int i_mapper_memcpy(Pointer call);
 
-	public static native int i_mapper_mempcpy(Pointer call);
-
 	public static native int i_mapper_memmove(Pointer call);
 
 	public static native int i_mapper_memset(Pointer call);
 
 	public static native int i_mapper_memcmp(Pointer call);
-
-	public static native int i_mapper_alloca(Pointer call);
 }

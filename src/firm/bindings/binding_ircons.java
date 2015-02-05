@@ -305,34 +305,6 @@ public class binding_ircons {
 		}
 	}
 
-	public static enum idtype_t {
-		P_ALL(),
-		P_PID(),
-		P_PGID();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		idtype_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		idtype_t() {
-			this.val = C.next_val++;
-		}
-
-		public static idtype_t getEnum(int val) {
-			for (idtype_t entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_visibility {
 		ir_visibility_external(),
 		ir_visibility_local(),
@@ -2805,14 +2777,6 @@ public class binding_ircons {
 
 	public static native Pointer get_op_IJmp();
 
-	public static native Pointer new_rd_Id(Pointer dbgi, Pointer block, Pointer irn_pred, Pointer mode);
-
-	public static native Pointer new_r_Id(Pointer block, Pointer irn_pred, Pointer mode);
-
-	public static native Pointer new_d_Id(Pointer dbgi, Pointer irn_pred, Pointer mode);
-
-	public static native Pointer new_Id(Pointer irn_pred, Pointer mode);
-
 	public static native int is_Id(Pointer node);
 
 	public static native Pointer get_Id_pred(Pointer node);
@@ -3494,8 +3458,6 @@ public class binding_ircons {
 	public static native void keep_alive(Pointer ka);
 
 	public static native void irg_finalize_cons(Pointer irg);
-
-	public static native void irp_finalize_cons();
 
 	public static native void verify_new_node(Pointer irg, Pointer node);
 

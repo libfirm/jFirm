@@ -9,34 +9,6 @@ public class binding_typerep {
 		Native.register("firm");
 	}
 
-	public static enum idtype_t {
-		P_ALL(),
-		P_PID(),
-		P_PGID();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		idtype_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		idtype_t() {
-			this.val = C.next_val++;
-		}
-
-		public static idtype_t getEnum(int val) {
-			for (idtype_t entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_relation {
 		ir_relation_false(0),
 		ir_relation_equal((1 << 0)),

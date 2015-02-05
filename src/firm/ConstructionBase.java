@@ -124,11 +124,6 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newId(Node pred, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Id(binding_ircons.get_r_cur_block(graph.ptr), pred.ptr, mode.ptr);
-		return Node.createWrapper(result_ptr);
-	}
-
 	public Node newJmp() {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Jmp(binding_ircons.get_r_cur_block(graph.ptr));
 		return Node.createWrapper(result_ptr);

@@ -271,34 +271,6 @@ public class binding_tv {
 		}
 	}
 
-	public static enum tarval_int_overflow_mode_t {
-		TV_OVERFLOW_BAD(),
-		TV_OVERFLOW_WRAP(),
-		TV_OVERFLOW_SATURATE();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		tarval_int_overflow_mode_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		tarval_int_overflow_mode_t() {
-			this.val = C.next_val++;
-		}
-
-		public static tarval_int_overflow_mode_t getEnum(int val) {
-			for (tarval_int_overflow_mode_t entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 
 	public static native Pointer new_tarval_from_str(String str, com.sun.jna.NativeLong len, Pointer mode);
 
@@ -306,7 +278,11 @@ public class binding_tv {
 
 	public static native Pointer new_tarval_from_long(com.sun.jna.NativeLong l, Pointer mode);
 
-	public static native Pointer new_tarval_from_bytes(Pointer buf, Pointer mode, int big_endian);
+	public static native Pointer new_tarval_from_bytes(Pointer buf, Pointer mode);
+
+	public static native Pointer new_tarval_nan(Pointer mode, int signaling, Pointer payload);
+
+	public static native void tarval_to_bytes(Pointer buffer, Pointer tv);
 
 	public static native com.sun.jna.NativeLong get_tarval_long(Pointer tv);
 
@@ -338,9 +314,9 @@ public class binding_tv {
 
 	public static native Pointer get_tarval_b_true();
 
-	public static native void tarval_set_integer_overflow_mode(/* tarval_int_overflow_mode_t */int ov_mode);
+	public static native void tarval_set_wrap_on_overflow(int wrap_on_overflow);
 
-	public static native /* tarval_int_overflow_mode_t */int tarval_get_integer_overflow_mode();
+	public static native int tarval_get_wrap_on_overflow();
 
 	public static native /* ir_relation */int tarval_cmp(Pointer a, Pointer b);
 
@@ -388,8 +364,6 @@ public class binding_tv {
 
 	public static native Pointer tarval_shrs_unsigned(Pointer a, int b);
 
-	public static native String get_tarval_bitpattern(Pointer tv);
-
 	public static native byte get_tarval_sub_bits(Pointer tv, int byte_ofs);
 
 	public static native int get_tarval_popcount(Pointer tv);
@@ -408,9 +382,9 @@ public class binding_tv {
 
 	public static native int tarval_is_nan(Pointer tv);
 
-	public static native int tarval_is_plus_inf(Pointer tv);
+	public static native int tarval_is_quiet_nan(Pointer tv);
 
-	public static native int tarval_is_minus_inf(Pointer tv);
+	public static native int tarval_is_signaling_nan(Pointer tv);
 
 	public static native int tarval_is_finite(Pointer tv);
 }

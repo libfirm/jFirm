@@ -335,7 +335,7 @@ public class binding_irmode {
 
 	public static native Pointer new_float_mode(String name, /* ir_mode_arithmetic */int arithmetic, int exponent_size, int mantissa_size, /* float_int_conversion_overflow_style_t */int int_conv_overflow);
 
-	public static native Pointer new_non_arithmetic_mode(String name);
+	public static native Pointer new_non_arithmetic_mode(String name, int bit_size);
 
 	public static native Pointer get_mode_ident(Pointer mode);
 
@@ -362,8 +362,6 @@ public class binding_irmode {
 	public static native Pointer get_mode_all_one(Pointer mode);
 
 	public static native Pointer get_mode_infinite(Pointer mode);
-
-	public static native Pointer get_mode_NAN(Pointer mode);
 
 	public static native Pointer get_modeF();
 

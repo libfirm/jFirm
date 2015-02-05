@@ -345,8 +345,6 @@ public class binding_iroptimize {
 
 	public static native void opt_tail_rec_irg(Pointer irg);
 
-	public static native void opt_tail_recursion();
-
 	public static native void combo(Pointer irg);
 
 	public static native void inline_functions(int maxsize, int inline_threshold, Pointer after_inline_opt);

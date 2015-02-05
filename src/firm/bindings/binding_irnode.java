@@ -305,34 +305,6 @@ public class binding_irnode {
 		}
 	}
 
-	public static enum idtype_t {
-		P_ALL(),
-		P_PID(),
-		P_PGID();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		idtype_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		idtype_t() {
-			this.val = C.next_val++;
-		}
-
-		public static idtype_t getEnum(int val) {
-			for (idtype_t entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum ir_visibility {
 		ir_visibility_external(),
 		ir_visibility_local(),
@@ -2805,14 +2777,6 @@ public class binding_irnode {
 
 	public static native Pointer get_op_IJmp();
 
-	public static native Pointer new_rd_Id(Pointer dbgi, Pointer block, Pointer irn_pred, Pointer mode);
-
-	public static native Pointer new_r_Id(Pointer block, Pointer irn_pred, Pointer mode);
-
-	public static native Pointer new_d_Id(Pointer dbgi, Pointer irn_pred, Pointer mode);
-
-	public static native Pointer new_Id(Pointer irn_pred, Pointer mode);
-
 	public static native int is_Id(Pointer node);
 
 	public static native Pointer get_Id_pred(Pointer node);
@@ -3421,18 +3385,6 @@ public class binding_irnode {
 
 	public static native void set_irn_in(Pointer node, int arity, java.nio.Buffer in);
 
-	public static native void add_irn_dep(Pointer node, Pointer dep);
-
-	public static native void add_irn_deps(Pointer tgt, Pointer src);
-
-	public static native int get_irn_n_deps(Pointer node);
-
-	public static native Pointer get_irn_dep(Pointer node, int pos);
-
-	public static native void set_irn_dep(Pointer node, int pos, Pointer dep);
-
-	public static native void delete_irn_dep(Pointer node, Pointer dep);
-
 	public static native void set_irn_n(Pointer node, int n, Pointer in);
 
 	public static native int add_irn_n(Pointer node, Pointer in);
@@ -3442,8 +3394,6 @@ public class binding_irnode {
 	public static native Pointer get_irn_mode(Pointer node);
 
 	public static native Pointer get_irn_op(Pointer node);
-
-	public static native void set_irn_op(Pointer node, Pointer op);
 
 	public static native int get_irn_opcode(Pointer node);
 

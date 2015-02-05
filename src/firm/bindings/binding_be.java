@@ -329,33 +329,6 @@ public class binding_be {
 		}
 	}
 
-	public static enum ikind {
-		INTRINSIC_CALL(0),
-		INTRINSIC_INSTR();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ikind(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ikind() {
-			this.val = C.next_val++;
-		}
-
-		public static ikind getEnum(int val) {
-			for (ikind entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum osr_flags {
 		osr_flag_none(0),
 		osr_flag_lftr_with_ov_check(1),
