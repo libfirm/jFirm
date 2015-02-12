@@ -276,8 +276,6 @@ public class binding_ident {
 
 	public static native Pointer new_id_from_chars(String str, com.sun.jna.NativeLong len);
 
-	public static native Pointer new_id_fmt(String fmt, Object ... args);
-
 	public static native String get_id_str(Pointer id);
 
 	public static native Pointer id_unique(String tag);

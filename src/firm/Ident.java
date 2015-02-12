@@ -41,9 +41,4 @@ public class Ident extends JNAWrapper {
 		Pointer pIdent = binding_ident.id_unique(tag);
 		return new Ident(pIdent);
 	}
-
-	public final Ident mangle(String prefix, String suffix) {
-		Pointer pIdent = binding_ident.id_mangle3(prefix, ptr, suffix);
-		return new Ident(pIdent);
-	}
 }

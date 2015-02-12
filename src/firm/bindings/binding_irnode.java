@@ -608,35 +608,6 @@ public class binding_irnode {
 		}
 	}
 
-	public static enum __codecvt_result {
-		__codecvt_ok(),
-		__codecvt_partial(),
-		__codecvt_error(),
-		__codecvt_noconv();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		__codecvt_result(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		__codecvt_result() {
-			this.val = C.next_val++;
-		}
-
-		public static __codecvt_result getEnum(int val) {
-			for (__codecvt_result entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum op_arity {
 		oparity_invalid(0),
 		oparity_binary(),

@@ -132,12 +132,6 @@ public final class Mode extends JNAWrapper {
 		return new TargetValue(tarval);
 	}
 
-	/** returns Not A Number (for float modes) */
-	public final TargetValue getNAN() {
-		Pointer tarval = binding_irmode.get_mode_NAN(ptr);
-		return new TargetValue(tarval);
-	}
-
 	public static final Mode getF() {
 		Pointer modePtr = binding_irmode.get_modeF();
 		return new Mode(modePtr);

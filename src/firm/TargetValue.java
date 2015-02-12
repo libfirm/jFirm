@@ -114,44 +114,12 @@ public class TargetValue extends JNAWrapper {
 		return new TargetValue(ptr);
 	}
 
-	public static enum int_overflow_mode {
-		TV_OVERFLOW_BAD(),
-		/** < tarval module will return bad if a overflow occurs */
-		TV_OVERFLOW_WRAP(),
-		/** < tarval module will overflow will be ignored, wrap around occurs */
-		TV_OVERFLOW_SATURATE();
-		/** < tarval module will saturate the overflow */
-		public final int val;
-
-		private static class C {
-			static int next_val = 0;
-		}
-
-		int_overflow_mode(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		int_overflow_mode() {
-			this.val = C.next_val++;
-		}
-
-		public static int_overflow_mode getEnum(int val) {
-			for (int_overflow_mode entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
+	public static final boolean getWrapOnOverflow() {
+		return 0 != binding_tv.tarval_get_wrap_on_overflow();
 	}
 
-	public static final void setIntegerOverflowMode(int_overflow_mode ovMode) {
-		binding_tv.tarval_set_integer_overflow_mode(ovMode.val);
-	}
-
-	public static final int_overflow_mode getIntegerOverflowMode() {
-		int val = binding_tv.tarval_get_integer_overflow_mode();
-		return int_overflow_mode.getEnum(val);
+	public static final void setWrapOnOverflow(boolean wrapOnOverflow) {
+		binding_tv.tarval_set_wrap_on_overflow(wrapOnOverflow ? 1 : 0);
 	}
 
 	public final Relation compare(TargetValue other) {
@@ -233,46 +201,16 @@ public class TargetValue extends JNAWrapper {
 		return new TargetValue(ptarval);
 	}
 
-	public static enum tv_output_mode {
-		TVO_NATIVE(),
-		TVO_HEX(),
-		TVO_DECIMAL(),
-		TVO_OCTAL(),
-		TVO_BINARY(),
-		TVO_FLOAT(),
-		TVO_HEXFLOAT();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		tv_output_mode(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		tv_output_mode() {
-			this.val = C.next_val++;
-		}
-
-		public static tv_output_mode getEnum(int val) {
-			for (tv_output_mode entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
+	public final int popcount() {
+		return binding_tv.get_tarval_popcount(ptr);
 	}
 
-	public static class ModeInfo extends JNAWrapper {
-		protected ModeInfo(Pointer ptr) {
-			super(ptr);
-		}
+	public final int lowest_bit() {
+		return binding_tv.get_tarval_lowest_bit(ptr);
 	}
 
-	public final String getBitpattern() {
-		return binding_tv.get_tarval_bitpattern(ptr);
+	public final int highest_bit() {
+		return binding_tv.get_tarval_highest_bit(ptr);
 	}
 
 	public final byte getSubBits(int byteOfs) {
@@ -299,12 +237,12 @@ public class TargetValue extends JNAWrapper {
 		return 0 != binding_tv.tarval_is_nan(ptr);
 	}
 
-	public final boolean isPlusInf() {
-		return 0 != binding_tv.tarval_is_plus_inf(ptr);
+	public final boolean isQuietNaN() {
+		return 0 != binding_tv.tarval_is_quiet_nan(ptr);
 	}
 
-	public final boolean isMinusInf() {
-		return 0 != binding_tv.tarval_is_minus_inf(ptr);
+	public final boolean isSignalingNaN() {
+		return 0 != binding_tv.tarval_is_quiet_nan(ptr);
 	}
 
 	public final boolean isFinite() {

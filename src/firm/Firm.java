@@ -61,7 +61,7 @@ public final class Firm {
 		@Override
 		public Pointer callback(Pointer ident, Pointer type) {
 			final Ident baseIdent = new Ident(ident);
-			final Ident mangledIdent = baseIdent.mangle("_", "");
+			final Ident mangledIdent = new Ident("_"+baseIdent);
 			return mangledIdent.ptr;
 		}
 	};
