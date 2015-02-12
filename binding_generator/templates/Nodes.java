@@ -1,10 +1,10 @@
 {{warning}}
-package {{package}};
+package {{java_package}};
 
 public class Nodes {
 	public static void init() {
 		{%- for node in nodes -%}
-		{% if not isAbstract(node) %}
+		{% if not is_abstract(node) %}
 		{{node.classname}}.init();
 		{%- endif -%}
 		{% endfor %}

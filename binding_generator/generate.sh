@@ -4,11 +4,7 @@ set -eu
 
 . config
 
-# grab latest ir_spec
-cp -puv ${FIRM_HOME}/scripts/ir_spec.py .
-cp -puv ${FIRM_HOME}/scripts/spec_util.py .
-
-GENERATOR="python javagen.py tweaked_spec.py"
+GENERATOR="python ${FIRM_HOME}/scripts/gen_ir.py tweaked_spec.py -I."
 rm -f *.java || exit $?
 
 for i in ConstructionBase.java Graph.java; do
@@ -21,5 +17,10 @@ for i in NodeVisitor.java Nodes.java; do
 	echo "GEN $GOAL"
 	$GENERATOR templates/$i > $GOAL
 done
-$GENERATOR templates/Node.java -nodes
-mv *.java ../src/firm/nodes
+
+$GENERATOR templates/nodelist > /tmp/nodelist
+for n in $(cat /tmp/nodelist); do
+	GOAL="../src/firm/nodes/$n.java"
+	echo "GEN $GOAL"
+	$GENERATOR -DNODENAME=$n templates/Node.java > $GOAL
+done

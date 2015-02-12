@@ -32,18 +32,18 @@ public class Graph extends GraphBase {
 	}
 
 {% for node in nodes -%}
-	{% if not isAbstract(node) and not node.noconstructor %}
+	{% if not is_abstract(node) and node.constructor %}
 
 	/** Create a new {{node.name}} node */
 	public final Node new{{node.classname}}(
-		{%- filter parameters %}
-			{{node|blockparameter}}
+		{%- filter arguments %}
+			{%if not node.block%} Node block {%endif%}
 			{{node|nodeparameters}}
 		{%- endfilter %}) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_{{node.name}}(
 			{%- filter arguments %}
-				{{node|blockargument}}
-				{{node|nodearguments}}
+				{{node|javablockargument}}
+				{{node|javanodearguments}}
 			{%- endfilter %}));
 	}
 	{%- endif %}

@@ -143,11 +143,6 @@ public class Graph extends GraphBase {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_IJmp(block.ptr, target.ptr));
 	}
 
-	/** Create a new Id node */
-	public final Node newId(Node block, Node pred, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Id(block.ptr, pred.ptr, mode.ptr));
-	}
-
 	/** Create a new Jmp node */
 	public final Node newJmp(Node block) {
 		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Jmp(block.ptr));

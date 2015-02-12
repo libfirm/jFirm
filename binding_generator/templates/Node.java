@@ -1,5 +1,6 @@
+{%- for node in nodes -%}{% if node.classname==NODENAME -%}
 {{warning}}
-package {{package}};
+package {{java_package}};
 
 import com.sun.jna.Pointer;
 {%- if spec.external %}
@@ -10,9 +11,9 @@ import firm.nodes.NodeWrapperFactory;
 import firm.Construction;
 {%- endif %}
 
-public {% if isAbstract(node) %}abstract {%endif-%} class {{node.classname}} extends {{node.parent.classname}} {
+public {% if is_abstract(node) %}abstract {%endif-%} class {{node.classname}} extends {{node.parent.classname}} {
 
-	{%- if not isAbstract(node) %}
+	{%- if not is_abstract(node) %}
 	static class Factory implements NodeWrapperFactory {
 		@Override
 		public Node createWrapper(Pointer ptr) {
@@ -21,27 +22,27 @@ public {% if isAbstract(node) %}abstract {%endif-%} class {{node.classname}} ext
 	}
 
 	static void init() {
-		Pointer op = {{binding}}.get_op_{{node.name}}();
+		Pointer op = {{java_binding}}.get_op_{{node.name}}();
 		Node.registerFactory(firm.bindings.binding_irop.get_op_code(op), new Factory());
 	}
 
 	{%- if spec.external %}
 	public static Node create(
 		{%- filter parameters %}
-			{{node|blockparameter}}
+			{% if not node.block%} Node block {% endif %}
 			{{node|nodeparameters}}
 		{%- endfilter %}) {
-		return Node.createWrapper({{binding}}.new_r_{{node.name}}(
+		return Node.createWrapper({{java_binding}}.new_r_{{node.name}}(
 			{%- filter arguments %}
-				{{node|blockargument}}
-				{{node|nodearguments}}
+				{{node|javablockargument}}
+				{{node|javanodearguments}}
 			{%- endfilter %}));
 	}
 
 	public static Node create(Construction cons, {{node.arguments|argdecls}}) {
-		return Node.createWrapper({{binding}}.new_r_{{node.name}}(
+		return Node.createWrapper({{java_binding}}.new_r_{{node.name}}(
 			{%- filter parameters %}
-				{{node|block_construction}}
+				{{node|extern_block_construction}}
 				{{node.arguments|bindingargs}}
 			{%- endfilter %}));
 	}
@@ -57,33 +58,33 @@ public {% if isAbstract(node) %}abstract {%endif-%} class {{node.classname}} ext
 	{%if node.parent.classname != "Node"%}@Override
 	{%endif-%}
 	public Node get{{input.name|CamelCase}}() {
-		return createWrapper({{binding}}.get_{{node.name}}_{{input.name}}(ptr));
+		return createWrapper({{java_binding}}.get_{{node.name}}_{{input.name}}(ptr));
 	}
 
 	{%if node.parent.classname != "Node"%}@Override
 	{%endif-%}
 	public void set{{input.name|CamelCase}}(Node {{input.name|filterkeywords}}) {
-		{{binding}}.set_{{node.name}}_{{input.name}}(this.ptr, {{input.name|filterkeywords}}.ptr);
+		{{java_binding}}.set_{{node.name}}_{{input.name}}(this.ptr, {{input.name|filterkeywords}}.ptr);
 	}
 
 	{% endfor -%}
 
-	{%- if not isAbstract(node) %}
+	{%- if not is_abstract(node) %}
 	{%- for attr in node.attrs -%}
 	public {{attr.java_type}} get{{attr.java_name|CamelCase}}() {
-		{{attr.wrap_type}} _res = {{binding}}.get_{{node.name}}_{{attr.name}}(ptr);
+		{{attr.wrap_type}} _res = {{java_binding}}.get_{{node.name}}_{{attr.name}}(ptr);
 		return {{attr.from_wrapper % "_res"}};
 	}
 
 	public void set{{attr.java_name|CamelCase}}({{attr.java_type}} _val) {
-		{{binding}}.set_{{node.name}}_{{attr.name}}(this.ptr, {{attr.to_wrapper % "_val"}});
+		{{java_binding}}.set_{{node.name}}_{{attr.name}}(this.ptr, {{attr.to_wrapper % "_val"}});
 	}
 
 	{% endfor -%}
 	{% endif -%}
 
 	{{- node.java_add -}}
-	{%- if not isAbstract(node) -%}
+	{%- if not is_abstract(node) -%}
 	@Override
 	public void accept(NodeVisitor visitor) {
 		{%- if not spec.external %}
@@ -104,3 +105,4 @@ public {% if isAbstract(node) %}abstract {%endif-%} class {{node.classname}} ext
 	{% endfor -%}
 	public static final int pnMax = {{len(node.outs)}};
 }
+{%endif%}{%-endfor-%}

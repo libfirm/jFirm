@@ -1,5 +1,5 @@
 {{warning}}
-package {{package}};
+package {{java_package}};
 
 /**
  * Visitor interface for firm nodes
@@ -7,7 +7,7 @@ package {{package}};
 public interface NodeVisitor {
 
 	{%- for node in nodes -%}
-	{% if not isAbstract(node) %}
+	{% if not is_abstract(node) %}
 
 	/** called when accept is called on a {{node.classname}} node */
 	void visit({{node.classname}} node);
@@ -28,7 +28,7 @@ public interface NodeVisitor {
 		}
 
 		{%- for node in nodes -%}
-		{% if not isAbstract(node) %}
+		{% if not is_abstract(node) %}
 
 		@Override
 		public void visit({{node.classname}} node) {

@@ -15,7 +15,7 @@ class ConstructionBase {
 	}
 
 	{%- for node in nodes -%}
-	{%- if not isAbstract(node) and not node.noconstructor %}
+	{%- if not is_abstract(node) and node.constructor %}
 
 	public Node new{{node.classname}}({{node.arguments|argdecls}}) {
 		Pointer result_ptr = firm.bindings.binding_ircons.new_r_{{node.name}}(

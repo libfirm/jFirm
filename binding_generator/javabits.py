@@ -1,48 +1,31 @@
-#!/usr/bin/python
-from jinja2 import Environment, Template, FileSystemLoader
-import re
-
-from spec_util import verify_node, is_dynamic_pinned, setdefault, isAbstract, setldefault, load_spec, Attribute, Input, Output
-import sys
+from jinjautil import export_filter
+from irops import is_abstract, setdefault, setldefault, is_dynamic_pinned, Node, Attribute
 
 java_keywords = [ "public", "private", "protected", "true", "false", "ptr" ]
-def format_filter_keywords(arg):
+def filterkeywords(arg):
 	if arg in java_keywords:
 		return "_" + arg
 	return arg
 
-def format_argdecls(arglist):
-	argstrings = [ "%s %s" % (arg.type, format_filter_keywords(arg.name)) for arg in arglist ]
+def argdecls(arglist):
+	argstrings = [ "%s %s" % (arg.type, filterkeywords(arg.name)) for arg in arglist ]
 	return ", ".join(argstrings)
 
-def format_parameterlist(parameterlist):
+def parameterlist(parameterlist):
 	return "\n".join(parameterlist)
 
-def format_nodearguments(node):
-	def format_argument(arg):
+def javanodearguments(node):
+	def argument(arg):
 		if arg.type == "Node[]":
 			return arg.name + ".length, Node.getBufferFromNodeList(" + arg.name + ")"
 		elif hasattr(arg, "to_wrapper") and arg.to_wrapper is not None:
 			return arg.to_wrapper % (arg.name,)
 		else:
 			return "%s.ptr" % (arg.name,)
-	arguments = map(format_argument, node.arguments)
-	return format_parameterlist(arguments)
+	arguments = map(argument, node.arguments)
+	return parameterlist(arguments)
 
-def format_nodeparameters(node):
-	parameters = [ "%s %s" % (arg.type, arg.name) for arg in node.arguments ]
-	return format_parameterlist(parameters)
-
-def format_args(arglist):
-	argstrings = [ arg.name for arg in arglist ]
-	return ", ".join(argstrings)
-
-def format_blockparameter(node):
-	if not node.block:
-		return "Node block"
-	return ""
-
-def format_blockargument(node):
+def javablockargument(node):
 	if not node.block:
 		return "block.ptr"
 	elif node.usesGraph:
@@ -50,8 +33,8 @@ def format_blockargument(node):
 	else:
 		return ""
 
-def format_block_construction(node):
-	if hasattr(env.globals['spec'], "external"):
+def block_construction(node, extern=False):
+	if extern:
 		graph = "cons.getGraph().ptr"
 	else:
 		graph = "graph.ptr"
@@ -63,20 +46,10 @@ def format_block_construction(node):
 	else:
 		return ""
 
-def format_arguments(string, voidwhenempty = False):
-	args = re.split('\s*\n\s*', string)
-	if args[0] == '':
-		args = args[1:]
-	if len(args) > 0 and args[-1] == '':
-		args = args[:-1]
-	if len(args) == 0 and voidwhenempty:
-		return "void"
-	return ", ".join(args)
+def extern_block_construction(node):
+	return block_construction(node, extern=True)
 
-def format_parameters(string):
-	return format_arguments(string)
-
-def format_binding_args(arglist, need_graph = False):
+def bindingargs(arglist, need_graph = False):
 	first = True
 	res   = ""
 	if need_graph:
@@ -90,7 +63,7 @@ def format_binding_args(arglist, need_graph = False):
 		if arg.type == "Node[]":
 			res += arg.name + ".length, Node.getBufferFromNodeList(" + arg.name + ")"
 			continue
-		name = format_filter_keywords(arg.name)
+		name = filterkeywords(arg.name)
 		if hasattr(arg, "to_wrapper") and arg.to_wrapper is not None:
 			res += arg.to_wrapper % (name,)
 		else:
@@ -98,7 +71,7 @@ def format_binding_args(arglist, need_graph = False):
 
 	return res
 
-def format_camel_case_helper(string, firstbig):
+def camel_case_helper(string, firstbig):
 	result  = ""
 	nextbig = firstbig
 	for p in range(0,len(string)):
@@ -115,26 +88,13 @@ def format_camel_case_helper(string, firstbig):
 		return string
 	return result
 
-def format_camel_case_big(string):
-	return format_camel_case_helper(string, True)
+def CamelCase(string):
+	return camel_case_helper(string, True)
 
-env = Environment(loader=FileSystemLoader("."))
-env.filters['argdecls']    = format_argdecls
-env.filters['args']        = format_args
-env.filters['bindingargs'] = format_binding_args
-env.filters['CamelCase']   = format_camel_case_big
-env.filters['filterkeywords'] = format_filter_keywords
-
-env.filters['arguments']          = format_arguments
-env.filters['parameters']         = format_parameters
-env.filters['nodeparameters']     = format_nodeparameters
-env.filters['nodearguments']      = format_nodearguments
-env.filters['blockparameter']     = format_blockparameter
-env.filters['blockargument']      = format_blockargument
-env.filters['block_construction'] = format_block_construction
-env.globals['isAbstract']         = isAbstract
-env.globals['len']                = len
-env.globals['warning']            = "/* Warning: Automatically generated file */"
+for f in [argdecls, CamelCase, filterkeywords, bindingargs, javablockargument,
+          block_construction, is_abstract, javanodearguments,
+          extern_block_construction]:
+	export_filter(f)
 
 def get_java_type(type):
 	if type == "ir_type*":
@@ -237,8 +197,8 @@ def get_java_type(type):
 		print "UNKNOWN TYPE %s" % type
 		java_type    = "BAD"
 		wrap_type    = "BAD"
-		to_wrapper   = "BAD"
-		from_wrapper = "BAD"
+		to_wrapper   = "BAD(%s)"
+		from_wrapper = "BAD(%s)"
 	return (java_type,wrap_type,to_wrapper,from_wrapper)
 
 def prepare_attr(attr):
@@ -250,8 +210,11 @@ def prepare_attr(attr):
 	if not hasattr(attr, "java_name"):
 		attr.java_name = attr.name
 
-class Node:
-	classname = "Node"
+# Dummy class serving as anchor to the class hierarchy and mapping to the
+# "Node" class already defined manually in jFirm.
+Node.name = "Node"
+Node.classname = "Node"
+Node.java_add = ""
 
 class JavaArgument(Attribute):
 	def __init__(self, name, type, to_wrapper, **kwargs):
@@ -259,48 +222,14 @@ class JavaArgument(Attribute):
 		self.to_wrapper = to_wrapper
 
 def preprocess_node(node):
-	if not isAbstract(node):
-		setdefault(node, "java_add", "")
-		if hasattr(node, "__base__"):
-			setldefault(node, "parent", node.__base__)
-		else:
-			setldefault(node, "parent", Node)
-		verify_node(node)
-	else:
-		setldefault(node, "parent", Node)
-	setdefault(node, "attrs", [])
-	setldefault(node, "constructor_args", [])
-	node.classname = format_camel_case_big(node.name)
-
-	# dynamic pin node?
-	if is_dynamic_pinned(node) and not hasattr(node, "pinned_init"):
-		node.constructor_args.append(
-			Attribute("pin_state", type = "op_pin_state"))
-
-	# transform ins into name, comment tuples if not in this format already
-	if hasattr(node, "ins"):
-		new_ins = []
-		for i in node.ins:
-			if isinstance(i, basestring):
-				i = Input(i)
-			elif isinstance(i, tuple):
-				i = Input(name=i[0], comment=i[1])
-			new_ins.append(i)
-		node.ins = new_ins
-
-	# transform outs into name, comment tuples if not in this format already
-	if hasattr(node, "outs"):
-		new_outs = []
-		for o in node.outs:
-			if isinstance(o, basestring):
-				o = Output(o)
-			elif isinstance(o, tuple):
-				o = Output(name=o[0], comment=o[1])
-			new_outs.append(o)
-		node.outs = new_outs
+	parent = node.__base__
+	if parent == object:
+		parent = Node
+	node.parent = parent
+	node.classname = CamelCase(node.name)
 
 	# construct node arguments
-	if not isAbstract(node):
+	if not is_abstract(node):
 		arguments = [ ]
 		for input in node.ins:
 			arguments.append(
@@ -308,7 +237,7 @@ def preprocess_node(node):
 		if node.arity == "variable" or node.arity == "dynamic":
 			arguments.append(
 				Attribute("ins", type="Node[]"))
-		if not hasattr(node, "mode"):
+		if node.mode is None:
 			arguments.append(
 				Attribute("mode", type="firm.Mode"))
 		for attr in node.attrs:
@@ -319,6 +248,12 @@ def preprocess_node(node):
 			arguments.append(
 				JavaArgument(name=attr.java_name, type=attr.java_type,
 				             to_wrapper=attr.to_wrapper, comment=attr.comment))
+		if is_dynamic_pinned(node):
+			if node.pinned_init is None:
+				(java_type,wrap_type,to_wrapper,from_wrapper) = get_java_type("op_pin_state")
+				arguments.append(
+					JavaArgument(name="pin_state", type=java_type,
+					             to_wrapper=to_wrapper))
 		for arg in node.constructor_args:
 			old_type = arg.type
 			(java_type,wrap_type,to_wrapper,from_wrapper) = get_java_type(old_type)
@@ -328,41 +263,6 @@ def preprocess_node(node):
 				             to_wrapper=to_wrapper, comment=arg.comment))
 
 		for arg in arguments:
-			arg.name = format_filter_keywords(arg.name)
+			arg.name = filterkeywords(arg.name)
 
 		node.arguments = arguments
-
-def main(argv):
-	if len(argv) < 3:
-		print "usage: %s specfile templatefile [-nodes]" % argv[0]
-		sys.exit(1)
-
-	specfile     = argv[1]
-	templatefile = argv[2]
-	nodesmode    = "-nodes" in argv
-
-	spec  = load_spec(specfile)
-	nodes = spec.nodes
-	env.globals['nodes']   = nodes
-	env.globals['spec']    = spec
-	env.globals['binding'] = spec.java_binding
-	env.globals['package'] = spec.java_package
-
-	template = env.get_template(templatefile)
-
-	for node in nodes:
-		preprocess_node(node)
-
-	if nodesmode:
-		for node in nodes:
-			filename = "%s.java" % node.classname
-			print "Create: %s" % filename
-			file = open(filename, "w");
-
-			file.write(template.render(node = node).encode("utf-8") + "\n")
-			file.close()
-	else:
-		sys.stdout.write(template.render().encode("utf-8") + "\n")
-
-if __name__ == "__main__":
-	main(sys.argv)

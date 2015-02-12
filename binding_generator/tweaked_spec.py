@@ -1,7 +1,10 @@
 from ir_spec import *
+from javabits import preprocess_node
 
 java_binding = "firm.bindings.binding_irnode"
 java_package = "firm.nodes"
+export(java_package, "java_package")
+export(java_binding, "java_binding")
 
 # some tweaks are necessary to generate the java code
 Block.java_add = '''
@@ -31,5 +34,11 @@ for a in Load.attrs:
 	if a.name == "mode":
 		a.java_name = "load_mode"
 
-del ASM # n_clobbers has no setter in libfirm, so leave out the whole node
-        # for now...
+# Leave out ASM node for now: n_clobbers has no setter in libfirm...
+for n in nodes:
+	if n.name == "ASM":
+		nodes.remove(n)
+
+nodes += abstract_nodes
+for node in nodes:
+	preprocess_node(node)
