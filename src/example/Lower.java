@@ -1,7 +1,6 @@
 package example;
 import firm.ClassType;
 import firm.Entity;
-import firm.Graph;
 import firm.MethodType;
 import firm.Program;
 import firm.Type;
@@ -83,8 +82,6 @@ public class Lower {
 		Lower instance = new Lower();
 		instance.layoutTypes();
 		instance.fixEntityNames();
-		for (Graph graph : Program.getGraphs()) {
-			Util.lowerSels(graph);
-		}
+		Util.lowerSels();
 	}
 }
