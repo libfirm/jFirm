@@ -76,7 +76,7 @@ public final class Mode extends JNAWrapper {
 	}
 
 	public final boolean hasSign() {
-		return binding_irmode.get_mode_sign(ptr) != 0;
+		return binding_irmode.mode_is_signed(ptr) == 1;
 	}
 
 	public final int getMantissaSize() {
