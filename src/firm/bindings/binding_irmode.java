@@ -345,8 +345,6 @@ public class binding_irmode {
 
 	public static native int get_mode_size_bytes(Pointer mode);
 
-	public static native int get_mode_sign(Pointer mode);
-
 	public static native /* ir_mode_arithmetic */int get_mode_arithmetic(Pointer mode);
 
 	public static native int get_mode_modulo_shift(Pointer mode);

@@ -305,6 +305,8 @@ public class binding_lowering {
 
 	public static native void lower_highlevel_graph(Pointer irg);
 
+	public static native void lower_highlevel();
+
 	public static native void lower_const_code();
 
 	public static native void lower_mux(Pointer irg, Pointer cb_func);
