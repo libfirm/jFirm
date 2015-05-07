@@ -113,15 +113,18 @@ public final class Firm {
 
 		/* adapt backend to architecture */
 		if (Platform.isMac()) {
-			Backend.option("ia32-gasmode=macho");
+			Backend.option("objectformat=mach-o");
+			Backend.option("ia32-struct_in_reg=yes");
 			Backend.option("ia32-stackalign=4");
 			Backend.option("pic");
 			setupUnderscorePrefixCompilerlibCallback();
 		} else if (Platform.isWindows()) {
-			Backend.option("ia32-gasmode=mingw");
+			Backend.option("objectformat=coff");
+			Backend.option("ia32-struct_in_reg=no");
 			setupUnderscorePrefixCompilerlibCallback();
 		} else {
-			Backend.option("ia32-gasmode=elf");
+			Backend.option("objectformat=elf");
+			Backend.option("ia32-struct_in_reg=no");
 		}
 
 		Nodes.init();
