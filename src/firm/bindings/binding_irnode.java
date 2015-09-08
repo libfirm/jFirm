@@ -192,7 +192,9 @@ public class binding_irnode {
 		ir_bk_saturating_increment(),
 		ir_bk_compare_swap(),
 		ir_bk_may_alias(),
-		ir_bk_last(ir_builtin_kind.ir_bk_may_alias.val);
+		ir_bk_va_start(),
+		ir_bk_va_arg(),
+		ir_bk_last(ir_builtin_kind.ir_bk_va_arg.val);
 		public final int val;
 
 		private static class C {
@@ -307,6 +309,7 @@ public class binding_irnode {
 
 	public static enum ir_visibility {
 		ir_visibility_external(),
+		ir_visibility_external_private(),
 		ir_visibility_local(),
 		ir_visibility_private();
 		public final int val;
@@ -548,33 +551,6 @@ public class binding_irnode {
 		}
 	}
 
-	public static enum ir_variadicity {
-		variadicity_non_variadic(),
-		variadicity_variadic();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_variadicity(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_variadicity() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_variadicity getEnum(int val) {
-			for (ir_variadicity entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum calling_convention {
 		cc_reg_param(0x01000000),
 		cc_last_on_top(0x02000000),
@@ -678,7 +654,6 @@ public class binding_irnode {
 		irop_flag_start_block((1 << 7)),
 		irop_flag_uses_memory((1 << 8)),
 		irop_flag_dump_noblock((1 << 9)),
-		irop_flag_cse_neutral((1 << 10)),
 		irop_flag_unknown_jump((1 << 11)),
 		irop_flag_const_memory((1 << 12));
 		public final int val;
@@ -2659,13 +2634,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Deleted();
 
-	public static native Pointer new_rd_Div(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+	public static native Pointer new_rd_Div(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
 
-	public static native Pointer new_r_Div(Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+	public static native Pointer new_r_Div(Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
 
-	public static native Pointer new_d_Div(Pointer dbgi, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+	public static native Pointer new_d_Div(Pointer dbgi, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
 
-	public static native Pointer new_Div(Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+	public static native Pointer new_Div(Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
 
 	public static native int is_Div(Pointer node);
 
@@ -2869,13 +2844,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Minus();
 
-	public static native Pointer new_rd_Mod(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+	public static native Pointer new_rd_Mod(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
 
-	public static native Pointer new_r_Mod(Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+	public static native Pointer new_r_Mod(Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
 
-	public static native Pointer new_d_Mod(Pointer dbgi, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+	public static native Pointer new_d_Mod(Pointer dbgi, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
 
-	public static native Pointer new_Mod(Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, /* op_pin_state */int pin_state);
+	public static native Pointer new_Mod(Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
 
 	public static native int is_Mod(Pointer node);
 
@@ -3419,9 +3394,9 @@ public class binding_irnode {
 
 	public static native com.sun.jna.NativeLong get_irn_node_nr(Pointer node);
 
-	public static native /* op_pin_state */int get_irn_pinned(Pointer node);
+	public static native int get_irn_pinned(Pointer node);
 
-	public static native void set_irn_pinned(Pointer node, /* op_pin_state */int state);
+	public static native void set_irn_pinned(Pointer node, int pinned);
 
 	public static native Pointer new_ir_node(Pointer db, Pointer irg, Pointer block, Pointer op, Pointer mode, int arity, java.nio.Buffer in);
 
@@ -3550,8 +3525,6 @@ public class binding_irnode {
 	public static native int is_irn_keep(Pointer node);
 
 	public static native int is_irn_start_block_placed(Pointer node);
-
-	public static native int is_irn_cse_neutral(Pointer node);
 
 	public static native String get_cond_jmp_predicate_name(/* cond_jmp_predicate */int pred);
 

@@ -221,7 +221,9 @@ public class binding_be {
 		ir_bk_saturating_increment(),
 		ir_bk_compare_swap(),
 		ir_bk_may_alias(),
-		ir_bk_last(ir_builtin_kind.ir_bk_may_alias.val);
+		ir_bk_va_start(),
+		ir_bk_va_arg(),
+		ir_bk_last(ir_builtin_kind.ir_bk_va_arg.val);
 		public final int val;
 
 		private static class C {
@@ -420,6 +422,7 @@ public class binding_be {
 		ASM_CONSTRAINT_FLAG_SUPPORTS_REGISTER((1 << 0)),
 		ASM_CONSTRAINT_FLAG_SUPPORTS_MEMOP((1 << 1)),
 		ASM_CONSTRAINT_FLAG_SUPPORTS_IMMEDIATE((1 << 2)),
+		ASM_CONSTRAINT_FLAG_SUPPORTS_ANY(((asm_constraint_flags_t.ASM_CONSTRAINT_FLAG_SUPPORTS_IMMEDIATE.val | asm_constraint_flags_t.ASM_CONSTRAINT_FLAG_SUPPORTS_MEMOP.val) | asm_constraint_flags_t.ASM_CONSTRAINT_FLAG_SUPPORTS_REGISTER.val)),
 		ASM_CONSTRAINT_FLAG_NO_SUPPORT((1 << 3)),
 		ASM_CONSTRAINT_FLAG_MODIFIER_WRITE((1 << 4)),
 		ASM_CONSTRAINT_FLAG_MODIFIER_READ((1 << 5)),

@@ -4,7 +4,6 @@ import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_typerep;
-import firm.bindings.binding_typerep.ir_variadicity;
 import firm.bindings.binding_typerep.mtp_additional_properties;
 
 public class MethodType extends Type {
@@ -51,17 +50,12 @@ public class MethodType extends Type {
 		binding_typerep.set_method_res_type(ptr, new NativeLong(pos), tp.ptr);
 	}
 
-	public final static String getVariadicityName(ir_variadicity vari) {
-		return binding_typerep.get_variadicity_name(vari.val);
+	public final boolean isVariadic() {
+		return 0 != binding_typerep.is_method_variadic(ptr);
 	}
 
-	public final ir_variadicity getVariadicity() {
-		int val = binding_typerep.get_method_variadicity(ptr);
-		return ir_variadicity.getEnum(val);
-	}
-
-	public final void setVariadicity(ir_variadicity vari) {
-		binding_typerep.set_method_variadicity(ptr, vari.val);
+	public final void setVariadic(final boolean variadic) {
+		binding_typerep.set_method_variadic(ptr, (variadic ? 1 : 0));
 	}
 
 	public final int getAdditionalProperties() {

@@ -192,7 +192,9 @@ public class binding_typerep {
 		ir_bk_saturating_increment(),
 		ir_bk_compare_swap(),
 		ir_bk_may_alias(),
-		ir_bk_last(ir_builtin_kind.ir_bk_may_alias.val);
+		ir_bk_va_start(),
+		ir_bk_va_arg(),
+		ir_bk_last(ir_builtin_kind.ir_bk_va_arg.val);
 		public final int val;
 
 		private static class C {
@@ -273,6 +275,7 @@ public class binding_typerep {
 
 	public static enum ir_visibility {
 		ir_visibility_external(),
+		ir_visibility_external_private(),
 		ir_visibility_local(),
 		ir_visibility_private();
 		public final int val;
@@ -514,33 +517,6 @@ public class binding_typerep {
 		}
 	}
 
-	public static enum ir_variadicity {
-		variadicity_non_variadic(),
-		variadicity_variadic();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		ir_variadicity(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		ir_variadicity() {
-			this.val = C.next_val++;
-		}
-
-		public static ir_variadicity getEnum(int val) {
-			for (ir_variadicity entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum calling_convention {
 		cc_reg_param(0x01000000),
 		cc_last_on_top(0x02000000),
@@ -674,10 +650,6 @@ public class binding_typerep {
 	public static native void set_entity_label(Pointer ent, com.sun.jna.NativeLong label);
 
 	public static native com.sun.jna.NativeLong get_entity_label(Pointer ent);
-
-	public static native int is_entity_compiler_generated(Pointer ent);
-
-	public static native void set_entity_compiler_generated(Pointer ent, int flag);
 
 	public static native /* ir_entity_usage */int get_entity_usage(Pointer ent);
 
@@ -963,11 +935,9 @@ public class binding_typerep {
 
 	public static native void set_method_res_type(Pointer method, com.sun.jna.NativeLong pos, Pointer tp);
 
-	public static native String get_variadicity_name(/* ir_variadicity */int vari);
+	public static native int is_method_variadic(Pointer method);
 
-	public static native /* ir_variadicity */int get_method_variadicity(Pointer method);
-
-	public static native void set_method_variadicity(Pointer method, /* ir_variadicity */int vari);
+	public static native void set_method_variadic(Pointer method, int is_variadic);
 
 	public static native /* mtp_additional_properties */int get_method_additional_properties(Pointer method);
 

@@ -221,7 +221,9 @@ public class binding_irop {
 		ir_bk_saturating_increment(),
 		ir_bk_compare_swap(),
 		ir_bk_may_alias(),
-		ir_bk_last(ir_builtin_kind.ir_bk_may_alias.val);
+		ir_bk_va_start(),
+		ir_bk_va_arg(),
+		ir_bk_last(ir_builtin_kind.ir_bk_va_arg.val);
 		public final int val;
 
 		private static class C {
@@ -341,7 +343,6 @@ public class binding_irop {
 		irop_flag_start_block((1 << 7)),
 		irop_flag_uses_memory((1 << 8)),
 		irop_flag_dump_noblock((1 << 9)),
-		irop_flag_cse_neutral((1 << 10)),
 		irop_flag_unknown_jump((1 << 11)),
 		irop_flag_const_memory((1 << 12));
 		public final int val;
