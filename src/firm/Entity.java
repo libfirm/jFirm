@@ -171,14 +171,6 @@ public class Entity extends JNAWrapper {
 		return new Graph(p);
 	}
 
-	public final boolean isCompilerGenerated() {
-		return 0 != binding_typerep.is_entity_compiler_generated(ptr);
-	}
-
-	public final void setCompilerGenerated(boolean flag) {
-		binding_typerep.set_entity_compiler_generated(ptr, (flag ? 1 : 0));
-	}
-
 	public final boolean isParameterEntity() {
 		return 0 != binding_typerep.is_parameter_entity(ptr);
 	}
