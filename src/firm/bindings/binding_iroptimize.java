@@ -369,7 +369,7 @@ public class binding_iroptimize {
 
 	public static native int value_not_null(Pointer n, java.nio.Buffer confirm);
 
-	public static native Pointer computed_value_Cmp_Confirm(Pointer cmp, Pointer left, Pointer right, /* ir_relation */int relation);
+	public static native Pointer computed_value_Cmp_Confirm(Pointer left, Pointer right, /* ir_relation */int relation);
 
 	public static native void set_compilerlib_name_mangle(Pointer cb);
 

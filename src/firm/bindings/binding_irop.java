@@ -399,8 +399,6 @@ public class binding_irop {
 	}
 
 
-	public static native Pointer get_op_ident(Pointer op);
-
 	public static native String get_op_name(Pointer op);
 
 	public static native int get_op_code(Pointer op);
