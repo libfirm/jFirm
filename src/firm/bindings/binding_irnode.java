@@ -310,6 +310,7 @@ public class binding_irnode {
 	public static enum ir_visibility {
 		ir_visibility_external(),
 		ir_visibility_external_private(),
+		ir_visibility_external_protected(),
 		ir_visibility_local(),
 		ir_visibility_private();
 		public final int val;
@@ -343,7 +344,8 @@ public class binding_irnode {
 		IR_LINKAGE_GARBAGE_COLLECT((1 << 2)),
 		IR_LINKAGE_MERGE((1 << 3)),
 		IR_LINKAGE_HIDDEN_USER((1 << 4)),
-		IR_LINKAGE_NO_CODEGEN((1 << 5));
+		IR_LINKAGE_NO_CODEGEN((1 << 5)),
+		IR_LINKAGE_NO_IDENTITY((1 << 6));
 		public final int val;
 
 		private static class C {

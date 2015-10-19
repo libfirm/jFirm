@@ -332,7 +332,7 @@ public class binding_tv {
 
 	public static native Pointer tarval_add(Pointer a, Pointer b);
 
-	public static native Pointer tarval_sub(Pointer a, Pointer b, Pointer dst_mode);
+	public static native Pointer tarval_sub(Pointer a, Pointer b);
 
 	public static native Pointer tarval_mul(Pointer a, Pointer b);
 

@@ -429,9 +429,9 @@ public class binding_irmode {
 
 	public static native int mode_wrap_around(Pointer mode);
 
-	public static native Pointer get_reference_mode_unsigned_eq(Pointer mode);
+	public static native Pointer get_reference_offset_mode(Pointer mode);
 
-	public static native void set_reference_mode_unsigned_eq(Pointer ref_mode, Pointer int_mode);
+	public static native void set_reference_offset_mode(Pointer ref_mode, Pointer int_mode);
 
 	public static native int get_mode_mantissa_size(Pointer mode);
 
