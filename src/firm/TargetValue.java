@@ -146,8 +146,8 @@ public class TargetValue extends JNAWrapper {
 		return new TargetValue(ptarval);
 	}
 
-	public final TargetValue sub(TargetValue other, Mode dstMode) {
-		Pointer ptarval = binding_tv.tarval_sub(ptr, other.ptr, dstMode.ptr);
+	public final TargetValue sub(TargetValue other) {
+		Pointer ptarval = binding_tv.tarval_sub(ptr, other.ptr);
 		return new TargetValue(ptarval);
 	}
 

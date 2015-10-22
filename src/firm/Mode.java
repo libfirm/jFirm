@@ -284,12 +284,12 @@ public final class Mode extends JNAWrapper {
 	}
 
 	public final Mode getReferenceUnsignedEq() {
-		Pointer modep = binding_irmode.get_reference_mode_unsigned_eq(ptr);
+		Pointer modep = binding_irmode.get_reference_offset_mode(ptr);
 		return new Mode(modep);
 	}
 
 	public final void setReferenceUnsignedEq(Mode intMode) {
-		binding_irmode.set_reference_mode_unsigned_eq(ptr, intMode.ptr);
+		binding_irmode.set_reference_offset_mode(ptr, intMode.ptr);
 	}
 
 	public static void setDefaultModeP(Mode mode) {
