@@ -11,6 +11,7 @@ import firm.ClassType;
 import firm.Construction;
 import firm.Entity;
 import firm.Graph;
+import firm.Initializer;
 import firm.MethodType;
 import firm.Mode;
 import firm.PrimitiveType;
@@ -60,6 +61,7 @@ public class BrainFuck {
 		Entity data = new Entity(global, "data", atype);
 		data.setLdIdent(makeLdIdent("data"));
 		data.setVisibility(ir_visibility.ir_visibility_local);
+		data.setInitializer(Initializer.getNull());
 
 		/* create a graph */
 		int n_vars = 1;
