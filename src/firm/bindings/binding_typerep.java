@@ -751,9 +751,7 @@ public class binding_typerep {
 
 	public static native int is_unknown_entity(Pointer entity);
 
-	public static native String get_tpop_name(Pointer op);
-
-	public static native /* tp_opcode */int get_tpop_code(Pointer op);
+	public static native String get_type_opcode_name(/* tp_opcode */int opcode);
 
 	public static native int is_SubClass_of(Pointer low, Pointer high);
 
@@ -797,13 +795,7 @@ public class binding_typerep {
 
 	public static native void free_type(Pointer tp);
 
-	public static native Pointer get_type_tpop(Pointer tp);
-
-	public static native Pointer get_type_tpop_nameid(Pointer tp);
-
-	public static native String get_type_tpop_name(Pointer tp);
-
-	public static native /* tp_opcode */int get_type_tpop_code(Pointer tp);
+	public static native /* tp_opcode */int get_type_opcode(Pointer type);
 
 	public static native void ir_print_type(String buffer, com.sun.jna.NativeLong buffer_size, Pointer tp);
 
@@ -814,8 +806,6 @@ public class binding_typerep {
 	public static native void set_type_state(Pointer tp, /* ir_type_state */int state);
 
 	public static native Pointer get_type_mode(Pointer tp);
-
-	public static native void set_type_mode(Pointer tp, Pointer m);
 
 	public static native int get_type_size_bytes(Pointer tp);
 
@@ -889,8 +879,6 @@ public class binding_typerep {
 
 	public static native int is_Class_type(Pointer clss);
 
-	public static native Pointer get_tpop_class();
-
 	public static native Pointer new_type_struct(Pointer name);
 
 	public static native Pointer get_struct_ident(Pointer strct);
@@ -905,8 +893,6 @@ public class binding_typerep {
 
 	public static native int is_Struct_type(Pointer strct);
 
-	public static native Pointer get_tpop_struct();
-
 	public static native Pointer new_type_union(Pointer name);
 
 	public static native Pointer get_union_ident(Pointer uni);
@@ -920,8 +906,6 @@ public class binding_typerep {
 	public static native com.sun.jna.NativeLong get_union_member_index(Pointer uni, Pointer member);
 
 	public static native int is_Union_type(Pointer uni);
-
-	public static native Pointer get_tpop_union();
 
 	public static native Pointer new_type_method(com.sun.jna.NativeLong n_param, com.sun.jna.NativeLong n_res);
 
@@ -957,8 +941,6 @@ public class binding_typerep {
 
 	public static native int is_Method_type(Pointer method);
 
-	public static native Pointer get_tpop_method();
-
 	public static native Pointer new_type_array(Pointer element_type);
 
 	public static native void set_array_size(Pointer array, Pointer size);
@@ -981,9 +963,9 @@ public class binding_typerep {
 
 	public static native int is_Array_type(Pointer array);
 
-	public static native Pointer get_tpop_array();
-
 	public static native Pointer new_type_pointer(Pointer points_to);
+
+	public static native void set_pointer_mode(Pointer pointer, Pointer mode);
 
 	public static native void set_pointer_points_to_type(Pointer pointer, Pointer tp);
 
@@ -993,25 +975,17 @@ public class binding_typerep {
 
 	public static native Pointer find_pointer_type_to_type(Pointer tp);
 
-	public static native Pointer get_tpop_pointer();
-
 	public static native Pointer new_type_primitive(Pointer mode);
 
 	public static native int is_Primitive_type(Pointer primitive);
-
-	public static native Pointer get_tpop_primitive();
 
 	public static native Pointer get_code_type();
 
 	public static native int is_code_type(Pointer tp);
 
-	public static native Pointer get_tpop_code_type();
-
 	public static native Pointer get_unknown_type();
 
 	public static native int is_unknown_type(Pointer type);
-
-	public static native Pointer get_tpop_unknown();
 
 	public static native int is_atomic_type(Pointer tp);
 

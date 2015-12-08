@@ -14,10 +14,6 @@ public class PrimitiveType extends Type {
 		super(binding_typerep.new_type_primitive(mode.ptr));
 	}
 
-	public void setMode(Mode mode) {
-		binding_typerep.set_type_mode(ptr, mode.ptr);
-	}
-
 	@Override
 	public void finishLayout() {
 	}
