@@ -49,10 +49,10 @@ public class Program {
 		return (ClassType) type;
 	}
 
-	public static ClassType getGlobalType() {
+	public static SegmentType getGlobalType() {
 		Type type = Type.createWrapper(binding_irprog.get_glob_type());
-		assert type instanceof ClassType;
-		return (ClassType) type;
+		assert type instanceof SegmentType;
+		return (SegmentType) type;
 	}
 
 	public static Graph getConstCodeGraph() {

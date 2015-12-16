@@ -7,7 +7,6 @@ import java.io.InputStream;
 import com.sun.jna.Platform;
 
 import firm.ArrayType;
-import firm.ClassType;
 import firm.Construction;
 import firm.Entity;
 import firm.Graph;
@@ -17,6 +16,7 @@ import firm.Mode;
 import firm.PrimitiveType;
 import firm.Program;
 import firm.Relation;
+import firm.SegmentType;
 import firm.Type;
 import firm.bindings.binding_typerep.ir_visibility;
 import firm.nodes.Block;
@@ -48,7 +48,7 @@ public class BrainFuck {
 
 		/* create a new entity for the main function */
 		MethodType type = new MethodType(0, 0);
-		ClassType global = Program.getGlobalType();
+		SegmentType global = Program.getGlobalType();
 		Entity mainEnt = new Entity(global, "main", type);
 		mainEnt.setLdIdent(makeLdIdent("main"));
 

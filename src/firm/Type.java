@@ -21,6 +21,8 @@ public class Type extends JNAWrapper {
 			return new ArrayType(ptr);
 		} else if (binding_typerep.is_Class_type(ptr) != 0) {
 			return new ClassType(ptr);
+		} else if (binding_typerep.is_segment_type(ptr) != 0) {
+			return new SegmentType(ptr);
 		} else if (binding_typerep.is_Pointer_type(ptr) != 0) {
 			return new PointerType(ptr);
 		} else if (binding_typerep.is_Struct_type(ptr) != 0) {
