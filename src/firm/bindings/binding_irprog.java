@@ -511,6 +511,8 @@ public class binding_irprog {
 
 	public static native Pointer get_tls_type();
 
+	public static native Pointer ir_get_global(Pointer name);
+
 	public static native com.sun.jna.NativeLong get_irp_n_types();
 
 	public static native Pointer get_irp_type(com.sun.jna.NativeLong pos);

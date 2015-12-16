@@ -463,10 +463,11 @@ public class binding_ircons {
 
 	public static enum tp_opcode {
 		tpo_uninitialized(0),
-		tpo_class(),
 		tpo_struct(),
-		tpo_method(),
 		tpo_union(),
+		tpo_class(),
+		tpo_segment(),
+		tpo_method(),
 		tpo_array(),
 		tpo_pointer(),
 		tpo_primitive(),

@@ -429,10 +429,11 @@ public class binding_typerep {
 
 	public static enum tp_opcode {
 		tpo_uninitialized(0),
-		tpo_class(),
 		tpo_struct(),
-		tpo_method(),
 		tpo_union(),
+		tpo_class(),
+		tpo_segment(),
+		tpo_method(),
 		tpo_array(),
 		tpo_pointer(),
 		tpo_primitive(),
@@ -563,9 +564,11 @@ public class binding_typerep {
 
 	public static native Pointer new_entity(Pointer owner, Pointer name, Pointer tp);
 
+	public static native Pointer new_global_entity(Pointer segment, Pointer ld_name, Pointer type, /* ir_visibility */int visibility, /* ir_linkage */int linkage);
+
 	public static native Pointer new_parameter_entity(Pointer owner, com.sun.jna.NativeLong pos, Pointer type);
 
-	public static native Pointer new_alias_entity(Pointer owner, Pointer name, Pointer alias, Pointer type);
+	public static native Pointer new_alias_entity(Pointer owner, Pointer name, Pointer alias, Pointer type, /* ir_visibility */int visibility);
 
 	public static native void set_entity_alias(Pointer alias, Pointer aliased);
 
@@ -839,8 +842,6 @@ public class binding_typerep {
 
 	public static native com.sun.jna.NativeLong get_type_nr(Pointer tp);
 
-	public static native int is_segment_type(Pointer tp);
-
 	public static native Pointer new_type_class(Pointer name);
 
 	public static native Pointer get_class_ident(Pointer clss);
@@ -965,8 +966,6 @@ public class binding_typerep {
 
 	public static native Pointer new_type_pointer(Pointer points_to);
 
-	public static native void set_pointer_mode(Pointer pointer, Pointer mode);
-
 	public static native void set_pointer_points_to_type(Pointer pointer, Pointer tp);
 
 	public static native Pointer get_pointer_points_to_type(Pointer pointer);
@@ -1016,6 +1015,10 @@ public class binding_typerep {
 	public static native Pointer clone_frame_type(Pointer type);
 
 	public static native Pointer frame_alloc_area(Pointer frame_type, int size, int alignment, int at_start);
+
+	public static native int is_segment_type(Pointer tp);
+
+	public static native Pointer get_segment_ident(Pointer type);
 
 	public static native void type_walk(Pointer pre, Pointer post, Pointer env);
 
