@@ -21,18 +21,22 @@ public class SegmentType extends CompoundType {
 		this(new Ident(name));
 	}
 
+	@Override
 	public Ident getIdent() {
 		return new Ident(binding_typerep.get_class_ident(ptr));
 	}
 
+	@Override
 	public String getName() {
 		return getIdent().toString();
 	}
 
+	@Override
 	public int getNMembers() {
 		return binding_typerep.get_compound_n_members(ptr).intValue();
 	}
 
+	@Override
 	public Entity getMember(int n) {
 		return new Entity(binding_typerep.get_compound_member(ptr, new NativeLong(n)));
 	}

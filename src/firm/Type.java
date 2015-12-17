@@ -86,6 +86,7 @@ public class Type extends JNAWrapper {
 		setTypeState(ir_type_state.layout_fixed);
 	}
 
+	@Override
 	public String toString() {
 		return binding_irnode.gdb_node_helper(ptr);
 	}

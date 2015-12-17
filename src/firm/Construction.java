@@ -6,7 +6,6 @@ import firm.bindings.binding_ircons;
 import firm.bindings.binding_ircons.ir_cons_flags;
 import firm.nodes.Block;
 import firm.nodes.Node;
-import firm.Type;
 
 /**
  * Utility class helping in constructing firm graphs. (Performs SSA-construction
@@ -163,6 +162,7 @@ public class Construction extends ConstructionBase {
 
 		/* mature blocks */
 		graph.walkBlocks(new BlockWalker() {
+			@Override
 			public void visitBlock(Block block) {
 				block.mature();
 			}
