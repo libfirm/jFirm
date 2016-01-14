@@ -316,6 +316,8 @@ public class binding_firm_common {
 
 	public static native int ir_get_version_minor();
 
+	public static native int ir_get_version_micro();
+
 	public static native String ir_get_version_revision();
 
 	public static native String ir_get_version_build();
