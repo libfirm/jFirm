@@ -576,9 +576,7 @@ public class binding_typerep {
 
 	public static native int check_entity(Pointer ent);
 
-	public static native Pointer copy_entity_own(Pointer old, Pointer new_owner);
-
-	public static native Pointer copy_entity_name(Pointer old, Pointer new_name);
+	public static native Pointer clone_entity(Pointer old, Pointer name, Pointer owner);
 
 	public static native void free_entity(Pointer ent);
 
