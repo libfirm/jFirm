@@ -116,7 +116,7 @@ public final class Firm {
 			Backend.option("objectformat=mach-o");
 			Backend.option("ia32-struct_in_reg=yes");
 			Backend.option("ia32-stackalign=4");
-			Backend.option("pic");
+			Backend.option("pic=mach-o");
 			setupUnderscorePrefixCompilerlibCallback();
 		} else if (Platform.isWindows()) {
 			Backend.option("objectformat=coff");
