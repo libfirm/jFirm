@@ -39,20 +39,40 @@ public class Type extends JNAWrapper {
 		}
 	}
 
+	/** @deprecated */
 	public void setSizeBytes(int size) {
-		binding_typerep.set_type_size_bytes(ptr, size);
+		binding_typerep.set_type_size(ptr, size);
 	}
 
+	/** @deprecated */
 	public int getSizeBytes() {
-		return binding_typerep.get_type_size_bytes(ptr);
+		return binding_typerep.get_type_size(ptr);
 	}
 
+	/** @deprecated */
 	public void setAlignmentBytes(int alignment) {
-		binding_typerep.set_type_alignment_bytes(ptr, alignment);
+		binding_typerep.set_type_alignment(ptr, alignment);
 	}
 
+	/** @deprecated */
 	public int getAlignmentBytes() {
-		return binding_typerep.get_type_alignment_bytes(ptr);
+		return binding_typerep.get_type_alignment(ptr);
+	}
+
+	public void setSize(int size) {
+		binding_typerep.set_type_size(ptr, size);
+	}
+
+	public int getSize() {
+		return binding_typerep.get_type_size(ptr);
+	}
+
+	public void setAlignment(int alignment) {
+		binding_typerep.set_type_alignment(ptr, alignment);
+	}
+
+	public int getAlignment() {
+		return binding_typerep.get_type_alignment(ptr);
 	}
 
 	public void setTypeState(binding_typerep.ir_type_state state) {

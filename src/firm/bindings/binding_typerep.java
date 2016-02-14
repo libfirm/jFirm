@@ -808,13 +808,13 @@ public class binding_typerep {
 
 	public static native Pointer get_type_mode(Pointer tp);
 
-	public static native int get_type_size_bytes(Pointer tp);
+	public static native int get_type_size(Pointer tp);
 
-	public static native void set_type_size_bytes(Pointer tp, int size);
+	public static native void set_type_size(Pointer tp, int size);
 
-	public static native int get_type_alignment_bytes(Pointer tp);
+	public static native int get_type_alignment(Pointer tp);
 
-	public static native void set_type_alignment_bytes(Pointer tp, int align);
+	public static native void set_type_alignment(Pointer tp, int align);
 
 	public static native com.sun.jna.NativeLong get_type_visited(Pointer tp);
 
