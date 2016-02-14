@@ -14,9 +14,9 @@ for i in lowering irarch irdom irgmod iredges irmode tv ircons irnode firm_commo
 	fi
 	echo "$CMD"
 	$CMD > $TMP || exit $?
-	sed -e "s/class binding/class binding_$i/g" -i $TMP
 	echo "package firm.bindings;" > header
 	echo "" >> header
-	cat header $TMP > $RES
+	cat header > $RES
+	cat $TMP | sed -e "s/class binding/class binding_$i/g" >> $RES
 done
 
