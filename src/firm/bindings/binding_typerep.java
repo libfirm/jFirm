@@ -1012,8 +1012,6 @@ public class binding_typerep {
 
 	public static native Pointer clone_frame_type(Pointer type);
 
-	public static native Pointer frame_alloc_area(Pointer frame_type, int size, int alignment, int at_start);
-
 	public static native int is_segment_type(Pointer tp);
 
 	public static native Pointer get_segment_ident(Pointer type);
