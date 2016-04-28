@@ -68,7 +68,7 @@ public class CompoundType extends Type {
 		 * you have to layout the type first. (for example by calling
 		 * layoutFields) layouting should also set the size of the class
 		 */
-		assert getSizeBytes() >= 0;
+		assert getSize() >= 0;
 
 		super.finishLayout();
 	}
