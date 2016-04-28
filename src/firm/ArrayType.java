@@ -38,9 +38,9 @@ public class ArrayType extends Type {
 		assert getElementType().getTypeState() == ir_type_state.layout_fixed;
 
 		if (hasSize()) {
-			int element_size = getElementType().getSize();
+			final int elementSize = getElementType().getSize();
 			final int num = getNumElements();
-			setSize(element_size * num);
+			setSize(elementSize * num);
 		}
 
 		super.finishLayout();
