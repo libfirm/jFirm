@@ -15,12 +15,12 @@ public class ArrayType extends Type {
 		super(binding_typerep.new_type_array(elementType.ptr));
 	}
 
-	public void setSize(int size) {
-		assert size >= 0;
-		binding_typerep.set_array_size_int(ptr, size);
+	public void setNumElements(int num) {
+		assert num >= 0;
+		binding_typerep.set_array_size_int(ptr, num);
 	}
 
-	public int getSizeInt() {
+	public int getNumElements() {
 		return binding_typerep.get_array_size_int(ptr);
 	}
 
@@ -39,8 +39,8 @@ public class ArrayType extends Type {
 
 		if (hasSize()) {
 			int element_size = getElementType().getSize();
-			int size         = getSizeInt();
-			setSize(element_size * size);
+			final int num = getNumElements();
+			setSize(element_size * num);
 		}
 
 		super.finishLayout();

@@ -55,7 +55,7 @@ public class BrainFuck {
 		/* create a new global array for the brainfuck data */
 		PrimitiveType btype = new PrimitiveType(Mode.getBu());
 		ArrayType atype = new ArrayType(btype);
-		atype.setSize(DATA_SIZE);
+		atype.setNumElements(DATA_SIZE);
 		atype.finishLayout();
 
 		Entity data = new Entity(global, "data", atype);
