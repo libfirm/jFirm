@@ -95,7 +95,7 @@ public class SimpleIf {
 		// Compute value of right part of the assignment
 		Node xVal2 = cons.getVariable(varNumX, modeInt);
 		Node yVal2 = cons.getVariable(varNumY, modeInt);
-		Node add = cons.newAdd(xVal2, yVal2, modeInt);
+		Node add = cons.newAdd(xVal2, yVal2);
 		// Set value to local var sum
 		cons.setVariable(varNumSum, add);
 
@@ -110,7 +110,7 @@ public class SimpleIf {
 		// Code for else-part
 		Node xVal3 = cons.getVariable(varNumX, modeInt);
 		Node yVal3 = cons.getVariable(varNumY, modeInt);
-		Node mul = cons.newMul(xVal3, yVal3, Mode.getIs());
+		Node mul = cons.newMul(xVal3, yVal3);
 		// Set value to local var sum
 		cons.setVariable(varNumSum, mul);
 

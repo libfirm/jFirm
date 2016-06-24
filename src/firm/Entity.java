@@ -179,15 +179,6 @@ public class Entity extends JNAWrapper {
 		return binding_typerep.get_entity_parameter_number(ptr).intValue();
 	}
 
-	public final Node getAtomicValue() {
-		Pointer node_ptr = binding_typerep.get_atomic_ent_value(ptr);
-		return Node.createWrapper(node_ptr);
-	}
-
-	public final void setAtomicValue(Node val) {
-		binding_typerep.set_atomic_ent_value(ptr, val.ptr);
-	}
-
 	public final void setInitializer(Initializer initializer) {
 		binding_typerep.set_entity_initializer(ptr, initializer != null ? initializer.ptr : Pointer.NULL);
 	}

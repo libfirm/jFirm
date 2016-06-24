@@ -527,8 +527,7 @@ public class binding_typerep {
 		cc_this_call(0x08000000),
 		cc_compound_ret(0x10000000),
 		cc_frame_on_caller_stk(0x20000000),
-		cc_fpreg_param(0x40000000),
-		cc_bits((0xFF << 24));
+		cc_fpreg_param(0x40000000);
 		public final int val;
 
 		private static class C {
@@ -668,10 +667,6 @@ public class binding_typerep {
 
 	public static native void set_entity_parameter_number(Pointer entity, com.sun.jna.NativeLong n);
 
-	public static native Pointer get_atomic_ent_value(Pointer ent);
-
-	public static native void set_atomic_ent_value(Pointer ent, Pointer val);
-
 	public static native /* ir_initializer_kind_t */int get_initializer_kind(Pointer initializer);
 
 	public static native String get_initializer_kind_name(/* ir_initializer_kind_t */int ini);
@@ -719,8 +714,6 @@ public class binding_typerep {
 	public static native void set_entity_overwrittenby(Pointer ent, com.sun.jna.NativeLong pos, Pointer overwrites);
 
 	public static native void remove_entity_overwrittenby(Pointer ent, Pointer overwrites);
-
-	public static native int is_atomic_entity(Pointer ent);
 
 	public static native int is_compound_entity(Pointer ent);
 
@@ -906,7 +899,7 @@ public class binding_typerep {
 
 	public static native int is_Union_type(Pointer uni);
 
-	public static native Pointer new_type_method(com.sun.jna.NativeLong n_param, com.sun.jna.NativeLong n_res);
+	public static native Pointer new_type_method(com.sun.jna.NativeLong n_param, com.sun.jna.NativeLong n_res, int is_variadic);
 
 	public static native com.sun.jna.NativeLong get_method_n_params(Pointer method);
 
@@ -921,8 +914,6 @@ public class binding_typerep {
 	public static native void set_method_res_type(Pointer method, com.sun.jna.NativeLong pos, Pointer tp);
 
 	public static native int is_method_variadic(Pointer method);
-
-	public static native void set_method_variadic(Pointer method, int is_variadic);
 
 	public static native /* mtp_additional_properties */int get_method_additional_properties(Pointer method);
 
@@ -940,19 +931,9 @@ public class binding_typerep {
 
 	public static native int is_Method_type(Pointer method);
 
-	public static native Pointer new_type_array(Pointer element_type);
+	public static native Pointer new_type_array(Pointer element_type, int n_elements);
 
-	public static native void set_array_size(Pointer array, Pointer size);
-
-	public static native void set_array_size_int(Pointer array, int size);
-
-	public static native int has_array_size(Pointer array);
-
-	public static native Pointer get_array_size(Pointer array);
-
-	public static native int get_array_size_int(Pointer array);
-
-	public static native void set_array_element_type(Pointer array, Pointer tp);
+	public static native int get_array_size(Pointer array);
 
 	public static native Pointer get_array_element_type(Pointer array);
 
@@ -1027,8 +1008,4 @@ public class binding_typerep {
 	public static native void class_walk_super2sub(Pointer pre, Pointer post, Pointer env);
 
 	public static native void walk_types_entities(Pointer tp, Pointer doit, Pointer env);
-
-	public static native /* ir_visibility */int get_type_visibility(Pointer tp);
-
-	public static native void set_type_visibility(Pointer tp, /* ir_visibility */int v);
 }

@@ -34,8 +34,8 @@ public class Graph extends GraphBase {
 
 
 	/** Create a new Add node */
-	public final Node newAdd(Node block, Node left, Node right, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Add(block.ptr, left.ptr, right.ptr, mode.ptr));
+	public final Node newAdd(Node block, Node left, Node right) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Add(block.ptr, left.ptr, right.ptr));
 	}
 
 	/** Create a new Address node */
@@ -54,8 +54,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new And node */
-	public final Node newAnd(Node block, Node left, Node right, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_And(block.ptr, left.ptr, right.ptr, mode.ptr));
+	public final Node newAnd(Node block, Node left, Node right) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_And(block.ptr, left.ptr, right.ptr));
 	}
 
 	/** Create a new Bad node */
@@ -114,8 +114,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Div node */
-	public final Node newDiv(Node block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Div(block.ptr, mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val));
+	public final Node newDiv(Node block, Node mem, Node left, Node right, firm.bindings.binding_ircons.op_pin_state pin_state) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Div(block.ptr, mem.ptr, left.ptr, right.ptr, pin_state.val));
 	}
 
 	/** Create a new Dummy node */
@@ -129,8 +129,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Eor node */
-	public final Node newEor(Node block, Node left, Node right, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Eor(block.ptr, left.ptr, right.ptr, mode.ptr));
+	public final Node newEor(Node block, Node left, Node right) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Eor(block.ptr, left.ptr, right.ptr));
 	}
 
 	/** Create a new Free node */
@@ -159,28 +159,28 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Minus node */
-	public final Node newMinus(Node block, Node op, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Minus(block.ptr, op.ptr, mode.ptr));
+	public final Node newMinus(Node block, Node op) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Minus(block.ptr, op.ptr));
 	}
 
 	/** Create a new Mod node */
-	public final Node newMod(Node block, Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Mod(block.ptr, mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val));
+	public final Node newMod(Node block, Node mem, Node left, Node right, firm.bindings.binding_ircons.op_pin_state pin_state) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Mod(block.ptr, mem.ptr, left.ptr, right.ptr, pin_state.val));
 	}
 
 	/** Create a new Mul node */
-	public final Node newMul(Node block, Node left, Node right, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Mul(block.ptr, left.ptr, right.ptr, mode.ptr));
+	public final Node newMul(Node block, Node left, Node right) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Mul(block.ptr, left.ptr, right.ptr));
 	}
 
 	/** Create a new Mulh node */
-	public final Node newMulh(Node block, Node left, Node right, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Mulh(block.ptr, left.ptr, right.ptr, mode.ptr));
+	public final Node newMulh(Node block, Node left, Node right) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Mulh(block.ptr, left.ptr, right.ptr));
 	}
 
 	/** Create a new Mux node */
-	public final Node newMux(Node block, Node sel, Node _false, Node _true, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Mux(block.ptr, sel.ptr, _false.ptr, _true.ptr, mode.ptr));
+	public final Node newMux(Node block, Node sel, Node _false, Node _true) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Mux(block.ptr, sel.ptr, _false.ptr, _true.ptr));
 	}
 
 	/** Create a new NoMem node */
@@ -189,8 +189,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Not node */
-	public final Node newNot(Node block, Node op, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Not(block.ptr, op.ptr, mode.ptr));
+	public final Node newNot(Node block, Node op) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Not(block.ptr, op.ptr));
 	}
 
 	/** Create a new Offset node */
@@ -199,8 +199,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Or node */
-	public final Node newOr(Node block, Node left, Node right, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Or(block.ptr, left.ptr, right.ptr, mode.ptr));
+	public final Node newOr(Node block, Node left, Node right) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Or(block.ptr, left.ptr, right.ptr));
 	}
 
 	/** Create a new Phi node */
@@ -234,18 +234,18 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Shl node */
-	public final Node newShl(Node block, Node left, Node right, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Shl(block.ptr, left.ptr, right.ptr, mode.ptr));
+	public final Node newShl(Node block, Node left, Node right) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Shl(block.ptr, left.ptr, right.ptr));
 	}
 
 	/** Create a new Shr node */
-	public final Node newShr(Node block, Node left, Node right, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Shr(block.ptr, left.ptr, right.ptr, mode.ptr));
+	public final Node newShr(Node block, Node left, Node right) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Shr(block.ptr, left.ptr, right.ptr));
 	}
 
 	/** Create a new Shrs node */
-	public final Node newShrs(Node block, Node left, Node right, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Shrs(block.ptr, left.ptr, right.ptr, mode.ptr));
+	public final Node newShrs(Node block, Node left, Node right) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Shrs(block.ptr, left.ptr, right.ptr));
 	}
 
 	/** Create a new Size node */
@@ -264,8 +264,8 @@ public class Graph extends GraphBase {
 	}
 
 	/** Create a new Sub node */
-	public final Node newSub(Node block, Node left, Node right, firm.Mode mode) {
-		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Sub(block.ptr, left.ptr, right.ptr, mode.ptr));
+	public final Node newSub(Node block, Node left, Node right) {
+		return Node.createWrapper(firm.bindings.binding_ircons.new_r_Sub(block.ptr, left.ptr, right.ptr));
 	}
 
 	/** Create a new Switch node */

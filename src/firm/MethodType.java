@@ -12,16 +12,24 @@ public class MethodType extends Type {
 		super(ptr);
 	}
 
-	public MethodType(int nParameters, int nResults) {
-		super(binding_typerep.new_type_method(new NativeLong(nParameters), new NativeLong(nResults)));
+	public MethodType(int nParameters, int nResults, boolean isVariadic) {
+		super(binding_typerep.new_type_method(new NativeLong(nParameters), new NativeLong(nResults), (isVariadic ? 1 : 0)));
 	}
 
-	public MethodType(Type[] parameterTypes, Type[] resultTypes) {
-		this(parameterTypes.length, resultTypes.length);
+	public MethodType(int nParameters, int nResults) {
+		this(nParameters, nResults, false);
+	}
+
+	public MethodType(Type[] parameterTypes, Type[] resultTypes, boolean isVariadic) {
+		this(parameterTypes.length, resultTypes.length, isVariadic);
 		for (int i = 0; i < parameterTypes.length; ++i)
 			setParamType(i, parameterTypes[i]);
 		for (int i = 0; i < resultTypes.length; ++i)
 			setResType(i, resultTypes[i]);
+	}
+
+	public MethodType(Type[] parameterTypes, Type[] resultTypes) {
+		this(parameterTypes, resultTypes, false);
 	}
 
 	public final int getNParams() {
@@ -52,10 +60,6 @@ public class MethodType extends Type {
 
 	public final boolean isVariadic() {
 		return 0 != binding_typerep.is_method_variadic(ptr);
-	}
-
-	public final void setVariadic(final boolean variadic) {
-		binding_typerep.set_method_variadic(ptr, (variadic ? 1 : 0));
 	}
 
 	public final int getAdditionalProperties() {

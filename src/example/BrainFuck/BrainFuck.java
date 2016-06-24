@@ -54,8 +54,7 @@ public class BrainFuck {
 
 		/* create a new global array for the brainfuck data */
 		PrimitiveType btype = new PrimitiveType(Mode.getBu());
-		ArrayType atype = new ArrayType(btype);
-		atype.setNumElements(DATA_SIZE);
+		ArrayType atype = new ArrayType(btype, DATA_SIZE);
 		atype.finishLayout();
 
 		Entity data = new Entity(global, "data", atype);
@@ -223,9 +222,9 @@ public class BrainFuck {
 		Node delta = construction.newConst(Math.abs(delta_int), Mode.getBu());
 		Node op;
 		if (delta_int < 0) {
-			op = construction.newSub(result, delta, Mode.getBu());
+			op = construction.newSub(result, delta);
 		} else {
-			op = construction.newAdd(result, delta, Mode.getBu());
+			op = construction.newAdd(result, delta);
 		}
 
 		Node store = construction.newStore(loadMem, pointer, op);
@@ -236,7 +235,7 @@ public class BrainFuck {
 	private void changePointer(int delta_int) {
 		Node pointer = construction.getVariable(0, Mode.getP());
 		Node delta = construction.newConst(delta_int, Mode.getIs());
-		Node add = construction.newAdd(pointer, delta, Mode.getP());
+		Node add = construction.newAdd(pointer, delta);
 		construction.setVariable(0, add);
 	}
 }

@@ -561,8 +561,7 @@ public class binding_irnode {
 		cc_this_call(0x08000000),
 		cc_compound_ret(0x10000000),
 		cc_frame_on_caller_stk(0x20000000),
-		cc_fpreg_param(0x40000000),
-		cc_bits((0xFF << 24));
+		cc_fpreg_param(0x40000000);
 		public final int val;
 
 		private static class C {
@@ -2259,13 +2258,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_ASM();
 
-	public static native Pointer new_rd_Add(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_rd_Add(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_r_Add(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_r_Add(Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_d_Add(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_d_Add(Pointer dbgi, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_Add(Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_Add(Pointer irn_left, Pointer irn_right);
 
 	public static native int is_Add(Pointer node);
 
@@ -2371,13 +2370,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Anchor();
 
-	public static native Pointer new_rd_And(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_rd_And(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_r_And(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_r_And(Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_d_And(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_d_And(Pointer dbgi, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_And(Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_And(Pointer irn_left, Pointer irn_right);
 
 	public static native int is_And(Pointer node);
 
@@ -2637,13 +2636,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Deleted();
 
-	public static native Pointer new_rd_Div(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
+	public static native Pointer new_rd_Div(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, int pinned);
 
-	public static native Pointer new_r_Div(Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
+	public static native Pointer new_r_Div(Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, int pinned);
 
-	public static native Pointer new_d_Div(Pointer dbgi, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
+	public static native Pointer new_d_Div(Pointer dbgi, Pointer irn_mem, Pointer irn_left, Pointer irn_right, int pinned);
 
-	public static native Pointer new_Div(Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
+	public static native Pointer new_Div(Pointer irn_mem, Pointer irn_left, Pointer irn_right, int pinned);
 
 	public static native int is_Div(Pointer node);
 
@@ -2699,13 +2698,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_End();
 
-	public static native Pointer new_rd_Eor(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_rd_Eor(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_r_Eor(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_r_Eor(Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_d_Eor(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_d_Eor(Pointer dbgi, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_Eor(Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_Eor(Pointer irn_left, Pointer irn_right);
 
 	public static native int is_Eor(Pointer node);
 
@@ -2831,13 +2830,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Member();
 
-	public static native Pointer new_rd_Minus(Pointer dbgi, Pointer block, Pointer irn_op, Pointer mode);
+	public static native Pointer new_rd_Minus(Pointer dbgi, Pointer block, Pointer irn_op);
 
-	public static native Pointer new_r_Minus(Pointer block, Pointer irn_op, Pointer mode);
+	public static native Pointer new_r_Minus(Pointer block, Pointer irn_op);
 
-	public static native Pointer new_d_Minus(Pointer dbgi, Pointer irn_op, Pointer mode);
+	public static native Pointer new_d_Minus(Pointer dbgi, Pointer irn_op);
 
-	public static native Pointer new_Minus(Pointer irn_op, Pointer mode);
+	public static native Pointer new_Minus(Pointer irn_op);
 
 	public static native int is_Minus(Pointer node);
 
@@ -2847,13 +2846,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Minus();
 
-	public static native Pointer new_rd_Mod(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
+	public static native Pointer new_rd_Mod(Pointer dbgi, Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, int pinned);
 
-	public static native Pointer new_r_Mod(Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
+	public static native Pointer new_r_Mod(Pointer block, Pointer irn_mem, Pointer irn_left, Pointer irn_right, int pinned);
 
-	public static native Pointer new_d_Mod(Pointer dbgi, Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
+	public static native Pointer new_d_Mod(Pointer dbgi, Pointer irn_mem, Pointer irn_left, Pointer irn_right, int pinned);
 
-	public static native Pointer new_Mod(Pointer irn_mem, Pointer irn_left, Pointer irn_right, Pointer resmode, int pinned);
+	public static native Pointer new_Mod(Pointer irn_mem, Pointer irn_left, Pointer irn_right, int pinned);
 
 	public static native int is_Mod(Pointer node);
 
@@ -2875,13 +2874,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Mod();
 
-	public static native Pointer new_rd_Mul(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_rd_Mul(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_r_Mul(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_r_Mul(Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_d_Mul(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_d_Mul(Pointer dbgi, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_Mul(Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_Mul(Pointer irn_left, Pointer irn_right);
 
 	public static native int is_Mul(Pointer node);
 
@@ -2895,13 +2894,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Mul();
 
-	public static native Pointer new_rd_Mulh(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_rd_Mulh(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_r_Mulh(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_r_Mulh(Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_d_Mulh(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_d_Mulh(Pointer dbgi, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_Mulh(Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_Mulh(Pointer irn_left, Pointer irn_right);
 
 	public static native int is_Mulh(Pointer node);
 
@@ -2915,13 +2914,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Mulh();
 
-	public static native Pointer new_rd_Mux(Pointer dbgi, Pointer block, Pointer irn_sel, Pointer irn_false, Pointer irn_true, Pointer mode);
+	public static native Pointer new_rd_Mux(Pointer dbgi, Pointer block, Pointer irn_sel, Pointer irn_false, Pointer irn_true);
 
-	public static native Pointer new_r_Mux(Pointer block, Pointer irn_sel, Pointer irn_false, Pointer irn_true, Pointer mode);
+	public static native Pointer new_r_Mux(Pointer block, Pointer irn_sel, Pointer irn_false, Pointer irn_true);
 
-	public static native Pointer new_d_Mux(Pointer dbgi, Pointer irn_sel, Pointer irn_false, Pointer irn_true, Pointer mode);
+	public static native Pointer new_d_Mux(Pointer dbgi, Pointer irn_sel, Pointer irn_false, Pointer irn_true);
 
-	public static native Pointer new_Mux(Pointer irn_sel, Pointer irn_false, Pointer irn_true, Pointer mode);
+	public static native Pointer new_Mux(Pointer irn_sel, Pointer irn_false, Pointer irn_true);
 
 	public static native int is_Mux(Pointer node);
 
@@ -2951,13 +2950,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_NoMem();
 
-	public static native Pointer new_rd_Not(Pointer dbgi, Pointer block, Pointer irn_op, Pointer mode);
+	public static native Pointer new_rd_Not(Pointer dbgi, Pointer block, Pointer irn_op);
 
-	public static native Pointer new_r_Not(Pointer block, Pointer irn_op, Pointer mode);
+	public static native Pointer new_r_Not(Pointer block, Pointer irn_op);
 
-	public static native Pointer new_d_Not(Pointer dbgi, Pointer irn_op, Pointer mode);
+	public static native Pointer new_d_Not(Pointer dbgi, Pointer irn_op);
 
-	public static native Pointer new_Not(Pointer irn_op, Pointer mode);
+	public static native Pointer new_Not(Pointer irn_op);
 
 	public static native int is_Not(Pointer node);
 
@@ -2983,13 +2982,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Offset();
 
-	public static native Pointer new_rd_Or(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_rd_Or(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_r_Or(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_r_Or(Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_d_Or(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_d_Or(Pointer dbgi, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_Or(Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_Or(Pointer irn_left, Pointer irn_right);
 
 	public static native int is_Or(Pointer node);
 
@@ -3127,13 +3126,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Sel();
 
-	public static native Pointer new_rd_Shl(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_rd_Shl(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_r_Shl(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_r_Shl(Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_d_Shl(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_d_Shl(Pointer dbgi, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_Shl(Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_Shl(Pointer irn_left, Pointer irn_right);
 
 	public static native int is_Shl(Pointer node);
 
@@ -3147,13 +3146,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Shl();
 
-	public static native Pointer new_rd_Shr(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_rd_Shr(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_r_Shr(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_r_Shr(Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_d_Shr(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_d_Shr(Pointer dbgi, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_Shr(Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_Shr(Pointer irn_left, Pointer irn_right);
 
 	public static native int is_Shr(Pointer node);
 
@@ -3167,13 +3166,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Shr();
 
-	public static native Pointer new_rd_Shrs(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_rd_Shrs(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_r_Shrs(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_r_Shrs(Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_d_Shrs(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_d_Shrs(Pointer dbgi, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_Shrs(Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_Shrs(Pointer irn_left, Pointer irn_right);
 
 	public static native int is_Shrs(Pointer node);
 
@@ -3251,13 +3250,13 @@ public class binding_irnode {
 
 	public static native Pointer get_op_Store();
 
-	public static native Pointer new_rd_Sub(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_rd_Sub(Pointer dbgi, Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_r_Sub(Pointer block, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_r_Sub(Pointer block, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_d_Sub(Pointer dbgi, Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_d_Sub(Pointer dbgi, Pointer irn_left, Pointer irn_right);
 
-	public static native Pointer new_Sub(Pointer irn_left, Pointer irn_right, Pointer mode);
+	public static native Pointer new_Sub(Pointer irn_left, Pointer irn_right);
 
 	public static native int is_Sub(Pointer node);
 

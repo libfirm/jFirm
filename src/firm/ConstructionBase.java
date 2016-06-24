@@ -14,8 +14,8 @@ class ConstructionBase {
 		this.graph = graph;
 	}
 
-	public Node newAdd(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Add(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
+	public Node newAdd(Node left, Node right) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Add(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -34,8 +34,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newAnd(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_And(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
+	public Node newAnd(Node left, Node right) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_And(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -94,8 +94,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newDiv(Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Div(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val);
+	public Node newDiv(Node mem, Node left, Node right, firm.bindings.binding_ircons.op_pin_state pin_state) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Div(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, left.ptr, right.ptr, pin_state.val);
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -109,8 +109,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newEor(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Eor(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
+	public Node newEor(Node left, Node right) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Eor(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -139,28 +139,28 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newMinus(Node op, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Minus(binding_ircons.get_r_cur_block(graph.ptr), op.ptr, mode.ptr);
+	public Node newMinus(Node op) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Minus(binding_ircons.get_r_cur_block(graph.ptr), op.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newMod(Node mem, Node left, Node right, firm.Mode resmode, firm.bindings.binding_ircons.op_pin_state pin_state) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Mod(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, left.ptr, right.ptr, resmode.ptr, pin_state.val);
+	public Node newMod(Node mem, Node left, Node right, firm.bindings.binding_ircons.op_pin_state pin_state) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Mod(binding_ircons.get_r_cur_block(graph.ptr), mem.ptr, left.ptr, right.ptr, pin_state.val);
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newMul(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Mul(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
+	public Node newMul(Node left, Node right) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Mul(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newMulh(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Mulh(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
+	public Node newMulh(Node left, Node right) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Mulh(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newMux(Node sel, Node _false, Node _true, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Mux(binding_ircons.get_r_cur_block(graph.ptr), sel.ptr, _false.ptr, _true.ptr, mode.ptr);
+	public Node newMux(Node sel, Node _false, Node _true) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Mux(binding_ircons.get_r_cur_block(graph.ptr), sel.ptr, _false.ptr, _true.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -169,8 +169,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newNot(Node op, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Not(binding_ircons.get_r_cur_block(graph.ptr), op.ptr, mode.ptr);
+	public Node newNot(Node op) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Not(binding_ircons.get_r_cur_block(graph.ptr), op.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -179,8 +179,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newOr(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Or(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
+	public Node newOr(Node left, Node right) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Or(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -214,18 +214,18 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newShl(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Shl(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
+	public Node newShl(Node left, Node right) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Shl(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newShr(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Shr(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
+	public Node newShr(Node left, Node right) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Shr(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newShrs(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Shrs(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
+	public Node newShrs(Node left, Node right) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Shrs(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
@@ -244,8 +244,8 @@ class ConstructionBase {
 		return Node.createWrapper(result_ptr);
 	}
 
-	public Node newSub(Node left, Node right, firm.Mode mode) {
-		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Sub(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr, mode.ptr);
+	public Node newSub(Node left, Node right) {
+		Pointer result_ptr = firm.bindings.binding_ircons.new_r_Sub(binding_ircons.get_r_cur_block(graph.ptr), left.ptr, right.ptr);
 		return Node.createWrapper(result_ptr);
 	}
 
