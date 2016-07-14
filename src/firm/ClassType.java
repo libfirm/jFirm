@@ -23,7 +23,7 @@ public class ClassType extends CompoundType {
 
 	@Override
 	public Ident getIdent() {
-		return new Ident(binding_typerep.get_class_ident(ptr));
+		return new Ident(binding_typerep.get_compound_ident(ptr));
 	}
 
 	@Override

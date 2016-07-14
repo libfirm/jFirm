@@ -835,10 +835,6 @@ public class binding_typerep {
 
 	public static native Pointer new_type_class(Pointer name);
 
-	public static native Pointer get_class_ident(Pointer clss);
-
-	public static native String get_class_name(Pointer clss);
-
 	public static native com.sun.jna.NativeLong get_class_n_members(Pointer clss);
 
 	public static native Pointer get_class_member(Pointer clss, com.sun.jna.NativeLong pos);
@@ -873,10 +869,6 @@ public class binding_typerep {
 
 	public static native Pointer new_type_struct(Pointer name);
 
-	public static native Pointer get_struct_ident(Pointer strct);
-
-	public static native String get_struct_name(Pointer strct);
-
 	public static native com.sun.jna.NativeLong get_struct_n_members(Pointer strct);
 
 	public static native Pointer get_struct_member(Pointer strct, com.sun.jna.NativeLong pos);
@@ -886,10 +878,6 @@ public class binding_typerep {
 	public static native int is_Struct_type(Pointer strct);
 
 	public static native Pointer new_type_union(Pointer name);
-
-	public static native Pointer get_union_ident(Pointer uni);
-
-	public static native String get_union_name(Pointer uni);
 
 	public static native com.sun.jna.NativeLong get_union_n_members(Pointer uni);
 
@@ -937,10 +925,6 @@ public class binding_typerep {
 
 	public static native Pointer get_array_element_type(Pointer array);
 
-	public static native void set_array_variable_size(Pointer array, int variable_size_flag);
-
-	public static native int is_array_variable_size(Pointer array);
-
 	public static native int is_Array_type(Pointer array);
 
 	public static native Pointer new_type_pointer(Pointer points_to);
@@ -950,8 +934,6 @@ public class binding_typerep {
 	public static native Pointer get_pointer_points_to_type(Pointer pointer);
 
 	public static native int is_Pointer_type(Pointer pointer);
-
-	public static native Pointer find_pointer_type_to_type(Pointer tp);
 
 	public static native Pointer new_type_primitive(Pointer mode);
 
@@ -979,10 +961,6 @@ public class binding_typerep {
 
 	public static native void remove_compound_member(Pointer compound, Pointer entity);
 
-	public static native void set_compound_variable_size(Pointer compound, int variable_size);
-
-	public static native int is_compound_variable_size(Pointer compound);
-
 	public static native void default_layout_compound_type(Pointer tp);
 
 	public static native int is_compound_type(Pointer tp);
@@ -994,8 +972,6 @@ public class binding_typerep {
 	public static native Pointer clone_frame_type(Pointer type);
 
 	public static native int is_segment_type(Pointer tp);
-
-	public static native Pointer get_segment_ident(Pointer type);
 
 	public static native void type_walk(Pointer pre, Pointer post, Pointer env);
 
