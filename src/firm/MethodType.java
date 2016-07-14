@@ -12,20 +12,28 @@ public class MethodType extends Type {
 		super(ptr);
 	}
 
+	public MethodType(int nParameters, int nResults, boolean isVariadic, int cc_mask, int property_mask) {
+		super(binding_typerep.new_type_method(new NativeLong(nParameters), new NativeLong(nResults), (isVariadic ? 1 : 0), cc_mask, property_mask));
+	}
+
 	public MethodType(int nParameters, int nResults, boolean isVariadic) {
-		super(binding_typerep.new_type_method(new NativeLong(nParameters), new NativeLong(nResults), (isVariadic ? 1 : 0)));
+		this(nParameters, nResults, isVariadic, 0, mtp_additional_properties.mtp_no_property.val);
 	}
 
 	public MethodType(int nParameters, int nResults) {
 		this(nParameters, nResults, false);
 	}
 
-	public MethodType(Type[] parameterTypes, Type[] resultTypes, boolean isVariadic) {
-		this(parameterTypes.length, resultTypes.length, isVariadic);
+	public MethodType(Type[] parameterTypes, Type[] resultTypes, boolean isVariadic, int cc_mask, int property_mask) {
+		this(parameterTypes.length, resultTypes.length, isVariadic, cc_mask, property_mask);
 		for (int i = 0; i < parameterTypes.length; ++i)
 			setParamType(i, parameterTypes[i]);
 		for (int i = 0; i < resultTypes.length; ++i)
 			setResType(i, resultTypes[i]);
+	}
+
+	public MethodType(Type[] parameterTypes, Type[] resultTypes, boolean isVariadic) {
+		this(parameterTypes, resultTypes, isVariadic, 0, mtp_additional_properties.mtp_no_property.val);
 	}
 
 	public MethodType(Type[] parameterTypes, Type[] resultTypes) {
@@ -66,22 +74,8 @@ public class MethodType extends Type {
 		return binding_typerep.get_method_additional_properties(ptr);
 	}
 
-	public final void setAdditionalProperties(
-			mtp_additional_properties properties) {
-		binding_typerep.set_method_additional_properties(ptr, properties.val);
-	}
-
-	public final void addAdditionalProperties(
-			mtp_additional_properties properties) {
-		binding_typerep.add_method_additional_properties(ptr, properties.val);
-	}
-
 	public final int getNRegparams() {
 		return binding_typerep.get_method_n_params(ptr).intValue();
-	}
-
-	public final void setNRegparams(int nRegs) {
-		binding_typerep.set_method_n_regparams(ptr, nRegs);
 	}
 
 	@Override

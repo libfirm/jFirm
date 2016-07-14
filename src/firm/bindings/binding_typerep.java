@@ -887,7 +887,7 @@ public class binding_typerep {
 
 	public static native int is_Union_type(Pointer uni);
 
-	public static native Pointer new_type_method(com.sun.jna.NativeLong n_param, com.sun.jna.NativeLong n_res, int is_variadic);
+	public static native Pointer new_type_method(com.sun.jna.NativeLong n_param, com.sun.jna.NativeLong n_res, int is_variadic, int cc_mask, /* mtp_additional_properties */int property_mask);
 
 	public static native com.sun.jna.NativeLong get_method_n_params(Pointer method);
 
@@ -905,17 +905,9 @@ public class binding_typerep {
 
 	public static native /* mtp_additional_properties */int get_method_additional_properties(Pointer method);
 
-	public static native void set_method_additional_properties(Pointer method, /* mtp_additional_properties */int property_mask);
-
-	public static native void add_method_additional_properties(Pointer method, /* mtp_additional_properties */int flag);
-
 	public static native int get_method_calling_convention(Pointer method);
 
-	public static native void set_method_calling_convention(Pointer method, int cc_mask);
-
 	public static native int get_method_n_regparams(Pointer method);
-
-	public static native void set_method_n_regparams(Pointer method, int n_regs);
 
 	public static native int is_Method_type(Pointer method);
 
