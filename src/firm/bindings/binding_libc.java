@@ -15,7 +15,7 @@ public class binding_libc {
 
 	public static native Pointer fopen(String name, String mode);
 
-	public static native void fclose(Pointer file);
+	public static native int fclose(Pointer file);
 
 	public interface SigHandler extends Callback {
 		void callback(int arg);

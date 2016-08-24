@@ -33,7 +33,8 @@ public final class Backend {
 			}
 			binding_be.be_main(file, compilationUnitName);
 		} finally {
-			binding_libc.fclose(file);
+			int errno = binding_libc.fclose(file);
+			assert(errno == 0);
 		}
 	}
 
