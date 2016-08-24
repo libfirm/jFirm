@@ -2,6 +2,7 @@ package firm;
 
 import java.io.IOException;
 
+import com.sun.jna.LastErrorException;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_be;
@@ -15,7 +16,7 @@ public final class Backend {
 	}
 
 	public static void createAssembler(String outputFileName,
-			String compilationUnitName) throws IOException {
+			String compilationUnitName) throws IOException, LastErrorException {
 		/* running the backend twice is currently not supported */
 		assert runs == 0;
 		runs++;
@@ -33,8 +34,7 @@ public final class Backend {
 			}
 			binding_be.be_main(file, compilationUnitName);
 		} finally {
-			int errno = binding_libc.fclose(file);
-			assert(errno == 0);
+			binding_libc.fclose(file);
 		}
 	}
 

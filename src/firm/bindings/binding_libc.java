@@ -1,6 +1,7 @@
 package firm.bindings;
 
 import com.sun.jna.Callback;
+import com.sun.jna.LastErrorException;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
@@ -15,7 +16,7 @@ public class binding_libc {
 
 	public static native Pointer fopen(String name, String mode);
 
-	public static native int fclose(Pointer file);
+	public static native void fclose(Pointer file) throws LastErrorException;
 
 	public interface SigHandler extends Callback {
 		void callback(int arg);
