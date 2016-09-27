@@ -298,10 +298,6 @@ public class binding_irflag {
 
 	public static native int get_opt_global_null_ptr_elimination();
 
-	public static native void set_opt_closed_world(int value);
-
-	public static native int get_opt_closed_world();
-
 	public static native void save_optimization_state(Pointer state);
 
 	public static native void restore_optimization_state(Pointer state);
