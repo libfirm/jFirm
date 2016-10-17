@@ -508,10 +508,6 @@ public class binding_be {
 
 	public static native Pointer be_get_mode_float_arithmetic();
 
-	public static native Pointer be_get_type_long_long();
-
-	public static native Pointer be_get_type_unsigned_long_long();
-
 	public static native Pointer be_get_type_long_double();
 
 	public static native /* float_int_conversion_overflow_style_t */int be_get_float_int_overflow();
