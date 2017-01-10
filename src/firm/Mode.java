@@ -44,8 +44,8 @@ public final class Mode extends JNAWrapper {
 		}
 	}
 
-	public static Mode createIntMode(String name, Arithmetic arithmetic, int bitSize, boolean sign, int moduloShift) {
-		return new Mode(binding_irmode.new_int_mode(name, arithmetic.val, bitSize, sign?1:0, moduloShift));
+	public static Mode createIntMode(String name, int bitSize, boolean sign, int moduloShift) {
+		return new Mode(binding_irmode.new_int_mode(name, bitSize, sign?1:0, moduloShift));
 	}
 
 	public static Mode createFloatMode(String name, Arithmetic arithmetic, int exponentSize, int mantissaSize) {
@@ -53,9 +53,9 @@ public final class Mode extends JNAWrapper {
 		                binding_be.be_get_float_int_overflow()));
 	}
 
-	public static Mode createReferenceMode(String name, Arithmetic arithmetic, int bitSize, int moduloShift) {
+	public static Mode createReferenceMode(String name, int bitSize, int moduloShift) {
 		/** we use a modulo_shift of 0, because cparser does so. */
-		return new Mode(binding_irmode.new_reference_mode(name, arithmetic.val, bitSize, moduloShift));
+		return new Mode(binding_irmode.new_reference_mode(name, bitSize, moduloShift));
 	}
 
 	public final String getName() {

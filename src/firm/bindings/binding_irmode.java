@@ -331,9 +331,9 @@ public class binding_irmode {
 	}
 
 
-	public static native Pointer new_int_mode(String name, /* ir_mode_arithmetic */int arithmetic, int bit_size, int sign, int modulo_shift);
+	public static native Pointer new_int_mode(String name, int bit_size, int sign, int modulo_shift);
 
-	public static native Pointer new_reference_mode(String name, /* ir_mode_arithmetic */int arithmetic, int bit_size, int modulo_shift);
+	public static native Pointer new_reference_mode(String name, int bit_size, int modulo_shift);
 
 	public static native Pointer new_float_mode(String name, /* ir_mode_arithmetic */int arithmetic, int exponent_size, int mantissa_size, /* float_int_conversion_overflow_style_t */int int_conv_overflow);
 
