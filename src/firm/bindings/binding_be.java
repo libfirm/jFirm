@@ -512,6 +512,8 @@ public class binding_be {
 
 	public static native /* float_int_conversion_overflow_style_t */int be_get_float_int_overflow();
 
+	public static native void be_initialize();
+
 	public static native Pointer be_get_backend_param();
 
 	public static native void be_lower_for_target();
