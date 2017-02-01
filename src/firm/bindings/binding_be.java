@@ -302,35 +302,6 @@ public class binding_be {
 		}
 	}
 
-	public static enum arch_dep_opts_t {
-		arch_dep_none(0),
-		arch_dep_mul_to_shift((1 << 0)),
-		arch_dep_div_by_const((1 << 1)),
-		arch_dep_mod_by_const((1 << 2));
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		arch_dep_opts_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		arch_dep_opts_t() {
-			this.val = C.next_val++;
-		}
-
-		public static arch_dep_opts_t getEnum(int val) {
-			for (arch_dep_opts_t entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
 	public static enum osr_flags {
 		osr_flag_none(0),
 		osr_flag_lftr_with_ov_check(1),
