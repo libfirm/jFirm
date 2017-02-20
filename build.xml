@@ -15,6 +15,7 @@
 	<property name="lib" location="${basedir}/lib"/>
 	<property name="make.exe" value="make"/>
 	<property name="bfmain" value="example.BrainFuck.Main"/>
+	<property name="simpleifmain" value="example.SimpleIf"/>
 	<condition property="buildvariant" value="${VARIANT}" else="debug">
 		<isset property="VARIANT"/>
 	</condition>
@@ -121,5 +122,18 @@
 			</classpath>
 		</java>
 	</target>
+
+	<target name="simpleif" depends="build">
+		<java classname="${simpleifmain}">
+			<jvmarg value="-ea"/>
+			<sysproperty key="jna.library.path" value="${lib}"/>
+			<classpath>
+				<path refid="project.classpath"/>
+				<dirset dir="${build}"/>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="test" depends="beertest,simpleif"/>
 
 </project>
