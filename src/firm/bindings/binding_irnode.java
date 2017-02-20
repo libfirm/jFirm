@@ -273,6 +273,33 @@ public class binding_irnode {
 		}
 	}
 
+	public static enum float_int_conversion_overflow_style_t {
+		ir_overflow_indefinite(),
+		ir_overflow_min_max();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		float_int_conversion_overflow_style_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		float_int_conversion_overflow_style_t() {
+			this.val = C.next_val++;
+		}
+
+		public static float_int_conversion_overflow_style_t getEnum(int val) {
+			for (float_int_conversion_overflow_style_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum firm_kind {
 		k_BAD(0),
 		k_entity(),
@@ -734,33 +761,6 @@ public class binding_irnode {
 
 		public static ir_mode_arithmetic getEnum(int val) {
 			for (ir_mode_arithmetic entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum float_int_conversion_overflow_style_t {
-		ir_overflow_indefinite(),
-		ir_overflow_min_max();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		float_int_conversion_overflow_style_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		float_int_conversion_overflow_style_t() {
-			this.val = C.next_val++;
-		}
-
-		public static float_int_conversion_overflow_style_t getEnum(int val) {
-			for (float_int_conversion_overflow_style_t entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}

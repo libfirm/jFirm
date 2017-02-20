@@ -302,6 +302,33 @@ public class binding_irdump {
 		}
 	}
 
+	public static enum float_int_conversion_overflow_style_t {
+		ir_overflow_indefinite(),
+		ir_overflow_min_max();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		float_int_conversion_overflow_style_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		float_int_conversion_overflow_style_t() {
+			this.val = C.next_val++;
+		}
+
+		public static float_int_conversion_overflow_style_t getEnum(int val) {
+			for (float_int_conversion_overflow_style_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum ir_dump_verbosity_t {
 		dump_verbosity_onlynames(0x00000001),
 		dump_verbosity_fields(0x00000002),

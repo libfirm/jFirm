@@ -4,7 +4,7 @@ package firm.bindings;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
-public class binding_tv {
+public class binding_target {
 	static {
 		Native.register("firm");
 	}
@@ -300,120 +300,108 @@ public class binding_tv {
 		}
 	}
 
+	public static enum ir_platform_type_t {
+		IR_TYPE_BOOL(),
+		IR_TYPE_CHAR(),
+		IR_TYPE_SHORT(),
+		IR_TYPE_INT(),
+		IR_TYPE_LONG(),
+		IR_TYPE_LONG_LONG(),
+		IR_TYPE_FLOAT(),
+		IR_TYPE_DOUBLE(),
+		IR_TYPE_LONG_DOUBLE();
+		public final int val;
 
-	public static native Pointer new_tarval_from_str(String str, com.sun.jna.NativeLong len, Pointer mode);
+		private static class C {
+			static int next_val;
+		}
 
-	public static native Pointer new_integer_tarval_from_str(String str, com.sun.jna.NativeLong len, int negative, byte base, Pointer mode);
+		ir_platform_type_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
 
-	public static native Pointer new_tarval_from_long(com.sun.jna.NativeLong l, Pointer mode);
+		ir_platform_type_t() {
+			this.val = C.next_val++;
+		}
 
-	public static native Pointer new_tarval_from_bytes(Pointer buf, Pointer mode);
+		public static ir_platform_type_t getEnum(int val) {
+			for (ir_platform_type_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
 
-	public static native Pointer new_tarval_nan(Pointer mode, int signaling, Pointer payload);
 
-	public static native void tarval_to_bytes(Pointer buffer, Pointer tv);
+	public static native int ir_target_set(String target_triple);
 
-	public static native com.sun.jna.NativeLong get_tarval_long(Pointer tv);
+	public static native int ir_target_set_triple(Pointer machine);
 
-	public static native int tarval_is_long(Pointer tv);
+	public static native int ir_target_option(String option);
 
-	public static native Pointer new_tarval_from_double(double d, Pointer mode);
+	public static native void ir_target_init();
 
-	public static native double get_tarval_double(Pointer tv);
+	public static native String ir_target_experimental();
 
-	public static native int tarval_is_double(Pointer tv);
+	public static native int ir_target_big_endian();
 
-	public static native Pointer get_tarval_mode(Pointer tv);
+	public static native int ir_target_biggest_alignment();
 
-	public static native int tarval_is_negative(Pointer tv);
+	public static native int ir_target_pointer_size();
 
-	public static native int tarval_is_null(Pointer tv);
+	public static native int ir_target_supports_pic();
 
-	public static native int tarval_is_one(Pointer tv);
+	public static native int ir_target_fast_unaligned_memaccess();
 
-	public static native int tarval_is_all_one(Pointer tv);
+	public static native Pointer ir_target_float_arithmetic_mode();
 
-	public static native int tarval_is_constant(Pointer tv);
+	public static native int ir_platform_long_long_and_double_struct_align_override();
 
-	public static native Pointer get_tarval_bad();
+	public static native int ir_platform_pic_is_default();
 
-	public static native Pointer get_tarval_unknown();
+	public static native int ir_platform_supports_thread_local_storage();
 
-	public static native Pointer get_tarval_b_false();
+	public static native String ir_platform_define_value(Pointer define);
 
-	public static native Pointer get_tarval_b_true();
+	public static native /* ir_platform_type_t */int ir_platform_wchar_type();
 
-	public static native void tarval_set_wrap_on_overflow(int wrap_on_overflow);
+	public static native int ir_platform_wchar_is_signed();
 
-	public static native int tarval_get_wrap_on_overflow();
+	public static native /* ir_platform_type_t */int ir_platform_intptr_type();
 
-	public static native /* ir_relation */int tarval_cmp(Pointer a, Pointer b);
+	public static native int ir_platform_type_size(/* ir_platform_type_t */int type);
 
-	public static native Pointer tarval_convert_to(Pointer src, Pointer mode);
+	public static native int ir_platform_type_align(/* ir_platform_type_t */int type);
 
-	public static native Pointer tarval_bitcast(Pointer src, Pointer mode);
+	public static native Pointer ir_platform_type_mode(/* ir_platform_type_t */int type, int is_signed);
 
-	public static native Pointer tarval_not(Pointer a);
+	public static native Pointer ir_platform_va_list_type();
 
-	public static native Pointer tarval_neg(Pointer a);
+	public static native byte ir_platform_user_label_prefix();
 
-	public static native Pointer tarval_add(Pointer a, Pointer b);
+	public static native String ir_platform_default_exe_name();
 
-	public static native Pointer tarval_sub(Pointer a, Pointer b);
+	public static native Pointer ir_platform_mangle_global(String name);
 
-	public static native Pointer tarval_mul(Pointer a, Pointer b);
+	public static native Pointer ir_platform_define_first();
 
-	public static native Pointer tarval_div(Pointer a, Pointer b);
+	public static native Pointer ir_platform_define_next(Pointer define);
 
-	public static native Pointer tarval_mod(Pointer a, Pointer b);
+	public static native String ir_platform_define_name(Pointer define);
 
-	public static native Pointer tarval_divmod(Pointer a, Pointer b, java.nio.Buffer mod_res);
+	public static native Pointer ir_parse_machine_triple(String triple_string);
 
-	public static native Pointer tarval_abs(Pointer a);
+	public static native Pointer ir_get_host_machine_triple();
 
-	public static native Pointer tarval_and(Pointer a, Pointer b);
+	public static native String ir_triple_get_cpu_type(Pointer triple);
 
-	public static native Pointer tarval_andnot(Pointer a, Pointer b);
+	public static native String ir_triple_get_manufacturer(Pointer triple);
 
-	public static native Pointer tarval_or(Pointer a, Pointer b);
+	public static native String ir_triple_get_operating_system(Pointer triple);
 
-	public static native Pointer tarval_ornot(Pointer a, Pointer b);
+	public static native void ir_triple_set_cpu_type(Pointer triple, String cpu_type);
 
-	public static native Pointer tarval_eor(Pointer a, Pointer b);
-
-	public static native Pointer tarval_shl(Pointer a, Pointer b);
-
-	public static native Pointer tarval_shl_unsigned(Pointer a, int b);
-
-	public static native Pointer tarval_shr(Pointer a, Pointer b);
-
-	public static native Pointer tarval_shr_unsigned(Pointer a, int b);
-
-	public static native Pointer tarval_shrs(Pointer a, Pointer b);
-
-	public static native Pointer tarval_shrs_unsigned(Pointer a, int b);
-
-	public static native byte get_tarval_sub_bits(Pointer tv, int byte_ofs);
-
-	public static native int get_tarval_popcount(Pointer tv);
-
-	public static native int get_tarval_lowest_bit(Pointer tv);
-
-	public static native int get_tarval_highest_bit(Pointer tv);
-
-	public static native int tarval_zero_mantissa(Pointer tv);
-
-	public static native int tarval_get_exponent(Pointer tv);
-
-	public static native int tarval_ieee754_can_conv_lossless(Pointer tv, Pointer mode);
-
-	public static native int tarval_ieee754_get_exact();
-
-	public static native int tarval_is_nan(Pointer tv);
-
-	public static native int tarval_is_quiet_nan(Pointer tv);
-
-	public static native int tarval_is_signaling_nan(Pointer tv);
-
-	public static native int tarval_is_finite(Pointer tv);
+	public static native void ir_free_machine_triple(Pointer triple);
 }

@@ -8,6 +8,7 @@ import com.sun.jna.Pointer;
 import firm.bindings.binding_be;
 import firm.bindings.binding_iroptimize;
 import firm.bindings.binding_libc;
+import firm.bindings.binding_target;
 
 public final class Backend {
 	private static int runs = 0;
@@ -48,14 +49,14 @@ public final class Backend {
 	}
 
 	public static void option(String option) {
-		if (binding_be.be_parse_arg(option) != 1) {
+		if (binding_target.ir_target_option(option) != 1) {
 			throw new IllegalArgumentException("Unknown option '" + option
 					+ "'");
 		}
 	}
 
 	public static Mode getFloatArithmeticMode() {
-		Pointer p = binding_be.be_get_mode_float_arithmetic();
+		Pointer p = binding_target.ir_target_float_arithmetic_mode();
 		/* In soft-float mode, there will be no float mode set. */
 		if (p == null)
 			return null;

@@ -273,6 +273,33 @@ public class binding_iredges {
 		}
 	}
 
+	public static enum float_int_conversion_overflow_style_t {
+		ir_overflow_indefinite(),
+		ir_overflow_min_max();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		float_int_conversion_overflow_style_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		float_int_conversion_overflow_style_t() {
+			this.val = C.next_val++;
+		}
+
+		public static float_int_conversion_overflow_style_t getEnum(int val) {
+			for (float_int_conversion_overflow_style_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum ir_edge_kind_t {
 		EDGE_KIND_NORMAL(),
 		EDGE_KIND_FIRST(ir_edge_kind_t.EDGE_KIND_NORMAL.val),

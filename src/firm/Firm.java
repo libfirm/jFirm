@@ -9,6 +9,7 @@ import com.sun.jna.Pointer;
 import firm.bindings.binding_firm_common;
 import firm.bindings.binding_irflag;
 import firm.bindings.binding_libc;
+import firm.bindings.binding_target;
 import firm.nodes.Nodes;
 
 public final class Firm {
@@ -20,13 +21,6 @@ public final class Firm {
 		}
 
 		void firm_set_assert_callback(FirmCallback handler);
-	}
-
-	public static interface binding_compilerlib extends Library {
-		interface NameMangleCallback extends Callback {
-			Pointer callback(Pointer ident, Pointer type);
-		}
-		void set_compilerlib_name_mangle(NameMangleCallback handle);
 	}
 
 	public static int getMajorVersion() {
@@ -46,7 +40,6 @@ public final class Firm {
 	}
 
 	private static binding_callback binding_cb = null;
-	private static binding_compilerlib binding_clib = null;
 
 	private static final binding_callback.FirmCallback handler = new binding_callback.FirmCallback() {
 		@Override
@@ -57,15 +50,6 @@ public final class Firm {
 		}
 	};
 
-	private static final binding_compilerlib.NameMangleCallback addUnderscore = new binding_compilerlib.NameMangleCallback() {
-		@Override
-		public Pointer callback(Pointer ident, Pointer type) {
-			final Ident baseIdent = new Ident(ident);
-			final Ident mangledIdent = new Ident("_"+baseIdent);
-			return mangledIdent.ptr;
-		}
-	};
-
 	public static binding_libc.SigHandler sigHandler = new binding_libc.SigHandler() {
 		@Override
 		public void callback(int arg) {
@@ -73,12 +57,8 @@ public final class Firm {
 		}
 	};
 
-	private static void setupUnderscorePrefixCompilerlibCallback() {
-		if (binding_clib == null) {
-			binding_clib = (binding_compilerlib) Native.loadLibrary("firm",
-					binding_compilerlib.class);
-		}
-		binding_clib.set_compilerlib_name_mangle(addUnderscore);
+	public static void init() {
+		init(null, new String[] {});
 	}
 
 	/**
@@ -86,7 +66,7 @@ public final class Firm {
 	 * of the firm library (except querying the version numbers) Must not be
 	 * called more than once unless there was an finish() call.
 	 */
-	public static void init() {
+	public static void init(String targetTriple, String[] targetOptions) {
 		/* hack to catch asserts... */
 		if (binding_cb == null) {
 			binding_cb = (binding_callback) Native.loadLibrary("firm",
@@ -106,26 +86,27 @@ public final class Firm {
 		// catch abort signal
 		binding_libc.signal(/* SIGABRT */6, sigHandler);
 
-		binding_firm_common.ir_init();
+		/* Setup code generation for host machine */
+		binding_firm_common.ir_init_library();
+		final Pointer target;
+		if (targetTriple != null) {
+			target = binding_target.ir_parse_machine_triple(targetTriple);
+			if (target.equals(Pointer.NULL))
+				throw new RuntimeException("Invalid target triple");
+		} else {
+			target = binding_target.ir_get_host_machine_triple();
+		}
+		int res = binding_target.ir_target_set_triple(target);
+		binding_target.ir_free_machine_triple(target);
+		if (res == 0)
+			throw new RuntimeException("Could not initialize libFirm backend");
+		for (String option : targetOptions) {
+			Backend.option(option);
+		}
+		binding_target.ir_target_init();
 
 		/* disable automatic optimisations */
 		binding_irflag.set_optimize(0);
-
-		/* adapt backend to architecture */
-		if (Platform.isMac()) {
-			Backend.option("objectformat=mach-o");
-			Backend.option("ia32-struct_in_reg=yes");
-			Backend.option("ia32-stackalign=4");
-			Backend.option("pic=mach-o");
-			setupUnderscorePrefixCompilerlibCallback();
-		} else if (Platform.isWindows()) {
-			Backend.option("objectformat=coff");
-			Backend.option("ia32-struct_in_reg=no");
-			setupUnderscorePrefixCompilerlibCallback();
-		} else {
-			Backend.option("objectformat=elf");
-			Backend.option("ia32-struct_in_reg=no");
-		}
 
 		Nodes.init();
 	}

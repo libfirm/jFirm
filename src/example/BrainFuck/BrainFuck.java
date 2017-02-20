@@ -233,8 +233,9 @@ public class BrainFuck {
 	}
 
 	private void changePointer(int delta_int) {
+		Mode offset_mode = Mode.getP().getReferenceOffsetMode();
 		Node pointer = construction.getVariable(0, Mode.getP());
-		Node delta = construction.newConst(delta_int, Mode.getIs());
+		Node delta = construction.newConst(delta_int, offset_mode);
 		Node add = construction.newAdd(pointer, delta);
 		construction.setVariable(0, add);
 	}

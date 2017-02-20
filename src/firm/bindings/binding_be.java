@@ -302,6 +302,33 @@ public class binding_be {
 		}
 	}
 
+	public static enum float_int_conversion_overflow_style_t {
+		ir_overflow_indefinite(),
+		ir_overflow_min_max();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		float_int_conversion_overflow_style_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		float_int_conversion_overflow_style_t() {
+			this.val = C.next_val++;
+		}
+
+		public static float_int_conversion_overflow_style_t getEnum(int val) {
+			for (float_int_conversion_overflow_style_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum osr_flags {
 		osr_flag_none(0),
 		osr_flag_lftr_with_ov_check(1),
@@ -354,33 +381,6 @@ public class binding_be {
 
 		public static ir_mode_arithmetic getEnum(int val) {
 			for (ir_mode_arithmetic entry : values()) {
-				if (val == entry.val)
-					return entry;
-			}
-			return null;
-		}
-	}
-
-	public static enum float_int_conversion_overflow_style_t {
-		ir_overflow_indefinite(),
-		ir_overflow_min_max();
-		public final int val;
-
-		private static class C {
-			static int next_val;
-		}
-
-		float_int_conversion_overflow_style_t(int val) {
-			this.val = val;
-			C.next_val = val + 1;
-		}
-
-		float_int_conversion_overflow_style_t() {
-			this.val = C.next_val++;
-		}
-
-		public static float_int_conversion_overflow_style_t getEnum(int val) {
-			for (float_int_conversion_overflow_style_t entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -470,22 +470,6 @@ public class binding_be {
 		}
 	}
 
-
-	public static native int be_parse_arg(String arg);
-
-	public static native int be_is_big_endian();
-
-	public static native int be_get_machine_size();
-
-	public static native Pointer be_get_mode_float_arithmetic();
-
-	public static native Pointer be_get_type_long_double();
-
-	public static native /* float_int_conversion_overflow_style_t */int be_get_float_int_overflow();
-
-	public static native void be_initialize();
-
-	public static native Pointer be_get_backend_param();
 
 	public static native void be_lower_for_target();
 

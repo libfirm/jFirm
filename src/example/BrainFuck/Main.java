@@ -34,7 +34,7 @@ public class Main {
 		/* transform to x86 assembler */
 		Backend.createAssembler("test.s", "<builtin>");
 		/* assembler */
-		Process p = Runtime.getRuntime().exec("gcc -m32 test.s -o a.out");
+		Process p = Runtime.getRuntime().exec("gcc test.s -o a.out");
 		int res = -1;
 		try {
 			res = p.waitFor();

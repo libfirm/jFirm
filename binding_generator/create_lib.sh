@@ -2,17 +2,14 @@
 
 . config
 
-GOAL="../lib/${FIRM_TARGET_LIB}"
-cat > /tmp/dummy.c << __EOF__
-#include <libfirm/firm.h>
+cd "$FIRM_HOME"
+make firm # This should create the dynamic library
+cd -
 
-void __dummy__(void) {
-	ir_init();
-	ir_get_version_major();
-	lower_highlevel();
-}
-__EOF__
-CC=gcc
-CMD="$CC ${GCC_SHARED} /tmp/dummy.c -o ${GOAL} -I${FIRM_INC} -I${FIRM_INC2} ${FIRM_LFLAGS} -lpthread -lm"
-echo $CMD
-$CMD
+# Link it to our library dir
+if test -e "$FIRM_BUILD/libfirm.so"; then
+	ln -sf "$FIRM_BUILD/libfirm.so" ../lib
+fi
+if test -e "$FIRM_BUILD/libfirm.dylib"; then
+	ln -sf "$FIRM_BUILD/libfirm.dylib" ../lib
+fi

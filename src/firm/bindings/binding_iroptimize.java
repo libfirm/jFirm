@@ -273,6 +273,33 @@ public class binding_iroptimize {
 		}
 	}
 
+	public static enum float_int_conversion_overflow_style_t {
+		ir_overflow_indefinite(),
+		ir_overflow_min_max();
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		float_int_conversion_overflow_style_t(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		float_int_conversion_overflow_style_t() {
+			this.val = C.next_val++;
+		}
+
+		public static float_int_conversion_overflow_style_t getEnum(int val) {
+			for (float_int_conversion_overflow_style_t entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
 	public static enum osr_flags {
 		osr_flag_none(0),
 		osr_flag_lftr_with_ov_check(1),
@@ -371,9 +398,5 @@ public class binding_iroptimize {
 
 	public static native Pointer computed_value_Cmp_Confirm(Pointer left, Pointer right, /* ir_relation */int relation);
 
-	public static native void set_compilerlib_name_mangle(Pointer cb);
-
-	public static native Pointer get_compilerlib_name_mangle();
-
-	public static native Pointer create_compilerlib_entity(Pointer id, Pointer mt);
+	public static native Pointer create_compilerlib_entity(String name, Pointer mt);
 }
