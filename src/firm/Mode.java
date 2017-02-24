@@ -8,6 +8,7 @@ import com.sun.jna.Pointer;
 import firm.bindings.binding_be;
 import firm.bindings.binding_irmode;
 import firm.bindings.binding_irmode.ir_mode_arithmetic;
+import firm.bindings.binding_target;
 
 /**
  * Mode represents values that can be produced by firm nodes. There are modes
@@ -50,7 +51,7 @@ public final class Mode extends JNAWrapper {
 
 	public static Mode createFloatMode(String name, Arithmetic arithmetic, int exponentSize, int mantissaSize) {
 		return new Mode(binding_irmode.new_float_mode(name, arithmetic.val, exponentSize, mantissaSize,
-		                binding_be.be_get_float_int_overflow()));
+		                                              binding_target.ir_target_float_int_overflow_style()));
 	}
 
 	public static Mode createReferenceMode(String name, int bitSize, int moduloShift) {

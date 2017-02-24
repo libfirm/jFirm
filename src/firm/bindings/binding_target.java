@@ -357,6 +357,8 @@ public class binding_target {
 
 	public static native Pointer ir_target_float_arithmetic_mode();
 
+	public static native /* float_int_conversion_overflow_style_t */int ir_target_float_int_overflow_style();
+
 	public static native int ir_platform_long_long_and_double_struct_align_override();
 
 	public static native int ir_platform_pic_is_default();
