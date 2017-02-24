@@ -61,6 +61,13 @@ public final class Firm {
 		init(null, new String[] {});
 	}
 
+	private static void do_option(String option) {
+		if (binding_target.ir_target_option(option) != 1) {
+			throw new IllegalArgumentException("Unknown option '" + option
+					+ "'");
+		}
+	}
+
 	/**
 	 * Initializes the firm library. Must be called before using any operations
 	 * of the firm library (except querying the version numbers) Must not be
@@ -100,8 +107,11 @@ public final class Firm {
 		binding_target.ir_free_machine_triple(target);
 		if (res == 0)
 			throw new RuntimeException("Could not initialize libFirm backend");
+		for (String option : Backend.getOptions()) {
+			do_option(option);
+		}
 		for (String option : targetOptions) {
-			Backend.option(option);
+			do_option(option);
 		}
 		binding_target.ir_target_init();
 
