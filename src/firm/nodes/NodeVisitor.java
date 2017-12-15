@@ -172,7 +172,7 @@ public interface NodeVisitor {
 
 	/**
 	 * Default Visitor: A class which implements every visit function of the
-	 * NodeVisitor interface with a call to the defaultVisit function. Usefull
+	 * NodeVisitor interface with a call to the defaultVisit function. Useful
 	 * as base for own visitors which need to treat all nodes equally or only
 	 * need to override some visit functions.
 	 */
