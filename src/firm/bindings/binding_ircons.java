@@ -645,7 +645,6 @@ public class binding_ircons {
 	public static enum op_arity {
 		oparity_invalid(0),
 		oparity_binary(),
-		oparity_variable(),
 		oparity_dynamic(),
 		oparity_any();
 		public final int val;
@@ -870,6 +869,34 @@ public class binding_ircons {
 
 		public static n_ASM getEnum(int val) {
 			for (n_ASM entry : values()) {
+				if (val == entry.val)
+					return entry;
+			}
+			return null;
+		}
+	}
+
+	public static enum pn_ASM {
+		pn_ASM_M(),
+		pn_ASM_first_out(),
+		pn_ASM_max(pn_ASM.pn_ASM_first_out.val);
+		public final int val;
+
+		private static class C {
+			static int next_val;
+		}
+
+		pn_ASM(int val) {
+			this.val = val;
+			C.next_val = val + 1;
+		}
+
+		pn_ASM() {
+			this.val = C.next_val++;
+		}
+
+		public static pn_ASM getEnum(int val) {
+			for (pn_ASM entry : values()) {
 				if (val == entry.val)
 					return entry;
 			}
@@ -2240,13 +2267,9 @@ public class binding_ircons {
 
 	public static native void set_ASM_input(Pointer node, int pos, Pointer input);
 
-	public static native Pointer get_ASM_input_constraints(Pointer node);
+	public static native Pointer get_ASM_constraints(Pointer node);
 
-	public static native void set_ASM_input_constraints(Pointer node, Pointer input_constraints);
-
-	public static native Pointer get_ASM_output_constraints(Pointer node);
-
-	public static native void set_ASM_output_constraints(Pointer node, Pointer output_constraints);
+	public static native void set_ASM_constraints(Pointer node, Pointer constraints);
 
 	public static native java.nio.Buffer get_ASM_clobbers(Pointer node);
 
@@ -3380,13 +3403,13 @@ public class binding_ircons {
 
 	public static native Pointer new_DivRL(Pointer memop, Pointer op1, Pointer op2, int pinned);
 
-	public static native Pointer new_rd_ASM(Pointer db, Pointer block, Pointer mem, int arity, java.nio.Buffer in, Pointer inputs, com.sun.jna.NativeLong n_outs, Pointer outputs, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
+	public static native Pointer new_rd_ASM(Pointer db, Pointer block, Pointer mem, int arity, java.nio.Buffer in, com.sun.jna.NativeLong n_constraints, Pointer constraints, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
 
-	public static native Pointer new_r_ASM(Pointer block, Pointer mem, int arity, java.nio.Buffer in, Pointer inputs, com.sun.jna.NativeLong n_outs, Pointer outputs, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
+	public static native Pointer new_r_ASM(Pointer block, Pointer mem, int arity, java.nio.Buffer in, com.sun.jna.NativeLong n_constraints, Pointer constraints, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
 
-	public static native Pointer new_d_ASM(Pointer db, Pointer mem, int arity, java.nio.Buffer in, Pointer inputs, com.sun.jna.NativeLong n_outs, Pointer outputs, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
+	public static native Pointer new_d_ASM(Pointer db, Pointer mem, int arity, java.nio.Buffer in, com.sun.jna.NativeLong n_constraints, Pointer constraints, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
 
-	public static native Pointer new_ASM(Pointer mem, int arity, java.nio.Buffer in, Pointer inputs, com.sun.jna.NativeLong n_outs, Pointer outputs, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
+	public static native Pointer new_ASM(Pointer mem, int arity, java.nio.Buffer in, com.sun.jna.NativeLong n_constraints, Pointer constraints, com.sun.jna.NativeLong n_clobber, java.nio.Buffer clobber, Pointer asm_text);
 
 	public static native Pointer get_current_ir_graph();
 

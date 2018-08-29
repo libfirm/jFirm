@@ -303,5 +303,7 @@ public class binding_irconsconfirm {
 
 	public static native void construct_confirms(Pointer irg);
 
+	public static native void construct_confirms_only(Pointer irg);
+
 	public static native void remove_confirms(Pointer irg);
 }

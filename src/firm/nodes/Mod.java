@@ -67,7 +67,7 @@ public class Mod extends Node {
 	/** control flow when no exception occurs */
 	public static final int pnXRegular = 2;
 
-	/** control flow when exception occured */
+	/** control flow when exception occurred */
 	public static final int pnXExcept = 3;
 
 	public static final int pnMax = 4;

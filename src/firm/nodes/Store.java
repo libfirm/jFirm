@@ -82,7 +82,7 @@ public class Store extends Node {
 	/** control flow when no exception occurs */
 	public static final int pnXRegular = 1;
 
-	/** control flow when exception occured */
+	/** control flow when exception occurred */
 	public static final int pnXExcept = 2;
 
 	public static final int pnMax = 3;
