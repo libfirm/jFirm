@@ -3,6 +3,7 @@ package firm;
 import com.sun.jna.Pointer;
 
 import firm.bindings.binding_ident;
+import firm.bindings.binding_target;
 
 public class Ident extends JNAWrapper {
 
@@ -40,5 +41,33 @@ public class Ident extends JNAWrapper {
 	public final static Ident createUnique(String tag) {
 		Pointer pIdent = binding_ident.id_unique(tag);
 		return new Ident(pIdent);
+	}
+
+	/**
+	 * Creates an identifier that follows the rules of the target
+	 * architecture for function/method labels.
+	 *
+	 * This method does not handle name mangling for overloading,
+	 * classes etc.
+	 *
+	 * @see Backend#getPlatformUserLabelPrefix()
+	 */
+	public final static Ident mangleGlobal(String name) {
+		Pointer pIdent = binding_target.ir_platform_mangle_global(name);
+		return new Ident(pIdent);
+	}
+
+	/**
+	 * Creates an identifier that follows the rules of the target
+	 * architecture for function/method labels.
+	 *
+	 * This method does not handle name mangling for overloading,
+	 * classes etc.
+	 *
+	 * @see Backend#getPlatformUserLabelPrefix()
+	 */
+	public final static Ident mangleGlobal(Ident ident) {
+		Pointer pResult = binding_target.ir_platform_mangle_global(ident.toString());
+		return new Ident(pResult);
 	}
 }

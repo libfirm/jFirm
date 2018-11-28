@@ -78,4 +78,17 @@ public final class Backend {
 			return null;
 		return new Mode(p);
 	}
+
+	/**
+	 * Returns the prefix that goes in front of function/method
+	 * labels on the target architecture (e.g. "_" for Apple).
+	 */
+	public static String getPlatformUserLabelPrefix() {
+		byte raw = binding_target.ir_platform_user_label_prefix();
+		if (raw == 0) {
+			return "";
+		} else {
+			return new String(new byte[] { raw });
+		}
+	}
 }
