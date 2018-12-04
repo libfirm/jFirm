@@ -3439,6 +3439,8 @@ public class binding_ircons {
 
 	public static native Pointer get_r_value(Pointer irg, int pos, Pointer mode);
 
+	public static native Pointer get_b_value(Pointer block, int pos, Pointer mode);
+
 	public static native Pointer ir_guess_mode(int pos);
 
 	public static native Pointer ir_r_guess_mode(Pointer irg, int pos);
@@ -3447,13 +3449,19 @@ public class binding_ircons {
 
 	public static native void set_r_value(Pointer irg, int pos, Pointer value);
 
+	public static native void set_b_value(Pointer block, int pos, Pointer value);
+
 	public static native Pointer get_store();
 
 	public static native Pointer get_r_store(Pointer irg);
 
+	public static native Pointer get_b_store(Pointer block);
+
 	public static native void set_store(Pointer store);
 
 	public static native void set_r_store(Pointer irg, Pointer store);
+
+	public static native void set_b_store(Pointer block, Pointer store);
 
 	public static native void keep_alive(Pointer ka);
 
