@@ -142,6 +142,14 @@ public abstract class Node extends JNAWrapper {
 		return op;
 	}
 
+	public Node exactCopy() {
+		return createWrapper(binding_irnode.exact_copy(ptr));
+	}
+
+	public Node copyInto(Graph irg) {
+		return createWrapper(binding_irnode.irn_copy_into_irg(ptr, irg.ptr));
+	}
+
 	@Override
 	public String toString() {
 		return binding_irnode.gdb_node_helper(ptr);

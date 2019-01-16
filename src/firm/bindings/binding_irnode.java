@@ -3425,6 +3425,10 @@ public class binding_irnode {
 
 	public static native Pointer new_ir_node(Pointer db, Pointer irg, Pointer block, Pointer op, Pointer mode, int arity, java.nio.Buffer in);
 
+	public static native Pointer exact_copy(Pointer node);
+
+	public static native Pointer irn_copy_into_irg(Pointer node, Pointer irg);
+
 	public static native Pointer get_nodes_block(Pointer node);
 
 	public static native void set_nodes_block(Pointer node, Pointer block);
