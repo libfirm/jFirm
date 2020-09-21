@@ -384,6 +384,8 @@ public class binding_iroptimize {
 
 	public static native void do_loop_unrolling(Pointer irg);
 
+    public static native void do_loop_pagecache(Pointer irg);
+
 	public static native void do_loop_peeling(Pointer irg);
 
 	public static native void garbage_collect_entities();
