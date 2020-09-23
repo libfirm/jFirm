@@ -619,6 +619,12 @@ public class binding_typerep {
 
 	public static native String get_entity_ld_name(Pointer ent);
 
+	public static native Pointer get_entity_custom_section_ident(Pointer ent);
+
+	public static native void set_entity_custom_section_ident(Pointer ent, Pointer custom_section_ident);
+
+	public static native String get_entity_custom_section_name(Pointer ent);
+
 	public static native int entity_has_ld_ident(Pointer entity);
 
 	public static native Pointer get_entity_owner(Pointer ent);

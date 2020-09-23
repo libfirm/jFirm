@@ -71,6 +71,23 @@ public class Entity extends JNAWrapper {
 		return binding_typerep.get_entity_ld_name(ptr);
 	}
 
+    public final Ident getCustomSectionIdent() {
+        Pointer p = binding_typerep.get_entity_custom_section_ident(ptr);
+        return new Ident(p);
+    }
+
+    public final String getCustomSectionName() {
+        return binding_typerep.get_entity_custom_section_name(ptr);
+    }
+
+    public final void setCustomSection(Ident sectionIdent) {
+        binding_typerep.set_entity_custom_section_ident(ptr, sectionIdent.ptr);
+    }
+
+    public final void setCustomSection(String sectionName) {
+        setCustomSection(new Ident(sectionName));
+    }
+
 	public final Type getOwner() {
 		Pointer p = binding_typerep.get_entity_owner(ptr);
 		return Type.createWrapper(p);
